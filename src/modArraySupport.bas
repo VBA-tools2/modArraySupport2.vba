@@ -1930,11 +1930,11 @@ Public Function IsVariantArrayNumeric(TestArray As Variant) As Boolean
                 End If
             End If
         Next Ndx
-    Else
+    ElseIf NumDims = 2 Then
         ''''''''''''''''''''''''''''''''''''
-        ' multi-dimensional array
+        ' two-dimensional array
         ''''''''''''''''''''''''''''''''''''
-        For DimNdx = 1 To NumDims
+        For DimNdx = LBound(TestArray, 2) To UBound(TestArray, 2)
             For Ndx = LBound(TestArray, DimNdx) To UBound(TestArray, DimNdx)
                 If VarType(TestArray(Ndx, DimNdx)) <> vbEmpty Then
                     If IsNumericDataType(TestVar:=TestArray(Ndx, DimNdx)) = False Then
@@ -1944,6 +1944,12 @@ Public Function IsVariantArrayNumeric(TestArray As Variant) As Boolean
                 End If
             Next Ndx
         Next DimNdx
+'---
+'currently there is no handler for "higher"-dimensional arrays
+'---
+    Else
+        IsVariantArrayNumeric = False
+        Exit Function
     End If
     
     '''''''''''''''''''''''''''''''''''''''
