@@ -49,6 +49,8 @@ Option Compare Text
 '       ReverseArrayOfObjectsInPlace
 '       SetObjectArrayToNothing
 '       SetVariableToDefault
+'       SwapArrayColumns
+'       SwapArrayRows
 '       TransposeArray
 '       VectorsToArray
 '
