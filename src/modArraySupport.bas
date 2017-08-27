@@ -1608,44 +1608,37 @@ Public Function IsVariantArrayNumeric( _
 '    End If
     
     NumDims = NumberOfArrayDimensions(Arr:=TestArray)
-    If NumDims = 1 Then
-        '''''''''''''''''''''''''''''''''''
-        ' single dimensional array
-        '''''''''''''''''''''''''''''''''''
-        For Ndx = LBound(TestArray) To UBound(TestArray)
-            If IsObject(TestArray(Ndx)) = True Then
-                IsVariantArrayNumeric = False
-                Exit Function
-            End If
-            
-            If VarType(TestArray(Ndx)) <> vbEmpty Then
-                If IsNumericDataType(TestVar:=TestArray(Ndx)) = False Then
+    Select Case NumDims
+        Case 1
+            For Ndx = LBound(TestArray) To UBound(TestArray)
+                If IsObject(TestArray(Ndx)) = True Then
                     IsVariantArrayNumeric = False
                     Exit Function
                 End If
-            End If
-        Next Ndx
-    ElseIf NumDims = 2 Then
-        ''''''''''''''''''''''''''''''''''''
-        ' two-dimensional array
-        ''''''''''''''''''''''''''''''''''''
-        For DimNdx = LBound(TestArray, 2) To UBound(TestArray, 2)
-            For Ndx = LBound(TestArray, DimNdx) To UBound(TestArray, DimNdx)
-                If VarType(TestArray(Ndx, DimNdx)) <> vbEmpty Then
-                    If IsNumericDataType(TestVar:=TestArray(Ndx, DimNdx)) = False Then
+                
+                If VarType(TestArray(Ndx)) <> vbEmpty Then
+                    If IsNumericDataType(TestVar:=TestArray(Ndx)) = False Then
                         IsVariantArrayNumeric = False
                         Exit Function
                     End If
                 End If
             Next Ndx
-        Next DimNdx
-'---
-'currently there is no handler for "higher"-dimensional arrays
-'---
-    Else
-        IsVariantArrayNumeric = False
-        Exit Function
-    End If
+        Case 2
+            For DimNdx = LBound(TestArray, 2) To UBound(TestArray, 2)
+                For Ndx = LBound(TestArray, DimNdx) To UBound(TestArray, DimNdx)
+                    If VarType(TestArray(Ndx, DimNdx)) <> vbEmpty Then
+                        If IsNumericDataType(TestVar:=TestArray(Ndx, DimNdx)) = False Then
+                            IsVariantArrayNumeric = False
+                            Exit Function
+                        End If
+                    End If
+                Next Ndx
+            Next DimNdx
+        Case Else
+            'currently there is no handler for "higher"-dimensional arrays
+            IsVariantArrayNumeric = False
+            Exit Function
+    End Select
     
     'If we made it up to here, then the array is entirely numeric
     IsVariantArrayNumeric = True
