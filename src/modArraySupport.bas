@@ -16,12 +16,12 @@ Option Compare Text
 ' For details on these functions, see www.cpearson.com/excel/VBAArrays.htm
 '
 ' This module contains the following functions:
-'       AreDataTypesCompatible
+'       AreDataTypesCompatible           --> changed order of arguments
 '       ChangeBoundsOfArray
 '       CombineTwoDArrays
 '       CompareArrays
 '       ConcatenateArrays
-'       CopyArray
+'       CopyArray                        --> changed order of arguments
 '       CopyArraySubSetToArray
 '       CopyNonNothingObjectsToArray
 '       DataTypeOfArray
@@ -336,7 +336,7 @@ Public Function ConcatenateArrays( _
         ' Ensure the array are compatible
         ' data types.
         ''''''''''''''''''''''''''''''''''''''
-        If AreDataTypesCompatible(DestVar:=ResultArray, SourceVar:=ArrayToAppend) = False Then
+        If AreDataTypesCompatible(SourceVar:=ArrayToAppend, DestVar:=ResultArray) = False Then
             '''''''''''''''''''''''''''''''''''''''''''
             ' The arrays are not compatible data types.
             '''''''''''''''''''''''''''''''''''''''''''
@@ -420,7 +420,7 @@ Public Function ConcatenateArrays( _
                 ResultArray(Ndx) = ArrayToAppend(Ndx)
             End If
         Next Ndx
-
+        
     End If
     '''''''''''''''''''''''
     ' Success. Return True.
@@ -464,8 +464,8 @@ End Function
 ' element in DestinationArray having a value of 0.
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 Public Function CopyArray( _
-    DestinationArray As Variant, _
     SourceArray As Variant, _
+    DestinationArray As Variant, _
     Optional NoCompatabilityCheck As Boolean = False _
         ) As Boolean
 
@@ -522,7 +522,7 @@ Public Function CopyArray( _
         ' for information about compatible
         ' types.
         ''''''''''''''''''''''''''''''''''''''
-        If AreDataTypesCompatible(DestVar:=DestinationArray, SourceVar:=SourceArray) = False Then
+        If AreDataTypesCompatible(SourceVar:=SourceArray, DestVar:=DestinationArray) = False Then
             CopyArray = False
             Exit Function
         End If
@@ -2460,8 +2460,8 @@ End Function
 ' will be lost converting from a Double to a Long (the decimal portion will be lost).
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 Public Function AreDataTypesCompatible( _
-    DestVar As Variant, _
-    SourceVar As Variant _
+    SourceVar As Variant, _
+    DestVar As Variant _
         ) As Boolean
 
     Dim SVType As VbVarType
