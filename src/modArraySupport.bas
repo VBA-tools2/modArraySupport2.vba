@@ -64,9 +64,6 @@ Public Const C_ERR_SUBSCRIPT_OUT_OF_RANGE = 9&
 Public Const C_ERR_ARRAY_IS_FIXED_OR_LOCKED = 10&
 
 
-'------------------------------------------------------------------------------
-Public Function CompareArrays(Array1 As Variant, Array2 As Variant, _
-    ResultArray As Variant, Optional CompareMode As VbCompareMethod = vbTextCompare) As Boolean
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 ' CompareArrays
 ' This function compares two arrays, Array1 and Array2, element by element, and puts the results of
@@ -90,9 +87,13 @@ Public Function CompareArrays(Array1 As Variant, Array2 As Variant, _
 ' If both elements are numeric strings, they are converted to Doubles and compared arithmetically.
 '
 ' If either element is not a numeric string, the elements are converted and compared with StrComp.
-'
-'
 ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Public Function CompareArrays( _
+    Array1 As Variant, _
+    Array2 As Variant, _
+    ResultArray As Variant, _
+    Optional CompareMode As VbCompareMethod = vbTextCompare _
+        ) As Boolean
 
     Dim Ndx1 As Long
     Dim Ndx2 As Long
@@ -247,8 +248,6 @@ Public Function CompareArrays(Array1 As Variant, Array2 As Variant, _
 End Function
 
 
-Public Function ConcatenateArrays(ResultArray As Variant, ArrayToAppend As Variant, _
-    Optional NoCompatabilityCheck As Boolean = False) As Boolean
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 ' ConcatenateArrays
 ' This function appends ArrayToAppend to the end of ResultArray, increasing the size of ResultArray
@@ -266,8 +265,12 @@ Public Function ConcatenateArrays(ResultArray As Variant, ArrayToAppend As Varia
 ' get an overflow error which will cause a result of 0 in that element of ResultArra.
 '
 ' Both ReaultArray and ArrayToAppend must be one-dimensional arrays.
-'
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Public Function ConcatenateArrays( _
+    ResultArray As Variant, _
+    ArrayToAppend As Variant, _
+    Optional NoCompatabilityCheck As Boolean = False _
+        ) As Boolean
 
     Dim VTypeResult As VbVarType
     Dim Ndx As Long
@@ -425,8 +428,6 @@ Public Function ConcatenateArrays(ResultArray As Variant, ArrayToAppend As Varia
 End Function
 
 
-Public Function CopyArray(DestinationArray As Variant, SourceArray As Variant, _
-    Optional NoCompatabilityCheck As Boolean = False) As Boolean
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 ' CopyArray
 ' This function copies the contents of SourceArray to the DestinationaArray. Both SourceArray
@@ -459,8 +460,12 @@ Public Function CopyArray(DestinationArray As Variant, SourceArray As Variant, _
 ' lose information during data conversion (e.g., losing decimal places when converting a Double
 ' to a Long) or you may get an overflow (storing a Long in an Integer) which will result in that
 ' element in DestinationArray having a value of 0.
-'
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Public Function CopyArray( _
+    DestinationArray As Variant, _
+    SourceArray As Variant, _
+    Optional NoCompatabilityCheck As Boolean = False _
+        ) As Boolean
 
     Dim VTypeSource As VbVarType
     Dim VTypeDest As VbVarType
@@ -608,8 +613,6 @@ Public Function CopyArray(DestinationArray As Variant, SourceArray As Variant, _
 End Function
 
 
-Public Function CopyArraySubSetToArray(InputArray As Variant, ResultArray As Variant, _
-    FirstElementToCopy As Long, LastElementToCopy As Long, DestinationElement As Long) As Boolean
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 ' CopyArraySubSetToArray
 ' This function copies elements of InputArray to ResultArray. It takes the elements
@@ -620,6 +623,13 @@ Public Function CopyArraySubSetToArray(InputArray As Variant, ResultArray As Var
 ' enough to copy all the elements, no elements are copied and the function
 ' returns False.
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Public Function CopyArraySubSetToArray( _
+    InputArray As Variant, _
+    ResultArray As Variant, _
+    FirstElementToCopy As Long, _
+    LastElementToCopy As Long, _
+    DestinationElement As Long _
+        ) As Boolean
 
     Dim SrcNdx As Long
     Dim DestNdx As Long
@@ -754,8 +764,6 @@ Public Function CopyArraySubSetToArray(InputArray As Variant, ResultArray As Var
 End Function
 
 
-Public Function CopyNonNothingObjectsToArray(ByRef SourceArray As Variant, _
-    ByRef ResultArray As Variant, Optional NoAlerts As Boolean = False) As Boolean
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 ' CopyNonNothingObjectsToArray
 ' This function copies all objects that are not Nothing from SourceArray
@@ -774,13 +782,18 @@ Public Function CopyNonNothingObjectsToArray(ByRef SourceArray As Variant, _
 ' the error. To suppress the message boxes, set the NoAlerts parameter to
 ' True.
 '
-' This function uses the following procedures. They are declared as Private
-' procedures at the end of this module.
+' This function uses the following procedures.
 '       IsArrayDynamic
 '       IsArrayEmpty
 '       NumberOfArrayDimensions
 '
 ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Public Function CopyNonNothingObjectsToArray( _
+    ByRef SourceArray As Variant, _
+    ByRef ResultArray As Variant, _
+    Optional NoAlerts As Boolean = False _
+        ) As Boolean
+    
     Dim ResNdx As Long
     Dim InNdx  As Long
     
@@ -945,7 +958,6 @@ Public Function CopyNonNothingObjectsToArray(ByRef SourceArray As Variant, _
 End Function
 
 
-Public Function DataTypeOfArray(Arr As Variant) As VbVarType
 ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 ' DataTypeOfArray
 '
@@ -973,6 +985,9 @@ Public Function DataTypeOfArray(Arr As Variant) As VbVarType
 '
 ' Returns -1 if Arr is not an array.
 ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Public Function DataTypeOfArray( _
+    arr As Variant _
+        ) As VbVarType
 
     Dim Element As Variant
     Dim NumDimensions As Long
@@ -1026,8 +1041,7 @@ Public Function DataTypeOfArray(Arr As Variant) As VbVarType
 
 End Function
 
-Public Function DeleteArrayElement(InputArray As Variant, ElementNumber As Long, _
-    Optional ResizeDynamic As Boolean = False) As Boolean
+
 ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 ' DeleteArrayElement
 ' This function deletes an element from InputArray, and shifts elements that are to the
@@ -1039,6 +1053,11 @@ Public Function DeleteArrayElement(InputArray As Variant, ElementNumber As Long,
 ' The function returns True if the elememt was successfully deleted, or False if an error
 ' occurrred. This procedure works only on single-dimensional
 ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Public Function DeleteArrayElement( _
+    InputArray As Variant, _
+    ElementNumber As Long, _
+    Optional ResizeDynamic As Boolean = False _
+        ) As Boolean
 
     Dim Ndx As Long
     Dim VType As VbVarType
@@ -1122,14 +1141,16 @@ Public Function DeleteArrayElement(InputArray As Variant, ElementNumber As Long,
 End Function
 
 
-Public Function FirstNonEmptyStringIndexInArray(InputArray As Variant) As Long
 ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 ' FirstNonEmptyStringIndexInArray
 ' This returns the index into InputArray of the first non-empty string.
 ' This is generally used when InputArray is the result of a sort operation,
 ' which puts empty strings at the beginning of the array.
-' Returns -1 is an error occurred or if the entire array is empty strings.
+' Returns -1 if an error occurred or if the entire array is empty strings.
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Public Function FirstNonEmptyStringIndexInArray( _
+    InputArray As Variant _
+        ) As Long
 
     Dim Ndx As Long
     
@@ -1169,8 +1190,6 @@ Public Function FirstNonEmptyStringIndexInArray(InputArray As Variant) As Long
 End Function
 
 
-Public Function InsertElementIntoArray(InputArray As Variant, Index As Long, _
-    Value As Variant) As Boolean
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 ' InsertElementIntoArray
 ' This function inserts an element with a value of Value into InputArray at locatation Index.
@@ -1180,6 +1199,11 @@ Public Function InsertElementIntoArray(InputArray As Variant, Index As Long, _
 ' InputArray and less than or equal to UBound+1. If Index is UBound+1, the Value is
 ' placed at the end of the array.
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Public Function InsertElementIntoArray( _
+    InputArray As Variant, _
+    Index As Long, _
+    Value As Variant _
+        ) As Boolean
 
     Dim Ndx As Long
     
@@ -1272,7 +1296,6 @@ Public Function InsertElementIntoArray(InputArray As Variant, Index As Long, _
 End Function
 
 
-Public Function IsArrayAllDefault(InputArray As Variant) As Boolean
 ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 ' IsArrayAllEmpty
 ' Returns True if the array contains all default values for its
@@ -1283,6 +1306,9 @@ Public Function IsArrayAllDefault(InputArray As Variant) As Boolean
 '   String                  vbNullString
 '   Numeric                 0
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Public Function IsArrayAllDefault( _
+    InputArray As Variant _
+        ) As Boolean
 
     Dim Ndx As Long
     Dim DefaultValue As Variant
@@ -1347,8 +1373,6 @@ Public Function IsArrayAllDefault(InputArray As Variant) As Boolean
 End Function
 
 
-Public Function IsArrayAllNumeric(Arr As Variant, _
-    Optional AllowNumericStrings As Boolean = False) As Boolean
 ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 ' IsArrayAllNumeric
 ' This function returns True is Arr is entirely numeric. False otherwise. The AllowNumericStrings
@@ -1358,6 +1382,10 @@ Public Function IsArrayAllNumeric(Arr As Variant, _
 ' Variants that are numeric or Empty are allowed. Variants that are arrays, objects, or
 ' non-numeric data are not allowed.
 ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Public Function IsArrayAllNumeric( _
+    arr As Variant, _
+    Optional AllowNumericStrings As Boolean = False _
+        ) As Boolean
 
     Dim Ndx As Long
     
@@ -1438,7 +1466,6 @@ Public Function IsArrayAllNumeric(Arr As Variant, _
 End Function
 
 
-Public Function IsArrayAllocated(Arr As Variant) As Boolean
 ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 ' IsArrayAllocated
 ' Returns TRUE if the array is allocated (either a static array or a dynamic array that has been
@@ -1453,6 +1480,9 @@ Public Function IsArrayAllocated(Arr As Variant) As Boolean
 '
 ' This function is just the reverse of IsArrayEmpty.
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Public Function IsArrayAllocated( _
+    arr As Variant _
+        ) As Boolean
 
     Dim N As Long
     On Error Resume Next
@@ -1489,13 +1519,15 @@ Public Function IsArrayAllocated(Arr As Variant) As Boolean
 End Function
 
 
-Public Function IsArrayDynamic(ByRef Arr As Variant) As Boolean
 ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 ' IsArrayDynamic
 ' This function returns TRUE or FALSE indicating whether Arr is a dynamic array.
 ' Note that if you attempt to ReDim a static array in the same procedure in which it is
 ' declared, you'll get a compiler error and your code won't run at all.
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Public Function IsArrayDynamic( _
+    ByRef arr As Variant _
+        ) As Boolean
 
     Dim LUBound As Long
     
@@ -1558,7 +1590,6 @@ Public Function IsArrayDynamic(ByRef Arr As Variant) As Boolean
 End Function
 
 
-Public Function IsArrayEmpty(Arr As Variant) As Boolean
 ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 ' IsArrayEmpty
 ' This function tests whether the array is empty (unallocated). Returns TRUE or FALSE.
@@ -1570,6 +1601,9 @@ Public Function IsArrayEmpty(Arr As Variant) As Boolean
 '
 ' This function is really the reverse of IsArrayAllocated.
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Public Function IsArrayEmpty( _
+    arr As Variant _
+        ) As Boolean
 
     Dim LB As Long
     Dim UB As Long
@@ -1609,8 +1643,6 @@ Public Function IsArrayEmpty(Arr As Variant) As Boolean
 End Function
 
 
-Public Function IsArrayObjects(InputArray As Variant, _
-    Optional AllowNothing As Boolean = True) As Boolean
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 ' IsArrayObjects
 ' Returns True if InputArray is entirely objects (Nothing objects are
@@ -1618,6 +1650,10 @@ Public Function IsArrayObjects(InputArray As Variant, _
 ' AllowNothing to true or false to indicate whether Nothing objects
 ' are allowed.
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Public Function IsArrayObjects( _
+    InputArray As Variant, _
+    Optional AllowNothing As Boolean = True _
+        ) As Boolean
 
     Dim Ndx As Long
     
@@ -1672,7 +1708,6 @@ Public Function IsArrayObjects(InputArray As Variant, _
 End Function
 
 
-Public Function IsNumericDataType(TestVar As Variant) As Boolean
 ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 ' IsNumericDataType
 '
@@ -1718,6 +1753,9 @@ Public Function IsNumericDataType(TestVar As Variant) As Boolean
 ' IsNumeric should only be used to test strings for numeric content
 ' when converting a string value to a numeric variable.
 ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Public Function IsNumericDataType( _
+    TestVar As Variant _
+        ) As Boolean
     
     Dim Element As Variant
     Dim NumDims As Long
@@ -1762,7 +1800,6 @@ Public Function IsNumericDataType(TestVar As Variant) As Boolean
 End Function
 
 
-Public Function IsVariantArrayConsistent(Arr As Variant) As Boolean
 ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 ' IsVariantArrayConsistent
 '
@@ -1788,8 +1825,10 @@ Public Function IsVariantArrayConsistent(Arr As Variant) As Boolean
 ' return vbNullString to a String and 0 to a Double).
 '
 ' The function does not support arrays of User Defined Types.
-'
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Public Function IsVariantArrayConsistent( _
+    arr As Variant _
+        ) As Boolean
 
     Dim FirstDataType As VbVarType
     Dim Ndx As Long
@@ -1863,7 +1902,6 @@ Public Function IsVariantArrayConsistent(Arr As Variant) As Boolean
 End Function
 
 
-Public Function IsVariantArrayNumeric(TestArray As Variant) As Boolean
 ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 ' IsVariantArrayNumeric
 '
@@ -1881,6 +1919,9 @@ Public Function IsVariantArrayNumeric(TestArray As Variant) As Boolean
 ' used in the comparison (i.e., Empty is considered a valid numeric
 ' data type since you can assign a number to it).
 ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Public Function IsVariantArrayNumeric( _
+    TestArray As Variant _
+        ) As Boolean
 
     Dim Ndx As Long
     Dim DimNdx As Long
@@ -1961,8 +2002,6 @@ Public Function IsVariantArrayNumeric(TestArray As Variant) As Boolean
 End Function
 
 
-
-Public Function MoveEmptyStringsToEndOfArray(InputArray As Variant) As Boolean
 ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 ' This procedure takes the SORTED array InputArray, which, if sorted in
 ' ascending order, will have all empty strings at the front of the array.
@@ -1971,13 +2010,15 @@ Public Function MoveEmptyStringsToEndOfArray(InputArray As Variant) As Boolean
 ' Note that InputArray MUST be sorted in ascending order.
 ' Returns True if the array was correctly shifted (if necessary) and False
 ' if an error occurred.
-' This function uses the following functions, which are included as Private
-' procedures at the end of this module.
+'
+' This function uses the following functions.
 '       FirstNonEmptyStringIndexInArray
 '       NumberOfArrayDimensions
 '       IsArrayAllocated
-
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Public Function MoveEmptyStringsToEndOfArray( _
+    InputArray As Variant _
+        ) As Boolean
 
     Dim temp As String
     Dim Ndx As Long
@@ -2043,12 +2084,14 @@ Public Function MoveEmptyStringsToEndOfArray(InputArray As Variant) As Boolean
 End Function
 
 
-Public Function NumberOfArrayDimensions(Arr As Variant) As Long
 ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 ' NumberOfArrayDimensions
 ' This function returns the number of dimensions of an array. An unallocated dynamic array
 ' has 0 dimensions. This condition can also be tested with IsArrayEmpty.
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Public Function NumberOfArrayDimensions( _
+    arr As Variant _
+        ) As Long
 
     Dim Ndx As Long
     Dim Res As Long
@@ -2066,7 +2109,6 @@ Public Function NumberOfArrayDimensions(Arr As Variant) As Long
 End Function
 
 
-Public Function NumElements(Arr As Variant, Optional Dimension = 1) As Long
 ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 ' NumElements
 ' Returns the number of elements in the specified dimension (Dimension) of the array in
@@ -2079,6 +2121,10 @@ Public Function NumElements(Arr As Variant, Optional Dimension = 1) As Long
 '
 ' This function does not support arrays of user-defined Type variables.
 ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Public Function NumElements( _
+    arr As Variant, _
+    Optional Dimension As Long = 1 _
+        ) As Long
 
     Dim NumDimensions As Long
     
@@ -2113,7 +2159,6 @@ Public Function NumElements(Arr As Variant, Optional Dimension = 1) As Long
 End Function
 
 
-Public Function ResetVariantArrayToDefaults(InputArray As Variant) As Boolean
 ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 ' ResetVariantArrayToDefaults
 ' This resets all the elements of an array of Variants back to their appropriate
@@ -2125,6 +2170,9 @@ Public Function ResetVariantArrayToDefaults(InputArray As Variant) As Boolean
 ' function in that it preserves the original data types, while Erase sets every
 ' element to Empty.
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Public Function ResetVariantArrayToDefaults( _
+    InputArray As Variant _
+        ) As Boolean
 
     Dim Ndx As Long
     
@@ -2157,8 +2205,6 @@ Public Function ResetVariantArrayToDefaults(InputArray As Variant) As Boolean
 End Function
 
 
-Public Function ReverseArrayInPlace(InputArray As Variant, _
-    Optional NoAlerts As Boolean = False) As Boolean
 ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 ' ReverseArrayInPlace
 ' This procedure reverses the order of an array in place -- this is, the array variable
@@ -2166,6 +2212,10 @@ Public Function ReverseArrayInPlace(InputArray As Variant, _
 ' of simple data types (String, Single, Double, Integer, Long). It will not work
 ' on arrays of objects. Use ReverseArrayOfObjectsInPlace to reverse an array of objects.
 ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Public Function ReverseArrayInPlace( _
+    InputArray As Variant, _
+    Optional NoAlerts As Boolean = False _
+        ) As Boolean
 
     Dim temp As Variant
     Dim Ndx As Long
@@ -2236,8 +2286,6 @@ Public Function ReverseArrayInPlace(InputArray As Variant, _
 End Function
 
 
-Public Function ReverseArrayOfObjectsInPlace(InputArray As Variant, _
-    Optional NoAlerts As Boolean = False) As Boolean
 ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 ' ReverseArrayOfObjectsInPlace
 ' This procedure reverses the order of an array in place -- this is, the array variable
@@ -2245,6 +2293,10 @@ Public Function ReverseArrayOfObjectsInPlace(InputArray As Variant, _
 ' not work on simple variables. Use ReverseArrayInPlace for simple variables. An error
 ' will occur if an element of the array is not an object.
 ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Public Function ReverseArrayOfObjectsInPlace( _
+    InputArray As Variant, _
+    Optional NoAlerts As Boolean = False _
+        ) As Boolean
 
     Dim temp As Variant
     Dim Ndx As Long
@@ -2328,7 +2380,6 @@ Public Function ReverseArrayOfObjectsInPlace(InputArray As Variant, _
 End Function
 
 
-Public Function SetObjectArrayToNothing(InputArray As Variant) As Boolean
 ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 ' SetObjectArrrayToNothing
 ' This sets all the elements of InputArray to Nothing. Use this function
@@ -2338,6 +2389,9 @@ Public Function SetObjectArrayToNothing(InputArray As Variant) As Boolean
 '
 ' The function returns True if successful, False otherwise.
 ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Public Function SetObjectArrayToNothing( _
+    InputArray As Variant _
+        ) As Boolean
 
     Dim N As Long
     
@@ -2393,7 +2447,6 @@ Public Function SetObjectArrayToNothing(InputArray As Variant) As Boolean
 End Function
 
 
-Public Function AreDataTypesCompatible(DestVar As Variant, SourceVar As Variant) As Boolean
 ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 ' AreDataTypesCompatible
 ' This function determines if SourceVar is compatiable with DestVar. If the two
@@ -2404,6 +2457,10 @@ Public Function AreDataTypesCompatible(DestVar As Variant, SourceVar As Variant)
 ' is a Long and SourceVar is a Double, they are not compatible because information
 ' will be lost converting from a Double to a Long (the decimal portion will be lost).
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Public Function AreDataTypesCompatible( _
+    DestVar As Variant, _
+    SourceVar As Variant _
+        ) As Boolean
 
     Dim SVType As VbVarType
     Dim DVType As VbVarType
@@ -2599,13 +2656,15 @@ Public Function AreDataTypesCompatible(DestVar As Variant, SourceVar As Variant)
 End Function
 
 
-Public Sub SetVariableToDefault(ByRef Variable As Variant)
 ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 ' SetVariableToDefault
 ' This procedure sets Variable to the appropriate default
 ' value for its data type. Note that it cannot change User-Defined
 ' Types.
 ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Public Sub SetVariableToDefault( _
+    ByRef Variable As Variant _
+)
 
     If IsObject(Variable) Then
         '''''''''''''''''''''''''''''''''''''''
@@ -2676,7 +2735,6 @@ Public Sub SetVariableToDefault(ByRef Variable As Variant)
 End Sub
 
 
-Public Function TransposeArray(InputArr As Variant, OutputArr As Variant) As Boolean
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 ' TransposeArray
 ' This transposes a two-dimensional array. It returns True if successful or
@@ -2684,6 +2742,10 @@ Public Function TransposeArray(InputArr As Variant, OutputArr As Variant) As Boo
 ' a dynamic array. It will be Erased and resized, so any existing content will
 ' be destroyed.
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Public Function TransposeArray( _
+    InputArr As Variant, _
+    OutputArr As Variant _
+        ) As Boolean
 
     Dim RowNdx As Long
     Dim ColNdx As Long
@@ -2755,7 +2817,6 @@ Public Function TransposeArray(InputArr As Variant, OutputArr As Variant) As Boo
 End Function
 
 
-Public Function VectorsToArray(Arr As Variant, ParamArray Vectors()) As Boolean
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 ' VectorsToArray
 ' This function takes 1 or more single-dimensional arrays and converts
@@ -2782,6 +2843,10 @@ Public Function VectorsToArray(Arr As Variant, ParamArray Vectors()) As Boolean
 ' The rows and columns of the result array are 0-based, regardless of
 ' the LBound of each vector and regardless of the Option Base statement.
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Public Function VectorsToArray( _
+    arr As Variant, _
+    ParamArray Vectors() _
+        ) As Boolean
 
     Dim Vector As Variant
     Dim VectorNdx As Long
@@ -2918,8 +2983,6 @@ Public Function VectorsToArray(Arr As Variant, ParamArray Vectors()) As Boolean
 End Function
 
 
-Public Function ChangeBoundsOfArray(InputArr As Variant, _
-    NewLowerBound As Long, NewUpperBound) As Boolean
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 ' ChangeBoundsOfArray
 ' This function changes the upper and lower bounds of the specified
@@ -2929,11 +2992,16 @@ Public Function ChangeBoundsOfArray(InputArr As Variant, _
 ' right side of the array are the default values for the data type
 ' of the array. If the new size is less than the original size,
 ' only the first (left-most) N elements are included in the new array.
-' The elements of the array may be simple variables (Strings, Longs, etc)
+' The elements of the array may be simple variables (Strings, Longs, etc.),
 ' Object, or Arrays. User-Defined Types are not supported.
 '
 ' The function returns True if successful, False otherwise.
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Public Function ChangeBoundsOfArray( _
+    ByRef InputArr As Variant, _
+    ByVal NewLowerBound As Long, _
+    ByVal NewUpperBound As Long _
+        ) As Boolean
 
     Dim TempArr() As Variant
     Dim InNdx As Long
@@ -3051,8 +3119,6 @@ Public Function ChangeBoundsOfArray(InputArr As Variant, _
 End Function
 
 
-Public Function IsArraySorted(TestArray As Variant, _
-    Optional Descending As Boolean = False) As Variant
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 ' IsArraySorted
 ' This function determines whether a single-dimensional array is sorted. Because
@@ -3068,6 +3134,10 @@ Public Function IsArraySorted(TestArray As Variant, _
 ' one dimension, or the VarType of TestArray is not compatible, the function
 ' returns NULL.
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Public Function IsArraySorted( _
+    TestArray As Variant, _
+    Optional Descending As Boolean = False _
+        ) As Variant
 
     Dim StrCompResultFail As Long
     Dim NumericResultFail As Boolean
@@ -3163,8 +3233,6 @@ Public Function IsArraySorted(TestArray As Variant, _
 End Function
 
 
-Public Function CombineTwoDArrays(Arr1 As Variant, _
-    Arr2 As Variant) As Variant
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 ' TwoArraysToOneArray
 ' This takes two 2-dimensional arrays, Arr1 and Arr2, and
@@ -3190,8 +3258,11 @@ Public Function CombineTwoDArrays(Arr1 As Variant, _
 '    c    d
 '    e    f
 '    g    h
-'
 ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Public Function CombineTwoDArrays( _
+    Arr1 As Variant, _
+    Arr2 As Variant _
+        ) As Variant
 
     '''''''''''''''''''''''''''''''''
     ' Upper and lower bounds of Arr1.
@@ -3374,8 +3445,6 @@ Public Function CombineTwoDArrays(Arr1 As Variant, _
 End Function
 
 
-Function ExpandArray(Arr As Variant, WhichDim As Long, AdditionalElements As Long, _
-    FillValue As Variant) As Variant
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 ' ExpandArray
 ' This expands a two-dimensional array in either dimension. It returns the result
@@ -3397,12 +3466,26 @@ Function ExpandArray(Arr As Variant, WhichDim As Long, AdditionalElements As Lon
 ' You can nest calls to Expand array to expand both the number of rows and
 ' columns. E.g.,
 '
-' C = ExpandArray(ExpandArray(Arr:=A, WhichDim:=1, AdditionalElements:=3, FillValue:="R"), _
-'    WhichDim:=2, AdditionalElements:=4, FillValue:="C")
+' C = ExpandArray( _
+'         ExpandArray( _
+'            Arr:=A, _
+'            WhichDim:=1, _
+'            AdditionalElements:=3, _
+'            FillValue:="R") _
+'         , _
+'         WhichDim:=2, _
+'         AdditionalElements:=4, _
+'         FillValue:="C")
+'
 ' This first adds three rows at the bottom of the array, and then adds four
 ' columns on the right of the array.
-'
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Public Function ExpandArray( _
+    arr As Variant, _
+    WhichDim As Long, _
+    AdditionalElements As Long, _
+    FillValue As Variant _
+        ) As Variant
 
     Dim Result As Variant
     Dim RowNdx As Long
@@ -3512,12 +3595,16 @@ Function ExpandArray(Arr As Variant, WhichDim As Long, AdditionalElements As Lon
 End Function
 
 
-Function SwapArrayRows(Arr As Variant, Row1 As Long, Row2 As Long) As Variant
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 ' SwapArrayRows
 ' This function returns an array based on Arr with Row1 and Row2 swapped.
 ' It returns the result array or NULL if an error occurred.
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Public Function SwapArrayRows( _
+    arr As Variant, _
+    Row1 As Long, _
+    Row2 As Long _
+        ) As Variant
 
     Dim V As Variant
     Dim Result As Variant
@@ -3582,12 +3669,16 @@ Function SwapArrayRows(Arr As Variant, Row1 As Long, Row2 As Long) As Variant
 End Function
 
 
-Function SwapArrayColumns(Arr As Variant, Col1 As Long, Col2 As Long) As Variant
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 ' SwapArrayColumns
 ' This function returns an array based on Arr with Col1 and Col2 swapped.
 ' It returns the result array or NULL if an error occurred.
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Public Function SwapArrayColumns( _
+    arr As Variant, _
+    Col1 As Long, _
+    Col2 As Long _
+        ) As Variant
 
     Dim V As Variant
     Dim Result As Variant
@@ -3652,7 +3743,6 @@ Function SwapArrayColumns(Arr As Variant, Col1 As Long, Col2 As Long) As Variant
 End Function
 
 
-Function GetColumn(Arr As Variant, ResultArr As Variant, ColumnNumber As Long) As Boolean
 ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 ' GetColumn
 ' This populates ResultArr with a one-dimensional array that is the
@@ -3660,6 +3750,11 @@ Function GetColumn(Arr As Variant, ResultArr As Variant, ColumnNumber As Long) A
 ' destroyed. ResultArr must be a dynamic array.
 ' Returns True or False indicating success.
 ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Public Function GetColumn( _
+    arr As Variant, _
+    ResultArr As Variant, _
+    ColumnNumber As Long _
+        ) As Boolean
 
     Dim RowNdx As Long
     ''''''''''''''''''''''''''''''
@@ -3712,7 +3807,6 @@ Function GetColumn(Arr As Variant, ResultArr As Variant, ColumnNumber As Long) A
 End Function
 
 
-Function GetRow(Arr As Variant, ResultArr As Variant, RowNumber As Long) As Boolean
 ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 ' GetRow
 ' This populates ResultArr with a one-dimensional array that is the
@@ -3720,6 +3814,11 @@ Function GetRow(Arr As Variant, ResultArr As Variant, RowNumber As Long) As Bool
 ' destroyed. ResultArr must be a dynamic array.
 ' Returns True or False indicating success.
 ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Public Function GetRow( _
+    arr As Variant, _
+    ResultArr As Variant, _
+    RowNumber As Long _
+        ) As Boolean
 
     Dim ColNdx As Long
     ''''''''''''''''''''''''''''''
