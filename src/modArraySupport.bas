@@ -595,7 +595,7 @@ Public Function CopyNonNothingObjectsToArray( _
         Exit Function
     End If
     'Ensure SourceArray is a single dimensional array
-    Select Case NumberOfArrayDimensions(Arr:=SourceArray)
+    Select Case NumberOfArrayDimensions(SourceArray)
         Case 0
             'Unallocated dynamic array. Not Allowed.
             If NoAlerts = False Then
@@ -626,7 +626,7 @@ Public Function CopyNonNothingObjectsToArray( _
         Exit Function
     End If
     'Ensure ResultArray is a single dimensional array
-    Select Case NumberOfArrayDimensions(Arr:=ResultArray)
+    Select Case NumberOfArrayDimensions(ResultArray)
         Case 0
             'Unallocated dynamic array. This is OK.
         Case 1
@@ -1236,7 +1236,7 @@ Public Function IsArrayObjects( _
     If Not IsArray(InputArray) Then Exit Function
     
     'Ensure we have a single dimensional array
-    Select Case NumberOfArrayDimensions(Arr:=InputArray)
+    Select Case NumberOfArrayDimensions(InputArray)
         Case 0
             'Unallocated dynamic array. Not allowed.
             Exit Function
@@ -1542,7 +1542,7 @@ Public Function MoveEmptyStringsToEndOfArray( _
     If Not IsArrayAllocated(InputArray) Then Exit Function
     
     
-    FirstNonEmptyNdx = FirstNonEmptyStringIndexInArray(InputArray:=InputArray)
+    FirstNonEmptyNdx = FirstNonEmptyStringIndexInArray(InputArray)
     If FirstNonEmptyNdx <= LBound(InputArray) Then
         'No empty strings at the beginning of the array. Get out now.
         MoveEmptyStringsToEndOfArray = True
