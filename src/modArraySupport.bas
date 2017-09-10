@@ -190,6 +190,7 @@ Public Function CompareArrays( _
     Loop
     
     CompareArrays = True
+    
 End Function
 
 
@@ -932,7 +933,6 @@ Public Function InsertElementIntoArray( _
     'Insert Value at Index
     InputArray(Index) = Value
     
-    
     InsertElementIntoArray = True
 
 End Function
@@ -1355,6 +1355,7 @@ Public Function IsNumericDataType( _
             End Select
         End If
     End If
+    
     Select Case VarType(TestVar)
         Case vbCurrency, vbDecimal, vbDouble, vbInteger, vbLong, vbSingle
             IsNumericDataType = True
@@ -1592,6 +1593,8 @@ Public Function NumberOfArrayDimensions( _
 
     Dim Ndx As Long
     Dim Res As Long
+    
+    
     On Error Resume Next
     'Loop, increasing the dimension index Ndx, until an error occurs.
     'An error will occur when Ndx exceeds the number of dimension in the array.
@@ -1851,7 +1854,6 @@ Public Function SetObjectArrayToNothing( _
         SetObjectArrayToNothing = True
         Exit Function
     End If
-    
     
     'Set each element of InputArray to Nothing
     For N = LBound(InputArray) To UBound(InputArray)
@@ -2653,8 +2655,9 @@ Public Function ExpandArray( _
     Dim NumCols As Long
     Dim NewUBound As Long
     
+    '==========================================================================
     Const ROWS_ As Long = 1
-    Const COLS_ As Long = 2
+    '==========================================================================
     
     
     'Set the default return value
