@@ -785,7 +785,7 @@ Public Function DeleteArrayElement( _
     Dim VType As VbVarType
     
     
-    'Set the default result
+    'Set the default return value
     DeleteArrayElement = False
     
     If Not IsArray(InputArray) Then Exit Function
@@ -994,7 +994,7 @@ End Function
 
 ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 'IsArrayAllNumeric
-'This function returns True is Arr is entirely numeric. False otherwise. The AllowNumericStrings
+'This function returns True if Arr is entirely numeric. False otherwise. The AllowNumericStrings
 'parameter indicates whether strings containing numeric data are considered numeric. If this
 'parameter is True, a numeric string is considered a numeric variable. If this parameter is
 'omitted or False, a numeric string is not considered a numeric variable.
@@ -1443,7 +1443,7 @@ End Function
 ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 'IsVariantArrayNumeric
 '
-'This function return TRUE if all the elements of an array of
+'This function returns TRUE if all the elements of an array of
 'variants are numeric data types. They need not all be the same data
 'type. You can have a mix of Integer, Longs, Doubles, and Singles.
 'As long as they are all numeric data types, the function will
@@ -1882,7 +1882,7 @@ Public Function AreDataTypesCompatible( _
     Dim DVType As VbVarType
     
     
-    'Set the default return type
+    'Set the default return value
     AreDataTypesCompatible = False
     
     'If DestVar is an array, get the type of array. If it is an array its
