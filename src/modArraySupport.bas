@@ -1001,6 +1001,11 @@ End Function
 'Variants that are numeric or Empty are allowed. Variants that are arrays, objects, or
 'non-numeric data are not allowed.
 ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'2do:
+'- This function only tests a vector
+'  --> so a better name would be 'IsVectorAllNumeric'
+'- There is no test for the 1-dimensionality
+'- What is the benefit of this function over 'IsVariantArrayNumeric'?
 Public Function IsArrayAllNumeric( _
     Arr As Variant, _
     Optional AllowNumericStrings As Boolean = False _
@@ -1401,10 +1406,10 @@ Public Function IsVariantArrayConsistent( _
     If Not IsArrayAllocated(Arr) Then Exit Function
     
     'Exit with false on multi-dimensional arrays
-    If NumberOfArrayDimensions(Arr) <> 1 Then
-        IsVariantArrayConsistent = False
-        Exit Function
-    End If
+'---
+'2do: can this be changed if still true?
+'---
+    If NumberOfArrayDimensions(Arr) <> 1 Then Exit Function
     
     'Test if we have an array of a specific type rather than Variants. If so,
     'return TRUE and get out.
@@ -1452,6 +1457,9 @@ End Function
 'used in the comparison (i.e., Empty is considered a valid numeric
 'data type since you can assign a number to it).
 ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'2do:
+'- add "Optional AllowNumericStrings As Boolean = False" from
+'  'IsArrayAllNumeric'?
 Public Function IsVariantArrayNumeric( _
     TestArray As Variant _
         ) As Boolean
@@ -1900,7 +1908,11 @@ Public Function AreDataTypesCompatible( _
         Exit Function
     End If
     
-    
+'---
+'2do:
+'- there is no loop, so can't all "Exit Function"s be safely removed, because
+'  the function would be exited anyway after the corresponding line?
+'---
     '''Test the data type of DestVar and return a result if SourceVar is
     '''compatible with that type.
     'The the variable types are the same, they are compatible
@@ -2269,6 +2281,10 @@ End Function
 '
 'The function returns True if successful, False otherwise.
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'2do: make 'NewUpperBound' optional and use size of 'InputArr' to calculate
+'     'NewUpperBound' if not given
+'2do: better name would be 'ChangeBoundsOfVector', because 'InputArr' has to be
+'     a single dimensional array
 Public Function ChangeBoundsOfArray( _
     ByRef InputArr As Variant, _
     ByVal NewLowerBound As Long, _
