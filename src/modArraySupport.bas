@@ -300,7 +300,7 @@ Public Function ConcatenateArrays( _
             If AppendNdx > UBound(ArrayToAppend) Then
                 Exit For
             End If
-        Next Ndx
+        Next
     'If ResultArray was not allocated, we simply copy element by element from
     'ArrayToAppend to ResultArray.
     Else
@@ -310,8 +310,7 @@ Public Function ConcatenateArrays( _
             Else
                 ResultArray(Ndx) = ArrayToAppend(Ndx)
             End If
-        Next Ndx
-    
+        Next
     End If
     
     ConcatenateArrays = True
@@ -417,7 +416,7 @@ Public Function CopyArray( _
                 If DNdx > UBound(DestinationArray) Then
                     Exit For
                 End If
-            Next SNdx
+            Next
             On Error GoTo 0
         'If SourceArray is not allocated, so we have nothing to copy.
         'Exit with a result of True. Leave DestinationArray intact.
@@ -438,7 +437,7 @@ Public Function CopyArray( _
                 Else
                     DestinationArray(SNdx) = SourceArray(SNdx)
                 End If
-            Next SNdx
+            Next
             On Error GoTo 0
         'If both SourceArray and DestinationArray are unallocated, we have
         'nothing to copy (this condition is actually detected above, but
@@ -546,7 +545,7 @@ Public Function CopyArraySubSetToArray( _
             On Error GoTo 0
         End If
         DestNdx = DestNdx + 1
-    Next SrcNdx
+    Next
     
     CopyArraySubSetToArray = True
 
@@ -648,7 +647,7 @@ Public Function CopyNonNothingObjectsToArray( _
             End If
             Exit Function
         End If
-    Next InNdx
+    Next
     
     'Erase the ResultArray. Since ResultArray is dynamic, this will relase the
     'memory used by ResultArray and return the array to an unallocated state.
@@ -664,7 +663,7 @@ Public Function CopyNonNothingObjectsToArray( _
             Set ResultArray(ResNdx) = SourceArray(InNdx)
             ResNdx = ResNdx + 1
         End If
-    Next InNdx
+    Next
     'Now that we've copied all the non-Nothing elements from SourceArray to
     'ResultArray, we call Redim Preserve to resize the ResultArray to the size
     'actually used. Test ResNdx to see if we actually copied any elements.
@@ -804,7 +803,7 @@ Public Function DeleteArrayElement( _
     'Shift everything to the left
     For Ndx = ElementNumber To UBound(InputArray) - 1
         InputArray(Ndx) = InputArray(Ndx + 1)
-    Next Ndx
+    Next
     'If ResizeDynamic is True, resize the array if it is dynamic
     If IsArrayDynamic(InputArray) Then
         If ResizeDynamic = True Then
@@ -869,7 +868,7 @@ Public Function FirstNonEmptyStringIndexInArray( _
             FirstNonEmptyStringIndexInArray = Ndx
             Exit Function
         End If
-    Next Ndx
+    Next
     
     FirstNonEmptyStringIndexInArray = -1
 
@@ -928,7 +927,7 @@ Public Function InsertElementIntoArray( _
     'Shift everything to the right
     For Ndx = UBound(InputArray) To Index + 1 Step -1
         InputArray(Ndx) = InputArray(Ndx - 1)
-    Next Ndx
+    Next
     
     'Insert Value at Index
     InputArray(Index) = Value
@@ -1048,7 +1047,7 @@ Public Function IsArrayAllNumeric( _
                 'any other data type returns False
                 Exit Function
         End Select
-    Next Ndx
+    Next
     
     IsArrayAllNumeric = True
 
@@ -1489,7 +1488,7 @@ Public Function IsVariantArrayNumeric( _
                         Exit Function
                     End If
                 End If
-            Next Ndx
+            Next
         Case 2
             For DimNdx = LBound(TestArray, 2) To UBound(TestArray, 2)
                 For Ndx = LBound(TestArray, DimNdx) To UBound(TestArray, DimNdx)
@@ -1498,8 +1497,8 @@ Public Function IsVariantArrayNumeric( _
                             Exit Function
                         End If
                     End If
-                Next Ndx
-            Next DimNdx
+                Next
+            Next
         Case Else
             'currently there is no handler for "higher"-dimensional arrays
             Exit Function
@@ -1563,11 +1562,11 @@ Public Function MoveEmptyStringsToEndOfArray( _
                 Exit For
             End If
         End If
-    Next Ndx
+    Next
     'Set entires (Ndx+1) to UBound(InputArray) to vbNullStrings
     For Ndx2 = Ndx + 1 To UBound(InputArray)
         InputArray(Ndx2) = vbNullString
-    Next Ndx2
+    Next
     
     MoveEmptyStringsToEndOfArray = True
 
@@ -1663,7 +1662,7 @@ Public Function ResetVariantArrayToDefaults( _
     
     For Ndx = LBound(InputArray) To UBound(InputArray)
         SetVariableToDefault InputArray(Ndx)
-    Next Ndx
+    Next
     
     ResetVariantArrayToDefaults = True
 
@@ -1728,7 +1727,7 @@ Public Function ReverseArrayInPlace( _
         InputArray(Ndx2) = Temp
         'decrement the upper index
         Ndx2 = Ndx2 - 1
-    Next Ndx
+    Next
     
     ReverseArrayInPlace = True
 
@@ -1793,7 +1792,7 @@ Public Function ReverseArrayOfObjectsInPlace( _
             End If
             Exit Function
         End If
-    Next Ndx
+    Next
     
     'loop from the LBound of InputArray to the midpoint of InputArray
     For Ndx = LBound(InputArray) To ((UBound(InputArray) - LBound(InputArray) + 1) \ 2)
@@ -1802,7 +1801,7 @@ Public Function ReverseArrayOfObjectsInPlace( _
         Set InputArray(Ndx2) = Temp
         'decrement the upper index
         Ndx2 = Ndx2 - 1
-    Next Ndx
+    Next
     
     ReverseArrayOfObjectsInPlace = True
 
@@ -1849,7 +1848,7 @@ Public Function SetObjectArrayToNothing( _
     'Set each element of InputArray to Nothing
     For N = LBound(InputArray) To UBound(InputArray)
         Set InputArray(N) = Nothing
-    Next N
+    Next
     
     SetObjectArrayToNothing = True
 
@@ -2137,8 +2136,8 @@ Public Function TransposeArray( _
     For RowNdx = LBound(InputArr, 2) To UBound(InputArr, 2)
         For ColNdx = LBound(InputArr, 1) To UBound(InputArr, 1)
             OutputArr(RowNdx, ColNdx) = InputArr(ColNdx, RowNdx)
-        Next ColNdx
-    Next RowNdx
+        Next
+    Next
     
     TransposeArray = True
 
@@ -2216,7 +2215,7 @@ Public Function VectorsToArray( _
         If NumCols < UBound(Vector) - LBound(Vector) + 1 Then
             NumCols = UBound(Vector) - LBound(Vector) + 1
         End If
-    Next Vector
+    Next
     'Redim Arr to the appropriate size. Arr is 0-based in both directions,
     'regardless of the LBound of the original Arr and regardless of the
     'LBounds of the Vectors.
@@ -2248,8 +2247,8 @@ Public Function VectorsToArray( _
                 'this error.
                 Arr(RowNdx, ColNdx) = Vector(LBound(Vector) + ColNdx)
             End If
-        Next ColNdx
-    Next RowNdx
+        Next
+    Next
     
     VectorsToArray = True
 
@@ -2319,7 +2318,7 @@ Public Function ChangeBoundsOfArray( _
         Else
             TempArr(TempNdx) = InputArr(InNdx)
         End If
-    Next InNdx
+    Next
     
     'Now, Erase InputArr, resize it to the new bounds, and load up the values
     'from TempArr to the new InputArr
@@ -2345,7 +2344,7 @@ Public Function ChangeBoundsOfArray( _
             Exit For
         End If
         OutNdx = OutNdx + 1
-    Next TempNdx
+    Next
     
     ChangeBoundsOfArray = True
 
@@ -2565,8 +2564,8 @@ Public Function CombineTwoDArrays( _
             For ColNdx1 = LBound(Arr1, 2) To UBound(Arr1, 2)
                 V = Arr1(RowNdx1, ColNdx1)
                 Result(RowNdxResult, ColNdx1) = V
-            Next ColNdx1
-        Next RowNdx1
+            Next
+        Next
 
         'Copy elements of Arr2 to Result
         For RowNdx2 = LBound(Arr2, 1) To UBound(Arr2, 1)
@@ -2574,8 +2573,8 @@ Public Function CombineTwoDArrays( _
             For ColNdx2 = LBound(Arr2, 2) To UBound(Arr2, 2)
                 V = Arr2(RowNdx2, ColNdx2)
                 Result(RowNdxResult, ColNdx2) = V
-            Next ColNdx2
-        Next RowNdx2
+            Next
+        Next
         
         If RowNdxResult >= UBound(Result, 1) + (LBoundColResult = 1) Then
             Done = True
@@ -2674,14 +2673,14 @@ Public Function ExpandArray( _
         For RowNdx = LBound(Arr, 1) To UBound(Arr, 1)
             For ColNdx = LBound(Arr, 2) To UBound(Arr, 2)
                 Result(RowNdx, ColNdx) = Arr(RowNdx, ColNdx)
-            Next ColNdx
-        Next RowNdx
+            Next
+        Next
         'Fill the rest of the result array with FillValue
         For RowNdx = UBound(Arr, 1) + 1 To UBound(Result, 1)
             For ColNdx = LBound(Arr, 2) To UBound(Arr, 2)
                 Result(RowNdx, ColNdx) = FillValue
-            Next ColNdx
-        Next RowNdx
+            Next
+        Next
     Else
         'Redim Result
         ReDim Result(LBound(Arr, 1) To UBound(Arr, 1), UBound(Arr, 2) + AdditionalElements)
@@ -2689,15 +2688,14 @@ Public Function ExpandArray( _
         For RowNdx = LBound(Arr, 1) To UBound(Arr, 1)
             For ColNdx = LBound(Arr, 2) To UBound(Arr, 2)
                 Result(RowNdx, ColNdx) = Arr(RowNdx, ColNdx)
-            Next ColNdx
-        Next RowNdx
+            Next
+        Next
         'Fill the rest of the result array with FillValue
         For RowNdx = LBound(Arr, 1) To UBound(Arr, 1)
             For ColNdx = UBound(Arr, 2) + 1 To UBound(Result, 2)
                 Result(RowNdx, ColNdx) = FillValue
-            Next ColNdx
-        Next RowNdx
-        
+            Next
+        Next
     End If
     
     ExpandArray = Result
@@ -2748,7 +2746,7 @@ Public Function SwapArrayRows( _
         V(ColNdx) = Arr(Row1, ColNdx)
         Result(Row1, ColNdx) = Arr(Row2, ColNdx)
         Result(Row2, ColNdx) = V(ColNdx)
-    Next ColNdx
+    Next
     
     SwapArrayRows = Result
 
@@ -2798,7 +2796,7 @@ Public Function SwapArrayColumns( _
         V(RowNdx) = Arr(RowNdx, Col1)
         Result(RowNdx, Col1) = Arr(RowNdx, Col2)
         Result(RowNdx, Col2) = V(RowNdx)
-    Next RowNdx
+    Next
     
     SwapArrayColumns = Result
 
@@ -2836,7 +2834,7 @@ Public Function GetColumn( _
     ReDim ResultArr(LBound(Arr, 1) To UBound(Arr, 1))
     For RowNdx = LBound(ResultArr) To UBound(ResultArr)
         ResultArr(RowNdx) = Arr(RowNdx, ColumnNumber)
-    Next RowNdx
+    Next
     
     GetColumn = True
 
@@ -2874,7 +2872,7 @@ Public Function GetRow( _
     ReDim ResultArr(LBound(Arr, 2) To UBound(Arr, 2))
     For ColNdx = LBound(ResultArr) To UBound(ResultArr)
         ResultArr(ColNdx) = Arr(RowNumber, ColNdx)
-    Next ColNdx
+    Next
     
     GetRow = True
 
