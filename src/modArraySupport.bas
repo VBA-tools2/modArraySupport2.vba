@@ -2896,3 +2896,27 @@ Public Function GetRow( _
     GetRow = True
 
 End Function
+
+'------------------------------------------------------------------------------
+
+'2do:
+'- add to upper list
+'- add some parameter checking
+'- add unit tests
+Public Function VectorTo1DArray( _
+    ByVal InputVector As Variant, _
+    Optional ByVal LowerBoundOfSecondDimension As Long = 0 _
+        ) As Variant
+    
+    Dim ResultArray() As Variant
+    Dim i As Long
+    
+    
+    ReDim ResultArray(LBound(InputVector) To UBound(InputVector), LowerBoundOfSecondDimension To LowerBoundOfSecondDimension)
+    For i = LBound(InputVector) To UBound(InputVector)
+        ResultArray(i, LowerBoundOfSecondDimension) = InputVector(i)
+    Next
+    
+    VectorTo1DArray = ResultArray
+    
+End Function
