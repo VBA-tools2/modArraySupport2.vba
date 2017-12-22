@@ -785,6 +785,9 @@ Public Function DeleteArrayElement( _
     Dim Ndx As Long
     Dim VType As VbVarType
     
+    Dim LongLongType As Byte
+    LongLongType = DeclareLongLong
+    
     
     'Set the default return value
     DeleteArrayElement = False
@@ -816,7 +819,7 @@ Public Function DeleteArrayElement( _
     End If
     'Set the last element of the InputArray to the proper default value
     Select Case VType
-        Case vbByte, vbInteger, vbLong, vbSingle, vbDouble, vbDate, vbCurrency, vbDecimal
+        Case vbByte, vbInteger, vbLong, LongLongType, vbSingle, vbDouble, vbDate, vbCurrency, vbDecimal
             InputArray(UBound(InputArray)) = 0
         Case vbString
             InputArray(UBound(InputArray)) = vbNullString
@@ -1013,6 +1016,9 @@ Public Function IsArrayAllNumeric( _
 
     Dim Ndx As Long
     
+    Dim LongLongType As Byte
+    LongLongType = DeclareLongLong
+    
     
     'Set the default return value
     IsArrayAllNumeric = False
@@ -1027,7 +1033,7 @@ Public Function IsArrayAllNumeric( _
     'Loop through the array
     For Ndx = LBound(Arr) To UBound(Arr)
         Select Case VarType(Arr(Ndx))
-            Case vbInteger, vbLong, vbDouble, vbSingle, vbCurrency, vbDecimal, vbEmpty
+            Case vbInteger, vbLong, LongLongType, vbDouble, vbSingle, vbCurrency, vbDecimal, vbEmpty
                 'all valid numeric types
             Case vbString
                 'For strings, check the AllowNumericStrings parameter.
@@ -1274,7 +1280,7 @@ End Function
 '    vbDecimal
 '    vbDouble
 '    vbInteger
-'    vbLong
+'    vbLong, LongLongType
 '    vbSingle
 '
 'It will return FALSE for any other data type, including empty Variants and objects.
@@ -1316,6 +1322,9 @@ Public Function IsNumericDataType( _
     Dim Element As Variant
     Dim NumDims As Long
     
+    Dim LongLongType As Byte
+    LongLongType = DeclareLongLong
+    
     
     'Set the default return value
     IsNumericDataType = False
@@ -1339,7 +1348,7 @@ Public Function IsNumericDataType( _
 '---
             Element = TestVar(LBound(TestVar))
             Select Case VarType(Element)
-                Case vbCurrency, vbDecimal, vbDouble, vbInteger, vbLong, vbSingle
+                Case vbCurrency, vbDecimal, vbDouble, vbInteger, vbLong, LongLongType, vbSingle
                     IsNumericDataType = True
                     Exit Function
                 Case Else
@@ -1347,7 +1356,7 @@ Public Function IsNumericDataType( _
             End Select
         Else
             Select Case VarType(TestVar) - vbArray
-                Case vbCurrency, vbDecimal, vbDouble, vbInteger, vbLong, vbSingle
+                Case vbCurrency, vbDecimal, vbDouble, vbInteger, vbLong, LongLongType, vbSingle
                     IsNumericDataType = True
                     Exit Function
                 Case Else
@@ -1357,7 +1366,7 @@ Public Function IsNumericDataType( _
     End If
     
     Select Case VarType(TestVar)
-        Case vbCurrency, vbDecimal, vbDouble, vbInteger, vbLong, vbSingle
+        Case vbCurrency, vbDecimal, vbDouble, vbInteger, vbLong, LongLongType, vbSingle
             IsNumericDataType = True
         Case Else
             IsNumericDataType = False
@@ -1883,6 +1892,9 @@ Public Function AreDataTypesCompatible( _
     Dim SVType As VbVarType
     Dim DVType As VbVarType
     
+    Dim LongLongType As Byte
+    LongLongType = DeclareLongLong
+    
     
     'Set the default return value
     AreDataTypesCompatible = False
@@ -1932,9 +1944,9 @@ Public Function AreDataTypesCompatible( _
                     Case Else
                         Exit Function
                 End Select
-            Case vbLong
+            Case vbLong, LongLongType
                 Select Case SVType
-                    Case vbInteger, vbLong
+                    Case vbInteger, vbLong, LongLongType
                         AreDataTypesCompatible = True
                         Exit Function
                     Case Else
@@ -1942,7 +1954,7 @@ Public Function AreDataTypesCompatible( _
                 End Select
             Case vbSingle
                 Select Case SVType
-                    Case vbInteger, vbLong, vbSingle
+                    Case vbInteger, vbLong, LongLongType, vbSingle
                         AreDataTypesCompatible = True
                         Exit Function
                     Case Else
@@ -1950,7 +1962,7 @@ Public Function AreDataTypesCompatible( _
                 End Select
             Case vbDouble
                 Select Case SVType
-                    Case vbInteger, vbLong, vbSingle, vbDouble
+                    Case vbInteger, vbLong, LongLongType, vbSingle, vbDouble
                         AreDataTypesCompatible = True
                         Exit Function
                     Case Else
@@ -1990,7 +2002,7 @@ Public Function AreDataTypesCompatible( _
                 End Select
             Case vbCurrency
                 Select Case SVType
-                    Case vbInteger, vbLong, vbSingle, vbDouble
+                    Case vbInteger, vbLong, LongLongType, vbSingle, vbDouble
                         AreDataTypesCompatible = True
                         Exit Function
                     Case Else
@@ -1998,7 +2010,7 @@ Public Function AreDataTypesCompatible( _
                 End Select
             Case vbDecimal
                 Select Case SVType
-                    Case vbInteger, vbLong, vbSingle, vbDouble
+                    Case vbInteger, vbLong, LongLongType, vbSingle, vbDouble
                         AreDataTypesCompatible = True
                         Exit Function
                     Case Else
@@ -2006,7 +2018,7 @@ Public Function AreDataTypesCompatible( _
                 End Select
             Case vbDate
                 Select Case SVType
-                    Case vbLong, vbSingle, vbDouble
+                    Case vbLong, LongLongType, vbSingle, vbDouble
                         AreDataTypesCompatible = True
                         Exit Function
                     Case Else
@@ -2052,6 +2064,10 @@ Public Sub SetVariableToDefault( _
     ByRef Variable As Variant _
 )
 
+    Dim LongLongType As Byte
+    LongLongType = DeclareLongLong
+    
+    
     'We test with IsObject here so that the object itself, not the default
     'property of the object, is evaluated.
     If IsObject(Variable) Then
@@ -2082,8 +2098,8 @@ Public Sub SetVariableToDefault( _
                 Variable = Empty
             Case vbInteger
                 Variable = CInt(0)
-            Case vbLong
-                Variable = CLng(0)
+            Case vbLong, LongLongType
+                Variable = CLngPtr(0)
             Case vbNull
                 Variable = Empty
             Case vbObject
