@@ -103,7 +103,6 @@ Public Function CompareArrays( _
     Dim D2 As Double
     Dim Done As Boolean
     Dim Compare As VbCompareMethod
-    Dim LB As Long
     
     
     'Set the default return value
@@ -218,12 +217,9 @@ Public Function ConcatenateArrays( _
     Optional NoCompatabilityCheck As Boolean = False _
         ) As Boolean
 
-    Dim VTypeResult As VbVarType
     Dim Ndx As Long
-    Dim Res As Long
     Dim NumElementsToAdd As Long
     Dim AppendNdx As Long
-    Dim VTypeAppend As VbVarType
     Dim ResultLB As Long
     Dim ResultUB As Long
     Dim ResultWasAllocated As Boolean
@@ -358,8 +354,6 @@ Public Function CopyArray( _
     Optional NoCompatabilityCheck As Boolean = False _
         ) As Boolean
 
-    Dim VTypeSource As VbVarType
-    Dim VTypeDest As VbVarType
     Dim SNdx As Long
     Dim DNdx As Long
     
@@ -1546,7 +1540,6 @@ Public Function MoveEmptyStringsToEndOfArray( _
     InputArray As Variant _
         ) As Boolean
 
-    Dim Temp As String
     Dim Ndx As Long
     Dim Ndx2 As Long
     Dim NonEmptyNdx As Long
@@ -2206,8 +2199,6 @@ Public Function VectorsToArray( _
         ) As Boolean
 
     Dim Vector As Variant
-    Dim VectorNdx As Long
-    Dim NumElements As Long
     Dim NumRows As Long
     Dim NumCols As Long
     Dim RowNdx As Long
@@ -2507,7 +2498,6 @@ Public Function CombineTwoDArrays( _
     Dim UBoundCol2 As Long
     
     'Upper and lower bounds of Result
-    Dim LBoundRowResult As Long
     Dim UBoundRowResult As Long
     Dim LBoundColResult As Long
     Dim UBoundColResult As Long
@@ -2518,7 +2508,6 @@ Public Function CombineTwoDArrays( _
     Dim RowNdx2 As Long
     Dim ColNdx2 As Long
     Dim RowNdxResult As Long
-    Dim ColNdxResult As Long
     
     'Array Sizes
     Dim NumRows1 As Long
@@ -2527,12 +2516,8 @@ Public Function CombineTwoDArrays( _
     Dim NumRows2 As Long
     Dim NumCols2 As Long
     
-    Dim NumRowsResult As Long
-    Dim NumColsResult As Long
-    
     Dim Done As Boolean
     Dim Result() As Variant
-    Dim ResultTrans() As Variant
     
     Dim V As Variant
     
@@ -2569,8 +2554,6 @@ Public Function CombineTwoDArrays( _
     'Ensure the number of columns are equal
     If NumCols1 <> NumCols2 Then Exit Function
     
-    NumRowsResult = NumRows1 + NumRows2
-    
     'Ensure that ALL the LBounds are equal
     If (LBoundRow1 <> LBoundRow2) Or _
             (LBoundRow1 <> LBoundCol1) Or _
@@ -2600,7 +2583,7 @@ Public Function CombineTwoDArrays( _
                 Result(RowNdxResult, ColNdx1) = V
             Next
         Next
-
+        
         'Copy elements of Arr2 to Result
         For RowNdx2 = LBound(Arr2, 1) To UBound(Arr2, 1)
             RowNdxResult = RowNdxResult + 1
@@ -2665,11 +2648,6 @@ Public Function ExpandArray( _
     Dim Result As Variant
     Dim RowNdx As Long
     Dim ColNdx As Long
-    Dim ResultRowNdx As Long
-    Dim ResultColNdx As Long
-    Dim NumRows As Long
-    Dim NumCols As Long
-    Dim NewUBound As Long
     
     '==========================================================================
     Const ROWS_ As Long = 1
@@ -2697,9 +2675,6 @@ Public Function ExpandArray( _
         ExpandArray = Arr
         Exit Function
     End If
-    
-    NumRows = UBound(Arr, 1) - LBound(Arr, 1) + 1
-    NumCols = UBound(Arr, 2) - LBound(Arr, 2) + 1
     
     If WhichDim = ROWS_ Then
         'Redim Result
@@ -2751,7 +2726,6 @@ Public Function SwapArrayRows( _
 
     Dim V As Variant
     Dim Result As Variant
-    Dim RowNdx As Long
     Dim ColNdx As Long
     
     
@@ -2802,7 +2776,6 @@ Public Function SwapArrayColumns( _
     Dim V As Variant
     Dim Result As Variant
     Dim RowNdx As Long
-    Dim ColNdx As Long
     
     
     'Set the default return value
