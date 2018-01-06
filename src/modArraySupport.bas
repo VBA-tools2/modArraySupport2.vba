@@ -641,39 +641,32 @@ Public Function CopyNonNothingObjectsToArray( _
 End Function
 
 
-''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 'DataTypeOfArray
-'
-'Returns a VbVarType value indicating data type of the elements of
-'Arr.
-'
-'The VarType of an array is the value vbArray plus the VbVarType value of the
-'data type of the array. For example the VarType of an array of Longs is 8195,
-'which equal to vbArray + vbLong. This code subtracts the value of vbArray to
-'return the native data type.
-'
-'If Arr is a simple array, either single- or mulit-
-'dimensional, the function returns the data type of the array. Arr
-'may be an unallocated array. We can still get the data type of an unallocated
-'array.
-'
-'If Arr is an array of arrays, the function returns vbArray. To retrieve
-'the data type of a subarray, pass into the function one of the sub-arrays. E.g.,
-'Dim R As VbVarType
-'R = DataTypeOfArray(A(LBound(A)))
-'
-'This function support single and multidimensional arrays. It does not
-'support user-defined types. If Arr is an array of empty variants (vbEmpty)
-'it returns vbVariant
-'
-'Returns -1 if Arr is not an array.
-''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'Returns a 'VbVarType' value indicating data type of the elements of 'Arr'.
+'The 'VarType' of an array is the value 'vbArray' plus the 'VbVarType' value of
+'the data type of the array. For example the 'VarType' of an array of 'Long's
+'is 8195, which equal to 'vbArray + vbLong'. This code subtracts the value of
+''vbArray' to return the native data type.
+'If 'Arr' is a simple array, either one- or two-dimensional, the function
+'returns the data type of the array. 'Arr' may be an unallocated array. We can
+'still get the data type of an unallocated array.
+'If 'Arr' is an array of arrays, the function returns 'vbArray'. To retrieve
+'the data type of a subarray, pass into the function one of the sub-arrays.
+'E.g.,
+'    Dim R As VbVarType
+'    R = DataTypeOfArray(A(LBound(A)))
+'This function supports one- and multi-dimensional arrays. It does not support
+'user-defined types. If 'Arr' is an array of empty variants ('vbEmpty') it
+'returns 'vbVariant'.
+'Returns -1 if 'Arr' is not an array.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 Public Function DataTypeOfArray( _
-    Arr As Variant _
+    ByVal Arr As Variant _
         ) As VbVarType
-
+    
     Dim Element As Variant
-    Dim NumDimensions As Long
+    Dim StoredElement As Variant
     
     
     If Not IsArray(Arr) Then
@@ -682,43 +675,39 @@ Public Function DataTypeOfArray( _
     End If
     
     'If the array is unallocated, we can still get its data type.
-    'The result of VarType of an array is vbArray + the VarType of elements of
-    'the array (e.g., the VarType of an array of Longs is 8195, which is
-    'vbArray + vbLong). Thus, to get the basic data type of the array, we
-    'subtract the value vbArray.
+    'The result of 'VarType' of an array is 'vbArray' + the 'VarType' of
+    'elements of the array (e.g., the 'VarType' of an array of 'Long's is 8195,
+    'which is 'vbArray + vbLong'). Thus, to get the basic data type of the
+    'array, we subtract the value 'vbArray'.
     If IsArrayEmpty(Arr) Then
         DataTypeOfArray = VarType(Arr) - vbArray
     Else
-        'get the number of dimensions in the array
-        NumDimensions = NumberOfArrayDimensions(Arr)
-        'set variable Element to first element of the first dimension of the array
-        If NumDimensions = 1 Then
-            If IsObject(Arr(LBound(Arr))) Then
+        '(We use this for loop to get the first element of an array of arbitrary
+        'dimensionality)
+        For Each Element In Arr
+            If IsObject(Element) Then
                 DataTypeOfArray = vbObject
                 Exit Function
             End If
-            Element = Arr(LBound(Arr))
-        Else
-            If IsObject(Arr(LBound(Arr), 1)) Then
-                DataTypeOfArray = vbObject
-                Exit Function
-            End If
-            Element = Arr(LBound(Arr), 1)
-        End If
-        'if we were passed an array of arrays, IsArray(Element) will be true.
-        'Therefore, return vbArray. If IsArray(Element) is false, we weren't
-        'passed an array of arrays, so simply return the data type of Element.
-        If IsArray(Element) Then
+            StoredElement = Element
+            Exit For
+        Next
+        
+        'If we were passed an array of arrays, 'IsArray(StoredElement)' will be
+        'true. Therefore, return 'vbArray'. If 'IsArray(StoredElement)' is false,
+        'we weren't passed an array of arrays, so simply return the data type of
+        ''StoredElement'.
+        If IsArray(StoredElement) Then
             DataTypeOfArray = vbArray
         Else
-            If VarType(Element) = vbEmpty Then
+            If VarType(StoredElement) = vbEmpty Then
                 DataTypeOfArray = vbVariant
             Else
-                DataTypeOfArray = VarType(Element)
+                DataTypeOfArray = VarType(StoredElement)
             End If
         End If
     End If
-
+    
 End Function
 
 

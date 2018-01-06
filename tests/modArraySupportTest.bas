@@ -591,15 +591,297 @@ Debug.Print "CopyNonNothingObjectsToArray returned False"
 End Sub
 
 
-Public Sub DemoDataTypeOfArray()
+'==============================================================================
+'unit tests for 'DataTypeOfArray'
+'==============================================================================
 
-    Dim A(1 To 4) As String
-    Dim T As VbVarType
+'@TestMethod
+Public Sub DataTypeOfArray_NoArray_ReturnsMinusOne()
+    On Error GoTo TestFail
+    
+    'Arrange:
+    Dim sTest As String
+    Dim aActual As VbVarType
+    
+    '==========================================================================
+    Const aExpected As Long = -1
+    '==========================================================================
+    
+    
+    'Act:
+    aActual = modArraySupport.DataTypeOfArray(sTest)
+    
+    'Assert:
+    Assert.AreEqual aExpected, aActual
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+End Sub
 
 
-    T = modArraySupport.DataTypeOfArray(A)
-Debug.Print T
+'@TestMethod
+Public Sub DataTypeOfArray_UnallocatedDoubleArray_ReturnsVbDouble()
+    On Error GoTo TestFail
+    
+    'Arrange:
+    Dim Arr() As Double
+    Dim aActual As VbVarType
+    
+    '==========================================================================
+    Const aExpected As Long = vbDouble
+    '==========================================================================
+    
+    
+    'Act:
+    aActual = modArraySupport.DataTypeOfArray(Arr)
+    
+    'Assert:
+    Assert.AreEqual aExpected, aActual
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+End Sub
 
+
+'@TestMethod
+Public Sub DataTypeOfArray_Test1DStringArray_ReturnsVbString()
+    On Error GoTo TestFail
+    
+    'Arrange:
+    Dim Arr(1 To 4) As String
+    Dim aActual As VbVarType
+    
+    '==========================================================================
+    Const aExpected As Long = vbString
+    '==========================================================================
+    
+    
+    'Act:
+    aActual = modArraySupport.DataTypeOfArray(Arr)
+    
+    'Assert:
+    Assert.AreEqual aExpected, aActual
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+End Sub
+
+
+'@TestMethod
+Public Sub DataTypeOfArray_Test2DStringArray_ReturnsVbString()
+    On Error GoTo TestFail
+    
+    'Arrange:
+    Dim Arr(1 To 4, 5 To 6) As String
+    Dim aActual As VbVarType
+    
+    '==========================================================================
+    Const aExpected As Long = vbString
+    '==========================================================================
+    
+    
+    'Act:
+    aActual = modArraySupport.DataTypeOfArray(Arr)
+    
+    'Assert:
+    Assert.AreEqual aExpected, aActual
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+End Sub
+
+
+'@TestMethod
+Public Sub DataTypeOfArray_Test3DStringArray_ReturnsVbString()
+    On Error GoTo TestFail
+    
+    'Arrange:
+    Dim Arr(1 To 4, 5 To 6, 8 To 8) As String
+    Dim aActual As VbVarType
+    
+    '==========================================================================
+    Const aExpected As Long = vbString
+    '==========================================================================
+    
+    
+    'Act:
+    aActual = modArraySupport.DataTypeOfArray(Arr)
+    
+    'Assert:
+    Assert.AreEqual aExpected, aActual
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+End Sub
+
+
+'@TestMethod
+Public Sub DataTypeOfArray_UnallocatedLongArray_ReturnsVbLong()
+    On Error GoTo TestFail
+    
+    'Arrange:
+    Dim Arr() As Long
+    Dim aActual As VbVarType
+    
+    '==========================================================================
+    Const aExpected As Long = vbLong
+    '==========================================================================
+    
+    
+    'Act:
+    aActual = modArraySupport.DataTypeOfArray(Arr)
+    
+    'Assert:
+    Assert.AreEqual aExpected, aActual
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+End Sub
+
+
+'@TestMethod
+Public Sub DataTypeOfArray_UnallocatedLongLongArray_ReturnsVbLongLong()
+    On Error GoTo TestFail
+    
+    'Arrange:
+    Dim Arr() As LongLong
+    Dim aActual As VbVarType
+    
+    '==========================================================================
+    Dim LongLongType As Byte
+    LongLongType = DeclareLongLong
+    Dim aExpected As Long
+    aExpected = LongLongType
+    '==========================================================================
+    
+    
+    'Act:
+    aActual = modArraySupport.DataTypeOfArray(Arr)
+    
+    'Assert:
+    Assert.AreEqual aExpected, aActual
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+End Sub
+
+
+'@TestMethod
+Public Sub DataTypeOfArray_UnallocatedObjectArray_ReturnsVbObject()
+    On Error GoTo TestFail
+    
+    'Arrange:
+    Dim Arr() As Object
+    Dim aActual As VbVarType
+    
+    '==========================================================================
+    Const aExpected As Long = vbObject
+    '==========================================================================
+    
+    'Act:
+    aActual = modArraySupport.DataTypeOfArray(Arr)
+    
+    'Assert:
+    Assert.AreEqual aExpected, aActual
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+End Sub
+
+
+'@TestMethod
+Public Sub DataTypeOfArray_AllocatedObjectArray_ReturnsVbObject()
+    On Error GoTo TestFail
+    
+    'Arrange:
+    Dim Arr(998 To 999) As Object
+    Dim aActual As VbVarType
+    
+    '==========================================================================
+    Const aExpected As Long = vbObject
+    '==========================================================================
+    
+    'Act:
+    aActual = modArraySupport.DataTypeOfArray(Arr)
+    
+    'Assert:
+    Assert.AreEqual aExpected, aActual
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+End Sub
+
+
+'@TestMethod
+Public Sub DataTypeOfArray_UnallocatedEmptyVariantArray_ReturnsVbVariant()
+    On Error GoTo TestFail
+    
+    'Arrange:
+    Dim Arr(-11 To -10) As Variant
+    Dim aActual As VbVarType
+    
+    '==========================================================================
+    Const aExpected As Long = vbVariant
+    '==========================================================================
+    
+    Arr(-11) = Empty
+    Arr(-10) = Empty
+    
+    'Act:
+    aActual = modArraySupport.DataTypeOfArray(Arr)
+    
+    'Assert:
+    Assert.AreEqual aExpected, aActual
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+End Sub
+
+
+'@TestMethod
+Public Sub DataTypeOfArray_UnallocatedDoubleArray_ReturnsVbArray()
+    On Error GoTo TestFail
+    
+    'Arrange:
+    Dim Arr(0 To 0) As Variant
+    Dim aActual As VbVarType
+    
+    '==========================================================================
+    Const aExpected As Long = vbArray
+    '==========================================================================
+    
+    Arr(0) = Array()
+    
+    'Act:
+    aActual = modArraySupport.DataTypeOfArray(Arr)
+    
+    'Assert:
+    Assert.AreEqual aExpected, aActual
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
 End Sub
 
 
