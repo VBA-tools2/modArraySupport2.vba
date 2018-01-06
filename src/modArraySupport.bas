@@ -289,136 +289,125 @@ Public Function ConcatenateArrays( _
 End Function
 
 
-'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 'CopyArray
-'This function copies the contents of SourceArray to the DestinationaArray. Both SourceArray
-'and DestinationArray may be either static or dynamic and either or both may be unallocated.
+'This function copies the contents of 'SourceArray' to the 'ResultArray'.
+'Both 'SourceArray' and 'ResultArray' may be either static or dynamic and
+'either or both may be unallocated.
 '
-'If DestinationArray is dynamic, it is resized to match SourceArray. The LBound and UBound
-'of DestinationArray will be the same as SourceArray, and all elements of SourceArray will
-'be copied to DestinationArray.
+'If 'ResultArray' is dynamic, it is resized to match 'SourceArray'. The
+''LBound' and 'UBound' of 'ResultArray' will be the same as 'SourceArray',
+'and all elements of 'SourceArray' will be copied to 'ResultArray'.
 '
-'If DestinationArray is static and has more elements than SourceArray, all of SourceArray
-'is copied to DestinationArray and the right-most elements of DestinationArray are left
-'intact.
+'If 'ResultArray' is static and has more elements than 'SourceArray', all
+'of 'SourceArray' is copied to 'ResultArray' and the right-most elements
+'of 'ResultArray' are left intact.
 '
-'If DestinationArray is static and has fewer elements that SourceArray, only the left-most
-'elements of SourceArray are copied to fill out DestinationArray.
+'If 'ResultArray' is static and has fewer elements that 'SourceArray',
+'only the left-most elements of 'SourceArray' are copied to fill out
+''ResultArray'.
 '
-'If SourceArray is an unallocated array, DestinationArray remains unchanged and the procedure
-'terminates.
-'
-'If both SourceArray and DestinationArray are unallocated, no changes are made to either array
+'If 'SourceArray' is an unallocated array, 'ResultArray' remains unchanged
 'and the procedure terminates.
 '
-'SourceArray may contain any type of data, including Objects and Objects that are Nothing
-'(the procedure does not support arrays of User Defined Types since these cannot be coerced
-'to Variants -- use classes instead of types).
+'If both 'SourceArray' and 'ResultArray' are unallocated, no changes are
+'made to either array and the procedure terminates.
 '
-'The function tests to ensure that the data types of the arrays are the same or are compatible.
-'See the function AreDataTypesCompatible for information about compatible data types. To skip
-'this compability checking, set the NoCompatabilityCheck parameter to True. Note that you may
-'lose information during data conversion (e.g., losing decimal places when converting a Double
-'to a Long) or you may get an overflow (storing a Long in an Integer) which will result in that
-'element in DestinationArray having a value of 0.
-'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+''SourceArray' may contain any type of data, including 'Object's and 'Object's
+'that are 'Nothing' (the procedure does not support arrays of 'User Defined
+'Types' since these cannot be coerced to 'Variant's -- use classes instead of
+'types).
+'
+'The function tests to ensure that the data types of the arrays are the same or
+'are compatible. See the function 'AreDataTypesCompatible' for information
+'about compatible data types. To skip this compatibility checking, set the
+''NoCompatibilityCheck' parameter to 'True'. Note that you may lose information
+'during data conversion (e.g., losing decimal places when converting a 'Double'
+'to a 'Long') or you may get an overflow (storing a 'Long' in an 'Integer')
+'which will result in that element in 'ResultArray' having a value of 0.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 Public Function CopyArray( _
-    SourceArray As Variant, _
-    DestinationArray As Variant, _
-    Optional NoCompatabilityCheck As Boolean = False _
+    ByVal SourceArray As Variant, _
+    ByRef ResultArray As Variant, _
+    Optional ByVal NoCompatibilityCheck As Boolean = False _
         ) As Boolean
-
-    Dim SNdx As Long
-    Dim DNdx As Long
+    
+    Dim SrcNdx As Long
+    Dim ResNdx As Long
     
     
     'Set the default return value
     CopyArray = False
     
-    If Not IsArray(DestinationArray) Then Exit Function
+    If Not IsArray(ResultArray) Then Exit Function
     If Not IsArray(SourceArray) Then Exit Function
     
-    'Ensure DestinationArray and SourceArray are single-dimensional.
+    'Ensure both arrays are single dimensional
     '0 indicates an unallocated array, which is allowed.
     If NumberOfArrayDimensions(SourceArray) > 1 Then Exit Function
-    If NumberOfArrayDimensions(DestinationArray) > 1 Then Exit Function
+    If NumberOfArrayDimensions(ResultArray) > 1 Then Exit Function
     
-    'If SourceArray is not allocated, leave DestinationArray intact and
-    'return a result of True.
+    'If 'SourceArray' is not allocated, leave 'ResultArray' intact and return a
+    'result of 'True'.
     If Not IsArrayAllocated(SourceArray) Then
         CopyArray = True
         Exit Function
     End If
     
-    If NoCompatabilityCheck = False Then
+    If NoCompatibilityCheck = False Then
         'Ensure both arrays are the same type or compatible data types. See the
-        'function AreDataTypesCompatible for information about compatible types.
-        If Not AreDataTypesCompatible(SourceArray, DestinationArray) Then
+        'function 'AreDataTypesCompatible' for information about compatible types.
+        If Not AreDataTypesCompatible(SourceArray, ResultArray) Then
             Exit Function
         End If
         'If one array is an array of objects, ensure the other contains all
-        'objects (or Nothing)
-        If VarType(DestinationArray) - vbArray = vbObject Then
+        'objects (or 'Nothing')
+        If VarType(ResultArray) - vbArray = vbObject Then
             If IsArrayAllocated(SourceArray) Then
-                For SNdx = LBound(SourceArray) To UBound(SourceArray)
-                    If Not IsObject(SourceArray(SNdx)) Then Exit Function
+                For SrcNdx = LBound(SourceArray) To UBound(SourceArray)
+                    If Not IsObject(SourceArray(SrcNdx)) Then Exit Function
                 Next
             End If
         End If
     End If
     
-    'If both arrays are allocated, copy from SourceArray to DestinationArray.
-    'If SourceArray is smaller that DesetinationArray, the right-most elements
-    'of DestinationArray are left unchanged. If SourceArray is larger than
-    'DestinationArray, the right most elements of SourceArray are not copied.
-    If IsArrayAllocated(DestinationArray) Then
-        If IsArrayAllocated(SourceArray) Then
-            DNdx = LBound(DestinationArray)
-            On Error Resume Next
-            For SNdx = LBound(SourceArray) To UBound(SourceArray)
-                If IsObject(SourceArray(SNdx)) Then
-                    Set DestinationArray(DNdx) = SourceArray(DNdx)
-                Else
-                    DestinationArray(DNdx) = SourceArray(DNdx)
-                End If
-                DNdx = DNdx + 1
-                If DNdx > UBound(DestinationArray) Then
-                    Exit For
-                End If
-            Next
-            On Error GoTo 0
-        'If SourceArray is not allocated, so we have nothing to copy.
-        'Exit with a result of True. Leave DestinationArray intact.
-        Else
-            CopyArray = True
-            Exit Function
-        End If
-    'If Destination array is not allocated and SourceArray is allocated,
-    'Redim DestinationArray to the same size as SourceArray and copy
-    'the elements from SourceArray to DestinationArray.
+    'If both arrays are allocated, copy from 'SourceArray' to 'ResultArray'.
+    'If 'SourceArray' is smaller that 'ResultArray', the right-most elements
+    'of 'ResultArray' are left unchanged. If 'SourceArray' is larger than
+    ''ResultArray', the right most elements of 'SourceArray' are not copied.
+    If IsArrayAllocated(ResultArray) Then
+        ResNdx = LBound(ResultArray)
+        On Error Resume Next
+        For SrcNdx = LBound(SourceArray) To UBound(SourceArray)
+            If IsObject(SourceArray(SrcNdx)) Then
+                Set ResultArray(ResNdx) = SourceArray(SrcNdx)
+            Else
+                ResultArray(ResNdx) = SourceArray(SrcNdx)
+            End If
+            ResNdx = ResNdx + 1
+            If ResNdx > UBound(ResultArray) Then
+                Exit For
+            End If
+        Next
+        On Error GoTo 0
+    'If (only) 'ResultArray' is not allocated, 'ReDim ResultArray' to
+    'the same size as 'SourceArray' and copy the elements from 'SourceArray' to
+    ''ResultArray'.
     Else
-        If IsArrayAllocated(SourceArray) Then
-            On Error Resume Next
-            ReDim DestinationArray(LBound(SourceArray) To UBound(SourceArray))
-            For SNdx = LBound(SourceArray) To UBound(SourceArray)
-                If IsObject(SourceArray(SNdx)) Then
-                    Set DestinationArray(SNdx) = SourceArray(SNdx)
-                Else
-                    DestinationArray(SNdx) = SourceArray(SNdx)
-                End If
-            Next
-            On Error GoTo 0
-        'If both SourceArray and DestinationArray are unallocated, we have
-        'nothing to copy (this condition is actually detected above, but
-        'included here for consistancy), so get out with a result of True.
-        Else
-            CopyArray = True
-            Exit Function
-        End If
+        On Error Resume Next
+        ReDim ResultArray(LBound(SourceArray) To UBound(SourceArray))
+        For SrcNdx = LBound(SourceArray) To UBound(SourceArray)
+            If IsObject(SourceArray(SrcNdx)) Then
+                Set ResultArray(SrcNdx) = SourceArray(SrcNdx)
+            Else
+                ResultArray(SrcNdx) = SourceArray(SrcNdx)
+            End If
+        Next
+        On Error GoTo 0
     End If
     
     CopyArray = True
-
+    
 End Function
 
 

@@ -363,8 +363,8 @@ Public Sub CopyArray_UnallocatedSrc_ResultsTrueAndUnchangedDest()
     Dim Dest(0) As Integer
     
     '==========================================================================
-    Dim aExpected As Variant
-    aExpected = Array(50)
+    Dim aExpected(0) As Integer
+        aExpected(0) = 50
     '==========================================================================
     
     
@@ -389,11 +389,11 @@ End Sub
 Public Sub CopyArray_IncompatibleDest_ResultsFalse()
     On Error GoTo TestFail
     
+    'Arrange:
     Dim Src(1 To 2) As Long
     Dim Dest(1 To 2) As Integer
     
     
-    'Arrange:
     'Act:
     'Assert:
     Assert.IsFalse modArraySupport.CopyArray(Src, Dest)
@@ -406,16 +406,91 @@ End Sub
 
 
 '@TestMethod
-Public Sub CopyArray__ResultsTrueAndDestArray()
+Public Sub CopyArray_AllocatedDestLessElementsThenSrc_ResultsTrueAndDestArray()
     On Error GoTo TestFail
     
-    Dim Src(1 To 2) As Long
-    Dim Dest(1 To 2) As Long
+    Dim Src(1 To 3) As Long
+    Dim Dest(10 To 11) As Long
     Dim i As Long
     
     '==========================================================================
-    Dim aExpected As Variant
-    aExpected = Array(1234, 655360)
+    Dim aExpected(10 To 11) As Long
+        aExpected(10) = 1
+        aExpected(11) = 2
+    '==========================================================================
+    
+    
+    'Arrange:
+    Src(1) = 1
+    Src(2) = 2
+    Src(3) = 3
+    
+    'Act:
+    If Not modArraySupport.CopyArray(Src, Dest) Then _
+            GoTo TestFail
+    
+    'Assert:
+    For i = LBound(Dest) To UBound(Dest)
+        Assert.AreEqual CLng(aExpected(i)), CLng(Dest(i))
+    Next
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+End Sub
+
+
+'@TestMethod
+Public Sub CopyArray_AllocatedDestMoreElementsThenSrc_ResultsTrueAndDestArray()
+    On Error GoTo TestFail
+    
+    Dim Src(1 To 3) As Long
+    Dim Dest(10 To 13) As Long
+    Dim i As Long
+    
+    '==========================================================================
+    Dim aExpected(10 To 13) As Long
+        aExpected(10) = 1
+        aExpected(11) = 2
+        aExpected(12) = 3
+        aExpected(13) = 0
+    '==========================================================================
+    
+    
+    'Arrange:
+    Src(1) = 1
+    Src(2) = 2
+    Src(3) = 3
+    
+    'Act:
+    If Not modArraySupport.CopyArray(Src, Dest) Then _
+            GoTo TestFail
+    
+    'Assert:
+    For i = LBound(Dest) To UBound(Dest)
+        Assert.AreEqual CLng(aExpected(i)), CLng(Dest(i))
+    Next
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+End Sub
+
+
+'@TestMethod
+Public Sub CopyArray_NoCompatibilityCheck_ResultsTrueAndDestArrayWithOverflow()
+    On Error GoTo TestFail
+    
+    Dim Src(1 To 2) As Long
+    Dim Dest(1 To 2) As Integer
+    Dim i As Long
+    
+    '==========================================================================
+    Dim aExpected(1 To 2) As Integer
+        aExpected(1) = 1234
+        aExpected(2) = 0
     '==========================================================================
     
     
@@ -427,33 +502,19 @@ Public Sub CopyArray__ResultsTrueAndDestArray()
     If Not modArraySupport.CopyArray(Src, Dest, True) Then _
             GoTo TestFail
     
-'    If B = True Then
-'        If modArraySupport.IsArrayAllocated(Dest) = True Then
-'            For i = LBound(Dest) To UBound(Dest)
-'                If IsObject(Dest(i)) = True Then
-'Debug.Print CStr(i), "is object"
-'                Else
-'Debug.Print CStr(i), Dest(i)
-'                End If
-'            Next
-'        Else
-'Debug.Print "Dest is not allocated."
-'        End If
-'    Else
-'Debug.Print "CopyArray returned False"
-'    End If
-    
     'Assert:
     For i = LBound(Dest) To UBound(Dest)
-        Assert.AreEqual aExpected(i - 1), Dest(i)
+        Assert.AreEqual aExpected(i), Dest(i)
     Next
-    
     
 TestExit:
     Exit Sub
 TestFail:
     Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
 End Sub
+
+
+'2do: Add tests with Objects
 
 
 Public Sub DemoCopyArraySubSetToArray()
