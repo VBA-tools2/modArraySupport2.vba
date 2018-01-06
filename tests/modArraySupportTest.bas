@@ -187,7 +187,7 @@ End Sub
 
 
 '@TestMethod
-Public Sub ConcatenateArrays_BothArraysUnallocated_ResultsUnallocatedArray()
+Public Sub ConcatenateArrays_BothArraysUnallocated_ResultsTrueAndUnallocatedArray()
     On Error GoTo TestFail
     
     'Arrange:
@@ -210,7 +210,7 @@ End Sub
 
 
 '@TestMethod
-Public Sub ConcatenateArrays_ArrayToAppendUnallocated_ResultsUnchangedResultArray()
+Public Sub ConcatenateArrays_ArrayToAppendUnallocated_ResultsTrueAndUnchangedResultArray()
     On Error GoTo TestFail
     
     'Arrange:
@@ -219,8 +219,9 @@ Public Sub ConcatenateArrays_ArrayToAppendUnallocated_ResultsUnchangedResultArra
     Dim i As Long
     
     '==========================================================================
-    Dim aExpected As Variant
-    aExpected = Array(8, 9)
+    Dim aExpected(1 To 2) As Long
+        aExpected(1) = 8
+        aExpected(2) = 9
     '==========================================================================
     
     
@@ -234,7 +235,7 @@ Public Sub ConcatenateArrays_ArrayToAppendUnallocated_ResultsUnchangedResultArra
     
     'Assert:
     For i = LBound(ResultArray) To UBound(ResultArray)
-        Assert.AreEqual CLng(aExpected(i - 1)), CLng(ResultArray(i))
+        Assert.AreEqual CLng(aExpected(i)), CLng(ResultArray(i))
     Next
     
 TestExit:
@@ -253,8 +254,13 @@ Public Sub ConcatenateArrays_LegalLong_ResultsTrueAndResultArray()
     Dim i As Long
     
     '==========================================================================
-    Dim aExpected As Variant
-    aExpected = Array(8, 9, 10, 111, 112, 113)
+    Dim aExpected(1 To 6) As Long
+        aExpected(1) = 8
+        aExpected(2) = 9
+        aExpected(3) = 10
+        aExpected(4) = 111
+        aExpected(5) = 112
+        aExpected(6) = 113
     '==========================================================================
     
     
@@ -274,7 +280,7 @@ Public Sub ConcatenateArrays_LegalLong_ResultsTrueAndResultArray()
     
     'Assert:
     For i = LBound(ResultArray) To UBound(ResultArray)
-        Assert.AreEqual CLng(aExpected(i - 1)), CLng(ResultArray(i))
+        Assert.AreEqual CLng(aExpected(i)), CLng(ResultArray(i))
     Next
     
 TestExit:

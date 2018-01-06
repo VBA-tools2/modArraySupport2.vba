@@ -167,31 +167,35 @@ Public Function CompareArrays( _
 End Function
 
 
-'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 'ConcatenateArrays
-'This function appends ArrayToAppend to the end of ResultArray, increasing the size of ResultArray
-'as needed. ResultArray must be a dynamic array, but it need not be allocated. ArrayToAppend
-'may be either static or dynamic, and if dynamic it may be unallocted. If ArrayToAppend is
-'unallocated, ResultArray is left unchanged.
+'This function appends 'ArrayToAppend' to the end of 'ResultArray', increasing
+'the size of 'ResultArray' as needed. 'ResultArray' must be a dynamic array,
+'but it need not be allocated. 'ArrayToAppend' may be either static or dynamic,
+'and if dynamic it may be unallocated. If 'ArrayToAppend' is unallocated,
+''ResultArray' is left unchanged.
 '
-'The data types of ResultArray and ArrayToAppend must be either the same data type or
-'compatible numeric types. A compatible numeric type is a type that will not cause a loss of
-'precision or cause an overflow. For example, ReturnArray may be Longs, and ArrayToAppend amy
-'by Longs or Integers, but not Single or Doubles because information might be lost when
-'converting from Double to Long (the decimal portion would be lost). To skip the compatability
-'check and allow any variable type in ResultArray and ArrayToAppend, set the NoCompatabilityCheck
-'parameter to True. If you do this, be aware that you may loose precision and you may will
-'get an overflow error which will cause a result of 0 in that element of ResultArra.
+'The data types of 'ResultArray' and 'ArrayToAppend' must be either the same
+'data type or 'compatible numeric types. A compatible numeric type is a type
+'that will not cause a loss of precision or cause an overflow. For example,
+''ReturnArray' may be 'Long', and 'ArrayToAppend' may by 'Long' or 'Integer',
+'but not 'Single' or 'Double' because information might be lost when converting
+'from 'Double' to 'Long' (the decimal portion would be lost).
 '
-'Both ReaultArray and ArrayToAppend must be one-dimensional arrays.
-'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'To skip the compatibility check and allow any variable type in 'ResultArray'
+'and 'ArrayToAppend', set the 'NoCompatibilityCheck' parameter to 'True'. If
+'you do this, be aware that you may loose precision and you may will get an
+'overflow error which will cause a result of 0 in that element of 'ResultArray'.
+'
+'Both 'ResultArray' and 'ArrayToAppend' must be one-dimensional arrays.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 Public Function ConcatenateArrays( _
-    ResultArray As Variant, _
-    ArrayToAppend As Variant, _
-    Optional NoCompatabilityCheck As Boolean = False _
+    ByRef ResultArray As Variant, _
+    ByVal ArrayToAppend As Variant, _
+    Optional ByVal NoCompatibilityCheck As Boolean = False _
         ) As Boolean
-
-    Dim Ndx As Long
+    
+    Dim i As Long
     Dim NumElementsToAdd As Long
     Dim AppendNdx As Long
     Dim ResultLB As Long
@@ -202,49 +206,45 @@ Public Function ConcatenateArrays( _
     'Set the default result
     ConcatenateArrays = False
     
-    If Not IsArray(ResultArray) Then Exit Function
     If Not IsArray(ArrayToAppend) Then Exit Function
     If Not IsArrayDynamic(ResultArray) Then Exit Function
-'---
-'2do: '>1' or '<>1'?
-'---
+    
     'Ensure both arrays are single dimensional
+    '0 indicates an unallocated array, which is allowed.
     If NumberOfArrayDimensions(ResultArray) > 1 Then Exit Function
     If NumberOfArrayDimensions(ArrayToAppend) > 1 Then Exit Function
     
-    'Ensure ArrayToAppend is allocated. If ArrayToAppend is not allocated,
-    'we have nothing to append, so exit with a True result.
+    'Ensure 'ArrayToAppend' is allocated. If 'ArrayToAppend' is not allocated,
+    'we have nothing to append, so exit with a 'True' result.
     If Not IsArrayAllocated(ArrayToAppend) Then
         ConcatenateArrays = True
         Exit Function
     End If
     
     
-    If NoCompatabilityCheck = False Then
+    If NoCompatibilityCheck = False Then
         'Ensure the array are compatible data types
-        If Not AreDataTypesCompatible(ArrayToAppend, ResultArray) Then
-            'The arrays are not compatible data types
-            Exit Function
-        End If
+        If Not AreDataTypesCompatible(ArrayToAppend, ResultArray) Then Exit Function
         
         'If one array is an array of objects, ensure the other contains all
-        'objects (or Nothing)
+        'objects (or 'Nothing')
         If VarType(ResultArray) - vbArray = vbObject Then
             If IsArrayAllocated(ArrayToAppend) Then
-                For Ndx = LBound(ArrayToAppend) To UBound(ArrayToAppend)
-                    If Not IsObject(ArrayToAppend(Ndx)) Then Exit Function
+                For i = LBound(ArrayToAppend) To UBound(ArrayToAppend)
+                    If Not IsObject(ArrayToAppend(i)) Then Exit Function
                 Next
             End If
         End If
     End If
     
     
-    'Get the number of elements in ArrrayToAppend
+    'Get the number of elements in 'ArrayToAppend'
     NumElementsToAdd = UBound(ArrayToAppend) - LBound(ArrayToAppend) + 1
     
-    'Get the bounds for resizing the ResultArray. If ResultArray is allocated
-    'use the LBound and UBound+1. If ResultArray is not allocated, use the
-    'LBound of ArrayToAppend for both the LBound and UBound of ResultArray.
+    'Get the bounds for resizing the 'ResultArray'. If ResultArray is allocated
+    'use the 'LBound' and 'UBound+1'. If 'ResultArray' is not allocated, use
+    'the 'LBound' of 'ArrayToAppend' for both the 'LBound' and 'UBound' of
+    ''ResultArray'.
     If IsArrayAllocated(ResultArray) Then
         ResultLB = LBound(ResultArray)
         ResultUB = UBound(ResultArray)
@@ -256,36 +256,36 @@ Public Function ConcatenateArrays( _
         ReDim ResultArray(LBound(ArrayToAppend) To UBound(ArrayToAppend))
     End If
     
-    '''Copy the data from ArrayToAppend to ResultArray.
-    'If ResultArray was allocated, we have to put the data from ArrayToAppend
-    'at the end of the ResultArray.
+    '''Copy the data from 'ArrayToAppend' to 'ResultArray'.
+    'If 'ResultArray' was allocated, we have to put the data from 'ArrayToAppend'
+    'at the end of the 'ResultArray'.
     If ResultWasAllocated = True Then
         AppendNdx = LBound(ArrayToAppend)
-        For Ndx = ResultUB + 1 To UBound(ResultArray)
+        For i = ResultUB + 1 To UBound(ResultArray)
             If IsObject(ArrayToAppend(AppendNdx)) Then
-                Set ResultArray(Ndx) = ArrayToAppend(AppendNdx)
+                Set ResultArray(i) = ArrayToAppend(AppendNdx)
             Else
-                ResultArray(Ndx) = ArrayToAppend(AppendNdx)
+                ResultArray(i) = ArrayToAppend(AppendNdx)
             End If
             AppendNdx = AppendNdx + 1
             If AppendNdx > UBound(ArrayToAppend) Then
                 Exit For
             End If
         Next
-    'If ResultArray was not allocated, we simply copy element by element from
-    'ArrayToAppend to ResultArray.
+    'If 'ResultArray' was not allocated, we simply copy element by element from
+    ''ArrayToAppend' to 'ResultArray'.
     Else
-        For Ndx = LBound(ResultArray) To UBound(ResultArray)
-            If IsObject(ArrayToAppend(Ndx)) Then
-                Set ResultArray(Ndx) = ArrayToAppend(Ndx)
+        For i = LBound(ResultArray) To UBound(ResultArray)
+            If IsObject(ArrayToAppend(i)) Then
+                Set ResultArray(i) = ArrayToAppend(i)
             Else
-                ResultArray(Ndx) = ArrayToAppend(Ndx)
+                ResultArray(i) = ArrayToAppend(i)
             End If
         Next
     End If
     
     ConcatenateArrays = True
-
+    
 End Function
 
 
