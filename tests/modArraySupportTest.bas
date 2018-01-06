@@ -67,15 +67,19 @@ End Sub
 Public Sub CompareArrays_LegalAndTextCompare_ReturnsTrueAndResArr()
     On Error GoTo TestFail
     
-    '==========================================================================
-    Dim aExpected As Variant
-    aExpected = Array(-1, 1, -1, 0, 0)
-    '==========================================================================
-    
     Dim Arr1(1 To 5) As String
     Dim Arr2(1 To 5) As String
     Dim ResArr() As Long
     Dim i As Long
+    
+    '==========================================================================
+    Dim aExpected(1 To 5) As Long
+        aExpected(1) = -1
+        aExpected(2) = 1
+        aExpected(3) = -1
+        aExpected(4) = 0
+        aExpected(5) = 0
+    '==========================================================================
     
     
     'Arrange:
@@ -97,7 +101,7 @@ Public Sub CompareArrays_LegalAndTextCompare_ReturnsTrueAndResArr()
     
     'Assert:
     For i = LBound(ResArr) To UBound(ResArr)
-        Assert.AreEqual CLng(aExpected(i - 1)), ResArr(i)
+        Assert.AreEqual CLng(aExpected(i)), ResArr(i)
     Next
     
 TestExit:
@@ -117,8 +121,12 @@ Public Sub CompareArrays_LegalAndBinaryCompare_ReturnsTrueAndResArr()
     Dim i As Long
     
     '==========================================================================
-    Dim aExpected As Variant
-    aExpected = Array(-1, 1, -1, 0, -1)
+    Dim aExpected(1 To 5) As Long
+        aExpected(1) = -1
+        aExpected(2) = 1
+        aExpected(3) = -1
+        aExpected(4) = 0
+        aExpected(5) = -1
     '==========================================================================
     
     
@@ -141,7 +149,7 @@ Public Sub CompareArrays_LegalAndBinaryCompare_ReturnsTrueAndResArr()
     
     'Assert:
     For i = LBound(ResArr) To UBound(ResArr)
-        Assert.AreEqual CLng(aExpected(i - 1)), ResArr(i)
+        Assert.AreEqual CLng(aExpected(i)), ResArr(i)
     Next
     
 TestExit:

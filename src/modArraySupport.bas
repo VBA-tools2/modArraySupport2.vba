@@ -63,52 +63,53 @@ Private Const C_ERR_SUBSCRIPT_OUT_OF_RANGE As Long = 9
 Private Const C_ERR_ARRAY_IS_FIXED_OR_LOCKED As Long = 10
 
 
-'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 'CompareArrays
-'This function compares two arrays, Array1 and Array2, element by element, and puts the results of
-'the comparisons in ResultArray. Each element of ResultArray will be -1, 0, or +1. A -1 indicates that
-'the element in Array1 was less than the corresponding element in Array2. A 0 indicates that the
-'elements are equal, and +1 indicates that the element in Array1 is greater than Array2. Both
-'Array1 and Array2 must be allocated single-dimensional arrays, and ResultArray must be dynamic array
-'of a numeric data type (typically Longs). Array1 and Array2 must contain the same number of elements,
-'and have the same lower bound. The LBound of ResultArray will be the same as the data arrays.
+'This function compares two arrays, 'Array1' and 'Array2', element by element,
+'and puts the results of the comparisons in 'ResultArray' with the same
+''LBound' as 'Array1'. Each element of 'ResultArray' will be -1, 0, or +1. A -1
+'indicates that the element in 'Array1' was less than the corresponding element
+'in 'Array2'. A 0 indicates that the elements are equal, and +1 indicates that
+'the element in 'Array1' is greater than 'Array2'.
 '
-'An error will occur if Array1 or Array2 contains an Object or User Defined Type.
+'Both 'Array1' and 'Array2' must be allocated single-dimensional arrays, and
+''ResultArray' must be dynamic array of a numeric data type (typically 'Long').
+''Array1' and 'Array2' must contain the same number of elements, and have the
+'same lower bound. Also 'Array1' and 'Array2' are not allowed to contain an
+'Object or User Defined Type. The function will return 'False' if not all of
+'the previous conditions are met.
 '
 'When comparing elements, the procedure does the following:
-'If both elements are numeric data types, they are compared arithmetically.
-
-'If one element is a numeric data type and the other is a string and that string is numeric,
-'then both elements are converted to Doubles and compared arithmetically. If the string is not
-'numeric, both elements are converted to strings and compared using StrComp, with the
-'compare mode set by CompareMode.
-'
-'If both elements are numeric strings, they are converted to Doubles and compared arithmetically.
-'
-'If either element is not a numeric string, the elements are converted and compared with StrComp.
-''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'- If both elements are numeric data types, they are compared arithmetically.
+'- If one element is a numeric data type and the other is a string and that
+'  string is numeric, then both elements are converted to 'Doubles' and
+'  compared arithmetically. If the string is not numeric, both elements are
+'  converted to strings and compared using 'StrComp', with the compare mode set
+'  by 'CompareMode'.
+'- If both elements are numeric strings, they are converted to 'Doubles' and
+'  compared arithmetically.
+'- If either element is not a numeric string, the elements are converted and
+'  compared with 'StrComp'.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 Public Function CompareArrays( _
-    Array1 As Variant, _
-    Array2 As Variant, _
-    ResultArray As Variant, _
-    Optional CompareMode As VbCompareMethod = vbTextCompare _
+    ByVal Array1 As Variant, _
+    ByVal Array2 As Variant, _
+    ByRef ResultArray As Variant, _
+    Optional ByVal CompareMode As VbCompareMethod = vbTextCompare _
         ) As Boolean
-
-    Dim Ndx1 As Long
-    Dim Ndx2 As Long
-    Dim ResNdx As Long
+    
+    Dim i As Long
     Dim S1 As String
     Dim S2 As String
     Dim D1 As Double
     Dim D2 As Double
-    Dim Done As Boolean
     Dim Compare As VbCompareMethod
     
     
     'Set the default return value
     CompareArrays = False
     
-    'Ensure we have a Compare mode value
+    'Ensure we have a compare mode value
     If CompareMode = vbBinaryCompare Then
         Compare = vbBinaryCompare
     Else
@@ -117,76 +118,49 @@ Public Function CompareArrays( _
     
     If Not IsArray(Array1) Then Exit Function
     If Not IsArray(Array2) Then Exit Function
-    If Not IsArray(ResultArray) Then Exit Function
     If Not IsArrayDynamic(ResultArray) Then Exit Function
     If NumberOfArrayDimensions(Array1) <> 1 Then Exit Function
     If NumberOfArrayDimensions(Array2) <> 1 Then Exit Function
     
-'---
-'2do: this does not make sense, because it was already tested above
-'---
-    'allow 0 indicating non-allocated array
-    If NumberOfArrayDimensions(Array1) > 1 Then Exit Function
-    
-    'Ensure the LBounds are the same
+    'Ensure the LBounds are the same and size of the arrays is the same
     If LBound(Array1) <> LBound(Array2) Then Exit Function
+    If UBound(Array1) <> UBound(Array2) Then Exit Function
     
-    'Ensure the arrays are the same size
-    If (UBound(Array1) - LBound(Array1)) <> (UBound(Array2) - LBound(Array2)) Then
-        Exit Function
-    End If
-    
-    'Redim ResultArray to the numbr of elements in Array1
+    'ReDim ResultArray to the number of elements in 'Array1'
     ReDim ResultArray(LBound(Array1) To UBound(Array1))
     
-    Ndx1 = LBound(Array1)
-    Ndx2 = LBound(Array2)
-    
     'Scan each array to see if it contains objects or User-Defined Types
-    'If found, exit with False
-    For Ndx1 = LBound(Array1) To UBound(Array1)
-        If IsObject(Array1(Ndx1)) Then Exit Function
-        If VarType(Array1(Ndx1)) >= vbArray Then Exit Function
-        If VarType(Array1(Ndx1)) = vbUserDefinedType Then Exit Function
+    'If found, exit with 'False'
+    For i = LBound(Array1) To UBound(Array1)
+        If IsObject(Array1(i)) Then Exit Function
+        If VarType(Array1(i)) >= vbArray Then Exit Function
+        If VarType(Array1(i)) = vbUserDefinedType Then Exit Function
+    Next
+    For i = LBound(Array2) To UBound(Array2)
+        If IsObject(Array2(i)) Then Exit Function
+        If VarType(Array2(i)) >= vbArray Then Exit Function
+        If VarType(Array2(i)) = vbUserDefinedType Then Exit Function
     Next
     
-    For Ndx1 = LBound(Array2) To UBound(Array2)
-        If IsObject(Array2(Ndx1)) Then Exit Function
-        If VarType(Array2(Ndx1)) >= vbArray Then Exit Function
-        If VarType(Array2(Ndx1)) = vbUserDefinedType Then Exit Function
-    Next
     
-    Ndx1 = LBound(Array1)
-    Ndx2 = Ndx1
-    ResNdx = LBound(ResultArray)
-    Done = False
-    
-    'Loop until we reach the end of the array
-    Do Until Done = True
-        If IsNumeric(Array1(Ndx1)) And IsNumeric(Array2(Ndx2)) Then
-            D1 = CDbl(Array1(Ndx1))
-            D2 = CDbl(Array2(Ndx2))
+    'test each entry
+    For i = LBound(Array1) To UBound(Array1)
+        If IsNumeric(Array1(i)) And IsNumeric(Array2(i)) Then
+            D1 = CDbl(Array1(i))
+            D2 = CDbl(Array2(i))
             If D1 = D2 Then
-                ResultArray(ResNdx) = 0
+                ResultArray(i) = 0
             ElseIf D1 < D2 Then
-                ResultArray(ResNdx) = -1
+                ResultArray(i) = -1
             Else
-                ResultArray(ResNdx) = 1
+                ResultArray(i) = 1
             End If
         Else
-            S1 = CStr(Array1(Ndx1))
-            S2 = CStr(Array2(Ndx1))
-            ResultArray(ResNdx) = StrComp(S1, S2, Compare)
+            S1 = CStr(Array1(i))
+            S2 = CStr(Array2(i))
+            ResultArray(i) = StrComp(S1, S2, Compare)
         End If
-            
-        ResNdx = ResNdx + 1
-        Ndx1 = Ndx1 + 1
-        Ndx2 = Ndx2 + 1
-        'If Ndx1 is greater than UBound(Array1) we've hit the end of the arrays
-        If Ndx1 > UBound(Array1) Then
-            Done = True
-        End If
-    Loop
+    Next
     
     CompareArrays = True
     
