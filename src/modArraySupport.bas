@@ -1011,25 +1011,25 @@ Public Function IsArrayAllNumeric( _
 End Function
 
 
-''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 'IsArrayAllocated
-'Returns TRUE if the array is allocated (either a static array or a dynamic array that has been
-'sized with Redim) or FALSE if the array is not allocated (a dynamic that has not yet
-'been sized with Redim, or a dynamic array that has been Erased). Static arrays are always
-'allocated.
+'Returns 'True' if the array is allocated (either a static or a dynamic array
+'that has been sized with 'ReDim') or 'False' if the array is not allocated
+'(a dynamic that has not yet been sized with 'ReDim', or a dynamic array that
+'has been erased). Static arrays are always allocated.
 '
-'The VBA IsArray function indicates whether a variable is an array, but it does not
-'distinguish between allocated and unallocated arrays. It will return TRUE for both
-'allocated and unallocated arrays. This function tests whether the array has actually
-'been allocated.
+'The VBA 'IsArray' function indicates whether a variable is an array, but it
+'does not distinguish between allocated and unallocated arrays. It will return
+''True' for both allocated and unallocated arrays. This function tests whether
+'the array has actually been allocated.
 '
-'This function is just the reverse of IsArrayEmpty.
-'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'This function is just the reverse of 'IsArrayEmpty'.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 Public Function IsArrayAllocated( _
-    Arr As Variant _
+    ByVal Arr As Variant _
         ) As Boolean
-
-    Dim N As Long
+    
+    Dim DummyVariable As Long
     
     
     'Set the default return value
@@ -1041,20 +1041,17 @@ Public Function IsArrayAllocated( _
     
     'Attempt to get the UBound of the array. If the array has not been allocated,
     'an error will occur. Test Err.Number to see if an error occurred.
-    N = UBound(Arr, 1)
-    If (Err.Number = 0) Then
+    DummyVariable = UBound(Arr, 1)
+    If Err.Number = 0 Then
         'Under some circumstances, if an array is not allocated, Err.Number
-        'will be 0. To acccomodate this case, we test whether LBound <= Ubound.
+        'will be 0. To accommodate this case, we test whether LBound <= UBound.
         'If this is True, the array is allocated. Otherwise, the array is not
         'allocated.
-        If LBound(Arr) <= UBound(Arr) Then
-            'no error. array has been allocated
-            IsArrayAllocated = True
-        End If
+        IsArrayAllocated = (LBound(Arr) <= UBound(Arr))
     Else
         'error. unallocated array
     End If
-
+    
 End Function
 
 

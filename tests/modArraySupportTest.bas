@@ -1003,19 +1003,45 @@ Debug.Print "IsArrayAllNumeric:", B
 End Sub
 
 
-Public Sub DemoIsArrayAllocated()
-    
-    Dim B As Boolean
-    Dim AllocArray(1 To 3) As Variant
-    Dim UnAllocArray() As Variant
-    
-    
-    B = modArraySupport.IsArrayAllocated(AllocArray)
-Debug.Print "IsArrayAllocated AllocArray:", B
+'==============================================================================
+'unit tests for 'IsArrayAllocated'
+'==============================================================================
 
-    B = modArraySupport.IsArrayAllocated(UnAllocArray)
-Debug.Print "IsArrayAllocated UnAllocArray:", B
+'@TestMethod
+Public Sub IsArrayAllocated_AllocatedArray_ReturnsTrue()
+    On Error GoTo TestFail
+    
+    'Arrange:
+    Dim AllocatedArray(1 To 3) As Variant
+    
+    
+    'Act:
+    'Assert:
+    Assert.IsTrue modArraySupport.IsArrayAllocated(AllocatedArray)
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+End Sub
 
+
+'@TestMethod
+Public Sub IsArrayAllocated_UnAllocatedArray_ReturnsFalse()
+    On Error GoTo TestFail
+    
+    'Arrange:
+    Dim UnAllocatedArray() As Variant
+    
+    
+    'Act:
+    'Assert:
+    Assert.IsFalse modArraySupport.IsArrayAllocated(UnAllocatedArray)
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
 End Sub
 
 
