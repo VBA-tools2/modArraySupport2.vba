@@ -1063,24 +1063,6 @@ Debug.Print "IsArrayDynamic DynArray:", B
 End Sub
 
 
-Public Sub DemoIsArrayEmpty()
-
-    Dim EmptyArray() As Long
-    Dim NonEmptyArray() As Long
-    Dim B As Boolean
-
-    
-    ReDim NonEmptyArray(1 To 3)
-    
-    B = modArraySupport.IsArrayEmpty(EmptyArray)
-Debug.Print "IsArrayEmpty: EmptyArray:", B
-
-    B = modArraySupport.IsArrayEmpty(NonEmptyArray)
-Debug.Print "IsArrayEmpty: NonEmptyArray:", B
-
-End Sub
-
-
 Public Sub DemoIsArrayObjects()
     
     Dim V(1 To 3) As Variant

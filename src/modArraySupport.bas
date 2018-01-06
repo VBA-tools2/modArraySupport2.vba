@@ -35,7 +35,7 @@ Option Compare Text
 '     IsArrayAllNumeric
 '     IsArrayAllocated
 '     IsArrayDynamic
-'     IsArrayEmpty
+'     (IsArrayEmpty)                   --> = Not IsArrayAllocated
 '     IsArrayObjects
 '     IsArraySorted
 '     IsNumericDataType
@@ -461,7 +461,7 @@ Public Function CopyArraySubSetToArray( _
     'ResultArray is dynamic and can be resized
     Else
         'Test whether we need to resize the array, and resize it if required
-        If IsArrayEmpty(ResultArray) Then
+        If Not IsArrayAllocated(ResultArray) Then
             'ResultArray is unallocated. Resize it to
             'DestinationElement + NumElementsToCopy - 1.
             'This provides empty elements to the left of the DestinationElement
@@ -515,7 +515,8 @@ End Function
 'This function copies all objects that are not Nothing from SourceArray
 'to ResultArray. ResultArray MUST be a dynamic array of type Object or Variant.
 'E.g.,
-'    Dim ResultArray() As Object 'Or
+'    Dim ResultArray() As Object
+'Or
 '    Dim ResultArray() as Variant
 '
 'ResultArray will be Erased and then resized to hold the non-Nothing elements
@@ -529,7 +530,7 @@ End Function
 '
 'This function uses the following procedures.
 '    IsArrayDynamic
-'    IsArrayEmpty
+'    IsArrayAllocated
 '    NumberOfArrayDimensions
 ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 Public Function CopyNonNothingObjectsToArray( _
@@ -679,7 +680,7 @@ Public Function DataTypeOfArray( _
     'elements of the array (e.g., the 'VarType' of an array of 'Long's is 8195,
     'which is 'vbArray + vbLong'). Thus, to get the basic data type of the
     'array, we subtract the value 'vbArray'.
-    If IsArrayEmpty(Arr) Then
+    If Not IsArrayAllocated(Arr) Then
         DataTypeOfArray = VarType(Arr) - vbArray
     Else
         '(We use this for loop to get the first element of an array of arbitrary
@@ -971,10 +972,7 @@ Public Function IsArrayAllNumeric( _
     
     If Not IsArray(Arr) Then Exit Function
     'Ensure Arr is allocated (non-empty)
-'---
-'2do: what is really needed: 'IsArrayEmpty' or 'IsArrayAllocated'?
-'---
-    If IsArrayEmpty(Arr) Then Exit Function
+    If Not IsArrayAllocated(Arr) Then Exit Function
     
     'Loop through the array
     For Ndx = LBound(Arr) To UBound(Arr)
@@ -1022,8 +1020,6 @@ End Function
 'does not distinguish between allocated and unallocated arrays. It will return
 ''True' for both allocated and unallocated arrays. This function tests whether
 'the array has actually been allocated.
-'
-'This function is just the reverse of 'IsArrayEmpty'.
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 Public Function IsArrayAllocated( _
     ByVal Arr As Variant _
@@ -1073,9 +1069,8 @@ Public Function IsArrayDynamic( _
     
     If Not IsArray(Arr) Then Exit Function
     
-    'If the array is empty, it hasn't been allocated yet, so we know it must be
-    'a dynamic array
-    If IsArrayEmpty(Arr) Then
+    'If the array is unallocated, we know it must be a dynamic array
+    If Not IsArrayAllocated(Arr) Then
         IsArrayDynamic = True
         Exit Function
     End If
@@ -1120,51 +1115,6 @@ Public Function IsArrayDynamic( _
             'Some unexpected error occurred. Be safe and return False.
             IsArrayDynamic = False
     End Select
-
-End Function
-
-
-''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-'IsArrayEmpty
-'This function tests whether the array is empty (unallocated). Returns TRUE or FALSE.
-'
-'The VBA IsArray function indicates whether a variable is an array, but it does not
-'distinguish between allocated and unallocated arrays. It will return TRUE for both
-'allocated and unallocated arrays. This function tests whether the array has actually
-'been allocated.
-'
-'This function is really the reverse of IsArrayAllocated.
-'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-Public Function IsArrayEmpty( _
-    Arr As Variant _
-        ) As Boolean
-
-    Dim LB As Long
-    Dim UB As Long
-    
-    
-    Err.Clear
-    On Error Resume Next
-    If Not IsArray(Arr) Then
-        'we weren't passed an array, return True
-        IsArrayEmpty = True
-    End If
-    
-    'Attempt to get the UBound of the array. If the array is
-    'unallocated, an error will occur.
-    UB = UBound(Arr, 1)
-    If (Err.Number <> 0) Then
-        IsArrayEmpty = True
-    Else
-        'On rare occassion, under circumstances I cannot reliably replictate,
-        'Err.Number will be 0 for an unallocated, empty array.
-        'On these occassions, LBound is 0 and UBoung is -1.
-        'To accomodate the weird behavior, test to see if LB > UB.
-        'If so, the array is not allocated.
-        Err.Clear
-        LB = LBound(Arr)
-        IsArrayEmpty = (LB > UB)
-    End If
 
 End Function
 
@@ -1536,7 +1486,7 @@ End Function
 ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 'NumberOfArrayDimensions
 'This function returns the number of dimensions of an array. An unallocated dynamic array
-'has 0 dimensions. This condition can also be tested with IsArrayEmpty.
+'has 0 dimensions. This condition can also be tested with 'Not IsArrayAllocated'.
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 Public Function NumberOfArrayDimensions( _
     Arr As Variant _
@@ -1584,7 +1534,7 @@ Public Function NumElements( _
     NumElements = 0
     
     If Not IsArray(Arr) Then Exit Function
-    If IsArrayEmpty(Arr) = True Then Exit Function
+    If Not IsArrayAllocated(Arr) Then Exit Function
     
     'ensure that Dimension is at least 1
     If Dimension < 1 Then Exit Function
