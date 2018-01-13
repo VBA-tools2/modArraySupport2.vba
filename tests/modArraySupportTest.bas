@@ -39,6 +39,198 @@ End Sub
 
 
 '==============================================================================
+'unit tests for 'AreDataTypesCompatible'
+'==============================================================================
+
+'@TestMethod
+Public Sub AreDataTypesCompatible_ScalarSourceArrayDest_ReturnsFalse()
+    On Error GoTo TestFail
+    
+    'Arrange:
+    Dim Source As Long
+    Dim Dest() As Long
+    
+    
+    'Act:
+    'Assert:
+    Assert.IsFalse modArraySupport.AreDataTypesCompatible(Source, Dest)
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+End Sub
+
+
+'@TestMethod
+Public Sub AreDataTypesCompatible_BothStringScalars_ReturnsTrue()
+    On Error GoTo TestFail
+    
+    'Arrange:
+    Dim Source As String
+    Dim Dest As String
+    
+    
+    'Act:
+    'Assert:
+    Assert.IsTrue modArraySupport.AreDataTypesCompatible(Source, Dest)
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+End Sub
+
+
+'@TestMethod
+Public Sub AreDataTypesCompatible_BothStringArrays_ReturnsTrue()
+    On Error GoTo TestFail
+    
+    'Arrange:
+    Dim Source() As String
+    Dim Dest() As String
+    
+    
+    'Act:
+    'Assert:
+    Assert.IsTrue modArraySupport.AreDataTypesCompatible(Source, Dest)
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+End Sub
+
+
+'@TestMethod
+Public Sub AreDataTypesCompatible_LongSourceIntegerDest_ReturnsFalse()
+    On Error GoTo TestFail
+    
+    'Arrange:
+    Dim Source As Long
+    Dim Dest As Integer
+    
+    
+    'Act:
+    'Assert:
+    Assert.IsFalse modArraySupport.AreDataTypesCompatible(Source, Dest)
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+End Sub
+
+
+'@TestMethod
+Public Sub AreDataTypesCompatible_IntegerSourceLongDest_ReturnsTrue()
+    On Error GoTo TestFail
+    
+    'Arrange:
+    Dim Source As Integer
+    Dim Dest As Long
+    
+    
+    'Act:
+    'Assert:
+    Assert.IsTrue modArraySupport.AreDataTypesCompatible(Source, Dest)
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+End Sub
+
+
+'@TestMethod
+Public Sub AreDataTypesCompatible_DoubleSourceLongDest_ReturnsFalse()
+    On Error GoTo TestFail
+    
+    'Arrange:
+    Dim Source As Double
+    Dim Dest As Long
+    
+    
+    'Act:
+    'Assert:
+    Assert.IsFalse modArraySupport.AreDataTypesCompatible(Source, Dest)
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+End Sub
+
+
+'@TestMethod
+Public Sub AreDataTypesCompatible_BothObjects_ReturnsTrue()
+    On Error GoTo TestFail
+    
+    'Arrange:
+    Dim Source As Object
+    Dim Dest As Object
+    
+    
+    'Act:
+    'Assert:
+    Assert.IsTrue modArraySupport.AreDataTypesCompatible(Source, Dest)
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+End Sub
+
+
+'@TestMethod
+Public Sub AreDataTypesCompatible_SingleSourceDateDest_ReturnsTrue()
+    On Error GoTo TestFail
+    
+    'Arrange:
+    Dim Source As Single
+    Dim Dest As Date
+    
+    
+    'Act:
+    'Assert:
+    Assert.IsTrue modArraySupport.AreDataTypesCompatible(Source, Dest)
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+End Sub
+
+
+''2do: How to do this test?
+''     --> in 'ChangeBoundsOfArray_VariantArr_ReturnsTrueAndChangedArr' are
+''         'Empty' entries added at the end of the array
+''@TestMethod
+'Public Sub AreDataTypesCompatible_VariantSourceEmptyDest_ReturnsTrue()
+'    On Error GoTo TestFail
+'
+'    'Arrange:
+'    Dim Source(0) As Variant
+'    Dim Dest(0) As Variant
+'    Dim vDummy As Variant
+'
+'
+'    'Act:
+'    vDummy = 4534
+'    Source(0) = CVar(vDummy)
+'    Dest(0) = Empty
+'
+'    'Assert:
+'    Assert.IsTrue modArraySupport.AreDataTypesCompatible(Source(0), Dest(0))
+'
+'TestExit:
+'    Exit Sub
+'TestFail:
+'    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+'End Sub
+
+
+'==============================================================================
 'unit tests for 'CompareArrays'
 '==============================================================================
 

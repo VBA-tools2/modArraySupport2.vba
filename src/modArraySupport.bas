@@ -1740,21 +1740,23 @@ Public Function SetObjectArrayToNothing( _
 End Function
 
 
-''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 'AreDataTypesCompatible
-'This function determines if SourceVar is compatiable with DestVar. If the two
-'data types are the same, they are compatible. If the value of SourceVar can
-'be stored in DestVar with no loss of precision or an overflow, they are compatible.
-'For example, if DestVar is a Long and SourceVar is an Integer, they are compatible
-'because an integer can be stored in a Long with no loss of information. If DestVar
-'is a Long and SourceVar is a Double, they are not compatible because information
-'will be lost converting from a Double to a Long (the decimal portion will be lost).
-'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'This function determines if 'SourceVar' is compatible with 'DestVar'. If the
+'two data types are the same, they are compatible. If the value of 'SourceVar'
+'can be stored in 'DestVar' with no loss of precision or an overflow, they are
+'compatible.
+'For example, if 'DestVar' is a 'Long' and 'SourceVar' is an 'Integer', they
+'are compatible because an 'Integer' can be stored in a 'Long' with no loss of
+'information. If 'DestVar' is a 'Long' and 'SourceVar' is a 'Double', they are
+'not compatible because information will be lost converting from a 'Double' to
+'a 'Long' (the decimal portion will be lost).
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 Public Function AreDataTypesCompatible( _
-    SourceVar As Variant, _
-    DestVar As Variant _
+    ByVal SourceVar As Variant, _
+    ByVal DestVar As Variant _
         ) As Boolean
-
+    
     Dim SVType As VbVarType
     Dim DVType As VbVarType
     
@@ -1765,158 +1767,112 @@ Public Function AreDataTypesCompatible( _
     'Set the default return value
     AreDataTypesCompatible = False
     
-    'If DestVar is an array, get the type of array. If it is an array its
-    'VarType is vbArray + VarType(element) so we subtract vbArray to get then
-    'data type of the aray. E.g., the VarType of an array of Longs is
-    '8195 = vbArray + vbLong,
-    '8195 - vbArray = vbLong (=3).
-    If IsArray(DestVar) Then
-        DVType = VarType(DestVar) - vbArray
-    Else
-        DVType = VarType(DestVar)
-    End If
-    'If SourceVar is an array, get the type of array
-    If IsArray(SourceVar) Then
-        SVType = VarType(SourceVar) - vbArray
-    Else
-        SVType = VarType(SourceVar)
-    End If
-    
     'If one variable is an array and the other is not an array, they are incompatible
     If (IsArray(SourceVar) And Not IsArray(DestVar)) Or _
             (Not IsArray(SourceVar) And IsArray(DestVar)) Then
         Exit Function
     End If
     
-'---
-'2do:
-'- there is no loop, so can't all "Exit Function"s be safely removed, because
-'  the function would be exited anyway after the corresponding line?
-'---
-    '''Test the data type of DestVar and return a result if SourceVar is
-    '''compatible with that type.
-    'The the variable types are the same, they are compatible
+    'If 'SourceVar' is an array, get the type of array. If it is an array its
+    ''VarType' is 'vbArray + VarType(element)' so we subtract 'vbArray' to get
+    'the data type of the array. E.g., the 'VarType' of an array of 'Long's is
+    '8195 = vbArray + vbLong,
+    '8195 - vbArray = vbLong (= 3).
+    If IsArray(SourceVar) Then
+        SVType = VarType(SourceVar) - vbArray
+    Else
+        SVType = VarType(SourceVar)
+    End If
+    'If 'DestVar' is an array, get the type of array
+    If IsArray(DestVar) Then
+        DVType = VarType(DestVar) - vbArray
+    Else
+        DVType = VarType(DestVar)
+    End If
+    
+    'Test the data type of 'DestVar' and return a result if 'SourceVar' is
+    'compatible with that type.
     If SVType = DVType Then
+        'The variable types are the same --> they are compatible
         AreDataTypesCompatible = True
-        Exit Function
     'If the data types are not the same, determine whether they are compatible
     Else
         Select Case DVType
             Case vbInteger
-                Select Case SVType
-                    Case vbInteger
-                        AreDataTypesCompatible = True
-                        Exit Function
-                    Case Else
-                        Exit Function
-                End Select
+                'there is no compatible match for that
+                '(that isn't already caught above)
             Case vbLong, LongLongType
                 Select Case SVType
                     Case vbInteger, vbLong, LongLongType
                         AreDataTypesCompatible = True
-                        Exit Function
-                    Case Else
-                        Exit Function
                 End Select
             Case vbSingle
                 Select Case SVType
                     Case vbInteger, vbLong, LongLongType, vbSingle
                         AreDataTypesCompatible = True
-                        Exit Function
-                    Case Else
-                        Exit Function
                 End Select
             Case vbDouble
                 Select Case SVType
                     Case vbInteger, vbLong, LongLongType, vbSingle, vbDouble
                         AreDataTypesCompatible = True
-                        Exit Function
-                    Case Else
-                        Exit Function
                 End Select
-            Case vbString
-                Select Case SVType
-                    Case vbString
-                        AreDataTypesCompatible = True
-                        Exit Function
-                    Case Else
-                        Exit Function
-                End Select
-            Case vbObject
-                Select Case SVType
-                    Case vbObject
-                        AreDataTypesCompatible = True
-                        Exit Function
-                    Case Else
-                        Exit Function
-                End Select
+'            'this is already covered above
+'            Case vbString
+'                Select Case SVType
+'                    Case vbString
+'                        AreDataTypesCompatible = True
+'                End Select
+'            'this is already covered above
+'            Case vbObject
+'                Select Case SVType
+'                    Case vbObject
+'                        AreDataTypesCompatible = True
+'                End Select
             Case vbBoolean
                 Select Case SVType
                     Case vbBoolean, vbInteger
                         AreDataTypesCompatible = True
-                        Exit Function
-                    Case Else
-                        Exit Function
                 End Select
-            Case vbByte
-                Select Case SVType
-                    Case vbByte
-                        AreDataTypesCompatible = True
-                        Exit Function
-                    Case Else
-                        Exit Function
-                End Select
+'            'this is already covered above
+'            Case vbByte
+'                Select Case SVType
+'                    Case vbByte
+'                        AreDataTypesCompatible = True
+'                End Select
             Case vbCurrency
                 Select Case SVType
                     Case vbInteger, vbLong, LongLongType, vbSingle, vbDouble
                         AreDataTypesCompatible = True
-                        Exit Function
-                    Case Else
-                        Exit Function
                 End Select
             Case vbDecimal
                 Select Case SVType
                     Case vbInteger, vbLong, LongLongType, vbSingle, vbDouble
                         AreDataTypesCompatible = True
-                        Exit Function
-                    Case Else
-                        Exit Function
                 End Select
             Case vbDate
                 Select Case SVType
                     Case vbLong, LongLongType, vbSingle, vbDouble
                         AreDataTypesCompatible = True
-                        Exit Function
-                    Case Else
-                        Exit Function
                 End Select
             Case vbEmpty
                 Select Case SVType
                     Case vbVariant
                         AreDataTypesCompatible = True
-                        Exit Function
-                    Case Else
-                        Exit Function
                 End Select
             Case vbError
-                AreDataTypesCompatible = False
-                Exit Function
             Case vbNull
-                Exit Function
-            Case vbObject
-                Select Case SVType
-                    Case vbObject
-                        AreDataTypesCompatible = True
-                        Exit Function
-                    Case Else
-                        Exit Function
-                End Select
+'            'this is already covered above
+'            Case vbObject
+'                Select Case SVType
+'                    Case vbObject
+'                        AreDataTypesCompatible = True
+'                End Select
             Case vbVariant
+                'everything is compatible to a 'Variant'
                 AreDataTypesCompatible = True
-                Exit Function
         End Select
     End If
-
+    
 End Function
 
 
