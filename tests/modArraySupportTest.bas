@@ -987,19 +987,326 @@ Debug.Print "IsArrayAllDefault Obj", B
 End Sub
 
 
-Public Sub DemoIsArrayAllNumeric()
+'==============================================================================
+'unit tests for 'IsArrayAllNumeric'
+'==============================================================================
+
+'@TestMethod
+Public Sub IsArrayAllNumeric_NoArray_ReturnsFalse()
+    On Error GoTo TestFail
+    
+    'Arrange:
+    Dim V As Variant
+    
+    
+    'Act:
+    'Assert:
+    Assert.IsFalse modArraySupport.IsArrayAllNumeric(V)
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+End Sub
+
+
+'@TestMethod
+Public Sub IsArrayAllNumeric_UnallocatedArray_ReturnsFalse()
+    On Error GoTo TestFail
+    
+    'Arrange:
+    Dim V() As Variant
+    
+    
+    'Act:
+    'Assert:
+    Assert.IsFalse modArraySupport.IsArrayAllNumeric(V)
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+End Sub
+
+
+'@TestMethod
+Public Sub IsArrayAllNumeric_IncludingNumericStringAllowNumericStringsFalse_ReturnsFalse()
+    On Error GoTo TestFail
     
     Dim V(1 To 3) As Variant
-    Dim B As Boolean
     
     
+    'Arrange:
+    V(1) = "100"
+    V(2) = 2
+    V(3) = Empty
+    
+    'Act:
+    'Assert:
+    Assert.IsFalse modArraySupport.IsArrayAllNumeric(V, False)
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+End Sub
+
+
+'@TestMethod
+Public Sub IsArrayAllNumeric_IncludingNumericStringAllowNumericStringsTrue_ReturnsTrue()
+    On Error GoTo TestFail
+    
+    Dim V(1 To 3) As Variant
+    
+    
+    'Arrange:
+    V(1) = "100"
+    V(2) = 2
+    V(3) = Empty
+    
+    'Act:
+    'Assert:
+    Assert.IsTrue modArraySupport.IsArrayAllNumeric(V, True)
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+End Sub
+
+
+'@TestMethod
+Public Sub IsArrayAllNumeric_IncludingNonNumericString_ReturnsFalse()
+    On Error GoTo TestFail
+    
+    Dim V(1 To 3) As Variant
+    
+    
+    'Arrange:
     V(1) = "abc"
     V(2) = 2
     V(3) = Empty
     
-    B = modArraySupport.IsArrayAllNumeric(V, True)
-Debug.Print "IsArrayAllNumeric:", B
+    'Act:
+    'Assert:
+    Assert.IsFalse modArraySupport.IsArrayAllNumeric(V, True)
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+End Sub
 
+
+'@TestMethod
+Public Sub IsArrayAllNumeric_Numeric1DVariantArray_ReturnsTrue()
+    On Error GoTo TestFail
+    
+    Dim V(1 To 3) As Variant
+    
+    
+    'Arrange:
+    V(1) = 123
+    V(2) = 456
+    V(3) = 789
+    
+    'Act:
+    'Assert:
+    Assert.IsTrue modArraySupport.IsArrayAllNumeric(V)
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+End Sub
+
+
+'@TestMethod
+Public Sub IsArrayAllNumeric_1DVariantArrayWithObject_ReturnsFalse()
+    On Error GoTo TestFail
+    
+    Dim V(1 To 3) As Variant
+    
+    
+    'Arrange:
+    V(1) = 123
+    Set V(2) = ThisWorkbook.Worksheets(1).Range("A1")
+    V(3) = 789
+    
+    'Act:
+    'Assert:
+    Assert.IsFalse modArraySupport.IsArrayAllNumeric(V)
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+End Sub
+
+
+'@TestMethod
+Public Sub IsArrayAllNumeric_1DVariantArrayWithUnallocatedEntry_ReturnsTrue()
+    On Error GoTo TestFail
+    
+    Dim V(1 To 3) As Variant
+    
+    
+    'Arrange:
+    V(1) = 123
+    V(3) = 789
+    
+    'Act:
+    'Assert:
+    Assert.IsTrue modArraySupport.IsArrayAllNumeric(V)
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+End Sub
+
+
+'@TestMethod
+Public Sub IsArrayAllNumeric_Numeric2DVariantArray_ReturnsTrue()
+    On Error GoTo TestFail
+    
+    Dim V(1 To 3, 4 To 5) As Variant
+    
+    
+    'Arrange:
+    V(1, 4) = 123
+    V(2, 4) = 456
+    V(3, 4) = 789
+    
+    V(1, 5) = -5
+    V(3, 5) = -10
+    
+    'Act:
+    'Assert:
+    Assert.IsTrue modArraySupport.IsArrayAllNumeric(V)
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+End Sub
+
+
+'@TestMethod
+Public Sub IsArrayAllNumeric_2DVariantArrayWithObject_ReturnsFalse()
+    On Error GoTo TestFail
+    
+    Dim V(1 To 3, 4 To 5) As Variant
+    
+    
+    'Arrange:
+    V(1, 4) = 123
+    Set V(2, 4) = ThisWorkbook.Worksheets(1).Range("A1")
+    V(3, 4) = 789
+    
+    V(1, 5) = -5
+    V(3, 5) = -10
+    
+    'Act:
+    'Assert:
+    Assert.IsFalse modArraySupport.IsArrayAllNumeric(V)
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+End Sub
+
+
+'@TestMethod
+Public Sub IsArrayAllNumeric_1DVariantArrayWithArrayAllowArrayElementsFalse_ReturnsFalse()
+    On Error GoTo TestFail
+    
+    Dim V(1 To 3) As Variant
+    
+    
+    'Arrange:
+    V(1) = 123
+    V(2) = Array(-5)
+    V(3) = 789
+    
+    'Act:
+    'Assert:
+    Assert.IsFalse modArraySupport.IsArrayAllNumeric(V)
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+End Sub
+
+
+'@TestMethod
+Public Sub IsArrayAllNumeric_1DVariantArrayWithArrayAllowArrayElementsTrue_ReturnsTrue()
+    On Error GoTo TestFail
+    
+    Dim V(1 To 3) As Variant
+    
+    
+    'Arrange:
+    V(1) = 123
+    V(2) = Array(-5)
+    V(3) = 789
+    
+    'Act:
+    'Assert:
+    Assert.IsTrue modArraySupport.IsArrayAllNumeric(V, , True)
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+End Sub
+
+
+'@TestMethod
+Public Sub IsArrayAllNumeric_1DVariantArrayWithArrayAllowArrayElementsTrue_ReturnsFalse()
+    On Error GoTo TestFail
+    
+    Dim V(1 To 3) As Variant
+    
+    
+    'Arrange:
+    V(1) = 123
+    V(2) = Array(-5, "-5")
+    V(3) = 789
+    
+    'Act:
+    'Assert:
+    Assert.IsFalse modArraySupport.IsArrayAllNumeric(V, , True)
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+End Sub
+
+
+'@TestMethod
+Public Sub IsArrayAllNumeric_1DVariantArrayWithArrayAllowNumericStringsTrueAllowArrayElementsTrue_ReturnsTrue()
+    On Error GoTo TestFail
+    
+    Dim V(1 To 3) As Variant
+    
+    
+    'Arrange:
+    V(1) = 123
+    V(2) = Array(-5, "-5")
+    V(3) = 789
+    
+    'Act:
+    'Assert:
+    Assert.IsTrue modArraySupport.IsArrayAllNumeric(V, True, True)
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
 End Sub
 
 

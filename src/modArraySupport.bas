@@ -942,70 +942,76 @@ Public Function IsArrayAllDefault( _
 End Function
 
 
-''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 'IsArrayAllNumeric
-'This function returns True if Arr is entirely numeric. False otherwise. The AllowNumericStrings
-'parameter indicates whether strings containing numeric data are considered numeric. If this
-'parameter is True, a numeric string is considered a numeric variable. If this parameter is
-'omitted or False, a numeric string is not considered a numeric variable.
-'Variants that are numeric or Empty are allowed. Variants that are arrays, objects, or
-'non-numeric data are not allowed.
-''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-'2do:
-'- This function only tests a vector
-'  --> so a better name would be 'IsVectorAllNumeric'
-'- There is no test for the 1-dimensionality
-'- What is the benefit of this function over 'IsVariantArrayNumeric'?
+'This function returns 'True' if 'Arr' is entirely numeric and 'False'
+'otherwise. The 'AllowNumericStrings' parameter indicates whether strings
+'containing numeric data are considered numeric. If this parameter is 'True', a
+'numeric string is considered a numeric variable. If this parameter is omitted
+'or 'False', a numeric string is not considered a numeric variable. Variants
+'that are numeric or empty are allowed. Variants that are objects or
+'non-numeric data are not allowed. With the 'AllowArrayElements' parameter it
+'can be stated, if (sub-)arrays should also be tested for numeric data.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 Public Function IsArrayAllNumeric( _
-    Arr As Variant, _
-    Optional AllowNumericStrings As Boolean = False _
+    ByVal Arr As Variant, _
+    Optional ByVal AllowNumericStrings As Boolean = False, _
+    Optional ByVal AllowArrayElements As Boolean = False _
         ) As Boolean
-
-    Dim Ndx As Long
     
-    Dim LongLongType As Byte
-    LongLongType = DeclareLongLong
-    
+    Dim Element As Variant
     
     'Set the default return value
     IsArrayAllNumeric = False
     
     If Not IsArray(Arr) Then Exit Function
-    'Ensure Arr is allocated (non-empty)
     If Not IsArrayAllocated(Arr) Then Exit Function
     
     'Loop through the array
-    For Ndx = LBound(Arr) To UBound(Arr)
-        Select Case VarType(Arr(Ndx))
-            Case vbInteger, vbLong, LongLongType, vbDouble, vbSingle, vbCurrency, vbDecimal, vbEmpty
-                'all valid numeric types
+    For Each Element In Arr
+        If IsObject(Element) Then Exit Function
+        
+        Select Case VarType(Element)
+            Case vbEmpty
+                'is (also) allowed
             Case vbString
-                'For strings, check the AllowNumericStrings parameter.
+                'For strings, check the 'AllowNumericStrings' parameter.
                 'If True and the element is a numeric string, allow it.
-                'If it is a non-numeric string, exit with False.
-                'If AllowNumericStrings is False, all strings, even
-                'numeric strings, will cause a result of False.
+                'If it is a non-numeric string, exit with 'False'.
+                'If 'AllowNumericStrings' is 'False', all strings, even
+                'numeric strings, will cause a result of 'False'.
                 If AllowNumericStrings = True Then
-                    'Allow numeric strings.
-                    If Not IsNumeric(Arr(Ndx)) Then Exit Function
+                    If Not IsNumeric(Element) Then Exit Function
                 Else
                     Exit Function
                 End If
-            Case vbVariant
-                'For Variants, disallow Arrays and Objects.
-                'If the element is not an array or an object, test whether it is
-                'numeric. Allow numeric Variants.
-                If IsArray(Arr(Ndx)) Then Exit Function
-                If IsObject(Arr(Ndx)) Then Exit Function
-                If Not IsNumeric(Arr(Ndx)) Then Exit Function
+            Case Is >= vbVariant
+                'For Variants, disallow Objects.
+                If IsObject(Element) Then Exit Function
+                'If the element is an array ...
+                If IsArray(Element) Then
+                    '... only test the elements, if (numeric) array elements are
+                    'allowed
+                    If AllowArrayElements Then
+                        'Test the elements (recursively) with the same rules as the
+                        'main array
+                        If Not IsArrayAllNumeric( _
+                                Element, AllowNumericStrings, AllowArrayElements) Then _
+                                        Exit Function
+                    Else
+                        Exit Function
+                    End If
+                'If the element is not an array, test, if it is of numeric type.
+                Else
+                    If Not IsNumeric(Element) Then Exit Function
+                End If
             Case Else
-                'any other data type returns False
-                Exit Function
+                If Not IsNumeric(Element) Then Exit Function
         End Select
     Next
     
     IsArrayAllNumeric = True
-
+    
 End Function
 
 
