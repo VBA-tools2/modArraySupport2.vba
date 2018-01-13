@@ -40,7 +40,7 @@ Option Compare Text
 '     IsArraySorted
 '     IsNumericDataType
 '     IsVariantArrayConsistent
-'     IsVariantArrayNumeric
+'     (IsVariantArrayNumeric)          --> merged into `IsArrayAllNumeric'
 '     MoveEmptyStringsToEndOfArray
 '     NumberOfArrayDimensions
 '     NumElements
@@ -1189,7 +1189,7 @@ End Function
 'TestVar is an array of Variants, the function will indicate only whether
 'the first element of the array is numeric. Other elements of the array
 'may not be numeric data types. To test an entire array of variants
-'to ensure they are all numeric data types, use the IsVariantArrayNumeric
+'to ensure they are all numeric data types, use the IsArrayAllNumeric
 'function.
 '
 'It will return FALSE for any other data type. Use this procedure
@@ -1232,7 +1232,7 @@ Public Function IsNumericDataType( _
         NumDims = NumberOfArrayDimensions(TestVar)
 '---
 '2do:
-'- is a change needed here? First test, if 'IsVariantArrayNumeric' is supposed
+'- is a change needed here? First test, if 'IsArrayAllNumeric' is supposed
 '  to handle this!
 '---
         If NumDims > 1 Then
@@ -1349,82 +1349,49 @@ Public Function IsVariantArrayConsistent( _
 End Function
 
 
-''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-'IsVariantArrayNumeric
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+''IsVariantArrayNumeric
+''This function returns 'True' if all the elements of an array of variants are
+''numeric data types. They need not all be the same data type. You can have a
+''mix of 'Integer's, 'Long's, 'Double's, and 'Single's.
+''As long as they are all numeric data types, the function will return 'True'.
+''If a non-numeric data type is encountered, the function will return 'False'.
+''Also, it will return 'False' if 'InputArray' is not an array, or if
+'''InputArray' has not been allocated. 'InputArray' may be a multi-dimensional
+''array. This procedure uses the 'IsNumericDataType' function to determine
+''whether a variable is a numeric data type. If there is an uninitialized
+''variant ('VarType = vbEmpty') in the array, it is skipped and not used in the
+''comparison (i.e., 'Empty' is considered a valid numeric data type since you
+''can assign a number to it).
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'Public Function IsVariantArrayNumeric( _
+'    InputArray As Variant _
+'        ) As Boolean
 '
-'This function returns TRUE if all the elements of an array of
-'variants are numeric data types. They need not all be the same data
-'type. You can have a mix of Integer, Longs, Doubles, and Singles.
-'As long as they are all numeric data types, the function will
-'return TRUE. If a non-numeric data type is encountered, the
-'function will return FALSE. Also, it will return FALSE if
-'TestArray is not an array, or if TestArray has not been
-'allocated. TestArray may be a multi-dimensional array. This
-'procedure uses the IsNumericDataType function to determine whether
-'a variable is a numeric data type. If there is an uninitialized
-'variant (VarType = vbEmpty) in the array, it is skipped and not
-'used in the comparison (i.e., Empty is considered a valid numeric
-'data type since you can assign a number to it).
-''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-'2do:
-'- add "Optional AllowNumericStrings As Boolean = False" from
-'  'IsArrayAllNumeric'?
-Public Function IsVariantArrayNumeric( _
-    TestArray As Variant _
-        ) As Boolean
-
-    Dim Ndx As Long
-    Dim DimNdx As Long
-    Dim NumDims As Long
-    
-    
-    'Set the default return value
-    IsVariantArrayNumeric = False
-    
-    If Not IsArray(TestArray) Then Exit Function
-    If Not IsArrayAllocated(TestArray) Then Exit Function
-    
-'---
-'2do:
-'- can this be simplified with a simple
-'      Dim item as Variant
-'      For Each item in TestArray
-'          ...
-'      Next
-'  ?
-'  (see <https://excelmacromastery.com/excel-vba-array/>)
-'---
-    NumDims = NumberOfArrayDimensions(TestArray)
-    Select Case NumDims
-        Case 1
-            For Ndx = LBound(TestArray) To UBound(TestArray)
-                If IsObject(TestArray(Ndx)) Then Exit Function
-                
-                If VarType(TestArray(Ndx)) <> vbEmpty Then
-                    If Not IsNumericDataType(TestArray(Ndx)) Then
-                        Exit Function
-                    End If
-                End If
-            Next
-        Case 2
-            For DimNdx = LBound(TestArray, 2) To UBound(TestArray, 2)
-                For Ndx = LBound(TestArray, DimNdx) To UBound(TestArray, DimNdx)
-                    If VarType(TestArray(Ndx, DimNdx)) <> vbEmpty Then
-                        If Not IsNumericDataType(TestArray(Ndx, DimNdx)) Then
-                            Exit Function
-                        End If
-                    End If
-                Next
-            Next
-        Case Else
-            'currently there is no handler for "higher"-dimensional arrays
-            Exit Function
-    End Select
-    
-    'If we made it up to here, then the array is entirely numeric
-    IsVariantArrayNumeric = True
-
-End Function
+'    Dim Element As Variant
+'
+'
+'    'Set the default return value
+'    IsVariantArrayNumeric = False
+'
+'    If Not IsArray(InputArray) Then Exit Function
+'    If Not IsArrayAllocated(InputArray) Then Exit Function
+'
+'    For Each Element In InputArray
+'        If IsObject(Element) Then Exit Function
+'
+'        Select Case VarType(Element)
+'            Case vbEmpty
+'                'allowed
+'            Case Else
+'                If Not IsNumericDataType(Element) Then Exit Function
+'        End Select
+'    Next
+'
+'    'If we made it up to here, then the array is entirely numeric
+'    IsVariantArrayNumeric = True
+'
+'End Function
 
 
 ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''

@@ -1436,22 +1436,6 @@ Debug.Print "IsVariantArrayConsistent:", B
 End Sub
 
 
-Public Sub DemoIsVariantArrayNumeric()
-
-    Dim B As Boolean
-    Dim V(1 To 3) As Variant
-    
-    
-    V(1) = 123
-    Set V(2) = Range("A1")
-    V(3) = 789
-    
-    B = modArraySupport.IsVariantArrayNumeric(V)
-Debug.Print "IsVariantArrayNumeric", B
-
-End Sub
-
-
 Public Sub DemoMoveEmptyStringsToEndOfArray()
     
     Dim B As Boolean
