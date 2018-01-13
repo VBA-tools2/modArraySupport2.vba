@@ -1466,23 +1466,85 @@ Debug.Print "MoveEmptyStringsToEndOfArray returned False"
 End Sub
 
 
-Public Sub DemoNumberOfArrayDimensions()
+'==============================================================================
+'unit tests for 'NumberOfArrayDimensions'
+'==============================================================================
 
-    Dim EmptyArray() As Long
-    Dim OneArray(1 To 3) As Long
-    Dim ThreeArray(1 To 3, 1 To 2, 1 To 1)
-    Dim N As Long
+'@TestMethod
+Public Sub NumberOfArrayDimensions_UnallocatedArray_ReturnsZero()
+    On Error GoTo TestFail
+    
+    'Arrange:
+    Dim Arr() As Long
+    Dim iNoOfArrDimensions As Long
+    
+    '==========================================================================
+    Const aExpected As Long = 0
+    '==========================================================================
+    
+    
+    'Act:
+    iNoOfArrDimensions = modArraySupport.NumberOfArrayDimensions(Arr)
+    
+    'Assert:
+    Assert.AreEqual aExpected, iNoOfArrDimensions
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+End Sub
 
 
-    N = modArraySupport.NumberOfArrayDimensions(EmptyArray)
-Debug.Print "NumberOfArrayDimensions EmptyArray", N
+'@TestMethod
+Public Sub NumberOfArrayDimensions_1DArray_ReturnsOne()
+    On Error GoTo TestFail
+    
+    'Arrange:
+    Dim Arr(1 To 3) As Long
+    Dim iNoOfArrDimensions As Long
+    
+    '==========================================================================
+    Const aExpected As Long = 1
+    '==========================================================================
+    
+    
+    'Act:
+    iNoOfArrDimensions = modArraySupport.NumberOfArrayDimensions(Arr)
+    
+    'Assert:
+    Assert.AreEqual aExpected, iNoOfArrDimensions
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+End Sub
 
-    N = modArraySupport.NumberOfArrayDimensions(OneArray)
-Debug.Print "NumberOfArrayDimensions OneArray", N
 
-    N = modArraySupport.NumberOfArrayDimensions(ThreeArray)
-Debug.Print "NumberOfArrayDimensions ThreeArray", N
-
+'@TestMethod
+Public Sub NumberOfArrayDimensions_3DArray_ReturnsThree()
+    On Error GoTo TestFail
+    
+    'Arrange:
+    Dim Arr(1 To 3, 1 To 2, 1 To 1)
+    Dim iNoOfArrDimensions As Long
+    
+    '==========================================================================
+    Const aExpected As Long = 3
+    '==========================================================================
+    
+    
+    'Act:
+    iNoOfArrDimensions = modArraySupport.NumberOfArrayDimensions(Arr)
+    
+    'Assert:
+    Assert.AreEqual aExpected, iNoOfArrDimensions
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
 End Sub
 
 

@@ -1456,30 +1456,31 @@ Public Function MoveEmptyStringsToEndOfArray( _
 End Function
 
 
-''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 'NumberOfArrayDimensions
-'This function returns the number of dimensions of an array. An unallocated dynamic array
-'has 0 dimensions. This condition can also be tested with 'Not IsArrayAllocated'.
-'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'This function returns the number of dimensions of an array. An unallocated
+'dynamic array has 0 dimensions.
+'(This condition can also be tested with 'Not IsArrayAllocated'.)
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 Public Function NumberOfArrayDimensions( _
-    Arr As Variant _
+    ByVal Arr As Variant _
         ) As Long
-
-    Dim Ndx As Long
+    
+    Dim i As Long
     Dim Res As Long
     
     
     On Error Resume Next
-    'Loop, increasing the dimension index Ndx, until an error occurs.
-    'An error will occur when Ndx exceeds the number of dimension in the array.
-    'Return Ndx - 1.
+    'Loop, increasing the dimension index 'i', until an error occurs.
+    'An error will occur when 'i' exceeds the number of dimension in the array.
+    'Return 'i' - 1.
     Do
-        Ndx = Ndx + 1
-        Res = UBound(Arr, Ndx)
+        i = i + 1
+        Res = UBound(Arr, i)
     Loop Until Err.Number <> 0
     
-    NumberOfArrayDimensions = Ndx - 1
-
+    NumberOfArrayDimensions = i - 1
+    
 End Function
 
 
