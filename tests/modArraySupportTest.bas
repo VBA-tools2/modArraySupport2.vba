@@ -1933,59 +1933,130 @@ Debug.Print "VectorsToArray Failed"
 End Sub
 
 
-Public Sub DemoTransposeArray()
+'==============================================================================
+'unit tests for 'TransposeArray'
+'==============================================================================
 
-    Dim A() As Long
-    Dim B() As Long
-    Dim Res As Boolean
-
-    Dim RowNdx As Long
-    Dim ColNdx As Long
-    Dim S As String
-
-
-    ReDim A(1 To 3, 2 To 5)
-    A(1, 2) = 1
-    A(1, 3) = 2
-    A(1, 4) = 3
-    A(1, 5) = 33
-    A(2, 2) = 4
-    A(2, 3) = 5
-    A(2, 4) = 6
-    A(2, 5) = 66
-    A(3, 2) = 7
-    A(3, 3) = 8
-    A(3, 4) = 9
-    A(3, 5) = 100
-
-Debug.Print "LBound1: " & CStr(LBound(A, 1)) & " Ubound1: " & CStr(UBound(A, 1)), _
-            "LBound2: " & CStr(LBound(A, 2)) & " UBound2: " & CStr(UBound(A, 2))
-
-    For RowNdx = LBound(A, 1) To UBound(A, 1)
-        S = vbNullString
-        For ColNdx = LBound(A, 2) To UBound(A, 2)
-            S = S & A(RowNdx, ColNdx) & " "
-        Next ColNdx
-Debug.Print S
-    Next RowNdx
-Debug.Print "Transposed Array:"
+'@TestMethod
+Public Sub TransposeArray_ScalarInput_ReturnsFalse()
+    On Error GoTo TestFail
     
-    Res = modArraySupport.TransposeArray(A, B)
-Debug.Print "LBound1: " & CStr(LBound(B, 1)) & " Ubound1: " & CStr(UBound(B, 1)), _
-            "LBound2: " & CStr(LBound(B, 2)) & " UBound2: " & CStr(UBound(B, 2))
-    If Res = True Then
-        S = vbNullString
-        For RowNdx = LBound(B, 1) To UBound(B, 1)
-            S = vbNullString
-            For ColNdx = LBound(B, 2) To UBound(B, 2)
-                S = S & B(RowNdx, ColNdx) & " "
-            Next ColNdx
-Debug.Print S
-        Next RowNdx
-    Else
-Debug.Print "Error In Transpose Array"
-    End If
+    'Arrange:
+    Const Scalar As Long = 5
+    Dim TransposedArr() As Long
+    
+    
+    'Act:
+    'Assert:
+    Assert.IsFalse modArraySupport.TransposeArray(Scalar, TransposedArr)
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+End Sub
 
+
+'@TestMethod
+Public Sub TransposeArray_1DInputArr_ReturnsFalse()
+    On Error GoTo TestFail
+    
+    'Arrange:
+    Dim Arr(2) As Long
+    Dim TransposedArr() As Long
+    
+    
+    'Act:
+    'Assert:
+    Assert.IsFalse modArraySupport.TransposeArray(Arr, TransposedArr)
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+End Sub
+
+
+'@TestMethod
+Public Sub TransposeArray_ScalarOutput_ReturnsFalse()
+    On Error GoTo TestFail
+    
+    'Arrange:
+    Dim Arr(1 To 3, 2 To 5) As Long
+    Dim Scalar As Long
+    
+    
+    'Act:
+    'Assert:
+    Assert.IsFalse modArraySupport.TransposeArray(Arr, Scalar)
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+End Sub
+
+
+'@TestMethod
+Public Sub TransposeArray_StaticOutputArr_ReturnsFalse()
+    On Error GoTo TestFail
+    
+    'Arrange:
+    Dim Arr(1 To 3, 2 To 5) As Long
+    Dim TransposedArr(2 To 5, 1 To 3) As Long
+    
+    
+    'Act:
+    'Assert:
+    Assert.IsFalse modArraySupport.TransposeArray(Arr, TransposedArr)
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+End Sub
+
+
+'@TestMethod
+Public Sub TransposeArray_Valid2DArr_ReturnsTrueAndTransposedArr()
+    On Error GoTo TestFail
+    
+    Dim Arr() As Long
+    Dim TransposedArr() As Long
+    Dim i As Long
+    Dim j As Long
+    
+    
+    'Arrange:
+    ReDim Arr(1 To 3, 2 To 5)
+    Arr(1, 2) = 1
+    Arr(1, 3) = 2
+    Arr(1, 4) = 3
+    Arr(1, 5) = 33
+    Arr(2, 2) = 4
+    Arr(2, 3) = 5
+    Arr(2, 4) = 6
+    Arr(2, 5) = 66
+    Arr(3, 2) = 7
+    Arr(3, 3) = 8
+    Arr(3, 4) = 9
+    Arr(3, 5) = 100
+    
+    'Act:
+    If Not modArraySupport.TransposeArray(Arr, TransposedArr) _
+            Then GoTo TestFail
+    
+    'Assert:
+    For i = LBound(TransposedArr) To UBound(TransposedArr)
+        For j = LBound(TransposedArr, 2) To UBound(TransposedArr, 2)
+            Assert.AreEqual Arr(j, i), TransposedArr(i, j)
+        Next
+    Next
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
 End Sub
 
 

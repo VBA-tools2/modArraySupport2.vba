@@ -1945,18 +1945,18 @@ Public Sub SetVariableToDefault( _
 End Sub
 
 
-'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 'TransposeArray
-'This transposes a two-dimensional array. It returns True if successful or
-'False if an error occurs. InputArr must be two-dimensions. OutputArr must be
-'a dynamic array. It will be Erased and resized, so any existing content will
-'be destroyed.
-'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'This transposes a two-dimensional array. It returns 'True' if successful or
+''False' if an error occurs. 'SourceArr' must be two-dimensional. 'ResultArr'
+'must be a dynamic array. It will be erased and resized, so any existing
+'content will be destroyed.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 Public Function TransposeArray( _
-    InputArr As Variant, _
-    OutputArr As Variant _
+    ByVal SourceArr As Variant, _
+    ByRef ResultArr As Variant _
         ) As Boolean
-
+    
     Dim RowNdx As Long
     Dim ColNdx As Long
     Dim LB1 As Long
@@ -1968,31 +1968,30 @@ Public Function TransposeArray( _
     'Set the default return value
     TransposeArray = False
     
-    If Not IsArray(InputArr) Then Exit Function
-    If Not IsArray(OutputArr) Then Exit Function
-    If Not IsArrayDynamic(OutputArr) Then Exit Function
-    If NumberOfArrayDimensions(InputArr) <> 2 Then Exit Function
+    If Not IsArray(SourceArr) Then Exit Function
+    If NumberOfArrayDimensions(SourceArr) <> 2 Then Exit Function
+    If Not IsArrayDynamic(ResultArr) Then Exit Function
     
-    'Get the Lower and Upper bounds of InputArr
-    LB1 = LBound(InputArr, 1)
-    LB2 = LBound(InputArr, 2)
-    UB1 = UBound(InputArr, 1)
-    UB2 = UBound(InputArr, 2)
+    'Get the Lower and Upper bounds of 'SourceArr'
+    LB1 = LBound(SourceArr, 1)
+    LB2 = LBound(SourceArr, 2)
+    UB1 = UBound(SourceArr, 1)
+    UB2 = UBound(SourceArr, 2)
     
-    'Erase and ReDim OutputArr
-    Erase OutputArr
-    'Redim the Output array. Not the that the LBound and UBound values are preserved.
-    ReDim OutputArr(LB2 To LB2 + UB2 - LB2, LB1 To LB1 + UB1 - LB1)
-    'Loop through the elemetns of InputArr and put each value in the proper
-    'element of the tranposed array
-    For RowNdx = LBound(InputArr, 2) To UBound(InputArr, 2)
-        For ColNdx = LBound(InputArr, 1) To UBound(InputArr, 1)
-            OutputArr(RowNdx, ColNdx) = InputArr(ColNdx, RowNdx)
+    'Erase and 'ReDim ResultArr'
+    'Note the that the 'LBound' and 'UBound' values are preserved.
+    Erase ResultArr
+    ReDim ResultArr(LB2 To UB2, LB1 To UB1)
+    'Loop through the elements of 'SourceArr' and put each value in the proper
+    'element of the transposed array
+    For RowNdx = LB2 To UB2
+        For ColNdx = LB1 To UB1
+            ResultArr(RowNdx, ColNdx) = SourceArr(ColNdx, RowNdx)
         Next
     Next
     
     TransposeArray = True
-
+    
 End Function
 
 
