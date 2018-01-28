@@ -2039,30 +2039,370 @@ TestFail:
 End Sub
 
 
-Public Sub DemoChangeBoundsOfArray()
+'==============================================================================
+'unit tests for 'ChangeBoundsOfArray'
+'==============================================================================
 
-    Dim NewLB As Long
-    Dim NewUB As Long
-    Dim B As Boolean
-    Dim N As Long
-    Dim M As Long
-    'Dim Arr() As Range
-    'Dim Arr() As Long
-    'Dim Arr() As Variant
-    Dim Arr() As clsDummy_4_modArraySupportTest
+'@TestMethod
+Public Sub ChangeBoundsOfArray_LBGreaterUB_ReturnsFalse()
+    On Error GoTo TestFail
+    
+    'Arrange:
+    Dim Arr(2 To 4) As Long
+    
+    '==========================================================================
+    Const NewLB As Long = 5
+    Const NewUB As Long = 3
+    '==========================================================================
+    
+    
+    'Act:
+    'Assert:
+    Assert.IsFalse modArraySupport.ChangeBoundsOfArray(Arr, NewLB, NewUB)
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+End Sub
 
 
+'@TestMethod
+Public Sub ChangeBoundsOfArray_ScalarInput_ReturnsFalse()
+    On Error GoTo TestFail
+    
+    'Arrange:
+    Const Scalar As Long = 1
+    
+    '==========================================================================
+    Const NewLB As Long = 3
+    Const NewUB As Long = 5
+    '==========================================================================
+    
+    
+    'Act:
+    'Assert:
+    Assert.IsFalse modArraySupport.ChangeBoundsOfArray(Scalar, NewLB, NewUB)
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+End Sub
+
+
+'@TestMethod
+Public Sub ChangeBoundsOfArray_StaticArray_ReturnsFalse()
+    On Error GoTo TestFail
+    
+    'Arrange:
+    Dim Arr(2 To 4) As Long
+    
+    '==========================================================================
+    Const NewLB As Long = 3
+    Const NewUB As Long = 5
+    '==========================================================================
+    
+    
+    'Act:
+    'Assert:
+    Assert.IsFalse modArraySupport.ChangeBoundsOfArray(Arr, NewLB, NewUB)
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+End Sub
+
+
+'@TestMethod
+Public Sub ChangeBoundsOfArray_UnallocatedArray_ReturnsFalse()
+    On Error GoTo TestFail
+    
+    'Arrange:
+    Dim Arr() As Long
+    
+    '==========================================================================
+    Const NewLB As Long = 3
+    Const NewUB As Long = 5
+    '==========================================================================
+    
+    
+    'Act:
+    'Assert:
+    Assert.IsFalse modArraySupport.ChangeBoundsOfArray(Arr, NewLB, NewUB)
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+End Sub
+
+
+'@TestMethod
+Public Sub ChangeBoundsOfArray_2DArray_ReturnsFalse()
+    On Error GoTo TestFail
+    
+    'Arrange:
+    Dim Arr(2 To 5, 1 To 1) As Long
+    
+    '==========================================================================
+    Const NewLB As Long = 3
+    Const NewUB As Long = 5
+    '==========================================================================
+    
+    
+    'Act:
+    'Assert:
+    Assert.IsFalse modArraySupport.ChangeBoundsOfArray(Arr, NewLB, NewUB)
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+End Sub
+
+
+'@TestMethod
+Public Sub ChangeBoundsOfArray_LongInputArr_ReturnsTrueAndChangedArr()
+    On Error GoTo TestFail
+    
+    Dim Arr() As Long
+    
+    '==========================================================================
+    Const NewLB As Long = 20
+    Const NewUB As Long = 25
+    '==========================================================================
+    Dim aExpected(NewLB To NewUB) As Long
+        aExpected(20) = 11
+        aExpected(21) = 22
+        aExpected(22) = 33
+        aExpected(23) = 0
+        aExpected(24) = 0
+        aExpected(25) = 0
+    '==========================================================================
+    
+    'Arrange:
     ReDim Arr(5 To 7)
-    'Set Arr(5) = Range("A1")
-    'Set Arr(6) = Range("A2")
-    'Set Arr(7) = Range("A3")
-    'Arr(5) = 11
-    'Arr(6) = 22
-    'Arr(7) = 33
-    'Arr(5) = Array(1, 2, 3)
-    'Arr(6) = Array(4, 5, 6)
-    'Arr(7) = Array(7, 8, 9)
+    Arr(5) = 11
+    Arr(6) = 22
+    Arr(7) = 33
+    
+    
+    'Act:
+    If Not modArraySupport.ChangeBoundsOfArray(Arr, NewLB, NewUB) _
+            Then GoTo TestFail
+    
+    'Assert:
+    Assert.SequenceEquals aExpected, Arr
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+End Sub
 
+
+'@TestMethod
+Public Sub ChangeBoundsOfArray_SmallerUBDiffThanSource_ReturnsTrueAndChangedArr()
+    On Error GoTo TestFail
+    
+    Dim Arr() As Long
+    
+    '==========================================================================
+    Const NewLB As Long = 20
+    Const NewUB As Long = 21
+    '==========================================================================
+    Dim aExpected(NewLB To NewUB) As Long
+        aExpected(20) = 11
+        aExpected(21) = 22
+    '==========================================================================
+    
+    'Arrange:
+    ReDim Arr(5 To 7)
+    Arr(5) = 11
+    Arr(6) = 22
+    Arr(7) = 33
+    
+    
+    'Act:
+    If Not modArraySupport.ChangeBoundsOfArray(Arr, NewLB, NewUB) _
+            Then GoTo TestFail
+    
+    'Assert:
+    Assert.SequenceEquals aExpected, Arr
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+End Sub
+
+
+'@TestMethod
+Public Sub ChangeBoundsOfArray_VariantArr_ReturnsTrueAndChangedArr()
+    On Error GoTo TestFail
+    
+    Dim Arr() As Variant
+    Dim i As Long
+    
+    '==========================================================================
+    Const NewLB As Long = 20
+    Const NewUB As Long = 25
+    '==========================================================================
+    Dim aExpected(NewLB To NewUB) As Variant
+        aExpected(20) = Array(1, 2, 3)
+        aExpected(21) = Array(4, 5, 6)
+        aExpected(22) = Array(7, 8, 9)
+        aExpected(23) = Empty
+        aExpected(24) = Empty
+        aExpected(25) = Empty
+    '==========================================================================
+    
+    'Arrange:
+    ReDim Arr(5 To 7)
+    Arr(5) = Array(1, 2, 3)
+    Arr(6) = Array(4, 5, 6)
+    Arr(7) = Array(7, 8, 9)
+    
+    
+    'Act:
+    If Not modArraySupport.ChangeBoundsOfArray(Arr, NewLB, NewUB) _
+            Then GoTo TestFail
+    
+    'Assert:
+    For i = NewLB To NewUB
+        If IsArray(Arr(i)) Then
+            Assert.SequenceEquals aExpected(i), Arr(i)
+        Else
+            Assert.AreEqual aExpected(i), Arr(i)
+        End If
+    Next
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+End Sub
+
+
+'@TestMethod
+Public Sub ChangeBoundsOfArray_LongInputArrNoUpperBound_ReturnsTrueAndChangedArr()
+    On Error GoTo TestFail
+    
+    Dim Arr() As Long
+    
+    '==========================================================================
+    Const NewLB As Long = 20
+    Const NewUB As Long = 22
+    '==========================================================================
+    Dim aExpected(NewLB To NewUB) As Long
+        aExpected(20) = 11
+        aExpected(21) = 22
+        aExpected(22) = 33
+    '==========================================================================
+    
+    'Arrange:
+    ReDim Arr(5 To 7)
+    Arr(5) = 11
+    Arr(6) = 22
+    Arr(7) = 33
+    
+    
+    'Act:
+    If Not modArraySupport.ChangeBoundsOfArray(Arr, NewLB) _
+            Then GoTo TestFail
+    
+    'Assert:
+    Assert.SequenceEquals aExpected, Arr
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+End Sub
+
+
+'2do: not sure if the test is done right
+'     --> is testing for 'Is(Not)Nothing sufficient?
+'@TestMethod
+Public Sub ChangeBoundsOfArray_RangeArr_ReturnsTrueAndChangedArr()
+    On Error GoTo TestFail
+    
+    Dim Arr() As Range
+    Dim i As Long
+    
+    '==========================================================================
+    Const NewLB As Long = 20
+    Const NewUB As Long = 25
+    '==========================================================================
+    Dim aExpected(NewLB To NewUB) As Range
+    With ThisWorkbook.Worksheets(1)
+        Set aExpected(20) = .Range("A1")
+        Set aExpected(21) = .Range("A2")
+        Set aExpected(22) = .Range("A3")
+        Set aExpected(23) = Nothing
+        Set aExpected(24) = Nothing
+        Set aExpected(25) = Nothing
+    End With
+    '==========================================================================
+    
+    'Arrange:
+    ReDim Arr(5 To 7)
+    With ThisWorkbook.Worksheets(1)
+        Set Arr(5) = .Range("A1")
+        Set Arr(6) = .Range("A2")
+        Set Arr(7) = .Range("A3")
+    End With
+    
+    'Act:
+    If Not modArraySupport.ChangeBoundsOfArray(Arr, NewLB, NewUB) _
+            Then GoTo TestFail
+    
+    'Assert:
+    For i = NewLB To NewUB
+        If aExpected(i) Is Nothing Then
+            Assert.IsNothing Arr(i)
+        Else
+            Assert.IsNotNothing Arr(i)
+        End If
+    Next
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+End Sub
+
+
+'@TestMethod
+Public Sub ChangeBoundsOfArray_CustomClass_ReturnsTrueAndChangedArr()
+    On Error GoTo TestFail
+    
+    Dim Arr() As clsDummy_4_modArraySupportTest
+    Dim i As Long
+    
+    '==========================================================================
+    Const NewLB As Long = 20
+    Const NewUB As Long = 25
+    '==========================================================================
+    Dim aExpected(NewLB To NewUB) As clsDummy_4_modArraySupportTest
+    Set aExpected(20) = New clsDummy_4_modArraySupportTest
+    Set aExpected(21) = New clsDummy_4_modArraySupportTest
+    Set aExpected(22) = New clsDummy_4_modArraySupportTest
+    aExpected(20).Name = "Name 1"
+    aExpected(20).Value = 1
+    aExpected(21).Name = "Name 2"
+    aExpected(21).Value = 3
+    aExpected(22).Name = "Name 3"
+    aExpected(22).Value = 3
+    Set aExpected(23) = Nothing
+    Set aExpected(24) = Nothing
+    Set aExpected(25) = Nothing
+    '==========================================================================
+    
+    'Arrange:
+    ReDim Arr(5 To 7)
     Set Arr(5) = New clsDummy_4_modArraySupportTest
     Set Arr(6) = New clsDummy_4_modArraySupportTest
     Set Arr(7) = New clsDummy_4_modArraySupportTest
@@ -2072,39 +2412,24 @@ Public Sub DemoChangeBoundsOfArray()
     Arr(6).Value = 3
     Arr(7).Name = "Name 3"
     Arr(7).Value = 3
-
-    NewLB = 20
-    NewUB = 25
     
-    B = modArraySupport.ChangeBoundsOfArray(Arr, NewLB, NewUB)
-
-Debug.Print "New LBound: " & CStr(LBound(Arr)), "New UBound: " & CStr(UBound(Arr))
-    For N = LBound(Arr) To UBound(Arr)
-        If IsObject(Arr(N)) = True Then
-'Debug.Print "Object: " & TypeName(Arr(N))
-            If Arr(N) Is Nothing Then
-Debug.Print "Object Is Nothing"
-            Else
-'Debug.Print "Object: " & Arr(N).Name, Arr(N).Value
-Debug.Print "Object: " & TypeName(Arr(N))
-            End If
+    'Act:
+    If Not modArraySupport.ChangeBoundsOfArray(Arr, NewLB, NewUB) _
+            Then GoTo TestFail
+    
+    'Assert:
+    For i = NewLB To NewUB
+        If aExpected(i) Is Nothing Then
+            Assert.IsNothing Arr(i)
         Else
-'            If IsArray(Arr(N)) = True Then
-'                For M = LBound(Arr(N)) To UBound(Arr(N))
-'                    Debug.Print Arr(N)(M)
-'                Next M
-'            Else
-            If IsEmpty(Arr(N)) = True Then
-Debug.Print "Empty"
-            ElseIf Arr(N) = vbNullString Then
-Debug.Print "vbNullString"
-            Else
-Debug.Print Arr(N)
-            End If
-'            End If
+            Assert.IsNotNothing Arr(i)
         End If
-    Next N
-
+    Next
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
 End Sub
 
 

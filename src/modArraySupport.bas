@@ -2104,30 +2104,27 @@ Public Function VectorsToArray( _
 End Function
 
 
-'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 'ChangeBoundsOfArray
-'This function changes the upper and lower bounds of the specified
-'array. InputArr MUST be a single-dimensional dynamic array.
-'If the new size of the array (NewUpperBound - NewLowerBound + 1)
-'is greater than the original array, the unused elements on
-'right side of the array are the default values for the data type
-'of the array. If the new size is less than the original size,
-'only the first (left-most) N elements are included in the new array.
-'The elements of the array may be simple variables (Strings, Longs, etc.),
-'Object, or Arrays. User-Defined Types are not supported.
-'
+'This function changes the upper and lower bounds of the specified array.
+''InputArr' MUST be a single-dimensional dynamic array.
+'If the new size of the array (NewUpperBound - NewLowerBound + 1) is greater
+'than the original array, the unused elements on the right side of the array
+'are the default values for the data type of the array. If the new size is less
+'than the original size, only the first (left-most) 'N' elements are included
+'in the new array.
+'The elements of the array may be simple variables ('String's, 'Long's, etc.),
+'objects, or arrays. User-Defined Types are not supported.
 'The function returns True if successful, False otherwise.
-'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-'2do: make 'NewUpperBound' optional and use size of 'InputArr' to calculate
-'     'NewUpperBound' if not given
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 '2do: better name would be 'ChangeBoundsOfVector', because 'InputArr' has to be
 '     a single dimensional array
 Public Function ChangeBoundsOfArray( _
     ByRef InputArr As Variant, _
     ByVal NewLowerBound As Long, _
-    ByVal NewUpperBound As Long _
+    Optional ByVal NewUpperBound As Variant _
         ) As Boolean
-
+    
     Dim TempArr() As Variant
     Dim InNdx As Long
     Dim OutNdx As Long
@@ -2138,23 +2135,29 @@ Public Function ChangeBoundsOfArray( _
     'Set the default return value
     ChangeBoundsOfArray = False
     
+    If IsMissing(NewUpperBound) Or IsEmpty(NewUpperBound) Then
+        NewUpperBound = NewLowerBound + UBound(InputArr) - LBound(InputArr)
+    ElseIf Not IsNumeric(NewUpperBound) Then
+        Exit Function
+    ElseIf NewUpperBound <> CLng(NewUpperBound) Then
+        Exit Function
+    End If
+    
     If NewLowerBound > NewUpperBound Then Exit Function
-    If Not IsArray(InputArr) Then Exit Function
     If Not IsArrayDynamic(InputArr) Then Exit Function
-    If Not IsArrayAllocated(InputArr) Then Exit Function
     If NumberOfArrayDimensions(InputArr) <> 1 Then Exit Function
     
-    'We need to save the IsObject status of the first element of the InputArr
-    'to properly handle the Empty variables is we are making the array larger
+    'We need to save the 'IsObject' status of the first element of 'InputArr'
+    'to properly handle 'Empty' variables if we are making the array larger
     'than it was before.
     FirstIsObject = IsObject(InputArr(LBound(InputArr)))
     
     
-    'Resize TempArr and save the values in InputArr in TempArr. TempArr will
-    'have an LBound of 1 and a UBound of the size of
+    'Resize 'TempArr' and save the values in 'InputArr' in 'TempArr'. 'TempArr'
+    'will have an 'LBound' of 1 and a 'UBound' of the size of
     '(NewUpperBound - NewLowerBound +1)
     ReDim TempArr(1 To (NewUpperBound - NewLowerBound + 1))
-    'Load up TempArr
+    'Load up 'TempArr'
     TempNdx = 0
     For InNdx = LBound(InputArr) To UBound(InputArr)
         TempNdx = TempNdx + 1
@@ -2173,8 +2176,8 @@ Public Function ChangeBoundsOfArray( _
         End If
     Next
     
-    'Now, Erase InputArr, resize it to the new bounds, and load up the values
-    'from TempArr to the new InputArr
+    'Now, erase 'InputArr', resize it to the new bounds, and load up the values
+    'from 'TempArr' to the new 'InputArr'
     Erase InputArr
     ReDim InputArr(NewLowerBound To NewUpperBound)
     OutNdx = LBound(InputArr)
@@ -2200,7 +2203,7 @@ Public Function ChangeBoundsOfArray( _
     Next
     
     ChangeBoundsOfArray = True
-
+    
 End Function
 
 
