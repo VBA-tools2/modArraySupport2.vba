@@ -262,7 +262,6 @@ Public Sub CompareArrays_LegalAndTextCompare_ReturnsTrueAndResArr()
     Dim Arr1(1 To 5) As String
     Dim Arr2(1 To 5) As String
     Dim ResArr() As Long
-    Dim i As Long
     
     '==========================================================================
     Dim aExpected(1 To 5) As Long
@@ -292,9 +291,7 @@ Public Sub CompareArrays_LegalAndTextCompare_ReturnsTrueAndResArr()
             Then GoTo TestFail
     
     'Assert:
-    For i = LBound(ResArr) To UBound(ResArr)
-        Assert.AreEqual CLng(aExpected(i)), ResArr(i)
-    Next
+    Assert.SequenceEquals aExpected, ResArr
     
 TestExit:
     Exit Sub
@@ -310,7 +307,6 @@ Public Sub CompareArrays_LegalAndBinaryCompare_ReturnsTrueAndResArr()
     Dim Arr1(1 To 5) As String
     Dim Arr2(1 To 5) As String
     Dim ResArr() As Long
-    Dim i As Long
     
     '==========================================================================
     Dim aExpected(1 To 5) As Long
@@ -340,9 +336,7 @@ Public Sub CompareArrays_LegalAndBinaryCompare_ReturnsTrueAndResArr()
             Then GoTo TestFail
     
     'Assert:
-    For i = LBound(ResArr) To UBound(ResArr)
-        Assert.AreEqual CLng(aExpected(i)), ResArr(i)
-    Next
+    Assert.SequenceEquals aExpected, ResArr
     
 TestExit:
     Exit Sub
@@ -406,9 +400,8 @@ Public Sub ConcatenateArrays_ArrayToAppendUnallocated_ResultsTrueAndUnchangedRes
     On Error GoTo TestFail
     
     'Arrange:
-    Dim ResultArray() As Long           'MUST be dynamic
+    Dim ResultArray() As Long        'MUST be dynamic
     Dim ArrayToAppend() As Long
-    Dim i As Long
     
     '==========================================================================
     Dim aExpected(1 To 2) As Long
@@ -426,9 +419,7 @@ Public Sub ConcatenateArrays_ArrayToAppendUnallocated_ResultsTrueAndUnchangedRes
             GoTo TestFail
     
     'Assert:
-    For i = LBound(ResultArray) To UBound(ResultArray)
-        Assert.AreEqual CLng(aExpected(i)), CLng(ResultArray(i))
-    Next
+    Assert.SequenceEquals aExpected, ResultArray
     
 TestExit:
     Exit Sub
@@ -441,9 +432,8 @@ End Sub
 Public Sub ConcatenateArrays_LegalLong_ResultsTrueAndResultArray()
     On Error GoTo TestFail
     
-    Dim ResultArray() As Long           'MUST be dynamic
+    Dim ResultArray() As Long        'MUST be dynamic
     Dim ArrayToAppend(1 To 3) As Integer
-    Dim i As Long
     
     '==========================================================================
     Dim aExpected(1 To 6) As Long
@@ -471,9 +461,7 @@ Public Sub ConcatenateArrays_LegalLong_ResultsTrueAndResultArray()
             GoTo TestFail
     
     'Assert:
-    For i = LBound(ResultArray) To UBound(ResultArray)
-        Assert.AreEqual CLng(aExpected(i)), CLng(ResultArray(i))
-    Next
+    Assert.SequenceEquals aExpected, ResultArray
     
 TestExit:
     Exit Sub
@@ -568,7 +556,7 @@ Public Sub CopyArray_UnallocatedSrc_ResultsTrueAndUnchangedDest()
             GoTo TestFail
     
     'Assert:
-    Assert.AreEqual aExpected(0), Dest(0)
+    Assert.SequenceEquals aExpected, Dest
     
 TestExit:
     Exit Sub
@@ -603,7 +591,6 @@ Public Sub CopyArray_AllocatedDestLessElementsThenSrc_ResultsTrueAndDestArray()
     
     Dim Src(1 To 3) As Long
     Dim Dest(10 To 11) As Long
-    Dim i As Long
     
     '==========================================================================
     Dim aExpected(10 To 11) As Long
@@ -622,9 +609,7 @@ Public Sub CopyArray_AllocatedDestLessElementsThenSrc_ResultsTrueAndDestArray()
             GoTo TestFail
     
     'Assert:
-    For i = LBound(Dest) To UBound(Dest)
-        Assert.AreEqual CLng(aExpected(i)), CLng(Dest(i))
-    Next
+    Assert.SequenceEquals aExpected, Dest
     
 TestExit:
     Exit Sub
@@ -639,7 +624,6 @@ Public Sub CopyArray_AllocatedDestMoreElementsThenSrc_ResultsTrueAndDestArray()
     
     Dim Src(1 To 3) As Long
     Dim Dest(10 To 13) As Long
-    Dim i As Long
     
     '==========================================================================
     Dim aExpected(10 To 13) As Long
@@ -660,9 +644,7 @@ Public Sub CopyArray_AllocatedDestMoreElementsThenSrc_ResultsTrueAndDestArray()
             GoTo TestFail
     
     'Assert:
-    For i = LBound(Dest) To UBound(Dest)
-        Assert.AreEqual CLng(aExpected(i)), CLng(Dest(i))
-    Next
+    Assert.SequenceEquals aExpected, Dest
     
 TestExit:
     Exit Sub
@@ -677,7 +659,6 @@ Public Sub CopyArray_NoCompatibilityCheck_ResultsTrueAndDestArrayWithOverflow()
     
     Dim Src(1 To 2) As Long
     Dim Dest(1 To 2) As Integer
-    Dim i As Long
     
     '==========================================================================
     Dim aExpected(1 To 2) As Integer
@@ -695,9 +676,7 @@ Public Sub CopyArray_NoCompatibilityCheck_ResultsTrueAndDestArrayWithOverflow()
             GoTo TestFail
     
     'Assert:
-    For i = LBound(Dest) To UBound(Dest)
-        Assert.AreEqual aExpected(i), Dest(i)
-    Next
+    Assert.SequenceEquals aExpected, Dest
     
 TestExit:
     Exit Sub
