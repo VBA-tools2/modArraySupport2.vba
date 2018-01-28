@@ -2285,24 +2285,22 @@ Public Function IsArraySorted( _
 End Function
 
 
-'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-'TwoArraysToOneArray
-'This takes two 2-dimensional arrays, Arr1 and Arr2, and
-'returns an array combining the two. The number of Rows
-'in the result is NumRows(Arr1) + NumRows(Arr2). Arr1 and
-'Arr2 must have the same number of columns, and the result
-'array will have that many columns. All the LBounds must
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'CombineTwoDArrays
+'This takes two 2-dimensional arrays, 'Arr1' and 'Arr2', and returns an array
+'combining the two. The number of rows in the result is 'NumRows(Arr1)' +
+''NumRows(Arr2)'. 'Arr1' and 'Arr2' must have the same number of columns, and
+'the result array will have that many columns as well. All the 'LBounds' must
 'be the same. E.g.,
 'The following arrays are legal:
 '    Dim Arr1(0 To 4, 0 To 10)
 '    Dim Arr2(0 To 3, 0 To 10)
-'
 'The following arrays are illegal
 '    Dim Arr1(0 To 4, 1 To 10)
 '    Dim Arr2(0 To 3, 0 To 10)
 '
-'The returned result array is Arr1 with additional rows
-'appended from Arr2. For example, the arrays
+'The returned result array is 'Arr1' with additional rows appended from 'Arr2'.
+'For example, the arrays
 '    a    b        and     e    f
 '    c    d                g    h
 'become
@@ -2310,19 +2308,19 @@ End Function
 '    c    d
 '    e    f
 '    g    h
-''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 Public Function CombineTwoDArrays( _
-    Arr1 As Variant, _
-    Arr2 As Variant _
+    ByVal Arr1 As Variant, _
+    ByVal Arr2 As Variant _
         ) As Variant
-
-    'Upper and lower bounds of Arr1
+    
+    'Upper and lower bounds of 'Arr1'
     Dim LBoundRow1 As Long
     Dim UBoundRow1 As Long
     Dim LBoundCol1 As Long
     Dim UBoundCol1 As Long
     
-    'Upper and lower bounds of Arr2
+    'Upper and lower bounds of 'Arr2'
     Dim LBoundRow2 As Long
     Dim UBoundRow2 As Long
     Dim LBoundCol2 As Long
@@ -2361,8 +2359,6 @@ Public Function CombineTwoDArrays( _
     If NumberOfArrayDimensions(Arr1) <> 2 Then Exit Function
     If NumberOfArrayDimensions(Arr2) <> 2 Then Exit Function
     
-    '''Ensure that the LBound and UBounds of the second dimension are the
-    '''same for both Arr1 and Arr2
     'Get the existing bounds
     LBoundRow1 = LBound(Arr1, 1)
     UBoundRow1 = UBound(Arr1, 1)
@@ -2385,52 +2381,49 @@ Public Function CombineTwoDArrays( _
     'Ensure the number of columns are equal
     If NumCols1 <> NumCols2 Then Exit Function
     
-    'Ensure that ALL the LBounds are equal
+    'Ensure that ALL the 'LBound's are equal
     If (LBoundRow1 <> LBoundRow2) Or _
             (LBoundRow1 <> LBoundCol1) Or _
             (LBoundRow1 <> LBoundCol2) Then _
                     Exit Function
     
-    'Get the LBound of the columns of the result array
+    'Set the bounds of the columns of the result array
     LBoundColResult = LBoundRow1
-    'Get the UBound of the columns of the result array
     UBoundColResult = UBoundCol1
+    UBoundRowResult = LBoundRow1 + NumRows1 + NumRows2 - 1
     
-    UBoundRowResult = LBound(Arr1, 1) + NumRows1 + NumRows2 - 1
-    'Redim the Result array to have number of rows equal to
-    'number-of-rows(Arr1) + number-of-rows(Arr2)
+    'ReDim the result array to have number of rows equal to
+    ''number-of-rows(Arr1) + number-of-rows(Arr2)'
     'and number-of-columns equal to number-of-columns(Arr1)
     ReDim Result(LBoundRow1 To UBoundRowResult, LBoundColResult To UBoundColResult)
     
     RowNdxResult = LBound(Result, 1) - 1
     
     Done = False
-    Do Until Done
-        'Copy elements of Arr1 to Result
-        For RowNdx1 = LBound(Arr1, 1) To UBound(Arr1, 1)
+    Do
+        'Copy elements of 'Arr1' to 'Result'
+        For RowNdx1 = LBoundRow1 To UBoundRow1
             RowNdxResult = RowNdxResult + 1
-            For ColNdx1 = LBound(Arr1, 2) To UBound(Arr1, 2)
+            For ColNdx1 = LBoundCol1 To UBoundCol1
                 V = Arr1(RowNdx1, ColNdx1)
                 Result(RowNdxResult, ColNdx1) = V
             Next
         Next
         
-        'Copy elements of Arr2 to Result
-        For RowNdx2 = LBound(Arr2, 1) To UBound(Arr2, 1)
+        'Copy elements of 'Arr2' to 'Result'
+        For RowNdx2 = LBoundRow2 To UBoundRow2
             RowNdxResult = RowNdxResult + 1
-            For ColNdx2 = LBound(Arr2, 2) To UBound(Arr2, 2)
+            For ColNdx2 = LBoundCol2 To UBoundCol2
                 V = Arr2(RowNdx2, ColNdx2)
                 Result(RowNdxResult, ColNdx2) = V
             Next
         Next
         
-        If RowNdxResult >= UBound(Result, 1) + (LBoundColResult = 1) Then
-            Done = True
-        End If
-    Loop
+        Done = RowNdxResult >= UBoundRowResult
+    Loop Until Done
     
     CombineTwoDArrays = Result
-
+    
 End Function
 
 

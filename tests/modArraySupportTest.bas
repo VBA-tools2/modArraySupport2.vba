@@ -2465,140 +2465,494 @@ Debug.Print "Array is Unsorted"
 End Sub
 
 
-Public Sub DemoCombineTwoDArrays()
+'==============================================================================
+'unit tests for 'CombineTwoDArrays'
+'==============================================================================
 
-    Dim X As Long
-    Dim Y As Long
-    Dim N As Long
-    Dim S As String
-    Dim V As Variant
-    Dim E As Variant
+'@TestMethod
+Public Sub CombineTwoDArrays_ScalarArr1_ReturnsNull()
+    On Error GoTo TestFail
     
-    Dim A() As String
-    Dim B() As String
-    Dim C() As String
-    Dim D() As String
+    'Arrange:
+    Dim Scalar1 As Long
+    Dim Arr2(1 To 2, 2 To 3) As Long
+    Dim ResArr As Variant
     
     
-    'Ensure it works on 1-Based arrays
-    ReDim A(1 To 2, 1 To 2)
-    ReDim B(1 To 2, 1 To 2)
-    A(1, 1) = "a"
-    A(1, 2) = "b"
-    A(2, 1) = "c"
-    A(2, 2) = "d"
-    B(1, 1) = "e"
-    B(1, 2) = "f"
-    B(2, 1) = "g"
-    B(2, 2) = "h"
-
-Debug.Print "--- 1 BASED ARRAY -----------------------"
-    V = modArraySupport.CombineTwoDArrays(A, B)
-    Call DebugPrint2DArray(V)
-
-    'Ensure it works on 0-Based arrays
-    ReDim A(0 To 1, 0 To 1)
-    ReDim B(0 To 1, 0 To 1)
-    A(0, 0) = "a"
-    A(0, 1) = "b"
-    A(1, 0) = "c"
-    A(1, 1) = "d"
+    'Act:
+    ResArr = modArraySupport.CombineTwoDArrays(Scalar1, Arr2)
     
-    B(0, 0) = "e"
-    B(0, 1) = "f"
-    B(1, 0) = "g"
-    B(1, 1) = "h"
+    'Assert:
+    Assert.IsTrue IsNull(ResArr)
     
-Debug.Print "--- 0 BASED ARRAY -----------------------"
-    V = modArraySupport.CombineTwoDArrays(A, B)
-    Call DebugPrint2DArray(V)
-    
-    'Ensure it works on Positive-Based arrays
-    ReDim A(5 To 6, 5 To 6)
-    ReDim B(5 To 6, 5 To 6)
-    A(5, 5) = "a"
-    A(5, 6) = "b"
-    A(6, 5) = "c"
-    A(6, 6) = "d"
-
-    B(5, 5) = "e"
-    B(5, 6) = "f"
-    B(6, 5) = "g"
-    B(6, 6) = "h"
-    
-Debug.Print "--- POSITIVE BASED ARRAY -----------------------"
-    V = modArraySupport.CombineTwoDArrays(A, B)
-    Call DebugPrint2DArray(V)
-    
-    'Ensure it works on Negative-Based arrays
-    ReDim A(-6 To -5, -6 To -5)
-    ReDim B(-6 To -5, -6 To -5)
-    A(-6, -6) = "a"
-    A(-6, -5) = "b"
-    A(-5, -6) = "c"
-    A(-5, -5) = "d"
-
-    B(-6, -6) = "e"
-    B(-6, -5) = "f"
-    B(-5, -6) = "g"
-    B(-5, -5) = "h"
-    
-Debug.Print "--- NEGATIVE BASED ARRAY -----------------------"
-    V = modArraySupport.CombineTwoDArrays(A, B)
-    Call DebugPrint2DArray(V)
-    
-    'Ensure Nesting Works
-    ReDim A(1 To 2, 1 To 2)
-    ReDim B(1 To 2, 1 To 2)
-    ReDim C(1 To 2, 1 To 2)
-    ReDim D(1 To 2, 1 To 2)
-    
-    A(1, 1) = "a"
-    A(1, 2) = "b"
-    A(2, 1) = "c"
-    A(2, 2) = "d"
-    
-    B(1, 1) = "e"
-    B(1, 2) = "f"
-    B(2, 1) = "g"
-    B(2, 2) = "h"
-
-    C(1, 1) = "i"
-    C(1, 2) = "j"
-    C(2, 1) = "k"
-    C(2, 2) = "l"
-    
-    D(1, 1) = "m"
-    D(1, 2) = "n"
-    D(2, 1) = "o"
-    D(2, 2) = "p"
-    
-Debug.Print "--- NESTED CALLS -----------------------"
-    V = modArraySupport.CombineTwoDArrays( _
-            modArraySupport.CombineTwoDArrays( _
-                modArraySupport.CombineTwoDArrays(A, B), _
-                    C), _
-    D)
-    Call DebugPrint2DArray(V)
-
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
 End Sub
 
 
-Public Sub DebugPrint2DArray(Arr As Variant)
+'@TestMethod
+Public Sub CombineTwoDArrays_ScalarArr2_ReturnsNull()
+    On Error GoTo TestFail
+    
+    'Arrange:
+    Dim Arr1(1 To 3, 1 To 2) As Long
+    Dim Scalar2 As Long
+    Dim ResArr As Variant
+    
+    
+    'Act:
+    ResArr = modArraySupport.CombineTwoDArrays(Arr1, Scalar2)
+    
+    'Assert:
+    Assert.IsTrue IsNull(ResArr)
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+End Sub
 
-    Dim Y As Long
-    Dim X As Long
-    Dim S As String
+
+'@TestMethod
+Public Sub CombineTwoDArrays_1DArr1_ReturnsNull()
+    On Error GoTo TestFail
+    
+    'Arrange:
+    Dim Arr1(1 To 3) As Long
+    Dim Arr2(1 To 3, 1 To 2) As Long
+    Dim ResArr As Variant
+    
+    
+    'Act:
+    ResArr = modArraySupport.CombineTwoDArrays(Arr1, Arr2)
+    
+    'Assert:
+    Assert.IsTrue IsNull(ResArr)
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+End Sub
 
 
-    For Y = LBound(Arr, 1) To UBound(Arr, 1)
-        S = vbNullString
-        For X = LBound(Arr, 2) To UBound(Arr, 2)
-            S = S & Arr(Y, X) & " "
-        Next X
-Debug.Print S
-    Next Y
+'@TestMethod
+Public Sub CombineTwoDArrays_3DArr1_ReturnsNull()
+    On Error GoTo TestFail
+    
+    'Arrange:
+    Dim Arr1(1 To 3, 1 To 2, 1 To 4) As Long
+    Dim Arr2(1 To 3, 1 To 2) As Long
+    Dim ResArr As Variant
+    
+    
+    'Act:
+    ResArr = modArraySupport.CombineTwoDArrays(Arr1, Arr2)
+    
+    'Assert:
+    Assert.IsTrue IsNull(ResArr)
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+End Sub
 
+
+'@TestMethod
+Public Sub CombineTwoDArrays_1DArr2_ReturnsNull()
+    On Error GoTo TestFail
+    
+    'Arrange:
+    Dim Arr1(1 To 3, 1 To 2) As Long
+    Dim Arr2(1 To 3) As Long
+    Dim ResArr As Variant
+    
+    
+    'Act:
+    ResArr = modArraySupport.CombineTwoDArrays(Arr1, Arr2)
+    
+    'Assert:
+    Assert.IsTrue IsNull(ResArr)
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+End Sub
+
+
+'@TestMethod
+Public Sub CombineTwoDArrays_3DArr2_ReturnsNull()
+    On Error GoTo TestFail
+    
+    'Arrange:
+    Dim Arr1(1 To 3, 1 To 2) As Long
+    Dim Arr2(1 To 3, 1 To 2, 1 To 4) As Long
+    Dim ResArr As Variant
+    
+    
+    'Act:
+    ResArr = modArraySupport.CombineTwoDArrays(Arr1, Arr2)
+    
+    'Assert:
+    Assert.IsTrue IsNull(ResArr)
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+End Sub
+
+
+'@TestMethod
+Public Sub CombineTwoDArrays_DifferentColNumbers_ReturnsNull()
+    On Error GoTo TestFail
+    
+    'Arrange:
+    Dim Arr1(1 To 3, 1 To 2) As Long
+    Dim Arr2(1 To 3, 1 To 3) As Long
+    Dim ResArr As Variant
+    
+    
+    'Act:
+    ResArr = modArraySupport.CombineTwoDArrays(Arr1, Arr2)
+    
+    'Assert:
+    Assert.IsTrue IsNull(ResArr)
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+End Sub
+
+
+'@TestMethod
+Public Sub CombineTwoDArrays_DifferentLBoundRows_ReturnsNull()
+    On Error GoTo TestFail
+    
+    'Arrange:
+    Dim Arr1(1 To 3, 1 To 2) As Long
+    Dim Arr2(2 To 3, 1 To 2) As Long
+    Dim ResArr As Variant
+    
+    
+    'Act:
+    ResArr = modArraySupport.CombineTwoDArrays(Arr1, Arr2)
+    
+    'Assert:
+    Assert.IsTrue IsNull(ResArr)
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+End Sub
+
+
+'@TestMethod
+Public Sub CombineTwoDArrays_DifferentLBoundCol1_ReturnsNull()
+    On Error GoTo TestFail
+    
+    'Arrange:
+    Dim Arr1(1 To 3, 2 To 3) As Long
+    Dim Arr2(1 To 3, 1 To 2) As Long
+    Dim ResArr As Variant
+    
+    
+    'Act:
+    ResArr = modArraySupport.CombineTwoDArrays(Arr1, Arr2)
+    
+    'Assert:
+    Assert.IsTrue IsNull(ResArr)
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+End Sub
+
+
+'@TestMethod
+Public Sub CombineTwoDArrays_DifferentLBoundCol2_ReturnsNull()
+    On Error GoTo TestFail
+    
+    'Arrange:
+    Dim Arr1(1 To 3, 1 To 2) As Long
+    Dim Arr2(1 To 3, 2 To 3) As Long
+    Dim ResArr As Variant
+    
+    
+    'Act:
+    ResArr = modArraySupport.CombineTwoDArrays(Arr1, Arr2)
+    
+    'Assert:
+    Assert.IsTrue IsNull(ResArr)
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+End Sub
+
+
+'@TestMethod
+Public Sub CombineTwoDArrays_1BasedStringArrays_ReturnsCombinedResultArr()
+    On Error GoTo TestFail
+    
+    Dim Arr1(1 To 2, 1 To 2) As String
+    Dim Arr2(1 To 2, 1 To 2) As String
+    Dim ResArr As Variant
+    
+    '==========================================================================
+    Dim aExpected(1 To 4, 1 To 2) As Variant
+        aExpected(1, 1) = "a"
+        aExpected(1, 2) = "b"
+        aExpected(2, 1) = "c"
+        aExpected(2, 2) = "d"
+        
+        aExpected(3, 1) = "e"
+        aExpected(3, 2) = "f"
+        aExpected(4, 1) = "g"
+        aExpected(4, 2) = "h"
+    '==========================================================================
+    
+    
+    'Arrange:
+    Arr1(1, 1) = "a"
+    Arr1(1, 2) = "b"
+    Arr1(2, 1) = "c"
+    Arr1(2, 2) = "d"
+    
+    Arr2(1, 1) = "e"
+    Arr2(1, 2) = "f"
+    Arr2(2, 1) = "g"
+    Arr2(2, 2) = "h"
+    
+    'Act:
+    ResArr = modArraySupport.CombineTwoDArrays(Arr1, Arr2)
+    
+    'Assert:
+    Assert.SequenceEquals aExpected, ResArr
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+End Sub
+
+
+'@TestMethod
+Public Sub CombineTwoDArrays_0BasedStringArrays_ReturnsCombinedResultArr()
+    On Error GoTo TestFail
+    
+    Dim Arr1(0 To 1, 0 To 1) As String
+    Dim Arr2(0 To 1, 0 To 1) As String
+    Dim ResArr As Variant
+    
+    '==========================================================================
+    Dim aExpected(0 To 3, 0 To 1) As Variant
+        aExpected(0, 0) = "a"
+        aExpected(0, 1) = "b"
+        aExpected(1, 0) = "c"
+        aExpected(1, 1) = "d"
+        
+        aExpected(2, 0) = "e"
+        aExpected(2, 1) = "f"
+        aExpected(3, 0) = "g"
+        aExpected(3, 1) = "h"
+    '==========================================================================
+    
+    
+    'Arrange:
+    Arr1(0, 0) = "a"
+    Arr1(0, 1) = "b"
+    Arr1(1, 0) = "c"
+    Arr1(1, 1) = "d"
+    
+    Arr2(0, 0) = "e"
+    Arr2(0, 1) = "f"
+    Arr2(1, 0) = "g"
+    Arr2(1, 1) = "h"
+    
+    'Act:
+    ResArr = modArraySupport.CombineTwoDArrays(Arr1, Arr2)
+    
+    'Assert:
+    Assert.SequenceEquals aExpected, ResArr
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+End Sub
+
+
+'@TestMethod
+Public Sub CombineTwoDArrays_PositiveBasedStringArrays_ReturnsCombinedResultArr()
+    On Error GoTo TestFail
+    
+    Dim Arr1(5 To 6, 5 To 6) As String
+    Dim Arr2(5 To 6, 5 To 6) As String
+    Dim ResArr As Variant
+    
+    '==========================================================================
+    Dim aExpected(5 To 8, 5 To 6) As Variant
+        aExpected(5, 5) = "a"
+        aExpected(5, 6) = "b"
+        aExpected(6, 5) = "c"
+        aExpected(6, 6) = "d"
+        
+        aExpected(7, 5) = "e"
+        aExpected(7, 6) = "f"
+        aExpected(8, 5) = "g"
+        aExpected(8, 6) = "h"
+    '==========================================================================
+    
+    
+    'Arrange:
+    Arr1(5, 5) = "a"
+    Arr1(5, 6) = "b"
+    Arr1(6, 5) = "c"
+    Arr1(6, 6) = "d"
+    
+    Arr2(5, 5) = "e"
+    Arr2(5, 6) = "f"
+    Arr2(6, 5) = "g"
+    Arr2(6, 6) = "h"
+    
+    'Act:
+    ResArr = modArraySupport.CombineTwoDArrays(Arr1, Arr2)
+    
+    'Assert:
+    Assert.SequenceEquals aExpected, ResArr
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+End Sub
+
+
+'@TestMethod
+Public Sub CombineTwoDArrays_NegativeBasedStringArrays_ReturnsCombinedResultArr()
+    On Error GoTo TestFail
+    
+    Dim Arr1(-6 To -5, -6 To -5) As String
+    Dim Arr2(-6 To -5, -6 To -5) As String
+    Dim ResArr As Variant
+    
+    '==========================================================================
+    Dim aExpected(-6 To -3, -6 To -5) As Variant
+        aExpected(-6, -6) = "a"
+        aExpected(-6, -5) = "b"
+        aExpected(-5, -6) = "c"
+        aExpected(-5, -5) = "d"
+        
+        aExpected(-4, -6) = "e"
+        aExpected(-4, -5) = "f"
+        aExpected(-3, -6) = "g"
+        aExpected(-3, -5) = "h"
+    '==========================================================================
+    
+    
+    'Arrange:
+    Arr1(-6, -6) = "a"
+    Arr1(-6, -5) = "b"
+    Arr1(-5, -6) = "c"
+    Arr1(-5, -5) = "d"
+    
+    Arr2(-6, -6) = "e"
+    Arr2(-6, -5) = "f"
+    Arr2(-5, -6) = "g"
+    Arr2(-5, -5) = "h"
+    
+    'Act:
+    ResArr = modArraySupport.CombineTwoDArrays(Arr1, Arr2)
+    
+    'Assert:
+    Assert.SequenceEquals aExpected, ResArr
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+End Sub
+
+
+'@TestMethod
+Public Sub CombineTwoDArrays_NestedStringArrays_ReturnsCombinedResultArr()
+    On Error GoTo TestFail
+    
+    Dim Arr1(1 To 2, 1 To 2) As String
+    Dim Arr2(1 To 2, 1 To 2) As String
+    Dim Arr3(1 To 2, 1 To 2) As String
+    Dim Arr4(1 To 2, 1 To 2) As String
+    Dim ResArr As Variant
+    
+    '==========================================================================
+    Dim aExpected(1 To 8, 1 To 2) As Variant
+        aExpected(1, 1) = "a"
+        aExpected(1, 2) = "b"
+        aExpected(2, 1) = "c"
+        aExpected(2, 2) = "d"
+        
+        aExpected(3, 1) = "e"
+        aExpected(3, 2) = "f"
+        aExpected(4, 1) = "g"
+        aExpected(4, 2) = "h"
+        
+        aExpected(5, 1) = "i"
+        aExpected(5, 2) = "j"
+        aExpected(6, 1) = "k"
+        aExpected(6, 2) = "l"
+        
+        aExpected(7, 1) = "m"
+        aExpected(7, 2) = "n"
+        aExpected(8, 1) = "o"
+        aExpected(8, 2) = "p"
+    '==========================================================================
+    
+    
+    'Arrange:
+    Arr1(1, 1) = "a"
+    Arr1(1, 2) = "b"
+    Arr1(2, 1) = "c"
+    Arr1(2, 2) = "d"
+    
+    Arr2(1, 1) = "e"
+    Arr2(1, 2) = "f"
+    Arr2(2, 1) = "g"
+    Arr2(2, 2) = "h"
+    
+    Arr3(1, 1) = "i"
+    Arr3(1, 2) = "j"
+    Arr3(2, 1) = "k"
+    Arr3(2, 2) = "l"
+    
+    Arr4(1, 1) = "m"
+    Arr4(1, 2) = "n"
+    Arr4(2, 1) = "o"
+    Arr4(2, 2) = "p"
+    
+    'Act:
+    ResArr = modArraySupport.CombineTwoDArrays( _
+            modArraySupport.CombineTwoDArrays( _
+                    modArraySupport.CombineTwoDArrays(Arr1, Arr2), _
+                    Arr3), _
+            Arr4 _
+    )
+    
+    'Assert:
+    Assert.SequenceEquals aExpected, ResArr
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
 End Sub
 
 
