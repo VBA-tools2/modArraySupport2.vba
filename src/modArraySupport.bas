@@ -1119,19 +1119,17 @@ Public Function IsArrayDynamic( _
 End Function
 
 
-'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 'IsArrayObjects
-'Returns True if InputArray is entirely objects (Nothing objects are
-'optionally allowed -- default it true, allow Nothing objects). Set the
-'AllowNothing to true or false to indicate whether Nothing objects
-'are allowed.
-'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'Returns 'True' if 'InputArray' is entirely objects ('Nothing' objects are
+'optionally allowed -- default it 'True', allow 'Nothing' objects).
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 Public Function IsArrayObjects( _
-    InputArray As Variant, _
-    Optional AllowNothing As Boolean = True _
+    ByVal InputArray As Variant, _
+    Optional ByVal AllowNothing As Boolean = True _
         ) As Boolean
-
-    Dim Ndx As Long
+    
+    Dim Element As Variant
     
     
     'Set the default return value
@@ -1139,27 +1137,15 @@ Public Function IsArrayObjects( _
     
     If Not IsArray(InputArray) Then Exit Function
     
-    'Ensure we have a single dimensional array
-    Select Case NumberOfArrayDimensions(InputArray)
-        Case 0
-            'Unallocated dynamic array. Not allowed.
-            Exit Function
-        Case 1
-            'OK
-        Case Else
-            'Multi-dimensional array. Not allowed.
-            Exit Function
-    End Select
-    
-    For Ndx = LBound(InputArray) To UBound(InputArray)
-        If Not IsObject(InputArray(Ndx)) Then Exit Function
-        If InputArray(Ndx) Is Nothing Then
-            If AllowNothing = False Then Exit Function
+    For Each Element In InputArray
+        If Not IsObject(Element) Then Exit Function
+        If Element Is Nothing Then
+            If Not AllowNothing Then Exit Function
         End If
     Next
     
     IsArrayObjects = True
-
+    
 End Function
 
 

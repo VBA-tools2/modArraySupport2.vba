@@ -3695,22 +3695,305 @@ TestFail:
 End Sub
 
 
-Public Sub DemoIsArrayObjects()
-    
-    Dim V(1 To 3) As Variant
-    Dim B As Boolean
-    
-    
-    Set V(1) = Nothing
-    Set V(2) = Range("A1")
-    V(3) = Range("A1")
-    
-    B = modArraySupport.IsArrayObjects(V, True)
-Debug.Print "IsArrayObjects With AllowNothing = True:", B
+'==============================================================================
+'unit tests for 'IsArrayObjects'
+'==============================================================================
 
-    B = modArraySupport.IsArrayObjects(V, False)
-Debug.Print "IsArrayObjects With AllowNothing = False:", B
+'@TestMethod
+Public Sub IsArrayObjects_NoArray_ReturnsFalse()
+    On Error GoTo TestFail
+    
+    'Arrange:
+    Dim Scalar As Long
+    
+    '==========================================================================
+    Const AllowNothing As Boolean = True
+    '==========================================================================
+    
+    
+    'Act:
+    'Assert:
+    Assert.IsFalse modArraySupport.IsArrayObjects(Scalar, AllowNothing)
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+End Sub
 
+
+'@TestMethod
+Public Sub IsArrayObjects_LongPtrInputArray_ReturnsFalse()
+    On Error GoTo TestFail
+    
+    'Arrange:
+    Dim InputArray(5 To 6) As Long
+    
+    '==========================================================================
+    Const AllowNothing As Boolean = True
+    '==========================================================================
+    
+    
+    'Act:
+    'Assert:
+    Assert.IsFalse modArraySupport.IsArrayObjects(InputArray, AllowNothing)
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+End Sub
+
+
+'@TestMethod
+Public Sub IsArrayObjects_ObjectInputArrayNothingOnlyAllowNothingTrue_ReturnsTrue()
+    On Error GoTo TestFail
+    
+    Dim InputArray(5 To 6) As Object
+    Dim Element As Variant
+    
+    '==========================================================================
+    Const AllowNothing As Boolean = True
+    '==========================================================================
+    
+    
+    'Arrange:
+    Set InputArray(5) = Nothing
+    Set InputArray(6) = Nothing
+    
+    'Act:
+    If Not modArraySupport.IsArrayObjects(InputArray, AllowNothing) Then _
+            GoTo TestFail
+    
+    'Assert:
+    For Each Element In InputArray
+        Assert.IsNothing Element
+    Next
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+End Sub
+
+
+'@TestMethod
+Public Sub IsArrayObjects_ObjectInputArrayNothingOnlyAllowNothingFalse_ReturnsFalse()
+    On Error GoTo TestFail
+    
+    'Arrange:
+    Dim InputArray(5 To 6) As Object
+    
+    '==========================================================================
+    Const AllowNothing As Boolean = False
+    '==========================================================================
+    
+    
+    'Arrange:
+    Set InputArray(5) = Nothing
+    Set InputArray(6) = Nothing
+    
+    'Act:
+    'Assert:
+    Assert.IsFalse modArraySupport.IsArrayObjects(InputArray, AllowNothing)
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+End Sub
+
+
+'@TestMethod
+Public Sub IsArrayObjects_ObjectInputArrayNonNothingOnlyAllowNothingTrue_ReturnsTrue()
+    On Error GoTo TestFail
+    
+    Dim InputArray(5 To 6) As Object
+    Dim Element As Variant
+    
+    '==========================================================================
+    Const AllowNothing As Boolean = True
+    '==========================================================================
+    
+    
+    'Arrange:
+    With ThisWorkbook.Worksheets(1)
+        Set InputArray(5) = .Range("A5")
+        Set InputArray(6) = .Range("A6")
+    End With
+    
+    'Act:
+    If Not modArraySupport.IsArrayObjects(InputArray, AllowNothing) Then _
+            GoTo TestFail
+    
+    'Assert:
+    For Each Element In InputArray
+        Assert.IsNotNothing Element
+    Next
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+End Sub
+
+
+'@TestMethod
+Public Sub IsArrayObjects_ObjectInputArrayNonNothingOnlyAllowNothingFalse_ReturnsTrue()
+    On Error GoTo TestFail
+    
+    'Arrange:
+    Dim InputArray(5 To 6) As Object
+    Dim Element As Variant
+    
+    '==========================================================================
+    Const AllowNothing As Boolean = False
+    '==========================================================================
+    
+    
+    'Arrange:
+    With ThisWorkbook.Worksheets(1)
+        Set InputArray(5) = .Range("A5")
+        Set InputArray(6) = .Range("A6")
+    End With
+    
+    'Act:
+    If Not modArraySupport.IsArrayObjects(InputArray, AllowNothing) Then _
+            GoTo TestFail
+    
+    'Assert:
+    For Each Element In InputArray
+        Assert.IsNotNothing Element
+    Next
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+End Sub
+
+
+'@TestMethod
+Public Sub IsArrayObjects_VariantInputArrayAllowNothingFalse_ReturnsFalse()
+    On Error GoTo TestFail
+    
+    'Arrange:
+    Dim InputArray(5 To 6) As Variant
+    Dim Element As Variant
+    
+    '==========================================================================
+    Const AllowNothing As Boolean = False
+    '==========================================================================
+    
+    
+    'Arrange:
+    With ThisWorkbook.Worksheets(1)
+        Set InputArray(5) = .Range("A5")
+        Set InputArray(6) = Nothing
+    End With
+    
+    'Act:
+    'Assert:
+    Assert.IsFalse modArraySupport.IsArrayObjects(InputArray, AllowNothing)
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+End Sub
+
+
+'@TestMethod
+Public Sub IsArrayObjects_VariantInputArrayAllowNothingTrue_ReturnsTrue()
+    On Error GoTo TestFail
+    
+    'Arrange:
+    Dim InputArray(5 To 6) As Variant
+    Dim Element As Variant
+    
+    '==========================================================================
+    Const AllowNothing As Boolean = True
+    '==========================================================================
+    
+    
+    'Arrange:
+    With ThisWorkbook.Worksheets(1)
+        Set InputArray(5) = .Range("A5")
+        Set InputArray(6) = Nothing
+    End With
+    
+    'Act:
+    'Assert:
+    Assert.IsTrue modArraySupport.IsArrayObjects(InputArray, AllowNothing)
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+End Sub
+
+
+'@TestMethod
+Public Sub IsArrayObjects_2DVariantInputArrayAllowNothingFalse_ReturnsFalse()
+    On Error GoTo TestFail
+    
+    'Arrange:
+    Dim InputArray(5 To 6, 3 To 4) As Variant
+    Dim Element As Variant
+    
+    '==========================================================================
+    Const AllowNothing As Boolean = False
+    '==========================================================================
+    
+    
+    'Arrange:
+    With ThisWorkbook.Worksheets(1)
+        Set InputArray(5, 3) = .Range("A5")
+        Set InputArray(6, 3) = .Range("A6")
+        Set InputArray(5, 4) = Nothing
+        Set InputArray(6, 4) = Nothing
+    End With
+    
+    'Act:
+    'Assert:
+    Assert.IsFalse modArraySupport.IsArrayObjects(InputArray, AllowNothing)
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+End Sub
+
+
+'@TestMethod
+Public Sub IsArrayObjects_2DVariantInputArrayAllowNothingTrue_ReturnsTrue()
+    On Error GoTo TestFail
+    
+    'Arrange:
+    Dim InputArray(5 To 6, 3 To 4) As Variant
+    Dim Element As Variant
+    
+    '==========================================================================
+    Const AllowNothing As Boolean = True
+    '==========================================================================
+    
+    
+    'Arrange:
+    With ThisWorkbook.Worksheets(1)
+        Set InputArray(5, 3) = .Range("A5")
+        Set InputArray(6, 3) = .Range("A6")
+        Set InputArray(5, 4) = Nothing
+        Set InputArray(6, 4) = Nothing
+    End With
+    
+    'Act:
+    'Assert:
+    Assert.IsTrue modArraySupport.IsArrayObjects(InputArray, AllowNothing)
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
 End Sub
 
 
