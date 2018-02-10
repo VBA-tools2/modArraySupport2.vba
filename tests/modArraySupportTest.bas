@@ -2018,43 +2018,501 @@ TestFail:
 End Sub
 
 
-Public Sub DemoDeleteArrayElement()
+'==============================================================================
+'unit tests for 'DeleteArrayElement'
+'==============================================================================
 
-    Dim Stat(1 To 3) As Long
-    Dim Dyn() As Variant
-    Dim N As Long
-    Dim B As Boolean
-
-
-    ReDim Dyn(1 To 3)
-    Stat(1) = 1
-    Stat(2) = 2
-    Stat(3) = 3
-    Dyn(1) = "abc"
-    Dyn(2) = 1234
-    Dyn(3) = "ABC"
-
-    B = modArraySupport.DeleteArrayElement(Stat, 1, False)
+'@TestMethod
+Public Sub DeleteArrayElement_NoArray_ReturnsFalse()
+    On Error GoTo TestFail
     
-    If B = True Then
-        For N = LBound(Stat) To UBound(Stat)
-Debug.Print CStr(N), Stat(N)
-        Next N
-    Else
-Debug.Print "DeleteArrayElement returned false"
-    End If
-
-
-    B = modArraySupport.DeleteArrayElement(Dyn, 2, False)
+    'Arrange:
+    Dim Scalar As Long
     
-    If B = True Then
-        For N = LBound(Dyn) To UBound(Dyn)
-Debug.Print CStr(N), Dyn(N)
-        Next N
-    Else
-Debug.Print "DeleteArrayElement returned false"
-    End If
+    '==========================================================================
+    Const ElementNumber As Long = 6
+    Const ResizeDynamic As Boolean = False
+    '==========================================================================
+    
+    
+    'Act:
+    'Assert:
+    Assert.IsFalse modArraySupport.DeleteArrayElement( _
+            Scalar, _
+            ElementNumber, _
+            ResizeDynamic _
+    )
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+End Sub
 
+
+'@TestMethod
+Public Sub DeleteArrayElement_UnallocatedArray_ReturnsFalse()
+    On Error GoTo TestFail
+    
+    'Arrange:
+    Dim InputArray() As Long
+    
+    '==========================================================================
+    Const ElementNumber As Long = 6
+    Const ResizeDynamic As Boolean = False
+    '==========================================================================
+    
+    
+    'Act:
+    'Assert:
+    Assert.IsFalse modArraySupport.DeleteArrayElement( _
+            InputArray, _
+            ElementNumber, _
+            ResizeDynamic _
+    )
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+End Sub
+
+
+'@TestMethod
+Public Sub DeleteArrayElement_2DArray_ReturnsFalse()
+    On Error GoTo TestFail
+    
+    'Arrange:
+    Dim InputArray(5 To 7, 1 To 1) As Long
+    
+    '==========================================================================
+    Const ElementNumber As Long = 6
+    Const ResizeDynamic As Boolean = False
+    '==========================================================================
+    
+    
+    'Act:
+    'Assert:
+    Assert.IsFalse modArraySupport.DeleteArrayElement( _
+            InputArray, _
+            ElementNumber, _
+            ResizeDynamic _
+    )
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+End Sub
+
+
+'@TestMethod
+Public Sub DeleteArrayElement_TooLowElementNumber_ReturnsFalse()
+    On Error GoTo TestFail
+    
+    'Arrange:
+    Dim InputArray(5 To 7) As Long
+    
+    '==========================================================================
+    Const ElementNumber As Long = 3
+    Const ResizeDynamic As Boolean = False
+    '==========================================================================
+    
+    
+    'Act:
+    'Assert:
+    Assert.IsFalse modArraySupport.DeleteArrayElement( _
+            InputArray, _
+            ElementNumber, _
+            ResizeDynamic _
+    )
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+End Sub
+
+
+'@TestMethod
+Public Sub DeleteArrayElement_TooHighElementNumber_ReturnsFalse()
+    On Error GoTo TestFail
+    
+    'Arrange:
+    Dim InputArray(5 To 7) As Long
+    
+    '==========================================================================
+    Const ElementNumber As Long = 9
+    Const ResizeDynamic As Boolean = False
+    '==========================================================================
+    
+    
+    'Act:
+    'Assert:
+    Assert.IsFalse modArraySupport.DeleteArrayElement( _
+            InputArray, _
+            ElementNumber, _
+            ResizeDynamic _
+    )
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+End Sub
+
+
+'@TestMethod
+Public Sub DeleteArrayElement_RemoveElementOfStaticArray_ReturnsTrueAndModifiedInputArray()
+    On Error GoTo TestFail
+    
+    Dim InputArray(5 To 7) As Long
+    
+    '==========================================================================
+    Const ElementNumber As Long = 6
+    Const ResizeDynamic As Boolean = False
+    
+    Dim aExpected(5 To 7) As Long
+        aExpected(5) = 10
+        aExpected(6) = 30
+        aExpected(7) = 0
+    '==========================================================================
+    
+    
+    'Arrange:
+    InputArray(5) = 10
+    InputArray(6) = 20
+    InputArray(7) = 30
+    
+    'Act:
+    If Not modArraySupport.DeleteArrayElement( _
+            InputArray, _
+            ElementNumber, _
+            ResizeDynamic _
+    ) Then _
+            GoTo TestFail
+    
+    'Assert:
+    Assert.SequenceEquals aExpected, InputArray
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+End Sub
+
+
+'@TestMethod
+Public Sub DeleteArrayElement_RemoveElementOfStaticObjectArray_ReturnsTrueAndModifiedInputArray()
+    On Error GoTo TestFail
+    
+    Dim InputArray(5 To 7) As Object
+    Dim i As Long
+    
+    '==========================================================================
+    Const ElementNumber As Long = 6
+    Const ResizeDynamic As Boolean = False
+    
+    Dim aExpected(5 To 7) As Object
+        With ThisWorkbook.Worksheets(1)
+            Set aExpected(5) = .Range("A5")
+            Set aExpected(6) = .Range("A7")
+            Set aExpected(7) = Nothing
+        End With
+    '==========================================================================
+    
+    
+    'Arrange:
+    With ThisWorkbook.Worksheets(1)
+        Set InputArray(5) = .Range("A5")
+        Set InputArray(6) = .Range("A6")
+        Set InputArray(7) = .Range("A7")
+    End With
+    
+    'Act:
+    If Not modArraySupport.DeleteArrayElement( _
+            InputArray, _
+            ElementNumber, _
+            ResizeDynamic _
+    ) Then _
+            GoTo TestFail
+    
+    'Assert:
+    For i = LBound(InputArray) To UBound(InputArray)
+        If InputArray(i) Is Nothing Then
+            Assert.IsNothing aExpected(i)
+        Else
+            Assert.AreEqual aExpected(i).Address, InputArray(i).Address
+        End If
+    Next
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+End Sub
+
+
+'@TestMethod
+Public Sub DeleteArrayElement_RemoveElementOfDynamicArrayDontResize_ReturnsTrueAndModifiedInputArray()
+    On Error GoTo TestFail
+    
+    Dim InputArray() As Long
+    
+    '==========================================================================
+    Const ElementNumber As Long = 6
+    Const ResizeDynamic As Boolean = False
+    
+    Dim aExpected(5 To 7) As Long
+        aExpected(5) = 10
+        aExpected(6) = 30
+        aExpected(7) = 0
+    '==========================================================================
+    
+    
+    'Arrange:
+    ReDim InputArray(5 To 7)
+    InputArray(5) = 10
+    InputArray(6) = 20
+    InputArray(7) = 30
+    
+    'Act:
+    If Not modArraySupport.DeleteArrayElement( _
+            InputArray, _
+            ElementNumber, _
+            ResizeDynamic _
+    ) Then _
+            GoTo TestFail
+    
+    'Assert:
+    Assert.SequenceEquals aExpected, InputArray
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+End Sub
+
+
+'2do: why does this test fail?
+''@TestMethod
+'Public Sub DeleteArrayElement_RemoveElementOfDynamicArrayDontResize2_ReturnsTrueAndModifiedInputArray()
+'    On Error GoTo TestFail
+'
+'    Dim InputArray() As Variant
+'
+'    '==========================================================================
+'    Const ElementNumber As Long = 6
+'    Const ResizeDynamic As Boolean = False
+'
+'    Dim aExpected(5 To 7) As Variant
+'        aExpected(5) = "abc"
+'        aExpected(6) = "ABC"
+'        aExpected(7) = vbNullString
+'    '==========================================================================
+'
+'
+'    'Arrange:
+'    ReDim InputArray(5 To 7)
+'    InputArray(5) = "abc"
+'    InputArray(6) = 1234
+'    InputArray(7) = "ABC"
+'
+'    'Act:
+'    If Not modArraySupport.DeleteArrayElement( _
+'            InputArray, _
+'            ElementNumber, _
+'            ResizeDynamic _
+'    ) Then _
+'            GoTo TestFail
+'
+'    'Assert:
+'    Assert.SequenceEquals aExpected, InputArray
+'
+'TestExit:
+'    Exit Sub
+'TestFail:
+'    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+'End Sub
+
+
+'@TestMethod
+Public Sub DeleteArrayElement_RemoveElementOfDynamicObjectArrayDontResize_ReturnsTrueAndModifiedInputArray()
+    On Error GoTo TestFail
+    
+    Dim InputArray() As Object
+    Dim i As Long
+    
+    '==========================================================================
+    Const ElementNumber As Long = 6
+    Const ResizeDynamic As Boolean = False
+    
+    Dim aExpected(5 To 7) As Object
+        With ThisWorkbook.Worksheets(1)
+            Set aExpected(5) = .Range("A5")
+            Set aExpected(6) = .Range("A7")
+            Set aExpected(7) = Nothing
+        End With
+    '==========================================================================
+    
+    
+    'Arrange:
+    ReDim InputArray(5 To 7)
+    With ThisWorkbook.Worksheets(1)
+        Set InputArray(5) = .Range("A5")
+        Set InputArray(6) = .Range("A6")
+        Set InputArray(7) = .Range("A7")
+    End With
+    
+    'Act:
+    If Not modArraySupport.DeleteArrayElement( _
+            InputArray, _
+            ElementNumber, _
+            ResizeDynamic _
+    ) Then _
+            GoTo TestFail
+    
+    'Assert:
+    For i = LBound(InputArray) To UBound(InputArray)
+        If InputArray(i) Is Nothing Then
+            Assert.IsNothing aExpected(i)
+        Else
+            Assert.AreEqual aExpected(i).Address, InputArray(i).Address
+        End If
+    Next
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+End Sub
+
+
+'@TestMethod
+Public Sub DeleteArrayElement_RemoveElementOfDynamicArrayResize_ReturnsTrueAndModifiedInputArray()
+    On Error GoTo TestFail
+    
+    Dim InputArray() As Long
+    
+    '==========================================================================
+    Const ElementNumber As Long = 6
+    Const ResizeDynamic As Boolean = True
+    
+    Dim aExpected(5 To 6) As Long
+        aExpected(5) = 10
+        aExpected(6) = 30
+    '==========================================================================
+    
+    
+    'Arrange:
+    ReDim InputArray(5 To 7)
+    InputArray(5) = 10
+    InputArray(6) = 20
+    InputArray(7) = 30
+    
+    'Act:
+    If Not modArraySupport.DeleteArrayElement( _
+            InputArray, _
+            ElementNumber, _
+            ResizeDynamic _
+    ) Then _
+            GoTo TestFail
+    
+    'Assert:
+    Assert.SequenceEquals aExpected, InputArray
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+End Sub
+
+
+'@TestMethod
+Public Sub DeleteArrayElement_RemoveElementOfDynamicObjectArrayResize_ReturnsTrueAndModifiedInputArray()
+    On Error GoTo TestFail
+    
+    Dim InputArray() As Object
+    Dim i As Long
+    
+    '==========================================================================
+    Const ElementNumber As Long = 6
+    Const ResizeDynamic As Boolean = True
+    
+    Dim aExpected(5 To 6) As Object
+        With ThisWorkbook.Worksheets(1)
+            Set aExpected(5) = .Range("A5")
+            Set aExpected(6) = .Range("A7")
+        End With
+    '==========================================================================
+    
+    
+    'Arrange:
+    ReDim InputArray(5 To 7)
+    With ThisWorkbook.Worksheets(1)
+        Set InputArray(5) = .Range("A5")
+        Set InputArray(6) = .Range("A6")
+        Set InputArray(7) = .Range("A7")
+    End With
+    
+    'Act:
+    If Not modArraySupport.DeleteArrayElement( _
+            InputArray, _
+            ElementNumber, _
+            ResizeDynamic _
+    ) Then _
+            GoTo TestFail
+    
+    'Assert:
+    For i = LBound(InputArray) To UBound(InputArray)
+        If InputArray(i) Is Nothing Then
+            Assert.IsNothing aExpected(i)
+        Else
+            Assert.AreEqual aExpected(i).Address, InputArray(i).Address
+        End If
+    Next
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+End Sub
+
+
+'@TestMethod
+Public Sub DeleteArrayElement_RemoveOnlyElementOfDynamicObjectArrayResize_ReturnsTrueAndModifiedInputArray()
+    On Error GoTo TestFail
+    
+    Dim InputArray() As String
+    Dim i As Long
+    
+    '==========================================================================
+    Const ElementNumber As Long = 5
+    Const ResizeDynamic As Boolean = True
+    
+    Dim aExpected() As String
+    '==========================================================================
+    
+    
+    'Arrange:
+    ReDim InputArray(5 To 5)
+    InputArray(5) = "abc"
+    
+    'Act:
+    If Not modArraySupport.DeleteArrayElement( _
+            InputArray, _
+            ElementNumber, _
+            ResizeDynamic _
+    ) Then _
+            GoTo TestFail
+    
+    'Assert:
+    Assert.AreEqual aExpected, InputArray
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
 End Sub
 
 

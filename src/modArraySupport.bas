@@ -687,24 +687,28 @@ Public Function DataTypeOfArray( _
 End Function
 
 
-''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 'DeleteArrayElement
-'This function deletes an element from InputArray, and shifts elements that are to the
-'right of the deleted element to the left. If InputArray is a dynamic array, and the
-'ResizeDynamic parameter is True, the array will be resized one element smaller. Otherwise,
-'the right-most entry in the array is set to the default value appropriate to the data
-'type of the array (0, vbNullString, Empty, or Nothing). If the array is an array of Variant
-'types, the default data type is the data type of the last element in the array.
-'The function returns True if the elememt was successfully deleted, or False if an error
-'occurrred. This procedure works only on single-dimensional
-''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'This function deletes an element from 'InputArray', and shifts elements that
+'are to the right of the deleted element to the left. If 'InputArray' is a
+'dynamic array, and the 'ResizeDynamic' parameter is 'True', the array will be
+'resized one element smaller. Otherwise, the right-most entry in the array is
+'set to the default value appropriate to the data type of the array
+'(0, vbNullString, Empty, or Nothing). If the array is an array of 'Variant'
+'types, the default data type is the data type of the last element in the
+'array. The function returns 'True' if the element was successfully deleted and
+''False' otherwise. This procedure works only on single-dimensional arrays.
+'(In case the only element is deleted, 'InputArray' is dynamic and
+''ResizeDynamic' is 'True' 'InputArray' will be erased.)
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'2do: rename to 'DeleteVectorElement'
 Public Function DeleteArrayElement( _
-    InputArray As Variant, _
-    ElementNumber As Long, _
-    Optional ResizeDynamic As Boolean = False _
+    ByRef InputArray As Variant, _
+    ByVal ElementNumber As Long, _
+    Optional ByVal ResizeDynamic As Boolean = False _
         ) As Boolean
-
-    Dim Ndx As Long
+    
+    Dim i As Long
     Dim VType As VbVarType
     
     Dim LongLongType As Byte
@@ -717,46 +721,53 @@ Public Function DeleteArrayElement( _
     If Not IsArray(InputArray) Then Exit Function
     If NumberOfArrayDimensions(InputArray) <> 1 Then Exit Function
     
-    'Ensure we have a valid ElementNumber
+    'Ensure we have a valid 'ElementNumber'
     If ElementNumber < LBound(InputArray) Then Exit Function
     If ElementNumber > UBound(InputArray) Then Exit Function
     
-    'Get the variable data type of the element we're deleting
+    'Get the variable data type of the element we are deleting
     VType = VarType(InputArray(UBound(InputArray)))
-    If VType >= vbArray Then
+    If IsObject(InputArray(UBound(InputArray))) Then
+        VType = vbObject
+    ElseIf VType >= vbArray Then
         VType = VType - vbArray
     End If
+    
     'Shift everything to the left
-    For Ndx = ElementNumber To UBound(InputArray) - 1
-        InputArray(Ndx) = InputArray(Ndx + 1)
-    Next
-    'If ResizeDynamic is True, resize the array if it is dynamic
-    If IsArrayDynamic(InputArray) Then
-        If ResizeDynamic = True Then
-            'Resize the array and get out.
-            ReDim Preserve InputArray(LBound(InputArray) To UBound(InputArray) - 1)
-            DeleteArrayElement = True
-            Exit Function
+    For i = ElementNumber To UBound(InputArray) - 1
+        If IsObject(InputArray(i)) Then
+            Set InputArray(i) = InputArray(i + 1)
+        Else
+            InputArray(i) = InputArray(i + 1)
         End If
+    Next
+    
+    If IsArrayDynamic(InputArray) And ResizeDynamic = True Then
+        If UBound(InputArray) > LBound(InputArray) Then
+            ReDim Preserve InputArray(LBound(InputArray) To UBound(InputArray) - 1)
+        Else
+            Erase InputArray
+        End If
+    Else
+        'Set the last element of the 'InputArray' to the proper default value
+        Select Case VType
+            Case vbByte, vbInteger, vbLong, LongLongType, vbSingle, vbDouble, vbDate, vbCurrency, vbDecimal
+                InputArray(UBound(InputArray)) = 0
+            Case vbString
+                InputArray(UBound(InputArray)) = vbNullString
+            Case vbArray, vbVariant, vbEmpty, vbError, vbNull, vbUserDefinedType
+                InputArray(UBound(InputArray)) = Empty
+            Case vbBoolean
+                InputArray(UBound(InputArray)) = False
+            Case vbObject
+                Set InputArray(UBound(InputArray)) = Nothing
+            Case Else
+                InputArray(UBound(InputArray)) = 0
+        End Select
     End If
-    'Set the last element of the InputArray to the proper default value
-    Select Case VType
-        Case vbByte, vbInteger, vbLong, LongLongType, vbSingle, vbDouble, vbDate, vbCurrency, vbDecimal
-            InputArray(UBound(InputArray)) = 0
-        Case vbString
-            InputArray(UBound(InputArray)) = vbNullString
-        Case vbArray, vbVariant, vbEmpty, vbError, vbNull, vbUserDefinedType
-            InputArray(UBound(InputArray)) = Empty
-        Case vbBoolean
-            InputArray(UBound(InputArray)) = False
-        Case vbObject
-            Set InputArray(UBound(InputArray)) = Nothing
-        Case Else
-            InputArray(UBound(InputArray)) = 0
-    End Select
     
     DeleteArrayElement = True
-
+    
 End Function
 
 
