@@ -543,135 +543,77 @@ Public Function CopyArraySubSetToArray( _
 End Function
 
 
-'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 'CopyNonNothingObjectsToArray
-'This function copies all objects that are not Nothing from SourceArray
-'to ResultArray. ResultArray MUST be a dynamic array of type Object or Variant.
-'E.g.,
+'This function copies all objects that are not Nothing from 'SourceArray'
+'to 'ResultArray'. 'ResultArray' MUST be a dynamic array of type 'Object' or
+''Variant', e.g.,
 '    Dim ResultArray() As Object
-'Or
+'or
 '    Dim ResultArray() as Variant
 '
-'ResultArray will be Erased and then resized to hold the non-Nothing elements
-'from SourceArray. The LBound of ResultArray will be the same as the LBound
-'of SourceArray, regardless of what its LBound was prior to calling this
-'procedure.
+''ResultArray' will be erased and then resized to hold the non-Nothing elements
+'from 'SourceArray'. The 'LBound' of 'ResultArray' will be the same as the
+''LBound' of 'SourceArray', regardless of what its 'LBound' was prior to
+'calling this procedure.
 '
-'This function returns True if the operation was successful or False if an
-'error occurs. If an error occurs, a message box is displayed indicating the
-'error. To suppress the message boxes, set the NoAlerts parameter to True.
-'
-'This function uses the following procedures.
-'    IsArrayDynamic
-'    IsArrayAllocated
-'    NumberOfArrayDimensions
-''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'This function returns 'True' if the operation was successful or 'False' if an
+'error occurs.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'2do: rename to 'CopyNonNothingObjectsToVector'
 Public Function CopyNonNothingObjectsToArray( _
-    ByRef SourceArray As Variant, _
-    ByRef ResultArray As Variant, _
-    Optional NoAlerts As Boolean = False _
+    ByVal SourceArray As Variant, _
+    ByRef ResultArray As Variant _
         ) As Boolean
     
+    Dim SrcNdx As Long
     Dim ResNdx As Long
-    Dim InNdx  As Long
     
     
     'Set the default return value
     CopyNonNothingObjectsToArray = False
     
-    'Ensure SourceArray is an array
-    If Not IsArray(SourceArray) Then
-        If NoAlerts = False Then
-            MsgBox "SourceArray is not an array."
-        End If
-        Exit Function
-    End If
-    'Ensure SourceArray is a single dimensional array
-    Select Case NumberOfArrayDimensions(SourceArray)
-        Case 0
-            'Unallocated dynamic array. Not Allowed.
-            If NoAlerts = False Then
-                MsgBox "SourceArray is an unallocated array."
-            End If
-            Exit Function
-        Case 1
-            'Single-dimensional array. This is OK.
-        Case Else
-            'Multi-dimensional array. This is not allowed.
-            If NoAlerts = False Then
-                MsgBox "SourceArray is a multi-dimensional array. This is not allowed."
-            End If
-            Exit Function
-    End Select
-    'Ensure ResultArray is an array
-    If Not IsArray(ResultArray) Then
-        If NoAlerts = False Then
-            MsgBox "ResultArray is not an array."
-        End If
-        Exit Function
-    End If
-    'Ensure ResultArray is an dynamic
-    If Not IsArrayDynamic(ResultArray) Then
-        If NoAlerts = False Then
-            MsgBox "ResultArray is not a dynamic array."
-        End If
-        Exit Function
-    End If
-    'Ensure ResultArray is a single dimensional array
-    Select Case NumberOfArrayDimensions(ResultArray)
-        Case 0
-            'Unallocated dynamic array. This is OK.
-        Case 1
-            'Single-dimensional array. This is OK.
-        Case Else
-            'Multi-dimensional array. This is not allowed.
-            If NoAlerts = False Then
-                MsgBox "SourceArray is a multi-dimensional array. This is not allowed."
-            End If
-            Exit Function
-    End Select
+    If Not IsArrayDynamic(ResultArray) Then Exit Function
+    'Ensure 'ResultArray' is unallocated or single-dimensional
+    If NumberOfArrayDimensions(ResultArray) > 1 Then Exit Function
     
-    'Ensure that all the elements of SourceArray are in fact objects
-    For InNdx = LBound(SourceArray) To UBound(SourceArray)
-        If Not IsObject(SourceArray(InNdx)) Then
-            If NoAlerts = False Then
-                MsgBox "Element " & CStr(InNdx) & " of SourceArray is not an object."
-            End If
-            Exit Function
-        End If
-    Next
+    'Ensure that all the elements of 'SourceArray' are in fact objects
+    If Not IsArrayObjects(SourceArray) Then Exit Function
     
-    'Erase the ResultArray. Since ResultArray is dynamic, this will relase the
-    'memory used by ResultArray and return the array to an unallocated state.
+    'Erase the 'ResultArray'. Since 'ResultArray' is dynamic, this will release
+    'the memory used by 'ResultArray' and return the array to an unallocated
+    'state.
     Erase ResultArray
-    'Now, size ResultArray to the size of SourceArray. After moving all the
-    'non-Nothing elements, we'll do another resize to get ResultArray to the
-    'used size. This method allows us to avoid Redim Preserve for every element.
+    'Now, size 'ResultArray' to the size of 'SourceArray'. After moving all the
+    'non-Nothing elements, we'll do another resize to get 'ResultArray' to the
+    'used size. This method allows us to avoid 'ReDim Preserve' for every element.
     ReDim ResultArray(LBound(SourceArray) To UBound(SourceArray))
     
     ResNdx = LBound(SourceArray)
-    For InNdx = LBound(SourceArray) To UBound(SourceArray)
-        If Not SourceArray(InNdx) Is Nothing Then
-            Set ResultArray(ResNdx) = SourceArray(InNdx)
+    For SrcNdx = LBound(SourceArray) To UBound(SourceArray)
+        If Not SourceArray(SrcNdx) Is Nothing Then
+            Set ResultArray(ResNdx) = SourceArray(SrcNdx)
             ResNdx = ResNdx + 1
         End If
     Next
-    'Now that we've copied all the non-Nothing elements from SourceArray to
-    'ResultArray, we call Redim Preserve to resize the ResultArray to the size
-    'actually used. Test ResNdx to see if we actually copied any elements.
+    
+    'Now that we've copied all the non-Nothing elements we call 'ReDim Preserve'
+    'to resize the 'ResultArray' to the size actually used. Test 'ResNdx' to see
+    'if we actually copied any elements.
     '
-    'If ResNdx > LBound(SourceArray) then we copied at least one element out
-    'of SourceArray.
+    'If 'ResNdx > LBound(SourceArray)' then we copied at least one element out
+    'of 'SourceArray' ...
     If ResNdx > LBound(SourceArray) Then
         ReDim Preserve ResultArray(LBound(ResultArray) To ResNdx - 1)
-    'Otherwise, we didn't copy any elements from SourceArray
-    '(all elements in SourceArray were Nothing). In this case, Erase ResultArray.
+    '... otherwise we didn't copy any elements from 'SourceArray'
+    '(all elements in 'SourceArray' were 'Nothing'). In this case,
+    ''Erase ResultArray'.
     Else
         Erase ResultArray
     End If
     
     CopyNonNothingObjectsToArray = True
-
+    
 End Function
 
 

@@ -1561,30 +1561,166 @@ TestFail:
 End Sub
 
 
-Public Sub DemoCopyNonNothingObjectsToArray()
+'==============================================================================
+'unit tests for 'CopyNonNothingObjectsToArray'
+'==============================================================================
 
-    Dim SourceArray(1 To 5) As Object
+'@TestMethod
+Public Sub CopyNonNothingObjectsToArray_ScalarResultArray_ReturnsFalse()
+    On Error GoTo TestFail
+    
+    'Arrange:
+    Dim SourceArray() As Object
+    Dim ScalarResult As Object
+    
+    
+    'Act:
+    'Assert:
+    Assert.IsFalse modArraySupport.CopyNonNothingObjectsToArray( _
+            SourceArray, _
+            ScalarResult _
+    )
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+End Sub
+
+
+'@TestMethod
+Public Sub CopyNonNothingObjectsToArray_StaticResultArray_ReturnsFalse()
+    On Error GoTo TestFail
+    
+    'Arrange:
+    Dim SourceArray() As Object
+    Dim ResultArray(1 To 2) As Object
+    
+    
+    'Act:
+    'Assert:
+    Assert.IsFalse modArraySupport.CopyNonNothingObjectsToArray( _
+            SourceArray, _
+            ResultArray _
+    )
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+End Sub
+
+
+'@TestMethod
+Public Sub CopyNonNothingObjectsToArray_2DResultArray_ReturnsFalse()
+    On Error GoTo TestFail
+    
+    Dim SourceArray() As Object
     Dim ResultArray() As Object
-    Dim B As Boolean
-    Dim N As Long
     
     
-    Set SourceArray(1) = Range("a1")
-    Set SourceArray(2) = Range("A2")
-    Set SourceArray(3) = Nothing
-    Set SourceArray(4) = Nothing
-    Set SourceArray(5) = Range("A5")
+    'Arrange:
+    ReDim ResultArray(1 To 2, 1 To 1)
     
-    B = modArraySupport.CopyNonNothingObjectsToArray(SourceArray, ResultArray, False)
+    'Act:
+    'Assert:
+    Assert.IsFalse modArraySupport.CopyNonNothingObjectsToArray( _
+            SourceArray, _
+            ResultArray _
+    )
     
-    If B = True Then
-        For N = LBound(ResultArray) To UBound(ResultArray)
-Debug.Print CStr(N), ResultArray(N).Address
-        Next N
-    Else
-Debug.Print "CopyNonNothingObjectsToArray returned False"
-    End If
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+End Sub
 
+
+'@TestMethod
+Public Sub CopyNonNothingObjectsToArray_NonObjectOnlySourceArray_ReturnsFalse()
+    On Error GoTo TestFail
+    
+    Dim SourceArray(5 To 6) As Variant
+    Dim ResultArray() As Object
+    
+    
+    'Arrange:
+    Set SourceArray(5) = Nothing
+    SourceArray(6) = 1
+    
+    'Act:
+    'Assert:
+    Assert.IsFalse modArraySupport.CopyNonNothingObjectsToArray( _
+            SourceArray, _
+            ResultArray _
+    )
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+End Sub
+
+
+'@TestMethod
+Public Sub CopyNonNothingObjectsToArray_ValidNonNothingOnlySourceArray_ReturnsTrueAndResultArray()
+    On Error GoTo TestFail
+    
+    Dim SourceArray(5 To 6) As Variant
+    Dim ResultArray() As Object
+    Dim i As Long
+    
+    
+    'Arrange:
+    Set SourceArray(5) = Nothing
+    Set SourceArray(6) = ThisWorkbook.Worksheets(1).Range("A2")
+    
+    'Act:
+    If Not modArraySupport.CopyNonNothingObjectsToArray( _
+            SourceArray, _
+            ResultArray _
+    ) Then _
+            GoTo TestFail
+    
+    'Assert:
+    For i = LBound(ResultArray) To UBound(ResultArray)
+        Assert.IsNotNothing ResultArray(i)
+    Next
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+End Sub
+
+
+'@TestMethod
+Public Sub CopyNonNothingObjectsToArray_NothingOnlySourceArray_ReturnsFalse()
+    On Error GoTo TestFail
+    
+    Dim SourceArray(5 To 6) As Variant
+    Dim ResultArray() As Object
+    Dim i As Long
+    
+    
+    'Arrange:
+    Set SourceArray(5) = Nothing
+    Set SourceArray(6) = Nothing
+    
+    'Act:
+    If Not modArraySupport.CopyNonNothingObjectsToArray( _
+            SourceArray, _
+            ResultArray _
+    ) Then _
+            GoTo TestFail
+    
+    'Assert:
+    Assert.IsFalse modArraySupport.IsArrayAllocated(ResultArray)
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
 End Sub
 
 
