@@ -6003,76 +6003,378 @@ TestFail:
 End Sub
 
 
-Public Sub DemoExpandArray()
+'==============================================================================
+'unit tests for 'ExpandArray'
+'==============================================================================
 
-    Dim A As Variant
-    Dim B As Variant
-    Dim RowNdx As Long
-    Dim ColNdx As Long
-    Dim S As String
+'@TestMethod
+Public Sub ExpandArray_NoArray_ReturnsNull()
+    On Error GoTo TestFail
+    
+    'Arrange:
+    Dim Arr As Long
+    Dim ResultArr As Variant
+    
+    '==========================================================================
+    Const WhichDim As Long = 1
+    Const AdditionalElements As Long = 2
+    Const FillValue As Long = 11
+    '==========================================================================
+    
+    
+    'Act:
+    ResultArr = modArraySupport.ExpandArray( _
+            Arr, _
+            WhichDim, _
+            AdditionalElements, _
+            FillValue _
+    )
+    
+    'Assert:
+    Assert.IsTrue IsNull(ResultArr)
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+End Sub
 
 
-    'ReDim A(-5 To -3, 0 To 3)
-    'A(-5, 0) = "a"
-    'A(-5, 1) = "b"
-    'A(-5, 2) = "c"
-    'A(-5, 3) = "d"
-    'A(-4, 0) = "e"
-    'A(-4, 1) = "f"
-    'A(-4, 2) = "g"
-    'A(-4, 3) = "h"
-    'A(-3, 0) = "i"
-    'A(-3, 1) = "j"
-    'A(-3, 2) = "k"
-    'A(-3, 3) = "l"
-    '
+'@TestMethod
+Public Sub ExpandArray_UnallocatedArr_ReturnsNull()
+    On Error GoTo TestFail
+    
+    'Arrange:
+    Dim Arr() As Long
+    Dim ResultArr As Variant
+    
+    '==========================================================================
+    Const WhichDim As Long = 1
+    Const AdditionalElements As Long = 2
+    Const FillValue As Long = 11
+    '==========================================================================
+    
+    
+    'Act:
+    ResultArr = modArraySupport.ExpandArray( _
+            Arr, _
+            WhichDim, _
+            AdditionalElements, _
+            FillValue _
+    )
+    
+    'Assert:
+    Assert.IsTrue IsNull(ResultArr)
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+End Sub
 
-    ReDim A(1 To 2, 1 To 4)
-    A(1, 1) = "a"
-    A(1, 2) = "b"
-    A(1, 3) = "c"
-    A(1, 4) = "d"
-    A(2, 1) = "e"
-    A(2, 2) = "f"
-    A(2, 3) = "g"
-    A(2, 4) = "h"
 
-    Dim C As Variant
+'@TestMethod
+Public Sub ExpandArray_1DArr_ReturnsNull()
+    On Error GoTo TestFail
+    
+    'Arrange:
+    Dim Arr(5 To 6) As Long
+    Dim ResultArr As Variant
+    
+    '==========================================================================
+    Const WhichDim As Long = 1
+    Const AdditionalElements As Long = 2
+    Const FillValue As Long = 11
+    '==========================================================================
+    
+    
+    'Act:
+    ResultArr = modArraySupport.ExpandArray( _
+            Arr, _
+            WhichDim, _
+            AdditionalElements, _
+            FillValue _
+    )
+    
+    'Assert:
+    Assert.IsTrue IsNull(ResultArr)
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+End Sub
 
-Debug.Print "BEFORE:================================="
-    For RowNdx = LBound(A, 1) To UBound(A, 1)
-        S = vbNullString
-        For ColNdx = LBound(A, 2) To UBound(A, 2)
-            S = S & A(RowNdx, ColNdx) & " "
-        Next ColNdx
-Debug.Print S
-    Next RowNdx
 
-    S = vbNullString
-    B = modArraySupport.ExpandArray(A, 1, 3, "x")
+'@TestMethod
+Public Sub ExpandArray_3DArr_ReturnsNull()
+    On Error GoTo TestFail
+    
+    'Arrange:
+    Dim Arr(5 To 6, 3 To 4, 2 To 3) As Long
+    Dim ResultArr As Variant
+    
+    '==========================================================================
+    Const WhichDim As Long = 1
+    Const AdditionalElements As Long = 2
+    Const FillValue As Long = 11
+    '==========================================================================
+    
+    
+    'Act:
+    ResultArr = modArraySupport.ExpandArray( _
+            Arr, _
+            WhichDim, _
+            AdditionalElements, _
+            FillValue _
+    )
+    
+    'Assert:
+    Assert.IsTrue IsNull(ResultArr)
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+End Sub
 
-    C = modArraySupport.ExpandArray( _
-            ExpandArray(A, 1, 3, "F"), _
-                    2, 4, "S")
 
-Debug.Print "AFTER:================================="
-    For RowNdx = LBound(B, 1) To UBound(B, 1)
-        S = vbNullString
-        For ColNdx = LBound(B, 2) To UBound(B, 2)
-            S = S & B(RowNdx, ColNdx) & " "
-        Next ColNdx
-Debug.Print S
-    Next RowNdx
+'@TestMethod
+Public Sub ExpandArray_WhichDimSmallerOne_ReturnsNull()
+    On Error GoTo TestFail
+    
+    'Arrange:
+    Dim Arr(5 To 6, 3 To 4) As Long
+    Dim ResultArr As Variant
+    
+    '==========================================================================
+    Const WhichDim As Long = 0
+    Const AdditionalElements As Long = 2
+    Const FillValue As Long = 11
+    '==========================================================================
+    
+    
+    'Act:
+    ResultArr = modArraySupport.ExpandArray( _
+            Arr, _
+            WhichDim, _
+            AdditionalElements, _
+            FillValue _
+    )
+    
+    'Assert:
+    Assert.IsTrue IsNull(ResultArr)
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+End Sub
 
-'Debug.Print "AFTER:================================="
-'    For RowNdx = LBound(C, 1) To UBound(C, 1)
-'         S = vbNullString
-'         For ColNdx = LBound(C, 2) To UBound(C, 2)
-'              S = S & C(RowNdx, ColNdx) & " "
-'         Next ColNdx
-'         Debug.Print S
-'    Next RowNdx
 
+'@TestMethod
+Public Sub ExpandArray_WhichDimLargerTwo_ReturnsNull()
+    On Error GoTo TestFail
+    
+    'Arrange:
+    Dim Arr(5 To 6, 3 To 4) As Long
+    Dim ResultArr As Variant
+    
+    '==========================================================================
+    Const WhichDim As Long = 3
+    Const AdditionalElements As Long = 2
+    Const FillValue As Long = 11
+    '==========================================================================
+    
+    
+    'Act:
+    ResultArr = modArraySupport.ExpandArray( _
+            Arr, _
+            WhichDim, _
+            AdditionalElements, _
+            FillValue _
+    )
+    
+    'Assert:
+    Assert.IsTrue IsNull(ResultArr)
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+End Sub
+
+
+'@TestMethod
+Public Sub ExpandArray_AdditionalElementsSmallerZero_ReturnsNull()
+    On Error GoTo TestFail
+    
+    'Arrange:
+    Dim Arr(5 To 6, 3 To 4) As Long
+    Dim ResultArr As Variant
+    
+    '==========================================================================
+    Const WhichDim As Long = 1
+    Const AdditionalElements As Long = -1
+    Const FillValue As Long = 11
+    '==========================================================================
+    
+    
+    'Act:
+    ResultArr = modArraySupport.ExpandArray( _
+            Arr, _
+            WhichDim, _
+            AdditionalElements, _
+            FillValue _
+    )
+    
+    'Assert:
+    Assert.IsTrue IsNull(ResultArr)
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+End Sub
+
+
+'@TestMethod
+Public Sub ExpandArray_AdditionalElementsEqualsZero_ReturnsExpandedArray()
+    On Error GoTo TestFail
+    
+    Dim Arr(5 To 6, 3 To 4) As Long
+    Dim ResultArr As Variant
+    
+    '==========================================================================
+    Const WhichDim As Long = 1
+    Const AdditionalElements As Long = 0
+    Const FillValue As Long = 33
+    
+    Dim aExpected(5 To 6, 3 To 4) As Long
+        aExpected(5, 3) = 10
+        aExpected(6, 3) = 11
+        aExpected(5, 4) = 20
+        aExpected(6, 4) = 21
+    '==========================================================================
+    
+    
+    'Arrange:
+    Arr(5, 3) = 10
+    Arr(6, 3) = 11
+    Arr(5, 4) = 20
+    Arr(6, 4) = 21
+    
+    'Act:
+    ResultArr = modArraySupport.ExpandArray( _
+            Arr, _
+            WhichDim, _
+            AdditionalElements, _
+            FillValue _
+    )
+    
+    'Assert:
+    Assert.SequenceEquals aExpected, ResultArr
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+End Sub
+
+
+'@TestMethod
+Public Sub ExpandArray_AddTwoAdditionalRows_ReturnsExpandedArray()
+    On Error GoTo TestFail
+    
+    Dim Arr(5 To 6, 3 To 4) As Long
+    Dim ResultArr As Variant
+    
+    '==========================================================================
+    Const WhichDim As Long = 1
+    Const AdditionalElements As Long = 2
+    Const FillValue As Long = 33
+    
+    Dim aExpected(5 To 8, 3 To 4) As Long
+        aExpected(5, 3) = 10
+        aExpected(6, 3) = 11
+        aExpected(5, 4) = 20
+        aExpected(6, 4) = 21
+        aExpected(7, 3) = 33
+        aExpected(8, 3) = 33
+        aExpected(7, 4) = 33
+        aExpected(8, 4) = 33
+    '==========================================================================
+    
+    
+    'Arrange:
+    Arr(5, 3) = 10
+    Arr(6, 3) = 11
+    Arr(5, 4) = 20
+    Arr(6, 4) = 21
+    
+    'Act:
+    ResultArr = modArraySupport.ExpandArray( _
+            Arr, _
+            WhichDim, _
+            AdditionalElements, _
+            FillValue _
+    )
+    
+    'Assert:
+    Assert.SequenceEquals aExpected, ResultArr
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+End Sub
+
+
+'@TestMethod
+Public Sub ExpandArray_AddTwoAdditionalCols_ReturnsExpandedArray()
+    On Error GoTo TestFail
+    
+    Dim Arr(5 To 6, 3 To 4) As Long
+    Dim ResultArr As Variant
+    
+    '==========================================================================
+    Const WhichDim As Long = 2
+    Const AdditionalElements As Long = 2
+    Const FillValue As Long = 33
+    
+    Dim aExpected(5 To 6, 3 To 6) As Long
+        aExpected(5, 3) = 10
+        aExpected(6, 3) = 11
+        aExpected(5, 4) = 20
+        aExpected(6, 4) = 21
+        aExpected(5, 5) = 33
+        aExpected(6, 5) = 33
+        aExpected(5, 6) = 33
+        aExpected(6, 6) = 33
+    '==========================================================================
+    
+    
+    'Arrange:
+    Arr(5, 3) = 10
+    Arr(6, 3) = 11
+    Arr(5, 4) = 20
+    Arr(6, 4) = 21
+    
+    'Act:
+    ResultArr = modArraySupport.ExpandArray( _
+            Arr, _
+            WhichDim, _
+            AdditionalElements, _
+            FillValue _
+    )
+    
+    'Assert:
+    Assert.SequenceEquals aExpected, ResultArr
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
 End Sub
 
 

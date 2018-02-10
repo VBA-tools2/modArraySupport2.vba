@@ -2416,26 +2416,20 @@ Public Function CombineTwoDArrays( _
 End Function
 
 
-'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 'ExpandArray
-'This expands a two-dimensional array in either dimension. It returns the result
-'array if successful, or NULL if an error occurred. The original array is never
-'changed.
-'Paramters:
-'--------------------
-'Arr                   is the array to be expanded.
-'
-'WhichDim              is either 1 for additional rows or 2 for
-'                      additional columns.
-'
-'AdditionalElements    is the number of additional rows or columns
-'                      to create.
-'
-'FillValue             is the value to which the new array elements should be
-'                      initialized.
-'
-'You can nest calls to Expand array to expand both the number of rows and
-'columns. E.g.,
+'This expands a two-dimensional array in either dimension. It returns the
+'result array if successful, or 'Null' if an error occurred. The original array
+'is never changed.
+'Parameters:
+'- Arr                  is the array to be expanded
+'- WhichDim             is either 1 for additional rows or
+'                       2 for additional columns
+'- AdditionalElements   is the number of additional rows or columns to create.
+'- FillValue            is the value to which the new array elements should be
+'                       initialized
+'You can nest calls to expand array to expand both the number of rows and
+'columns, e.g.
 '
 'C = ExpandArray( _
 '        ExpandArray( _
@@ -2450,14 +2444,17 @@ End Function
 '
 'This first adds three rows at the bottom of the array, and then adds four
 'columns on the right of the array.
-'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'2do:
+'- create a type for 'WhichDim' and also replace 'ROWs_' then?
+'- should this work for objects as well?
 Public Function ExpandArray( _
-    Arr As Variant, _
-    WhichDim As Long, _
-    AdditionalElements As Long, _
-    FillValue As Variant _
+    ByVal Arr As Variant, _
+    ByVal WhichDim As Long, _
+    ByVal AdditionalElements As Long, _
+    ByVal FillValue As Variant _
         ) As Variant
-
+    
     Dim Result As Variant
     Dim RowNdx As Long
     Dim ColNdx As Long
@@ -2480,40 +2477,43 @@ Public Function ExpandArray( _
             Exit Function
     End Select
     
-    'Ensure AdditionalElements is > 0.
-    'If AdditionalElements  = 0, return Arr.
-    If AdditionalElements < 0 Then
-        Exit Function
-    ElseIf AdditionalElements = 0 Then
+    If AdditionalElements < 0 Then Exit Function
+    If AdditionalElements = 0 Then
         ExpandArray = Arr
         Exit Function
     End If
     
     If WhichDim = ROWS_ Then
-        'Redim Result
-        ReDim Result(LBound(Arr, 1) To UBound(Arr, 1) + AdditionalElements, LBound(Arr, 2) To UBound(Arr, 2))
-        'Transfer Arr array to Result
+        'ReDim 'Result'
+        ReDim Result(LBound(Arr, 1) To UBound(Arr, 1) + AdditionalElements, _
+                LBound(Arr, 2) To UBound(Arr, 2))
+        
+        'Transfer 'Arr' array to 'Result'
         For RowNdx = LBound(Arr, 1) To UBound(Arr, 1)
             For ColNdx = LBound(Arr, 2) To UBound(Arr, 2)
                 Result(RowNdx, ColNdx) = Arr(RowNdx, ColNdx)
             Next
         Next
-        'Fill the rest of the result array with FillValue
+        
+        'Fill the rest of the result array with 'FillValue'
         For RowNdx = UBound(Arr, 1) + 1 To UBound(Result, 1)
             For ColNdx = LBound(Arr, 2) To UBound(Arr, 2)
                 Result(RowNdx, ColNdx) = FillValue
             Next
         Next
     Else
-        'Redim Result
-        ReDim Result(LBound(Arr, 1) To UBound(Arr, 1), UBound(Arr, 2) + AdditionalElements)
-        'Transfer Arr array to Result
+        'ReDim 'Result'
+        ReDim Result(LBound(Arr, 1) To UBound(Arr, 1), _
+                LBound(Arr, 2) To UBound(Arr, 2) + AdditionalElements)
+        
+        'Transfer 'Arr' array to 'Result'
         For RowNdx = LBound(Arr, 1) To UBound(Arr, 1)
             For ColNdx = LBound(Arr, 2) To UBound(Arr, 2)
                 Result(RowNdx, ColNdx) = Arr(RowNdx, ColNdx)
             Next
         Next
-        'Fill the rest of the result array with FillValue
+        
+        'Fill the rest of the result array with 'FillValue'
         For RowNdx = LBound(Arr, 1) To UBound(Arr, 1)
             For ColNdx = UBound(Arr, 2) + 1 To UBound(Result, 2)
                 Result(RowNdx, ColNdx) = FillValue
@@ -2522,7 +2522,7 @@ Public Function ExpandArray( _
     End If
     
     ExpandArray = Result
-
+    
 End Function
 
 
