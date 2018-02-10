@@ -2187,29 +2187,31 @@ Public Function ChangeBoundsOfArray( _
 End Function
 
 
-'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 'IsArraySorted
 'This function determines whether a single-dimensional array is sorted. Because
-'sorting is an expensive operation, especially so on large array of Variants,
+'sorting is an expensive operation, especially so on a large array of 'Variant's,
 'you may want to determine if an array is already in sorted order prior to
 'doing an actual sort.
-'This function returns True if an array is in sorted order (either ascending or
-'descending order, depending on the value of the Descending parameter -- default
-'is false = Ascending). The decision to do a string comparison (with StrComp) or
-'a numeric comparison (with < or >) is based on the data type of the first
+'This function returns 'True' if an array is in sorted order (either ascending
+'or descending, depending on the value of the 'Descending' parameter -- default
+'is 'False' = Ascending). The decision to do a string comparison (with 'StrComp')
+'or a numeric comparison (with < or >) is based on the data type of the first
 'element of the array.
-'If TestArray is not an array, is an unallocated dynamic array, or has more than
-'one dimension, or the VarType of TestArray is not compatible, the function
-'returns NULL.
-'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'If 'InputArray' is not an array, is an unallocated array, or has more than
+'one dimension, or the VarType of 'InputArray' is not compatible, the function
+'returns 'Null'. Thus, one knows that there is nothing to sort.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'2do:
+'- rename to 'IsVectorSorted'
 Public Function IsArraySorted( _
-    TestArray As Variant, _
-    Optional Descending As Boolean = False _
+    ByVal InputArray As Variant, _
+    Optional ByVal Descending As Boolean = False _
         ) As Variant
-
+    
     Dim StrCompResultFail As Long
     Dim NumericResultFail As Boolean
-    Dim Ndx As Long
+    Dim i As Long
     Dim NumCompareResult As Boolean
     Dim StrCompResult As Long
     
@@ -2220,26 +2222,15 @@ Public Function IsArraySorted( _
     'Set the default return value
     IsArraySorted = Null
     
-    If Not IsArray(TestArray) Then Exit Function
-    If NumberOfArrayDimensions(TestArray) <> 1 Then Exit Function
-    
-    'The following code sets the values of comparison that will indicate that
-    'the array is unsorted. It the result of StrComp (for strings) or ">="
-    '(for numerics) equals the value specified below, we know that the array is
-    'unsorted.
-    If Descending = True Then
-        StrCompResultFail = -1
-        NumericResultFail = False
-    Else
-        StrCompResultFail = 1
-        NumericResultFail = True
-    End If
+    If Not IsArray(InputArray) Then Exit Function
+    If NumberOfArrayDimensions(InputArray) <> 1 Then Exit Function
     
     'Determine whether we are going to do a string comparison or a numeric
     'comparison
-    VType = VarType(TestArray(LBound(TestArray)))
+    VType = VarType(InputArray(LBound(InputArray)))
     Select Case VType
         Case vbArray, vbDataObject, vbEmpty, vbError, vbNull, vbObject, vbUserDefinedType
+            'Unsupported types.
             Exit Function
         Case vbString, vbVariant
             'Compare as string
@@ -2249,19 +2240,37 @@ Public Function IsArraySorted( _
             IsString = False
     End Select
     
-    For Ndx = LBound(TestArray) To UBound(TestArray) - 1
+    'The following code sets the values of comparison that will indicate that
+    'the array is unsorted. Is the result of 'StrComp' (for strings) or ">="
+    '(for numerics) equal the value specified below, we know that the array is
+    'unsorted.
+    If Descending = True Then
+        StrCompResultFail = -1
+        NumericResultFail = False
+    Else
+        StrCompResultFail = 1
+        NumericResultFail = True
+    End If
+    
+    For i = LBound(InputArray) To UBound(InputArray) - 1
         If IsString Then
-            StrCompResult = StrComp(TestArray(Ndx), TestArray(Ndx + 1))
-            If StrCompResult = StrCompResultFail Then Exit Function
+            StrCompResult = StrComp(InputArray(i), InputArray(i + 1))
+            If StrCompResult = StrCompResultFail Then
+                IsArraySorted = False
+                Exit Function
+            End If
         Else
-            NumCompareResult = (TestArray(Ndx) >= TestArray(Ndx + 1))
-            If NumCompareResult = NumericResultFail Then Exit Function
+            NumCompareResult = (InputArray(i) >= InputArray(i + 1))
+            If NumCompareResult = NumericResultFail Then
+                IsArraySorted = False
+                Exit Function
+            End If
         End If
     Next
     
     'If we made it up to here, then the array is in sorted order.
     IsArraySorted = True
-
+    
 End Function
 
 

@@ -4870,35 +4870,645 @@ TestFail:
 End Sub
 
 
-Public Sub DemoIsArraySorted()
+'==============================================================================
+'unit tests for 'IsArraySorted'
+'==============================================================================
 
-    Dim S(1 To 3) As String
-    Dim L(1 To 3) As Long
-    Dim R As Variant
-    Dim Desc As Boolean
+'@TestMethod
+Public Sub IsArraySorted_NoArray_ReturnsNull()
+    On Error GoTo TestFail
+    
+    'Arrange:
+    Dim Scalar As Long
+    Dim aResult As Variant
+    
+    '==========================================================================
+    Const Descending As Boolean = False
+    '==========================================================================
     
     
-    Desc = True
-    S(1) = "B"
-    S(2) = "B"
-    S(3) = "A"
+    'Act:
+    aResult = modArraySupport.IsArraySorted( _
+            Scalar, _
+            Descending _
+    )
+    
+    'Assert:
+    Assert.IsTrue IsNull(aResult)
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+End Sub
 
-    L(1) = 1
-    L(2) = 2
-    L(3) = 3
-    
-    R = modArraySupport.IsArraySorted(S, Desc)
-    
-    If IsNull(R) = True Then
-Debug.Print "Error From IsArraySorted"
-    Else
-        If R = True Then
-Debug.Print "Array Is Sorted"
-        Else
-Debug.Print "Array is Unsorted"
-        End If
-    End If
 
+'@TestMethod
+Public Sub IsArraySorted_UnallocatedArray_ReturnsNull()
+    On Error GoTo TestFail
+    
+    'Arrange:
+    Dim InputArray() As Long
+    Dim aResult As Variant
+    
+    '==========================================================================
+    Const Descending As Boolean = False
+    '==========================================================================
+    
+    
+    'Act:
+    aResult = modArraySupport.IsArraySorted( _
+            InputArray, _
+            Descending _
+    )
+    
+    'Assert:
+    Assert.IsTrue IsNull(aResult)
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+End Sub
+
+
+'@TestMethod
+Public Sub IsArraySorted_2DArray_ReturnsNull()
+    On Error GoTo TestFail
+    
+    'Arrange:
+    Dim InputArray(5 To 6, 3 To 4) As Long
+    Dim aResult As Variant
+    
+    '==========================================================================
+    Const Descending As Boolean = False
+    '==========================================================================
+    
+    
+    'Act:
+    aResult = modArraySupport.IsArraySorted( _
+            InputArray, _
+            Descending _
+    )
+    
+    'Assert:
+    Assert.IsTrue IsNull(aResult)
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+End Sub
+
+
+'@TestMethod
+Public Sub IsArraySorted_ObjectArray_ReturnsNull()
+    On Error GoTo TestFail
+    
+    'Arrange:
+    Dim InputArray(5 To 6) As Object
+    Dim aResult As Variant
+    
+    '==========================================================================
+    Const Descending As Boolean = False
+    '==========================================================================
+    
+    
+    'Act:
+    aResult = modArraySupport.IsArraySorted( _
+            InputArray, _
+            Descending _
+    )
+    
+    'Assert:
+    Assert.IsTrue IsNull(aResult)
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+End Sub
+
+
+'@TestMethod
+Public Sub IsArraySorted_StringArrayDescendingFalse_ReturnsTrue()
+    On Error GoTo TestFail
+    
+    Dim InputArray(5 To 6) As String
+    Dim aResult As Variant
+    
+    '==========================================================================
+    Const Descending As Boolean = False
+    '==========================================================================
+    
+    
+    'Arrange:
+    InputArray(5) = "ABC"
+    InputArray(6) = "abc"
+    
+    'Act:
+    aResult = modArraySupport.IsArraySorted( _
+            InputArray, _
+            Descending _
+    )
+    
+    'Assert:
+    Assert.IsTrue aResult
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+End Sub
+
+
+'@TestMethod
+Public Sub IsArraySorted_VariantArrayContainingObjectDescendingFalse_ReturnsFalse()
+    On Error GoTo TestFail
+    
+    Dim InputArray(5 To 6) As Variant
+    Dim aResult As Variant
+    
+    '==========================================================================
+    Const Descending As Boolean = False
+    '==========================================================================
+    
+    
+    'Arrange:
+    Set InputArray(5) = ThisWorkbook.Worksheets(1).Range("A5")
+    InputArray(6) = vbNullString
+    
+    'Act:
+    aResult = modArraySupport.IsArraySorted( _
+            InputArray, _
+            Descending _
+    )
+    
+    'Assert:
+    Assert.IsFalse aResult
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+End Sub
+
+
+'@TestMethod
+Public Sub IsArraySorted_VariantArraySmallNumericStringPlusLargerNumberDescendingFalse_ReturnsFalse()
+    On Error GoTo TestFail
+    
+    Dim InputArray(5 To 6) As Variant
+    Dim aResult As Variant
+    
+    '==========================================================================
+    Const Descending As Boolean = False
+    '==========================================================================
+    
+    
+    'Arrange:
+    InputArray(5) = "45"
+    InputArray(6) = 123
+    
+    'Act:
+    aResult = modArraySupport.IsArraySorted( _
+            InputArray, _
+            Descending _
+    )
+    
+    'Assert:
+    Assert.IsFalse aResult
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+End Sub
+
+
+'@TestMethod
+Public Sub IsArraySorted_VariantArraySmallNumberPlusLargerNumericStringDescendingFalse_ReturnsTrue()
+    On Error GoTo TestFail
+    
+    Dim InputArray(5 To 6) As Variant
+    Dim aResult As Variant
+    
+    '==========================================================================
+    Const Descending As Boolean = False
+    '==========================================================================
+    
+    
+    'Arrange:
+    InputArray(5) = 45
+    InputArray(6) = "123"
+    
+    'Act:
+    aResult = modArraySupport.IsArraySorted( _
+            InputArray, _
+            Descending _
+    )
+    
+    'Assert:
+    Assert.IsTrue aResult
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+End Sub
+
+
+'@TestMethod
+Public Sub IsArraySorted_VariantArrayLargeNumberPlusSmallNumericStringDescendingFalse_ReturnsTrue()
+    On Error GoTo TestFail
+    
+    Dim InputArray(5 To 6) As Variant
+    Dim aResult As Variant
+    
+    '==========================================================================
+    Const Descending As Boolean = False
+    '==========================================================================
+    
+    
+    'Arrange:
+    '(it seems that the numbers are always considered smaller than any string)
+    InputArray(5) = 9
+    InputArray(6) = ""
+    
+    'Act:
+    aResult = modArraySupport.IsArraySorted( _
+            InputArray, _
+            Descending _
+    )
+    
+    'Assert:
+    Assert.IsTrue aResult
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+End Sub
+
+
+'@TestMethod
+Public Sub IsArraySorted_VariantArrayNumberPlusStringDescendingFalse_ReturnsTrue()
+    On Error GoTo TestFail
+    
+    Dim InputArray(5 To 6) As Variant
+    Dim aResult As Variant
+    
+    '==========================================================================
+    Const Descending As Boolean = False
+    '==========================================================================
+    
+    
+    'Arrange:
+    InputArray(5) = 45
+    InputArray(6) = "abc"
+    
+    'Act:
+    aResult = modArraySupport.IsArraySorted( _
+            InputArray, _
+            Descending _
+    )
+    
+    'Assert:
+    Assert.IsTrue aResult
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+End Sub
+
+
+'@TestMethod
+Public Sub IsArraySorted_VariantArrayNumberPlusStringsDescendingFalse_ReturnsTrue()
+    On Error GoTo TestFail
+    
+    Dim InputArray(5 To 8) As Variant
+    Dim aResult As Variant
+    
+    '==========================================================================
+    Const Descending As Boolean = False
+    '==========================================================================
+    
+    
+    'Arrange:
+    '(but then strings seem to be compared as usual)
+    InputArray(5) = 5
+    InputArray(6) = "1"
+    InputArray(7) = "Abc"
+    InputArray(8) = "defg"
+    
+    'Act:
+    aResult = modArraySupport.IsArraySorted( _
+            InputArray, _
+            Descending _
+    )
+    
+    'Assert:
+    Assert.IsTrue aResult
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+End Sub
+
+
+'@TestMethod
+Public Sub IsArraySorted_VariantArrayNumberPlusStrings2DescendingFalse_ReturnsFalse()
+    On Error GoTo TestFail
+    
+    Dim InputArray(5 To 8) As Variant
+    Dim aResult As Variant
+    
+    '==========================================================================
+    Const Descending As Boolean = False
+    '==========================================================================
+    
+    
+    'Arrange:
+    InputArray(5) = 5
+    InputArray(6) = "zbc"
+    InputArray(7) = "defg"
+    
+    'Act:
+    aResult = modArraySupport.IsArraySorted( _
+            InputArray, _
+            Descending _
+    )
+    
+    'Assert:
+    Assert.IsFalse aResult
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+End Sub
+
+
+'@TestMethod
+Public Sub IsArraySorted_StringArrayDescendingTrue_ReturnsTrue()
+    On Error GoTo TestFail
+    
+    Dim InputArray(5 To 6) As String
+    Dim aResult As Variant
+    
+    '==========================================================================
+    Const Descending As Boolean = True
+    '==========================================================================
+    
+    
+    'Arrange:
+    InputArray(5) = "ABC"
+    InputArray(6) = "abc"
+    
+    'Act:
+    aResult = modArraySupport.IsArraySorted( _
+            InputArray, _
+            Descending _
+    )
+    
+    'Assert:
+    Assert.IsTrue aResult
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+End Sub
+
+
+'@TestMethod
+Public Sub IsArraySorted_VariantArrayContainingObjectDescendingTrue_ReturnsTrue()
+    On Error GoTo TestFail
+    
+    Dim InputArray(5 To 6) As Variant
+    Dim aResult As Variant
+    
+    '==========================================================================
+    Const Descending As Boolean = True
+    '==========================================================================
+    
+    
+    'Arrange:
+    Set InputArray(5) = ThisWorkbook.Worksheets(1).Range("A5")
+    InputArray(6) = vbNullString
+    
+    'Act:
+    aResult = modArraySupport.IsArraySorted( _
+            InputArray, _
+            Descending _
+    )
+    
+    'Assert:
+    Assert.IsTrue aResult
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+End Sub
+
+
+'@TestMethod
+Public Sub IsArraySorted_VariantArraySmallNumericStringPlusLargerNumberDescendingTrue_ReturnsTrue()
+    On Error GoTo TestFail
+    
+    Dim InputArray(5 To 6) As Variant
+    Dim aResult As Variant
+    
+    '==========================================================================
+    Const Descending As Boolean = True
+    '==========================================================================
+    
+    
+    'Arrange:
+    InputArray(5) = "45"
+    InputArray(6) = 123
+    
+    'Act:
+    aResult = modArraySupport.IsArraySorted( _
+            InputArray, _
+            Descending _
+    )
+    
+    'Assert:
+    Assert.IsTrue aResult
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+End Sub
+
+
+'@TestMethod
+Public Sub IsArraySorted_VariantArraySmallNumberPlusLargerNumericStringDescendingTrue_ReturnsFalse()
+    On Error GoTo TestFail
+    
+    Dim InputArray(5 To 6) As Variant
+    Dim aResult As Variant
+    
+    '==========================================================================
+    Const Descending As Boolean = True
+    '==========================================================================
+    
+    
+    'Arrange:
+    InputArray(5) = 45
+    InputArray(6) = "123"
+    
+    'Act:
+    aResult = modArraySupport.IsArraySorted( _
+            InputArray, _
+            Descending _
+    )
+    
+    'Assert:
+    Assert.IsFalse aResult
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+End Sub
+
+
+'@TestMethod
+Public Sub IsArraySorted_VariantArrayLargeNumberPlusSmallNumericStringDescendingTrue_ReturnsFalse()
+    On Error GoTo TestFail
+    
+    Dim InputArray(5 To 6) As Variant
+    Dim aResult As Variant
+    
+    '==========================================================================
+    Const Descending As Boolean = True
+    '==========================================================================
+    
+    
+    'Arrange:
+    '(it seems that the numbers are always considered smaller than any string)
+    InputArray(5) = 9
+    InputArray(6) = ""
+    
+    'Act:
+    aResult = modArraySupport.IsArraySorted( _
+            InputArray, _
+            Descending _
+    )
+    
+    'Assert:
+    Assert.IsFalse aResult
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+End Sub
+
+
+'@TestMethod
+Public Sub IsArraySorted_VariantArrayNumberPlusStringDescendingTrue_ReturnsFalse()
+    On Error GoTo TestFail
+    
+    Dim InputArray(5 To 6) As Variant
+    Dim aResult As Variant
+    
+    '==========================================================================
+    Const Descending As Boolean = True
+    '==========================================================================
+    
+    
+    'Arrange:
+    InputArray(5) = 45
+    InputArray(6) = "abc"
+    
+    'Act:
+    aResult = modArraySupport.IsArraySorted( _
+            InputArray, _
+            Descending _
+    )
+    
+    'Assert:
+    Assert.IsFalse aResult
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+End Sub
+
+
+'@TestMethod
+Public Sub IsArraySorted_VariantArrayNumberPlusStringsDescendingTrue_ReturnsFalse()
+    On Error GoTo TestFail
+    
+    Dim InputArray(5 To 8) As Variant
+    Dim aResult As Variant
+    
+    '==========================================================================
+    Const Descending As Boolean = True
+    '==========================================================================
+    
+    
+    'Arrange:
+    '(but then strings seem to be compared as usual)
+    InputArray(5) = 5
+    InputArray(6) = "1"
+    InputArray(7) = "Abc"
+    InputArray(8) = "defg"
+    
+    'Act:
+    aResult = modArraySupport.IsArraySorted( _
+            InputArray, _
+            Descending _
+    )
+    
+    'Assert:
+    Assert.IsFalse aResult
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+End Sub
+
+
+'@TestMethod
+Public Sub IsArraySorted_VariantArrayNumberPlusStrings2DescendingTrue_ReturnsFalse()
+    On Error GoTo TestFail
+    
+    Dim InputArray(5 To 8) As Variant
+    Dim aResult As Variant
+    
+    '==========================================================================
+    Const Descending As Boolean = True
+    '==========================================================================
+    
+    
+    'Arrange:
+    InputArray(5) = 5
+    InputArray(6) = "zbc"
+    InputArray(7) = "defg"
+    
+    'Act:
+    aResult = modArraySupport.IsArraySorted( _
+            InputArray, _
+            Descending _
+    )
+    
+    'Assert:
+    Assert.IsFalse aResult
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
 End Sub
 
 
