@@ -883,21 +883,21 @@ Public Function InsertElementIntoArray( _
 End Function
 
 
-''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-'IsArrayAllEmpty
-'Returns True if the array contains all default values for its
-'data type:
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'IsArrayAllDefault
+'Returns 'True' if the array contains all default values for its data type:
 '  Variable Type           Value
 '  -------------           -------------------
 '  Variant                 Empty
 '  String                  vbNullString
 '  Numeric                 0
-'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'  Object                  Nothing
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 Public Function IsArrayAllDefault( _
-    InputArray As Variant _
+    ByVal InputArray As Variant _
         ) As Boolean
-
-    Dim Ndx As Long
+    
+    Dim Element As Variant
     Dim DefaultValue As Variant
     
     
@@ -905,8 +905,9 @@ Public Function IsArrayAllDefault( _
     IsArrayAllDefault = False
     
     If Not IsArray(InputArray) Then Exit Function
-    'Ensure array is allocated. An unallocated is considered to be all the same
-    'type. Return True.
+    
+    'Ensure array is allocated. An unallocated array is considered to be all the
+    'same type. Return 'True'.
     If Not IsArrayAllocated(InputArray) Then
         IsArrayAllDefault = True
         Exit Function
@@ -918,22 +919,24 @@ Public Function IsArrayAllDefault( _
             DefaultValue = Empty
         Case vbArray + vbString
             DefaultValue = vbNullString
+        'for all (remaining/)numeric variable types
         Case Is > vbArray
             DefaultValue = 0
     End Select
-    For Ndx = LBound(InputArray) To UBound(InputArray)
-        If IsObject(InputArray(Ndx)) Then
-            If Not InputArray(Ndx) Is Nothing Then Exit Function
+    
+    For Each Element In InputArray
+        If IsObject(Element) Then
+            If Not Element Is Nothing Then Exit Function
         Else
-            If VarType(InputArray(Ndx)) <> vbEmpty Then
-                If InputArray(Ndx) <> DefaultValue Then Exit Function
+            If VarType(Element) <> vbEmpty Then
+                If Element <> DefaultValue Then Exit Function
             End If
         End If
     Next
     
     'If we make it up to here, the array is all defaults.
     IsArrayAllDefault = True
-
+    
 End Function
 
 

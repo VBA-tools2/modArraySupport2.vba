@@ -2956,23 +2956,255 @@ TestFail:
 End Sub
 
 
-Public Sub DemoIsArrayAllDefault()
+'==============================================================================
+'unit tests for 'IsArrayAllDefault'
+'==============================================================================
 
-    Dim L(1 To 4) As Long
-    Dim Obj(1 To 4) As Object
-    Dim B As Boolean
+'@TestMethod
+Public Sub IsArrayAllDefault_NoArray_ReturnsFalse()
+    On Error GoTo TestFail
+    
+    'Arrange:
+    Dim Scalar As Long
+    
+    
+    'Act:
+    'Assert:
+    Assert.IsFalse modArraySupport.IsArrayAllDefault(Scalar)
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+End Sub
 
 
-    B = modArraySupport.IsArrayAllDefault(L)
-Debug.Print "IsArrayAllDefault L", B
+'@TestMethod
+Public Sub IsArrayAllDefault_UnallocatedArray_ReturnsTrue()
+    On Error GoTo TestFail
+    
+    'Arrange:
+    Dim InputArray() As Long
+    
+    
+    'Act:
+    'Assert:
+    Assert.IsTrue modArraySupport.IsArrayAllDefault(InputArray)
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+End Sub
 
-    B = modArraySupport.IsArrayAllDefault(Obj)
-Debug.Print "IsArrayAllDefault Obj", B
 
-    Set Obj(1) = Range("A1")
-    B = modArraySupport.IsArrayAllDefault(Obj)
-Debug.Print "IsArrayAllDefault Obj", B
+'@TestMethod
+Public Sub IsArrayAllDefault_DefaultVariantArray_ReturnsTrue()
+    On Error GoTo TestFail
+    
+    Dim InputArray(5 To 6) As Variant
+    
+    
+    'Arrange:
+    InputArray(5) = Empty
+    
+    'Act:
+    'Assert:
+    Assert.IsTrue modArraySupport.IsArrayAllDefault(InputArray)
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+End Sub
 
+
+'@TestMethod
+Public Sub IsArrayAllDefault_NonDefaultVariantArray_ReturnsFalse()
+    On Error GoTo TestFail
+    
+    Dim InputArray(5 To 5) As Variant
+    
+    
+    'Arrange:
+    InputArray(5) = 10
+    
+    'Act:
+    'Assert:
+    Assert.IsFalse modArraySupport.IsArrayAllDefault(InputArray)
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+End Sub
+
+
+'@TestMethod
+Public Sub IsArrayAllDefault_DefaultStringArray_ReturnsTrue()
+    On Error GoTo TestFail
+    
+    Dim InputArray(5 To 6) As String
+    
+    
+    'Arrange:
+    InputArray(5) = vbNullString
+    
+    'Act:
+    'Assert:
+    Assert.IsTrue modArraySupport.IsArrayAllDefault(InputArray)
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+End Sub
+
+
+'@TestMethod
+Public Sub IsArrayAllDefault_NonDefaultStringArray_ReturnsFalse()
+    On Error GoTo TestFail
+    
+    Dim InputArray(5 To 5) As String
+    
+    
+    'Arrange:
+    InputArray(5) = "abc"
+    
+    'Act:
+    'Assert:
+    Assert.IsFalse modArraySupport.IsArrayAllDefault(InputArray)
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+End Sub
+
+
+'@TestMethod
+Public Sub IsArrayAllDefault_DefaultNumericArray_ReturnsTrue()
+    On Error GoTo TestFail
+    
+    Dim InputArray(5 To 6) As Long
+    
+    
+    'Arrange:
+    InputArray(5) = 0
+    
+    'Act:
+    'Assert:
+    Assert.IsTrue modArraySupport.IsArrayAllDefault(InputArray)
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+End Sub
+
+
+'@TestMethod
+Public Sub IsArrayAllDefault_NonDefaultNumericArray_ReturnsFalse()
+    On Error GoTo TestFail
+    
+    Dim InputArray(5 To 5) As Long
+    
+    
+    'Arrange:
+    InputArray(5) = -1
+    
+    'Act:
+    'Assert:
+    Assert.IsFalse modArraySupport.IsArrayAllDefault(InputArray)
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+End Sub
+
+
+'@TestMethod
+Public Sub IsArrayAllDefault_Default3DNumericArray_ReturnsTrue()
+    On Error GoTo TestFail
+    
+    Dim InputArray(5 To 6, 3 To 4, -2 To -1) As Long
+    
+    
+    'Arrange:
+    InputArray(5, 3, -2) = 0
+    
+    'Act:
+    'Assert:
+    Assert.IsTrue modArraySupport.IsArrayAllDefault(InputArray)
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+End Sub
+
+
+'@TestMethod
+Public Sub IsArrayAllDefault_NonDefault3DNumericArray_ReturnsFalse()
+    On Error GoTo TestFail
+    
+    Dim InputArray(5 To 6, 3 To 4, -2 To -1) As Long
+    
+    
+    'Arrange:
+    InputArray(6, 4, -1) = -1
+    
+    'Act:
+    'Assert:
+    Assert.IsFalse modArraySupport.IsArrayAllDefault(InputArray)
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+End Sub
+
+
+'@TestMethod
+Public Sub IsArrayAllDefault_DefaultObjectArray_ReturnsTrue()
+    On Error GoTo TestFail
+    
+    Dim InputArray(5 To 6) As Object
+    
+    
+    'Arrange:
+    Set InputArray(5) = Nothing
+    
+    'Act:
+    'Assert:
+    Assert.IsTrue modArraySupport.IsArrayAllDefault(InputArray)
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+End Sub
+
+
+'@TestMethod
+Public Sub IsArrayAllDefault_NonDefaultObjectArray_ReturnsFalse()
+    On Error GoTo TestFail
+    
+    Dim InputArray(5 To 5) As Object
+    
+    
+    'Arrange:
+    Set InputArray(5) = ThisWorkbook.Worksheets(1).Range("A5")
+    
+    'Act:
+    'Assert:
+    Assert.IsFalse modArraySupport.IsArrayAllDefault(InputArray)
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
 End Sub
 
 
