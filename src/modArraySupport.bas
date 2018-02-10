@@ -804,65 +804,82 @@ Public Function FirstNonEmptyStringIndexInArray( _
 End Function
 
 
-'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 'InsertElementIntoArray
-'This function inserts an element with a value of Value into InputArray at locatation Index.
-'InputArray must be a dynamic array. The Value is stored in location Index, and everything
-'to the right of Index is shifted to the right. The array is resized to make room for
-'the new element. The value of Index must be greater than or equal to the LBound of
-'InputArray and less than or equal to UBound+1. If Index is UBound+1, the Value is
-'placed at the end of the array.
-'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'This function inserts an element with a value of 'Value' into 'InputArray' at
+'location 'Index'.
+''InputArray' must be a dynamic array. The 'Value' is stored in location 'Index',
+'and everything to the right of 'Index' is shifted to the right. The array is
+'resized to make room for the new element. The value of 'Index' must be greater
+'than or equal to the 'LBound' of 'InputArray' and less than or equal to
+''UBound + 1'.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 Public Function InsertElementIntoArray( _
-    InputArray As Variant, _
-    Index As Long, _
-    Value As Variant _
+    ByRef InputArray As Variant, _
+    ByVal Index As Long, _
+    ByVal Value As Variant _
         ) As Boolean
-
-    Dim Ndx As Long
+    
+    Dim i As Long
     
     
     'Set the default return value
     InsertElementIntoArray = False
     
-    If Not IsArray(InputArray) Then Exit Function
     If Not IsArrayDynamic(InputArray) Then Exit Function
-    If Not IsArrayAllocated(InputArray) Then Exit Function
     If NumberOfArrayDimensions(InputArray) <> 1 Then Exit Function
     
-    'Ensure Index is a valid element index. We allow Index to be equal to
-    'UBound + 1 to facilitate inserting a value at the end of the array. E.g.,
-    'InsertElementIntoArray(Arr,UBound(Arr)+1,123) will insert 123 at the end
-    'of the array.
-    If (Index < LBound(InputArray)) Or (Index > UBound(InputArray) + 1) Then
-        Exit Function
-    End If
+    'Ensure 'Index' is a valid element index. We allow 'Index' to be equal to
+    ''UBound + 1' to facilitate inserting a value at the end of the array, e.g.
+    '    InsertElementIntoArray(Arr,UBound(Arr) + 1, 123)
+    'will insert "123" at the end of the array.
+    If Index < LBound(InputArray) Then Exit Function
+    If Index > UBound(InputArray) + 1 Then Exit Function
     
     'Resize the array
     ReDim Preserve InputArray(LBound(InputArray) To UBound(InputArray) + 1)
-    'First, we set the newly created last element of InputArray to Value.
-    'This is done to trap an error 13, type mismatch. This last entry will be
-    'overwritten when we shift elements to the right, and the Value will be
-    'inserted at Index.
+    
+'---
+'2do:
+'can't this be handled with the function 'AreDataTypesCompatible' of this module?
+'---
+    'First, we set the newly created last element of 'InputArray' to 'Value'.
+    'This is done to trap an "error 13, type mismatch". This last entry will be
+    'overwritten when we shift elements to the right, and the 'Value' will be
+    'inserted at 'Index'.
     On Error Resume Next
     Err.Clear
-    InputArray(UBound(InputArray)) = Value
+    If IsObject(Value) Then
+        Set InputArray(UBound(InputArray)) = Value
+    Else
+        InputArray(UBound(InputArray)) = Value
+    End If
     If Err.Number <> 0 Then
         'An error occurred, most likely an error 13, type mismatch.
-        'Redim the array back to its original size and exit the function.
+        'ReDim the array back to its original size and exit the function.
         ReDim Preserve InputArray(LBound(InputArray) To UBound(InputArray) - 1)
         Exit Function
     End If
+'---
+    
     'Shift everything to the right
-    For Ndx = UBound(InputArray) To Index + 1 Step -1
-        InputArray(Ndx) = InputArray(Ndx - 1)
+    For i = UBound(InputArray) To Index + 1 Step -1
+        If IsObject(InputArray(i - 1)) Then
+            Set InputArray(i) = InputArray(i - 1)
+        Else
+            InputArray(i) = InputArray(i - 1)
+        End If
     Next
     
-    'Insert Value at Index
-    InputArray(Index) = Value
+    'Insert 'Value' at 'Index'
+    If IsObject(Value) Then
+        Set InputArray(Index) = Value
+    Else
+        InputArray(Index) = Value
+    End If
     
     InsertElementIntoArray = True
-
+    
 End Function
 
 
