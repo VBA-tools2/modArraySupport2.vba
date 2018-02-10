@@ -1055,17 +1055,18 @@ Public Function IsArrayAllocated( _
 End Function
 
 
-''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 'IsArrayDynamic
-'This function returns TRUE or FALSE indicating whether Arr is a dynamic array.
-'Note that if you attempt to ReDim a static array in the same procedure in which it is
-'declared, you'll get a compiler error and your code won't run at all.
-'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'This function returns 'True' or 'False' indicating whether 'Arr' is a dynamic
+'array.
+'Note: If you attempt to 'ReDim' a static array in the same procedure in which
+'it is declared, you'll get a compiler error and your code  won't run at all.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 Public Function IsArrayDynamic( _
     ByRef Arr As Variant _
         ) As Boolean
-
-    Dim LUBound As Long
+    
+    Dim ArrUBound As Long
     
     
     'Set the default return value
@@ -1082,44 +1083,39 @@ Public Function IsArrayDynamic( _
     'Save the UBound of Arr.
     'This value will be used to restore the original UBound if Arr is a
     'single-dimensional dynamic array. Unused if Arr is multi-dimensional,
-    'or if Arr is a static array.
-    LUBound = UBound(Arr)
+    'or if 'Arr' is a static array.
+    ArrUBound = UBound(Arr)
     
     On Error Resume Next
     Err.Clear
     
-    'Attempt to increase the UBound of Arr and test the value of Err.Number.
-    'If Arr is a static array, either single- or multi-dimensional, we'll get a
-    'C_ERR_ARRAY_IS_FIXED_OR_LOCKED error. In this case, return FALSE.
-    '
-    'If Arr is a single-dimensional dynamic array, we'll get C_ERR_NO_ERROR error.
-    '
-    'If Arr is a multi-dimensional dynamic array, we'll get a
-    'C_ERR_SUBSCRIPT_OUT_OF_RANGE error.
-    '
-    'For either C_NO_ERROR or C_ERR_SUBSCRIPT_OUT_OF_RANGE, return TRUE.
-    'For C_ERR_ARRAY_IS_FIXED_OR_LOCKED, return FALSE.
-    ReDim Preserve Arr(LBound(Arr) To LUBound + 1)
+    'Attempt to increase the 'UBound' of 'Arr' and test the value of
+    ''Err.Number'. If 'Arr' is a static array, either single- or
+    'multi-dimensional, we'll get a 'C_ERR_ARRAY_IS_FIXED_OR_LOCKED' error. In
+    'this case, return 'False'.
+    'If 'Arr' is a single-dimensional dynamic array, we'll get 'C_ERR_NO_ERROR'
+    'error.
+    'If 'Arr' is a multi-dimensional dynamic array, we'll get a
+    ''C_ERR_SUBSCRIPT_OUT_OF_RANGE' error.
+    ReDim Preserve Arr(LBound(Arr) To ArrUBound + 1)
     Select Case Err.Number
         Case C_ERR_NO_ERROR
-            'We successfully increased the UBound of Arr.
-            'Do a ReDim Preserve to restore the original UBound.
-            ReDim Preserve Arr(LBound(Arr) To LUBound)
+            'We successfully increased the 'UBound' of 'Arr'.
+            'Do a 'ReDim Preserve' to restore the original 'UBound'.
+            ReDim Preserve Arr(LBound(Arr) To ArrUBound)
             IsArrayDynamic = True
         Case C_ERR_SUBSCRIPT_OUT_OF_RANGE
-            'Arr is a multi-dimensional dynamic array.
-            'Return True.
+            ''Arr' is a multi-dimensional dynamic array.
             IsArrayDynamic = True
         Case C_ERR_ARRAY_IS_FIXED_OR_LOCKED
-            'Arr is a static single- or multi-dimensional array.
-            'Return False
+            ''Arr' is a static single- or multi-dimensional array.
             IsArrayDynamic = False
         Case Else
             'We should never get here.
-            'Some unexpected error occurred. Be safe and return False.
+            'Some unexpected error occurred. Be safe and return 'False'.
             IsArrayDynamic = False
     End Select
-
+    
 End Function
 
 

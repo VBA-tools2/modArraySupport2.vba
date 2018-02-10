@@ -3573,21 +3573,125 @@ TestFail:
 End Sub
 
 
-Public Sub DemoIsArrayDynamic()
-    
-    Dim B As Boolean
-    Dim StaticArray(1 To 3) As Long
-    Dim DynArray() As Long
-    
-    
-    ReDim DynArray(1 To 3)
-    
-    B = modArraySupport.IsArrayDynamic(StaticArray)
-Debug.Print "IsArrayDynamic StaticArray:", B
+'==============================================================================
+'unit tests for 'IsArrayDynamic'
+'==============================================================================
 
-    B = modArraySupport.IsArrayDynamic(DynArray)
-Debug.Print "IsArrayDynamic DynArray:", B
+'@TestMethod
+Public Sub IsArrayDynamic_NoArray_ReturnsFalse()
+    On Error GoTo TestFail
+    
+    'Arrange:
+    Dim Scalar As Long
+    
+    
+    'Act:
+    'Assert:
+    Assert.IsFalse modArraySupport.IsArrayDynamic(Scalar)
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+End Sub
 
+
+'@TestMethod
+Public Sub IsArrayDynamic_UnallocatedArray_ReturnsTrue()
+    On Error GoTo TestFail
+    
+    'Arrange:
+    Dim Arr() As Long
+    
+    
+    'Act:
+    'Assert:
+    Assert.IsTrue modArraySupport.IsArrayDynamic(Arr)
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+End Sub
+
+
+'@TestMethod
+Public Sub IsArrayDynamic_1DDynamicArray_ReturnsTrue()
+    On Error GoTo TestFail
+    
+    Dim Arr() As Long
+    
+    
+    'Arrange:
+    ReDim Arr(5 To 6)
+    
+    'Act:
+    'Assert:
+    Assert.IsTrue modArraySupport.IsArrayDynamic(Arr)
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+End Sub
+
+
+'@TestMethod
+Public Sub IsArrayDynamic_1DStaticArray_ReturnsFalse()
+    On Error GoTo TestFail
+    
+    'Arrange:
+    Dim Arr(5 To 6) As Long
+    
+    
+    'Act:
+    'Assert:
+    Assert.IsFalse modArraySupport.IsArrayDynamic(Arr)
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+End Sub
+
+
+'@TestMethod
+Public Sub IsArrayDynamic_2DDynamicArray_ReturnsTrue()
+    On Error GoTo TestFail
+    
+    Dim Arr() As Long
+    
+    
+    'Arrange:
+    ReDim Arr(5 To 6, 3 To 4)
+    
+    'Act:
+    'Assert:
+    Assert.IsTrue modArraySupport.IsArrayDynamic(Arr)
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+End Sub
+
+
+'@TestMethod
+Public Sub IsArrayDynamic_2DStaticArray_ReturnsFalse()
+    On Error GoTo TestFail
+    
+    'Arrange:
+    Dim Arr(5 To 6, 3 To 4) As Long
+    
+    
+    'Act:
+    'Assert:
+    Assert.IsFalse modArraySupport.IsArrayDynamic(Arr)
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
 End Sub
 
 
