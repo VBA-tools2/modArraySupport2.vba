@@ -2666,19 +2666,18 @@ Public Function GetColumn( _
 End Function
 
 
-''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 'GetRow
-'This populates ResultArr with a one-dimensional array that is the
-'specified row of Arr. The existing contents of ResultArr are
-'destroyed. ResultArr must be a dynamic array.
-'Returns True or False indicating success.
-''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'This populates 'ResultArr' with a one-dimensional array that is the specified
+'row of 'Arr'. The existing contents of 'ResultArr' are erased. 'ResultArr'
+'must be a dynamic array. Returns 'True' or 'False' indicating success.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 Public Function GetRow( _
-    Arr As Variant, _
-    ResultArr As Variant, _
-    RowNumber As Long _
+    ByVal Arr As Variant, _
+    ByRef ResultArr As Variant, _
+    ByVal RowNumber As Long _
         ) As Boolean
-
+    
     Dim ColNdx As Long
     
     
@@ -2689,18 +2688,22 @@ Public Function GetRow( _
     If NumberOfArrayDimensions(Arr) <> 2 Then Exit Function
     If Not IsArrayDynamic(ResultArr) Then Exit Function
     
-    'Ensure ColumnNumber is less than or equal to the number of columns
+    'Ensure 'RowNumber' is less than or equal to the number of rows
     If UBound(Arr, 1) < RowNumber Then Exit Function
     If LBound(Arr, 1) > RowNumber Then Exit Function
     
     Erase ResultArr
     ReDim ResultArr(LBound(Arr, 2) To UBound(Arr, 2))
     For ColNdx = LBound(ResultArr) To UBound(ResultArr)
-        ResultArr(ColNdx) = Arr(RowNumber, ColNdx)
+        If IsObject(Arr(RowNumber, ColNdx)) Then
+            Set ResultArr(ColNdx) = Arr(RowNumber, ColNdx)
+        Else
+            ResultArr(ColNdx) = Arr(RowNumber, ColNdx)
+        End If
     Next
     
     GetRow = True
-
+    
 End Function
 
 '------------------------------------------------------------------------------

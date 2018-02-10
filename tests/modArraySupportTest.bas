@@ -6723,29 +6723,268 @@ TestFail:
 End Sub
 
 
-Public Sub DemoGetRow()
+'==============================================================================
+'unit tests for 'GetRow'
+'==============================================================================
 
-    Dim InputArr(1 To 2, 1 To 3)
-    Dim Result() As Long
-    Dim B As Boolean
-    Dim N As Long
+'@TestMethod
+Public Sub GetRow_NoArray_ReturnsFalse()
+    On Error GoTo TestFail
+    
+    'Arrange:
+    Dim Scalar As Long
+    Dim ResultArr() As Long
+    
+    '==========================================================================
+    Const RowNumber As Long = 6
+    '==========================================================================
     
     
-    InputArr(1, 1) = 1
-    InputArr(1, 2) = 2
-    InputArr(1, 3) = 3
-    InputArr(2, 1) = 4
-    InputArr(2, 2) = 5
-    InputArr(2, 3) = 6
+    'Act:
+    'Assert:
+    Assert.IsFalse modArraySupport.GetRow( _
+            Scalar, _
+            ResultArr, _
+            RowNumber _
+    )
     
-    B = modArraySupport.GetRow(InputArr, Result, 2)
-    
-    If B = True Then
-        For N = LBound(Result) To UBound(Result)
-Debug.Print Result(N)
-        Next N
-    Else
-Debug.Print "Error from GetRow"
-    End If
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+End Sub
 
+
+'@TestMethod
+Public Sub GetRow_1DArray_ReturnsFalse()
+    On Error GoTo TestFail
+    
+    'Arrange:
+    Dim Arr(5 To 6) As Long
+    Dim ResultArr() As Long
+    
+    '==========================================================================
+    Const RowNumber As Long = 6
+    '==========================================================================
+    
+    
+    'Act:
+    'Assert:
+    Assert.IsFalse modArraySupport.GetRow( _
+            Arr, _
+            ResultArr, _
+            RowNumber _
+    )
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+End Sub
+
+
+'@TestMethod
+Public Sub GetRow_3DArray_ReturnsFalse()
+    On Error GoTo TestFail
+    
+    'Arrange:
+    Dim Arr(5 To 6, 3 To 4, -1 To 0) As Long
+    Dim ResultArr() As Long
+    
+    '==========================================================================
+    Const RowNumber As Long = 6
+    '==========================================================================
+    
+    
+    'Act:
+    'Assert:
+    Assert.IsFalse modArraySupport.GetRow( _
+            Arr, _
+            ResultArr, _
+            RowNumber _
+    )
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+End Sub
+
+
+'@TestMethod
+Public Sub GetRow_StaticResultArr_ReturnsFalse()
+    On Error GoTo TestFail
+    
+    'Arrange:
+    Dim Arr(5 To 6, 3 To 4) As Long
+    Dim ResultArr(-5 To -4) As Long
+    
+    '==========================================================================
+    Const RowNumber As Long = 6
+    '==========================================================================
+    
+    
+    'Act:
+    'Assert:
+    Assert.IsFalse modArraySupport.GetRow( _
+            Arr, _
+            ResultArr, _
+            RowNumber _
+    )
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+End Sub
+
+
+'@TestMethod
+Public Sub GetRow_TooSmallRowNumber_ReturnsFalse()
+    On Error GoTo TestFail
+    
+    'Arrange:
+    Dim Arr(5 To 6, 3 To 4) As Long
+    Dim ResultArr() As Long
+    
+    '==========================================================================
+    Const RowNumber As Long = 4
+    '==========================================================================
+    
+    
+    'Act:
+    'Assert:
+    Assert.IsFalse modArraySupport.GetRow( _
+            Arr, _
+            ResultArr, _
+            RowNumber _
+    )
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+End Sub
+
+
+'@TestMethod
+Public Sub GetRow_TooLargeRowNumber_ReturnsFalse()
+    On Error GoTo TestFail
+    
+    'Arrange:
+    Dim Arr(5 To 6, 3 To 4) As Long
+    Dim ResultArr() As Long
+    
+    '==========================================================================
+    Const RowNumber As Long = 7
+    '==========================================================================
+    
+    
+    'Act:
+    'Assert:
+    Assert.IsFalse modArraySupport.GetRow( _
+            Arr, _
+            ResultArr, _
+            RowNumber _
+    )
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+End Sub
+
+
+'@TestMethod
+Public Sub GetRow_LegalEntries_ReturnsTrueAndResultArr()
+    On Error GoTo TestFail
+    
+    Dim Arr(5 To 6, 3 To 4) As Long
+    Dim ResultArr() As Long
+    
+    '==========================================================================
+    Const RowNumber As Long = 6
+    
+    Dim aExpected(3 To 4) As Long
+        aExpected(3) = 11
+        aExpected(4) = 21
+    '==========================================================================
+    
+    
+    'Arrange:
+    Arr(5, 3) = 10
+    Arr(6, 3) = 11
+    Arr(5, 4) = 20
+    Arr(6, 4) = 21
+    
+    'Act:
+    If Not modArraySupport.GetRow( _
+            Arr, _
+            ResultArr, _
+            RowNumber _
+    ) Then _
+            GoTo TestFail
+    
+    'Assert:
+    Assert.SequenceEquals aExpected, ResultArr
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+End Sub
+
+
+'@TestMethod
+Public Sub GetRow_LegalEntriesWithObjects_ReturnsTrueAndResultArr()
+    On Error GoTo TestFail
+    
+    Dim Arr(5 To 6, 3 To 4) As Variant
+    Dim ResultArr() As Variant
+    Dim i As Long
+    
+    '==========================================================================
+    Const RowNumber As Long = 6
+    
+    Dim aExpected(3 To 4) As Variant
+    With ThisWorkbook.Worksheets(1)
+        aExpected(3) = vbNullString
+        Set aExpected(4) = .Range("A5")
+    End With
+    '==========================================================================
+    
+    
+    'Arrange:
+    With ThisWorkbook.Worksheets(1)
+        Arr(5, 3) = 10
+        Arr(6, 3) = vbNullString
+        Arr(5, 4) = 20
+        Set Arr(6, 4) = .Range("A5")
+    End With
+    
+    'Act:
+    If Not modArraySupport.GetRow( _
+            Arr, _
+            ResultArr, _
+            RowNumber _
+    ) Then _
+            GoTo TestFail
+    
+    'Assert:
+    For i = LBound(ResultArr) To UBound(ResultArr)
+        If IsObject(ResultArr(i)) Then
+            If ResultArr(i) Is Nothing Then
+                Assert.IsNothing aExpected(i)
+            Else
+                Assert.AreEqual aExpected(i).Address, ResultArr(i).Address
+            End If
+        Else
+            Assert.AreEqual aExpected(i), ResultArr(i)
+        End If
+    Next
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
 End Sub
