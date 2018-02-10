@@ -2624,19 +2624,19 @@ Public Function SwapArrayColumns( _
 End Function
 
 
-''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 'GetColumn
-'This populates ResultArr with a one-dimensional array that is the
-'specified column of Arr. The existing contents of ResultArr are
-'destroyed. ResultArr must be a dynamic array.
-'Returns True or False indicating success.
-''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'This populates 'ResultArr' with a one-dimensional array that is the specified
+'column of 'Arr'. The existing contents of 'ResultArr' are erased.
+''ResultArr' must be a dynamic array. Returns 'True' or 'False' indicating
+'success.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 Public Function GetColumn( _
-    Arr As Variant, _
-    ResultArr As Variant, _
-    ColumnNumber As Long _
+    ByVal Arr As Variant, _
+    ByRef ResultArr As Variant, _
+    ByVal ColumnNumber As Long _
         ) As Boolean
-
+    
     Dim RowNdx As Long
     
     
@@ -2647,18 +2647,22 @@ Public Function GetColumn( _
     If NumberOfArrayDimensions(Arr) <> 2 Then Exit Function
     If Not IsArrayDynamic(ResultArr) Then Exit Function
     
-    'Ensure ColumnNumber is less than or equal to the number of columns
+    'Ensure 'ColumnNumber' is less than or equal to the number of columns
     If UBound(Arr, 2) < ColumnNumber Then Exit Function
     If LBound(Arr, 2) > ColumnNumber Then Exit Function
     
     Erase ResultArr
     ReDim ResultArr(LBound(Arr, 1) To UBound(Arr, 1))
     For RowNdx = LBound(ResultArr) To UBound(ResultArr)
-        ResultArr(RowNdx) = Arr(RowNdx, ColumnNumber)
+        If IsObject(Arr(RowNdx, ColumnNumber)) Then
+            Set ResultArr(RowNdx) = Arr(RowNdx, ColumnNumber)
+        Else
+            ResultArr(RowNdx) = Arr(RowNdx, ColumnNumber)
+        End If
     Next
     
     GetColumn = True
-
+    
 End Function
 
 
