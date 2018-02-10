@@ -771,44 +771,36 @@ Public Function DeleteArrayElement( _
 End Function
 
 
-''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-'FirstNonEmptyStringIndexInArray
-'This returns the index into InputArray of the first non-empty string.
-'This is generally used when InputArray is the result of a sort operation,
-'which puts empty strings at the beginning of the array.
-'Returns -1 if an error occurred or if the entire array is empty strings.
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'FirstNonEmptyStringIndexInArray
+'This returns the index in 'InputArray' of the first non-empty string.
+'This is generally used when 'InputArray' is the result of a sort operation,
+'which puts empty strings at the beginning of the array.
+'Returns -1 if an error occurred or if the entire array has no empty string.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'2do: - rename to 'FirstNonEmptyStringIndexInVector'
 Public Function FirstNonEmptyStringIndexInArray( _
-    InputArray As Variant _
+    ByVal InputArray As Variant _
         ) As Long
-
-    Dim Ndx As Long
+    
+    Dim i As Long
     
     
     'Set the default return value
     FirstNonEmptyStringIndexInArray = -1
     
     If Not IsArray(InputArray) Then Exit Function
-    Select Case NumberOfArrayDimensions(InputArray)
-        Case 0
-            'indicates an unallocated dynamic array
-            Exit Function
-        Case 1
-            'single dimensional array. OK.
-        Case Else
-            'multidimensional array. Invalid.
-            Exit Function
-    End Select
+    If NumberOfArrayDimensions(InputArray) <> 1 Then Exit Function
     
-    For Ndx = LBound(InputArray) To UBound(InputArray)
-        If InputArray(Ndx) <> vbNullString Then
-            FirstNonEmptyStringIndexInArray = Ndx
+    For i = LBound(InputArray) To UBound(InputArray)
+        If InputArray(i) <> vbNullString Then
+            FirstNonEmptyStringIndexInArray = i
             Exit Function
         End If
     Next
     
     FirstNonEmptyStringIndexInArray = -1
-
+    
 End Function
 
 

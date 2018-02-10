@@ -2516,20 +2516,145 @@ TestFail:
 End Sub
 
 
-Public Sub DemoFirstNonEmptyStringIndexInArray()
+'==============================================================================
+'unit tests for 'FirstNonEmptyStringIndexInArray'
+'==============================================================================
 
-    Dim A(1 To 4) As String
-    Dim R As Long
+'@TestMethod
+Public Sub FirstNonEmptyStringIndexInArray_NoArray_ReturnsMinusOne()
+    On Error GoTo TestFail
+    
+    'Arrange:
+    Dim Scalar As String
+    Dim aActual As Long
+    
+    '==========================================================================
+    Const aExpected As Long = -1
+    '==========================================================================
     
     
-    A(1) = vbNullString
-    A(2) = vbNullString
-    A(3) = "A"
-    A(4) = "B"
+    'Act:
+    aActual = modArraySupport.FirstNonEmptyStringIndexInArray(Scalar)
     
-    R = modArraySupport.FirstNonEmptyStringIndexInArray(A)
-Debug.Print "FirstNonEmptyStringIndexInArray", CStr(R)
+    'Assert:
+    Assert.AreEqual aExpected, aActual
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+End Sub
 
+
+'@TestMethod
+Public Sub FirstNonEmptyStringIndexInArray_UnallocatedArray_ReturnsMinusOne()
+    On Error GoTo TestFail
+    
+    'Arrange:
+    Dim InputArray() As String
+    Dim aActual As Long
+    
+    '==========================================================================
+    Const aExpected As Long = -1
+    '==========================================================================
+    
+    
+    'Act:
+    aActual = modArraySupport.FirstNonEmptyStringIndexInArray(InputArray)
+    
+    'Assert:
+    Assert.AreEqual aExpected, aActual
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+End Sub
+
+
+'@TestMethod
+Public Sub FirstNonEmptyStringIndexInArray_2DArray_ReturnsMinusOne()
+    On Error GoTo TestFail
+    
+    'Arrange:
+    Dim InputArray(5 To 6, 3 To 4) As String
+    Dim aActual As Long
+    
+    '==========================================================================
+    Const aExpected As Long = -1
+    '==========================================================================
+    
+    
+    'Act:
+    aActual = modArraySupport.FirstNonEmptyStringIndexInArray(InputArray)
+    
+    'Assert:
+    Assert.AreEqual aExpected, aActual
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+End Sub
+
+
+'@TestMethod
+Public Sub FirstNonEmptyStringIndexInArray_NoNonEmptyString_ReturnsMinusOne()
+    On Error GoTo TestFail
+    
+    Dim InputArray(5 To 7) As String
+    Dim aActual As Long
+    
+    '==========================================================================
+    Const aExpected As Long = -1
+    '==========================================================================
+    
+    
+    'Arrange:
+    InputArray(5) = vbNullString
+    InputArray(6) = vbNullString
+    InputArray(7) = vbNullString
+    
+    'Act:
+    aActual = modArraySupport.FirstNonEmptyStringIndexInArray(InputArray)
+    
+    'Assert:
+    Assert.AreEqual aExpected, aActual
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+End Sub
+
+
+'@TestMethod
+Public Sub FirstNonEmptyStringIndexInArray_WithNonEmptyStringEntry_ReturnsSeven()
+    On Error GoTo TestFail
+    
+    Dim InputArray(5 To 7) As String
+    Dim aActual As Long
+    
+    '==========================================================================
+    Const aExpected As Long = 7
+    '==========================================================================
+    
+    
+    'Arrange:
+    InputArray(5) = vbNullString
+    InputArray(6) = ""
+    InputArray(7) = "ghi"
+    
+    'Act:
+    aActual = modArraySupport.FirstNonEmptyStringIndexInArray(InputArray)
+    
+    'Assert:
+    Assert.AreEqual aExpected, aActual
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
 End Sub
 
 
