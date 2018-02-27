@@ -1149,32 +1149,23 @@ Public Function IsArrayObjects( _
 End Function
 
 
-''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 'IsNumericDataType
-'
-'This function returns TRUE or FALSE indicating whether the data
-'type of a variable is a numeric data type. It will return TRUE
-'for all of the following data types:
-'    vbCurrency
-'    vbDecimal
-'    vbDouble
-'    vbInteger
-'    vbLong, LongLongType
-'    vbSingle
-'
-'It will return FALSE for any other data type, including empty Variants and objects.
-'If TestVar is an allocated array, it will test data type of the array
-'and return TRUE or FALSE for that data type. If TestVar is an allocated
-'array, it tests the data type of the first element of the array. If
-'TestVar is an array of Variants, the function will indicate only whether
-'the first element of the array is numeric. Other elements of the array
-'may not be numeric data types. To test an entire array of variants
-'to ensure they are all numeric data types, use the IsArrayAllNumeric
-'function.
-'
-'It will return FALSE for any other data type. Use this procedure
-'instead of VBA's IsNumeric function because IsNumeric will return
-'TRUE if the variable is a string containing numeric data. This
+'This function returns 'True' or 'False' indicating whether the data type of a
+'variable is a numeric data type. It will return 'True' for the data types
+'  - vbCurrency
+'  - vbDecimal
+'  - vbDouble
+'  - vbInteger
+'  - vbLong, LongLongType
+'  - vbSingle
+'and 'False' for any other data type, including empty 'Variant's and 'Object's.
+'If 'TestVar' is an unallocated array, it will test the data type of the array
+'and return 'True' or 'False' for that data type. If 'TestVar' is an allocated
+'array, it tests all elements, if they are numeric data type using the
+''IsArrayAllNumeric' function.
+'Use this procedure instead of VBA's 'IsNumeric' function because 'IsNumeric'
+'will return 'True' if the variable is a string containing numeric data. This
 'will cause problems with code like
 '    Dim V1 As Variant
 '    Dim V2 As Variant
@@ -1185,21 +1176,15 @@ End Function
 '            Debug.Print V1 + V2
 '        End If
 '    End If
-'
-'The output of the Debug.Print statement will be "12", not 3,
-'because V1 and V2 are strings and the '+'operator acts like
-'the '&'operator when used with strings. This can lead to
-'unexpected results.
-'
-'IsNumeric should only be used to test strings for numeric content
-'when converting a string value to a numeric variable.
-''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'The output of the 'Debug.Print' statement will be "12", not 3, because 'V1'
+'and 'V2' are strings and the '+' operator acts like the '&' operator when used
+'with strings. This can lead to unexpected results.
+''IsNumeric' should only be used to test strings for numeric content when
+'converting a string value to a numeric variable.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 Public Function IsNumericDataType( _
-    TestVar As Variant _
+    ByVal TestVar As Variant _
         ) As Boolean
-    
-    Dim Element As Variant
-    Dim NumDims As Long
     
     Dim LongLongType As Byte
     LongLongType = DeclareLongLong
@@ -1208,49 +1193,22 @@ Public Function IsNumericDataType( _
     'Set the default return value
     IsNumericDataType = False
     
-    If IsArray(TestVar) Then
-        NumDims = NumberOfArrayDimensions(TestVar)
-'---
-'2do:
-'- is a change needed here? First test, if 'IsArrayAllNumeric' is supposed
-'  to handle this!
-'---
-        If NumDims > 1 Then
-            'this procedure does not support multi-dimensional arrays
-            Exit Function
-        End If
-        If IsArrayAllocated(TestVar) Then
-'---
-'2do:
-'- is it intentional to test only the first element of 'TestVar'?
-'  --> according to the functions description yes ...
-'---
-            Element = TestVar(LBound(TestVar))
-            Select Case VarType(Element)
-                Case vbCurrency, vbDecimal, vbDouble, vbInteger, vbLong, LongLongType, vbSingle
-                    IsNumericDataType = True
-                    Exit Function
-                Case Else
-                    Exit Function
-            End Select
-        Else
+    If Not IsArray(TestVar) Then
+        Select Case VarType(TestVar)
+            Case vbCurrency, vbDecimal, vbDouble, vbInteger, vbLong, LongLongType, vbSingle
+                IsNumericDataType = True
+        End Select
+    Else
+        If Not IsArrayAllocated(TestVar) Then
             Select Case VarType(TestVar) - vbArray
                 Case vbCurrency, vbDecimal, vbDouble, vbInteger, vbLong, LongLongType, vbSingle
                     IsNumericDataType = True
-                    Exit Function
-                Case Else
-                    Exit Function
             End Select
+        Else
+            IsNumericDataType = IsArrayAllNumeric(TestVar, False, True)
         End If
     End If
     
-    Select Case VarType(TestVar)
-        Case vbCurrency, vbDecimal, vbDouble, vbInteger, vbLong, LongLongType, vbSingle
-            IsNumericDataType = True
-        Case Else
-            IsNumericDataType = False
-    End Select
-
 End Function
 
 

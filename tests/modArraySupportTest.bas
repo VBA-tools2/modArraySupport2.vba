@@ -3997,34 +3997,324 @@ TestFail:
 End Sub
 
 
-Public Sub DemoIsNumericDataType()
+'==============================================================================
+'unit tests for 'IsNumericDataType'
+'==============================================================================
+
+'@TestMethod
+Public Sub IsNumericDataType_LongPtrScalar_ReturnsTrue()
+    On Error GoTo TestFail
     
-    Dim V As Variant
-    Dim VEmpty As Variant
-    Dim S As String
-    Dim B As Boolean
+    'Arrange:
+    Dim Scalar As Long
     
     
-    V = 123
-    S = "123"
-
-    B = modArraySupport.IsNumericDataType(V)
-Debug.Print "IsNumericDataType:", B
-
-    B = modArraySupport.IsNumericDataType(S)
-Debug.Print "IsNumericDataType:", B
-
-    B = modArraySupport.IsNumericDataType(VEmpty)
-Debug.Print "IsNumericDataType:", B
-
-    V = Array(1, 2, 3)
-    B = modArraySupport.IsNumericDataType(V)
-Debug.Print "IsNumericDataType:", B
-
-    V = Array("a", "b", "c")
-    B = modArraySupport.IsNumericDataType(V)
-Debug.Print "IsNumericDataType:", B
+    'Act:
+    'Assert:
+    Assert.IsTrue modArraySupport.IsNumericDataType(Scalar)
     
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+End Sub
+
+
+'@TestMethod
+Public Sub IsNumericDataType_CurrencyScalar_ReturnsTrue()
+    On Error GoTo TestFail
+    
+    'Arrange:
+    Dim Scalar As Currency
+    
+    
+    'Act:
+    'Assert:
+    Assert.IsTrue modArraySupport.IsNumericDataType(Scalar)
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+End Sub
+
+
+'@TestMethod
+Public Sub IsNumericDataType_StringScalar_ReturnsFalse()
+    On Error GoTo TestFail
+    
+    'Arrange:
+    Dim Scalar As String
+    
+    
+    'Act:
+    'Assert:
+    Assert.IsFalse modArraySupport.IsNumericDataType(Scalar)
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+End Sub
+
+
+'@TestMethod
+Public Sub IsNumericDataType_ObjectScalar_ReturnsFalse()
+    On Error GoTo TestFail
+    
+    'Arrange:
+    Dim Scalar As Object
+    
+    
+    'Act:
+    'Assert:
+    Assert.IsFalse modArraySupport.IsNumericDataType(Scalar)
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+End Sub
+
+
+'@TestMethod
+Public Sub IsNumericDataType_VariantScalarUninitialized_ReturnsFalse()
+    On Error GoTo TestFail
+    
+    'Arrange:
+    Dim Scalar As Variant
+    
+    
+    'Act:
+    'Assert:
+    Assert.IsFalse modArraySupport.IsNumericDataType(Scalar)
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+End Sub
+
+
+'@TestMethod
+Public Sub IsNumericDataType_VariantScalarNumericContent_ReturnsTrue()
+    On Error GoTo TestFail
+    
+    Dim Scalar As Variant
+    
+    
+    'Arrange:
+    Scalar = 3
+    
+    'Act:
+    'Assert:
+    Assert.IsTrue modArraySupport.IsNumericDataType(Scalar)
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+End Sub
+
+
+'@TestMethod
+Public Sub IsNumericDataType_VariantScalarNonNumericContent_ReturnsFalse()
+    On Error GoTo TestFail
+    
+    Dim Scalar As Variant
+    
+    
+    'Arrange:
+    Scalar = "abc"
+    
+    'Act:
+    'Assert:
+    Assert.IsFalse modArraySupport.IsNumericDataType(Scalar)
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+End Sub
+
+
+'@TestMethod
+Public Sub IsNumericDataType_LongPtrArrayUnallocated_ReturnsTrue()
+    On Error GoTo TestFail
+    
+    'Arrange:
+    Dim Arr() As Long
+    
+    
+    'Act:
+    'Assert:
+    Assert.IsTrue modArraySupport.IsNumericDataType(Arr)
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+End Sub
+
+
+'@TestMethod
+Public Sub IsNumericDataType_LongPtrStaticArray_ReturnsTrue()
+    On Error GoTo TestFail
+    
+    'Arrange:
+    Dim Arr(5 To 6) As Long
+    
+    
+    'Act:
+    'Assert:
+    Assert.IsTrue modArraySupport.IsNumericDataType(Arr)
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+End Sub
+
+
+'@TestMethod
+Public Sub IsNumericDataType_CurrencyArray_ReturnsTrue()
+    On Error GoTo TestFail
+    
+    'Arrange:
+    Dim Arr() As Currency
+    
+    
+    'Act:
+    'Assert:
+    Assert.IsTrue modArraySupport.IsNumericDataType(Arr)
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+End Sub
+
+
+'@TestMethod
+Public Sub IsNumericDataType_StringArray_ReturnsFalse()
+    On Error GoTo TestFail
+    
+    'Arrange:
+    Dim Arr() As String
+    
+    
+    'Act:
+    'Assert:
+    Assert.IsFalse modArraySupport.IsNumericDataType(Arr)
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+End Sub
+
+
+'@TestMethod
+Public Sub IsNumericDataType_ObjectArray_ReturnsFalse()
+    On Error GoTo TestFail
+    
+    'Arrange:
+    Dim Arr() As Object
+    
+    
+    'Act:
+    'Assert:
+    Assert.IsFalse modArraySupport.IsNumericDataType(Arr)
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+End Sub
+
+
+'@TestMethod
+Public Sub IsNumericDataType_VariantArrayUnallocated_ReturnsFalse()
+    On Error GoTo TestFail
+    
+    'Arrange:
+    Dim Arr() As Variant
+    
+    
+    'Act:
+    'Assert:
+    Assert.IsFalse modArraySupport.IsNumericDataType(Arr)
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+End Sub
+
+
+'@TestMethod
+Public Sub IsNumericDataType_StaticVariantArrayNumericContent_ReturnsTrue()
+    On Error GoTo TestFail
+    
+    Dim Arr(5 To 6) As Variant
+    
+    
+    'Arrange:
+    Arr(5) = 3
+    Arr(6) = 7.8
+    
+    'Act:
+    'Assert:
+    Assert.IsTrue modArraySupport.IsNumericDataType(Arr)
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+End Sub
+
+
+'@TestMethod
+Public Sub IsNumericDataType_StaticVariantArrayMixedContentNumericFirst_ReturnsFalse()
+    On Error GoTo TestFail
+    
+    Dim Arr(5 To 6) As Variant
+    
+    
+    'Arrange:
+    Arr(5) = -2
+    Arr(6) = "abc"
+    
+    'Act:
+    'Assert:
+    Assert.IsFalse modArraySupport.IsNumericDataType(Arr)
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+End Sub
+
+
+'@TestMethod
+Public Sub IsNumericDataType_StaticVariantArrayMixedContentNonNumericFirst_ReturnsFalse()
+    On Error GoTo TestFail
+    
+    Dim Arr(5 To 6) As Variant
+    
+    
+    'Arrange:
+    Arr(5) = "abc"
+    Arr(6) = -2
+    
+    'Act:
+    'Assert:
+    Assert.IsFalse modArraySupport.IsNumericDataType(Arr)
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
 End Sub
 
 
