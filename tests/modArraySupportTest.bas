@@ -5582,31 +5582,226 @@ TestFail:
 End Sub
 
 
-Public Sub DemoReverseArrayOfObjectsInPlace()
+'==============================================================================
+'unit tests for 'ReverseArrayOfObjectsInPlace'
+'==============================================================================
 
-    Dim B As Boolean
-    Dim N As Long
-    Dim V(1 To 5) As Object
+'@TestMethod
+Public Sub ReverseArrayOfObjectsInPlace_NoArray_ReturnsFalse()
+    On Error GoTo TestFail
+    
+    'Arrange:
+    Dim Scalar As Object
     
     
-    Set V(1) = Range("A1")
-    Set V(2) = Nothing
-    Set V(3) = Range("A3")
-    Set V(4) = Range("A4")
-    Set V(5) = Range("A5")
+    'Act:
+    'Assert:
+    Assert.IsFalse modArraySupport.ReverseArrayOfObjectsInPlace(Scalar)
     
-    B = modArraySupport.ReverseArrayOfObjectsInPlace(V)
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+End Sub
+
+
+'@TestMethod
+Public Sub ReverseArrayOfObjectsInPlace_UnallocatedObjectArray_ReturnsFalse()
+    On Error GoTo TestFail
     
-    If B = True Then
-Debug.Print "REVERSED ARRAY --------------------------------------"
-        For N = LBound(V) To UBound(V)
-            If V(N) Is Nothing Then
-Debug.Print CStr(N), "Is Nothing"
-            Else
-Debug.Print CStr(N), V(N).Address
-            End If
-        Next N
-    End If
+    'Arrange:
+    Dim Arr() As Object
+    
+    
+    'Act:
+    'Assert:
+    Assert.IsFalse modArraySupport.ReverseArrayOfObjectsInPlace(Arr)
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+End Sub
+
+
+'@TestMethod
+Public Sub ReverseArrayOfObjectsInPlace_2DObjectArr_ReturnsFalse()
+    On Error GoTo TestFail
+    
+    'Arrange:
+    Dim Arr(5 To 7, 3 To 4) As Object
+    
+    
+    'Act:
+    'Assert:
+    Assert.IsFalse modArraySupport.ReverseArrayOfObjectsInPlace(Arr)
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+End Sub
+
+
+'@TestMethod
+Public Sub ReverseArrayOfObjectsInPlace_ValidEven1DObjectArr_ReturnsTrueAndReversedArr()
+    On Error GoTo TestFail
+    
+    Dim Arr(5 To 8) As Object
+    Dim i As Long
+    
+    '==========================================================================
+    Dim aExpected(5 To 8) As Object
+    With ThisWorkbook.Worksheets(1)
+        Set aExpected(5) = .Range("A8")
+        Set aExpected(6) = .Range("A7")
+        Set aExpected(7) = .Range("A6")
+        Set aExpected(8) = .Range("A5")
+    End With
+    '==========================================================================
+    
+    
+    'Arrange:
+    With ThisWorkbook.Worksheets(1)
+        Set Arr(5) = .Range("A5")
+        Set Arr(6) = .Range("A6")
+        Set Arr(7) = .Range("A7")
+        Set Arr(8) = .Range("A8")
+    End With
+    
+    'Act:
+    If Not modArraySupport.ReverseArrayOfObjectsInPlace(Arr) Then _
+            GoTo TestFail
+    
+    'Assert:
+    For i = LBound(Arr) To UBound(Arr)
+        If Arr(i) Is Nothing Then
+            Assert.IsNothing aExpected(i)
+        Else
+            Assert.AreEqual Arr(i).Address, Arr(i).Address
+        End If
+    Next
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+End Sub
+
+
+'@TestMethod
+Public Sub ReverseArrayOfObjectsInPlace_ValidEven1DVariantArr_ReturnsTrueAndReversedArr()
+    On Error GoTo TestFail
+    
+    Dim Arr(5 To 8) As Variant
+    Dim i As Long
+    
+    '==========================================================================
+    Dim aExpected(5 To 8) As Variant
+    With ThisWorkbook.Worksheets(1)
+        Set aExpected(5) = .Range("A8")
+        Set aExpected(6) = Nothing
+        Set aExpected(7) = .Range("A6")
+        Set aExpected(8) = Nothing
+    End With
+    '==========================================================================
+    
+    
+    'Arrange:
+    With ThisWorkbook.Worksheets(1)
+        Set Arr(5) = Nothing
+        Set Arr(6) = .Range("A6")
+        Set Arr(7) = Nothing
+        Set Arr(8) = .Range("A8")
+    End With
+    
+    'Act:
+    If Not modArraySupport.ReverseArrayOfObjectsInPlace(Arr) Then _
+            GoTo TestFail
+    
+    'Assert:
+    For i = LBound(Arr) To UBound(Arr)
+        If Arr(i) Is Nothing Then
+            Assert.IsNothing aExpected(i)
+        Else
+            Assert.AreEqual Arr(i).Address, Arr(i).Address
+        End If
+    Next
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+End Sub
+
+
+'@TestMethod
+Public Sub ReverseArrayOfObjectsInPlace_1DVariantArrWithNonObject_ReturnsFalse()
+    On Error GoTo TestFail
+    
+    Dim Arr(5 To 6) As Variant
+    
+    
+    'Arrange:
+    Set Arr(5) = ThisWorkbook.Worksheets(1).Range("A5")
+    Arr(6) = 6
+    
+    'Act:
+    'Assert:
+    Assert.IsFalse modArraySupport.ReverseArrayOfObjectsInPlace(Arr)
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+End Sub
+
+
+'@TestMethod
+Public Sub ReverseArrayOfObjectsInPlace_ValidOdd1DObjectArr_ReturnsTrueAndReversedArr()
+    On Error GoTo TestFail
+    
+    Dim Arr(5 To 9) As Object
+    Dim i As Long
+    
+    '==========================================================================
+    Dim aExpected(5 To 9) As Object
+    With ThisWorkbook.Worksheets(1)
+        Set aExpected(5) = .Range("A9")
+        Set aExpected(6) = Nothing
+        Set aExpected(7) = .Range("A7")
+        Set aExpected(8) = .Range("A6")
+        Set aExpected(9) = .Range("A5")
+    End With
+    '==========================================================================
+    
+    
+    'Arrange:
+    With ThisWorkbook.Worksheets(1)
+        Set Arr(5) = .Range("A5")
+        Set Arr(6) = .Range("A6")
+        Set Arr(7) = .Range("A7")
+        Set Arr(8) = Nothing
+        Set Arr(9) = .Range("A9")
+    End With
+    
+    'Act:
+    If Not modArraySupport.ReverseArrayOfObjectsInPlace(Arr) Then _
+            GoTo TestFail
+    
+    'Assert:
+    For i = LBound(Arr) To UBound(Arr)
+        If Arr(i) Is Nothing Then
+            Assert.IsNothing aExpected(i)
+        Else
+            Assert.AreEqual Arr(i).Address, Arr(i).Address
+        End If
+    Next
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
 End Sub
 
 
