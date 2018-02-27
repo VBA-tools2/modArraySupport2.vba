@@ -5383,28 +5383,202 @@ TestFail:
 End Sub
 
 
-Public Sub DemoReverseArrayInPlace()
+'==============================================================================
+'unit tests for 'ReverseArrayInPlace'
+'==============================================================================
 
-    Dim V(1 To 5) As Long
-    Dim N As Long
-    Dim B As Boolean
+'@TestMethod
+Public Sub ReverseArrayInPlace_NoArray_ReturnsFalse()
+    On Error GoTo TestFail
+    
+    'Arrange:
+    Dim Scalar As Long
     
     
-    V(1) = 1
-    V(2) = 2
-    V(3) = 3
-    V(4) = 4
-    V(5) = 5
+    'Act:
+    'Assert:
+    Assert.IsFalse modArraySupport.ReverseArrayInPlace(Scalar)
     
-    B = modArraySupport.ReverseArrayInPlace(V)
-    
-    If B = True Then
-Debug.Print "REVERSED ARRAY --------------------------------------"
-        For N = LBound(V) To UBound(V)
-Debug.Print V(N)
-        Next N
-    End If
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+End Sub
 
+
+'@TestMethod
+Public Sub ReverseArrayInPlace_UnallocatedArray_ReturnsFalse()
+    On Error GoTo TestFail
+    
+    'Arrange:
+    Dim Arr() As Long
+    
+    
+    'Act:
+    'Assert:
+    Assert.IsFalse modArraySupport.ReverseArrayInPlace(Arr)
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+End Sub
+
+
+'@TestMethod
+Public Sub ReverseArrayInPlace_2DArr_ReturnsFalse()
+    On Error GoTo TestFail
+    
+    'Arrange:
+    Dim Arr(5 To 7, 3 To 4) As Long
+    
+    
+    'Act:
+    'Assert:
+    Assert.IsFalse modArraySupport.ReverseArrayInPlace(Arr)
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+End Sub
+
+
+'@TestMethod
+Public Sub ReverseArrayInPlace_ValidEven1DArr_ReturnsTrueAndReversedArr()
+    On Error GoTo TestFail
+    
+    Dim Arr(5 To 8) As Long
+    
+    '==========================================================================
+    Dim aExpected(5 To 8) As Long
+        aExpected(5) = 8
+        aExpected(6) = 7
+        aExpected(7) = 6
+        aExpected(8) = 5
+    '==========================================================================
+    
+    
+    'Arrange:
+    Arr(5) = 5
+    Arr(6) = 6
+    Arr(7) = 7
+    Arr(8) = 8
+    
+    'Act:
+    If Not modArraySupport.ReverseArrayInPlace(Arr) Then _
+            GoTo TestFail
+    
+    'Assert:
+    Assert.SequenceEquals aExpected, Arr
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+End Sub
+
+
+'@TestMethod
+Public Sub ReverseArrayInPlace_ValidEven1DVariantArr_ReturnsTrueAndReversedArr()
+    On Error GoTo TestFail
+    
+    Dim Arr(5 To 8) As Variant
+    
+    '==========================================================================
+    Dim aExpected(5 To 8) As Variant
+        aExpected(5) = 8
+        aExpected(6) = "ghi"
+        aExpected(7) = 6
+        aExpected(8) = "abc"
+    '==========================================================================
+    
+    
+    'Arrange:
+    Arr(5) = "abc"
+    Arr(6) = 6
+    Arr(7) = "ghi"
+    Arr(8) = 8
+    
+    'Act:
+    If Not modArraySupport.ReverseArrayInPlace(Arr) Then _
+            GoTo TestFail
+    
+    'Assert:
+    Assert.SequenceEquals aExpected, Arr
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+End Sub
+
+
+'@TestMethod
+Public Sub ReverseArrayInPlace_1DVariantArrWithObject_ReturnsTrueAndReversedArr()
+    On Error GoTo TestFail
+    
+    Dim Arr(5 To 6) As Variant
+    
+    '==========================================================================
+    Dim aExpected(5 To 6) As Variant
+        aExpected(5) = "AreDataTypesCompatible"  '*content* of the below cell
+        aExpected(6) = 5
+    '==========================================================================
+    
+    
+    'Arrange:
+    Arr(5) = 5
+    Set Arr(6) = ThisWorkbook.Worksheets(1).Range("A5")
+    
+    'Act:
+    If Not modArraySupport.ReverseArrayInPlace(Arr) Then _
+            GoTo TestFail
+    
+    'Assert:
+    Assert.SequenceEquals aExpected, Arr
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+End Sub
+
+
+'@TestMethod
+Public Sub ReverseArrayInPlace_ValidOdd1DArr_ReturnsTrueAndReversedArr()
+    On Error GoTo TestFail
+    
+    Dim Arr(5 To 9) As Long
+    
+    '==========================================================================
+    Dim aExpected(5 To 9) As Long
+        aExpected(5) = 9
+        aExpected(6) = 8
+        aExpected(7) = 7
+        aExpected(8) = 6
+        aExpected(9) = 5
+    '==========================================================================
+    
+    
+    'Arrange:
+    Arr(5) = 5
+    Arr(6) = 6
+    Arr(7) = 7
+    Arr(8) = 8
+    Arr(9) = 9
+    
+    'Act:
+    If Not modArraySupport.ReverseArrayInPlace(Arr) Then _
+            GoTo TestFail
+    
+    'Assert:
+    Assert.SequenceEquals aExpected, Arr
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
 End Sub
 
 

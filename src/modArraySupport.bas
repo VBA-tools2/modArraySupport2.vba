@@ -1510,58 +1510,47 @@ Public Function ResetVariantArrayToDefaults( _
 End Function
 
 
-''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 'ReverseArrayInPlace
-'This procedure reverses the order of an array in place -- this is, the array variable
-'in the calling procedure is reversed. This works only on single-dimensional arrays
-'of simple data types (String, Single, Double, Integer, Long). It will not work
-'on arrays of objects. Use ReverseArrayOfObjectsInPlace to reverse an array of objects.
-''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'This procedure reverses the order of an array in place -- this is, the array
+'variable in the calling procedure is reversed. This works only on
+'single-dimensional arrays of simple data types ('String', 'Single', 'Double',
+''Integer', 'Long'). It will not work on arrays of objects. Use
+''ReverseArrayOfObjectsInPlace' to reverse an array of objects.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'2do:
+'- rename to 'ReverseVectorInPlace?
+'- combine with 'ReverseArrayOfObjectsInPlace'?
 Public Function ReverseArrayInPlace( _
-    InputArray As Variant, _
-    Optional NoAlerts As Boolean = False _
+    ByRef InputArray As Variant _
         ) As Boolean
-
+    
     Dim Temp As Variant
     Dim Ndx As Long
     Dim Ndx2 As Long
+    Dim LBoundArr As Long
+    Dim UBoundArr As Long
+    Dim NoOfElements As Long
+    Dim MidPoint As Long
     
     
     'Set the default return value
     ReverseArrayInPlace = False
     
-    'ensure we have an array
-    If Not IsArray(InputArray) Then
-        If NoAlerts = False Then
-            MsgBox "The InputArray parameter is not an array."
-        End If
-        Exit Function
-    End If
+    If Not IsArray(InputArray) Then Exit Function
+    If NumberOfArrayDimensions(InputArray) <> 1 Then Exit Function
     
-    'Test the number of dimensions of the InputArray. If 0, we have an empty,
-    'unallocated array. Get out with an error message. If greater than one, we
-    'have a multi-dimensional array, which is not allowed. Only an allocated
-    '1-dimensional array is allowed.
-    Select Case NumberOfArrayDimensions(InputArray)
-        Case 0
-            If NoAlerts = False Then
-                MsgBox "The input array is an empty, unallocated array."
-            End If
-            Exit Function
-        Case 1
-            'ok
-        Case Else
-            If NoAlerts = False Then
-                MsgBox "The input array is multi-dimensional. ReverseArrayInPlace works only " & _
-                        "on single-dimensional arrays."
-            End If
-            Exit Function
-    End Select
+    LBoundArr = LBound(InputArray)
+    UBoundArr = UBound(InputArray)
+    NoOfElements = UBoundArr - LBoundArr + 1
     
-    Ndx2 = UBound(InputArray)
+    'calculate midpoint index of 'InputArray'
+    MidPoint = LBoundArr + (NoOfElements \ 2) - 1
     
-    'loop from the LBound of InputArray to the midpoint of InputArray
-    For Ndx = LBound(InputArray) To ((UBound(InputArray) - LBound(InputArray) + 1) \ 2) - 1
+    'initialize 'Ndx2'
+    Ndx2 = UBoundArr
+    
+    For Ndx = LBoundArr To MidPoint
         'swap the elements
         Temp = InputArray(Ndx)
         InputArray(Ndx) = InputArray(Ndx2)
@@ -1571,7 +1560,7 @@ Public Function ReverseArrayInPlace( _
     Next
     
     ReverseArrayInPlace = True
-
+    
 End Function
 
 
