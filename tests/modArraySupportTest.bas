@@ -4079,11 +4079,63 @@ End Sub
 '==============================================================================
 
 '@TestMethod
-Public Sub NumberOfArrayDimensions_UnallocatedArray_ReturnsZero()
+Public Sub NumberOfArrayDimensions_UnallocatedLongArray_ReturnsZero()
     On Error GoTo TestFail
     
     'Arrange:
     Dim Arr() As Long
+    Dim iNoOfArrDimensions As Long
+    
+    '==========================================================================
+    Const aExpected As Long = 0
+    '==========================================================================
+    
+    
+    'Act:
+    iNoOfArrDimensions = modArraySupport.NumberOfArrayDimensions(Arr)
+    
+    'Assert:
+    Assert.AreEqual aExpected, iNoOfArrDimensions
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+End Sub
+
+
+'@TestMethod
+Public Sub NumberOfArrayDimensions_UnallocatedVariantArray_ReturnsZero()
+    On Error GoTo TestFail
+    
+    'Arrange:
+    Dim Arr() As Variant
+    Dim iNoOfArrDimensions As Long
+    
+    '==========================================================================
+    Const aExpected As Long = 0
+    '==========================================================================
+    
+    
+    'Act:
+    iNoOfArrDimensions = modArraySupport.NumberOfArrayDimensions(Arr)
+    
+    'Assert:
+    Assert.AreEqual aExpected, iNoOfArrDimensions
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+End Sub
+
+
+'@TestMethod
+Public Sub NumberOfArrayDimensions_UnallocatedObjectArray_ReturnsZero()
+    On Error GoTo TestFail
+    
+    'Arrange:
+    Dim Arr() As Object
     Dim iNoOfArrDimensions As Long
     
     '==========================================================================

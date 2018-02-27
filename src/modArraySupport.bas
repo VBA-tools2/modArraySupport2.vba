@@ -1450,6 +1450,15 @@ Public Function NumberOfArrayDimensions( _
     Dim Res As Long
     
     
+    'it seems that an unallocated 'Object' array returns 1, so it is needed a
+    'special handler for this case
+    If DataTypeOfArray(Arr) = vbObject Then
+        If Not IsArrayAllocated(Arr) Then
+            NumberOfArrayDimensions = 0
+            Exit Function
+        End If
+    End If
+    
     On Error Resume Next
     'Loop, increasing the dimension index 'i', until an error occurs.
     'An error will occur when 'i' exceeds the number of dimension in the array.
