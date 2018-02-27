@@ -1797,29 +1797,29 @@ Public Function AreDataTypesCompatible( _
 End Function
 
 
-''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 'SetVariableToDefault
-'This procedure sets Variable to the appropriate default
-'value for its data type. Note that it cannot change User-Defined
-'Types.
-''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'This procedure sets 'Variable' to the appropriate default value for its data
+'type. Note that it cannot change User-Defined Types.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 Public Sub SetVariableToDefault( _
     ByRef Variable As Variant _
 )
-
+    
     Dim LongLongType As Byte
     LongLongType = DeclareLongLong
     
     
-    'We test with IsObject here so that the object itself, not the default
+    'We test with 'IsObject' here so that the object itself, not the default
     'property of the object, is evaluated.
     If IsObject(Variable) Then
         Set Variable = Nothing
     Else
         Select Case VarType(Variable)
             Case Is >= vbArray
-                'The VarType of an array is equal to vbArray + VarType(ArrayElement).
-                'Here we check for anything >= vbArray
+                'The 'VarType' of an array is equal to
+                '  vbArray + VarType(ArrayElement).
+                'Here we check for anything '>=vbArray'
                 Erase Variable
             Case vbBoolean
                 Variable = False
@@ -1828,7 +1828,10 @@ Public Sub SetVariableToDefault( _
             Case vbCurrency
                 Variable = CCur(0)
             Case vbDataObject
+'---
+'2do: how can this be set/tested?
                 Set Variable = Nothing
+'---
             Case vbDate
                 Variable = CDate(0)
             Case vbDecimal
@@ -1846,7 +1849,10 @@ Public Sub SetVariableToDefault( _
             Case vbNull
                 Variable = Empty
             Case vbObject
+'---
+'2do: this was already checked above
                 Set Variable = Nothing
+'---
             Case vbSingle
                 Variable = CSng(0)
             Case vbString
@@ -1856,13 +1862,13 @@ Public Sub SetVariableToDefault( _
                 'Each element must be explicitly set to its default value. No
                 'assignment takes place in this procedure.
             Case vbVariant
-                'This case is included for constistancy, but we will never get
-                'here. If the Variant contains data, VarType returns the type of
-                'that data. An Empty Variant is type vbEmpty.
+                'This case is included for consistency, but we will never get
+                'here. If the 'Variant' contains data, 'VarType' returns the type
+                'of that data. An empty 'Variant' is type 'vbEmpty'.
                 Variable = Empty
         End Select
     End If
-
+    
 End Sub
 
 
