@@ -1457,35 +1457,56 @@ Public Function NumElements( _
 End Function
 
 
-''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 'ResetVariantArrayToDefaults
-'This resets all the elements of an array of Variants back to their appropriate
-'default values. The elements of the array may be of mixed types (e.g., some Longs,
-'some Objects, some Strings, etc). Each data type will be set to the appropriate
-'default value (0, vbNullString, Empty, or Nothing). It returns True if the
-'array was set to defautls, or False if an error occurred. InputArray must be
-'an allocated single-dimensional array. This function differs from the Erase
-'function in that it preserves the original data types, while Erase sets every
-'element to Empty.
+'This resets all the elements of an array of 'Variant's back to their
+'appropriate default values. The elements of the array may be of mixed types
+'(e.g., some 'Long's, some 'Object's, some 'String's, etc.). Each data type
+'will be set to the appropriate default value ('0', 'vbNullString', 'Empty', or
+''Nothing'). It returns 'True' if the array was set to defaults, or 'False' if
+'an error occurred. 'InputArray' must be an allocated single-dimensional array.
+'This function differs from the 'Erase' function in that it preserves the
+'original data types, while 'Erase' sets every element to 'Empty'.
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 Public Function ResetVariantArrayToDefaults( _
-    InputArray As Variant _
+    ByRef InputArray As Variant _
         ) As Boolean
-
-    Dim Ndx As Long
+    
+    Dim i As Long
+    Dim j As Long
+    Dim k As Long
+    
     
     'Set the default return value
     ResetVariantArrayToDefaults = False
     
     If Not IsArray(InputArray) Then Exit Function
-    If NumberOfArrayDimensions(InputArray) <> 1 Then Exit Function
     
-    For Ndx = LBound(InputArray) To UBound(InputArray)
-        SetVariableToDefault InputArray(Ndx)
-    Next
+    Select Case NumberOfArrayDimensions(InputArray)
+        Case 1
+            For i = LBound(InputArray) To UBound(InputArray)
+                SetVariableToDefault InputArray(i)
+            Next
+        Case 2
+            For i = LBound(InputArray, 1) To UBound(InputArray, 1)
+                For j = LBound(InputArray, 2) To UBound(InputArray, 2)
+                    SetVariableToDefault InputArray(i, j)
+                Next
+            Next
+        Case 3
+            For i = LBound(InputArray, 1) To UBound(InputArray, 1)
+                For j = LBound(InputArray, 2) To UBound(InputArray, 2)
+                    For k = LBound(InputArray, 3) To UBound(InputArray, 3)
+                        SetVariableToDefault InputArray(i, j, k)
+                    Next
+                Next
+            Next
+        Case Else
+            Exit Function
+    End Select
     
     ResetVariantArrayToDefaults = True
-
+    
 End Function
 
 
