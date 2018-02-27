@@ -1325,65 +1325,62 @@ End Function
 'End Function
 
 
-''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-'This procedure takes the SORTED array InputArray, which, if sorted in
-'ascending order, will have all empty strings at the front of the array.
-'This procedure moves those strings to the end of the array, shifting
-'the non-empty strings forward in the array.
-'Note that InputArray MUST be sorted in ascending order.
-'Returns True if the array was correctly shifted (if necessary) and False
-'if an error occurred.
-'
-'This function uses the following functions.
-'    FirstNonEmptyStringIndexInArray
-'    NumberOfArrayDimensions
-'    IsArrayAllocated
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'MoveEmptyStringsToEndOfArray
+'This procedure takes the SORTED array 'InputArray', which, if sorted in
+'ascending order, will have all empty strings at the front of the array. This
+'procedure moves those strings to the end of the array, shifting the non-empty
+'strings forward in the array.
+'Note that 'InputArray' MUST be sorted in ascending order.
+'Returns 'True' if the array was correctly shifted (if necessary) and 'False'
+'if an error occurred.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'---
+'2do: - rename to 'MoveEmptyStringsToEndOfVector'
 Public Function MoveEmptyStringsToEndOfArray( _
-    InputArray As Variant _
+    ByRef InputArray As Variant _
         ) As Boolean
-
+    
     Dim Ndx As Long
-    Dim Ndx2 As Long
     Dim NonEmptyNdx As Long
+    Dim LBoundArr As Long
+    Dim UBoundArr As Long
     Dim FirstNonEmptyNdx As Long
+    Dim LastNewNonEmptyNdx As Long
     
     
     'Set the default return value
     MoveEmptyStringsToEndOfArray = False
     
     If Not IsArray(InputArray) Then Exit Function
-    If Not IsArrayAllocated(InputArray) Then Exit Function
+    If NumberOfArrayDimensions(InputArray) <> 1 Then Exit Function
     
+    LBoundArr = LBound(InputArray)
+    UBoundArr = UBound(InputArray)
     
     FirstNonEmptyNdx = FirstNonEmptyStringIndexInArray(InputArray)
-    If FirstNonEmptyNdx <= LBound(InputArray) Then
+    If FirstNonEmptyNdx <= LBoundArr Then
         'No empty strings at the beginning of the array. Get out now.
         MoveEmptyStringsToEndOfArray = True
         Exit Function
     End If
     
+    LastNewNonEmptyNdx = UBoundArr + LBoundArr - FirstNonEmptyNdx
     
-    'Loop through the array, swapping vbNullStrings at the beginning with
-    'values at the end.
+    'Loop through the array and move non-empty strings to the front
     NonEmptyNdx = FirstNonEmptyNdx
-    For Ndx = LBound(InputArray) To UBound(InputArray)
-        If InputArray(Ndx) = vbNullString Then
-            InputArray(Ndx) = InputArray(NonEmptyNdx)
-            InputArray(NonEmptyNdx) = vbNullString
-            NonEmptyNdx = NonEmptyNdx + 1
-            If NonEmptyNdx > UBound(InputArray) Then
-                Exit For
-            End If
-        End If
+    For Ndx = LBoundArr To LastNewNonEmptyNdx
+        InputArray(Ndx) = InputArray(NonEmptyNdx)
+        NonEmptyNdx = NonEmptyNdx + 1
     Next
-    'Set entires (Ndx+1) to UBound(InputArray) to vbNullStrings
-    For Ndx2 = Ndx + 1 To UBound(InputArray)
-        InputArray(Ndx2) = vbNullString
+    
+    'Set last entries entries 'vbNullString's
+    For Ndx = LastNewNonEmptyNdx + 1 To UBoundArr
+        InputArray(Ndx) = vbNullString
     Next
     
     MoveEmptyStringsToEndOfArray = True
-
+    
 End Function
 
 

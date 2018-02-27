@@ -4541,34 +4541,222 @@ TestFail:
 End Sub
 
 
-Public Sub DemoMoveEmptyStringsToEndOfArray()
-    
-    Dim B As Boolean
-    Dim N As Long
-    Dim S(1 To 5) As String
-    
-    
-    S(1) = vbNullString
-    S(2) = vbNullString
-    S(3) = "C"
-    S(4) = "D"
-    S(5) = "E"
-    
-    B = modArraySupport.MoveEmptyStringsToEndOfArray(S)
-    
-    If B = True Then
-        For N = LBound(S) To UBound(S)
-            If S(N) = vbNullString Then
-Debug.Print CStr(N), "is vbNullString"
-            Else
-Debug.Print CStr(N), S(N)
-            End If
-        Next N
-    Else
-Debug.Print "MoveEmptyStringsToEndOfArray returned False"
-    End If
+'==============================================================================
+'unit tests for 'MoveEmptyStringsToEndOfArray'
+'==============================================================================
 
+'@TestMethod
+Public Sub MoveEmptyStringsToEndOfArray_NoArray_ReturnsFalse()
+    On Error GoTo TestFail
+    
+    'Arrange:
+    Dim Scalar As String
+    
+    
+    'Act:
+    'Assert:
+    Assert.IsFalse modArraySupport.MoveEmptyStringsToEndOfArray(Scalar)
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
 End Sub
+
+
+'@TestMethod
+Public Sub MoveEmptyStringsToEndOfArray_UnallocatedArray_ReturnsFalse()
+    On Error GoTo TestFail
+    
+    'Arrange:
+    Dim InputArray() As String
+    
+    
+    'Act:
+    'Assert:
+    Assert.IsFalse modArraySupport.MoveEmptyStringsToEndOfArray(InputArray)
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+End Sub
+
+
+'@TestMethod
+Public Sub MoveEmptyStringsToEndOfArray_2DArray_ReturnsFalse()
+    On Error GoTo TestFail
+    
+    'Arrange:
+    Dim InputArray(5 To 6, 3 To 4) As String
+    
+    
+    'Act:
+    'Assert:
+    Assert.IsFalse modArraySupport.MoveEmptyStringsToEndOfArray(InputArray)
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+End Sub
+
+
+'@TestMethod
+Public Sub MoveEmptyStringsToEndOfArray_vbNullStringArrayOnly_ReturnsTrue()
+    On Error GoTo TestFail
+    
+    Dim InputArray(5 To 7) As String
+    
+    
+    'Arrange:
+    InputArray(5) = vbNullString
+    InputArray(6) = vbNullString
+    InputArray(7) = vbNullString
+    
+    'Act:
+    'Assert:
+    Assert.IsTrue modArraySupport.MoveEmptyStringsToEndOfArray(InputArray)
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+End Sub
+
+
+'@TestMethod
+Public Sub MoveEmptyStringsToEndOfArray_NoneVbNullStringArrayOnly_ReturnsTrue()
+    On Error GoTo TestFail
+    
+    Dim InputArray(5 To 7) As String
+    
+    
+    'Arrange:
+    InputArray(5) = "abc"
+    InputArray(6) = "def"
+    InputArray(7) = "ghi"
+    
+    'Act:
+    'Assert:
+    Assert.IsTrue modArraySupport.MoveEmptyStringsToEndOfArray(InputArray)
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+End Sub
+
+
+'@TestMethod
+Public Sub MoveEmptyStringsToEndOfArray_StringArray_ReturnsTrueAndModifiedArr()
+    On Error GoTo TestFail
+    
+    Dim InputArray(5 To 7) As String
+    Dim i As Long
+    
+    '==========================================================================
+    Dim aExpected(5 To 7) As String
+        aExpected(5) = "abc"
+        aExpected(6) = vbNullString
+        aExpected(7) = vbNullString
+    '==========================================================================
+    
+    
+    'Arrange:
+    InputArray(5) = vbNullString
+    InputArray(6) = vbNullString
+    InputArray(7) = "abc"
+    
+    'Act:
+    If Not modArraySupport.MoveEmptyStringsToEndOfArray(InputArray) Then _
+            GoTo TestFail
+    
+    'Assert:
+    For i = LBound(InputArray) To UBound(InputArray)
+        Assert.AreEqual aExpected(i), InputArray(i)
+    Next
+'    Assert.SequenceEquals aExpected, InputArray
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+End Sub
+
+
+'@TestMethod
+Public Sub MoveEmptyStringsToEndOfArray_VariantArray_ReturnsTrueAndModifiedArr()
+    On Error GoTo TestFail
+    
+    Dim InputArray(5 To 7) As Variant
+    Dim i As Long
+    
+    '==========================================================================
+    Dim aExpected(5 To 7) As Variant
+        aExpected(5) = "abc"
+        aExpected(6) = "def"
+        aExpected(7) = vbNullString
+    '==========================================================================
+    
+    
+    'Arrange:
+    InputArray(5) = vbNullString
+    InputArray(6) = "abc"
+    InputArray(7) = "def"
+    
+    'Act:
+    If Not modArraySupport.MoveEmptyStringsToEndOfArray(InputArray) Then _
+            GoTo TestFail
+    
+    'Assert:
+    For i = LBound(InputArray) To UBound(InputArray)
+        Assert.AreEqual aExpected(i), InputArray(i)
+    Next
+'    Assert.SequenceEquals aExpected, InputArray
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+End Sub
+
+
+''@TestMethod
+'Public Sub MoveEmptyStringsToEndOfArray_StringArray2_ReturnsTrueAndModifiedArr()
+'    On Error GoTo TestFail
+'
+'    Dim Arr As Variant
+'    Dim InputArray() As String
+'    Dim i As Long
+'
+'    '==========================================================================
+'    Dim aExpected() As String
+'    '==========================================================================
+'
+'
+'    'Arrange:
+''move entries in the shown range 3 cells down
+'    Arr = ThisWorkbook.Worksheets(1).Range("A32:B44")
+'
+'    'Act:
+'    If Not modArraySupport.GetColumn(Arr, InputArray, 1) Then GoTo TestFail
+'    If Not modArraySupport.MoveEmptyStringsToEndOfArray(InputArray) Then _
+'            GoTo TestFail
+'    Arr = ThisWorkbook.Worksheets(1).Range("A35:B47")
+'    If Not modArraySupport.GetColumn(Arr, aExpected, 1) Then GoTo TestFail
+'
+'    'Assert:
+'    For i = LBound(InputArray) To UBound(InputArray)
+'        Assert.AreEqual aExpected(i), InputArray(i)
+'    Next
+''    Assert.SequenceEquals aExpected, InputArray
+'
+'TestExit:
+'    Exit Sub
+'TestFail:
+'    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+'End Sub
 
 
 '==============================================================================
