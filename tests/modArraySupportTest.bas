@@ -4893,23 +4893,222 @@ TestFail:
 End Sub
 
 
-Public Sub DemoNumElements()
+'==============================================================================
+'unit tests for 'NumElements'
+'==============================================================================
 
-    Dim N As Long
-    Dim EmptyArray() As Long
-    Dim OneArray(1 To 3) As Long
-    Dim ThreeArray(1 To 3, 1 To 2, 1 To 1)
+'@TestMethod
+Public Sub NumElements_NoArray_ReturnsZero()
+    On Error GoTo TestFail
+    
+    'Arrange:
+    Dim Scalar As Long
+    Dim iNoOfElements As Long
+    
+    '==========================================================================
+    Const Dimension As Long = 1
+    Const aExpected As Long = 0
+    '==========================================================================
+    
+    
+    'Act:
+    iNoOfElements = modArraySupport.NumElements(Scalar, Dimension)
+    
+    'Assert:
+    Assert.AreEqual aExpected, iNoOfElements
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+End Sub
 
 
-    N = modArraySupport.NumElements(EmptyArray, 1)
-Debug.Print "NumElements EmptyArray", N
+'@TestMethod
+Public Sub NumElements_UnallocatedArray_ReturnsZero()
+    On Error GoTo TestFail
+    
+    'Arrange:
+    Dim Arr() As Long
+    Dim iNoOfElements As Long
+    
+    '==========================================================================
+    Const Dimension As Long = 1
+    Const aExpected As Long = 0
+    '==========================================================================
+    
+    
+    'Act:
+    iNoOfElements = modArraySupport.NumElements(Arr, Dimension)
+    
+    'Assert:
+    Assert.AreEqual aExpected, iNoOfElements
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+End Sub
 
-    N = modArraySupport.NumElements(OneArray, 1)
-Debug.Print "NumElements OneArray", N
 
-    N = modArraySupport.NumElements(ThreeArray, 3)
-Debug.Print "NumElements ThreeArray", N
+'@TestMethod
+Public Sub NumElements_DimensionLowerOne_ReturnsZero()
+    On Error GoTo TestFail
+    
+    'Arrange:
+    Dim Arr(5 To 7, 3 To 4, 1 To 1) As Long
+    Dim iNoOfElements As Long
+    
+    '==========================================================================
+    Const Dimension As Long = 0
+    Const aExpected As Long = 0
+    '==========================================================================
+    
+    
+    'Act:
+    iNoOfElements = modArraySupport.NumElements(Arr, Dimension)
+    
+    'Assert:
+    Assert.AreEqual aExpected, iNoOfElements
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+End Sub
 
+
+'@TestMethod
+Public Sub NumElements_DimensionHigherNoOfArrDimensions_ReturnsZero()
+    On Error GoTo TestFail
+    
+    'Arrange:
+    Dim Arr(5 To 7, 3 To 4, 1 To 1) As Long
+    Dim iNoOfElements As Long
+    
+    '==========================================================================
+    Const Dimension As Long = 4
+    Const aExpected As Long = 0
+    '==========================================================================
+    
+    
+    'Act:
+    iNoOfElements = modArraySupport.NumElements(Arr, Dimension)
+    
+    'Assert:
+    Assert.AreEqual aExpected, iNoOfElements
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+End Sub
+
+
+'@TestMethod
+Public Sub NumElements_DimensionOne_ReturnsThree()
+    On Error GoTo TestFail
+    
+    'Arrange:
+    Dim Arr(5 To 7, 3 To 4, 1 To 1) As Long
+    Dim iNoOfElements As Long
+    
+    '==========================================================================
+    Const Dimension As Long = 1
+    Const aExpected As Long = 3
+    '==========================================================================
+    
+    
+    'Act:
+    iNoOfElements = modArraySupport.NumElements(Arr, Dimension)
+    
+    'Assert:
+    Assert.AreEqual aExpected, iNoOfElements
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+End Sub
+
+
+'@TestMethod
+Public Sub NumElements_DimensionTwo_ReturnsTwo()
+    On Error GoTo TestFail
+    
+    'Arrange:
+    Dim Arr(5 To 7, 3 To 4, 1 To 1) As Long
+    Dim iNoOfElements As Long
+    
+    '==========================================================================
+    Const Dimension As Long = 2
+    Const aExpected As Long = 2
+    '==========================================================================
+    
+    
+    'Act:
+    iNoOfElements = modArraySupport.NumElements(Arr, Dimension)
+    
+    'Assert:
+    Assert.AreEqual aExpected, iNoOfElements
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+End Sub
+
+
+'@TestMethod
+Public Sub NumElements_DimensionThree_ReturnsOne()
+    On Error GoTo TestFail
+    
+    'Arrange:
+    Dim Arr(5 To 7, 3 To 4, 1 To 1) As Long
+    Dim iNoOfElements As Long
+    
+    '==========================================================================
+    Const Dimension As Long = 3
+    Const aExpected As Long = 1
+    '==========================================================================
+    
+    
+    'Act:
+    iNoOfElements = modArraySupport.NumElements(Arr, Dimension)
+    
+    'Assert:
+    Assert.AreEqual aExpected, iNoOfElements
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+End Sub
+
+
+'@TestMethod
+Public Sub NumElements_DefaultDimension_ReturnsThree()
+    On Error GoTo TestFail
+    
+    'Arrange:
+    Dim Arr(5 To 7, 3 To 4, 1 To 1) As Long
+    Dim iNoOfElements As Long
+    
+    '==========================================================================
+    Const aExpected As Long = 3
+    '==========================================================================
+    
+    
+    'Act:
+    iNoOfElements = modArraySupport.NumElements(Arr)
+    
+    'Assert:
+    Assert.AreEqual aExpected, iNoOfElements
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
 End Sub
 
 

@@ -1421,23 +1421,22 @@ Public Function NumberOfArrayDimensions( _
 End Function
 
 
-''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 'NumElements
-'Returns the number of elements in the specified dimension (Dimension) of the array in
-'Arr. If you omit Dimension, the first dimension is used. The function will return
-'0 under the following circumstances:
-'    Arr is not an array, or
-'    Arr is an unallocated array, or
-'    Dimension is greater than the number of dimension of Arr, or
-'    Dimension is less than 1.
-'
+'Returns the number of elements in the specified dimension ('Dimension') of the
+'array in 'Arr'. If you omit 'Dimension', the first dimension is used. The
+'function will return 0 under the following circumstances:
+'- 'Arr' is not an array, or
+'- 'Arr' is an unallocated array, or
+'- 'Dimension' is less than 1, or
+'- 'Dimension' is greater than the number of dimension of 'Arr'.
 'This function does not support arrays of user-defined Type variables.
-''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 Public Function NumElements( _
-    Arr As Variant, _
-    Optional Dimension As Long = 1 _
+    ByVal Arr As Variant, _
+    Optional ByVal Dimension As Long = 1 _
         ) As Long
-
+    
     Dim NumDimensions As Long
     
     
@@ -1446,8 +1445,6 @@ Public Function NumElements( _
     
     If Not IsArray(Arr) Then Exit Function
     If Not IsArrayAllocated(Arr) Then Exit Function
-    
-    'ensure that Dimension is at least 1
     If Dimension < 1 Then Exit Function
     
     'check if 'Dimension' is not larger than 'NumDimensions'
@@ -1456,7 +1453,7 @@ Public Function NumElements( _
     
     'returns the number of elements in the array
     NumElements = UBound(Arr, Dimension) - LBound(Arr, Dimension) + 1
-
+    
 End Function
 
 
