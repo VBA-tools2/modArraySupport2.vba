@@ -4318,19 +4318,226 @@ TestFail:
 End Sub
 
 
-Public Sub DemoIsVariantArrayConsistent()
+'==============================================================================
+'unit tests for 'IsVariantArrayConsistent'
+'==============================================================================
 
-    Dim B As Boolean
-    Dim V(1 To 3) As Variant
+'@TestMethod
+Public Sub IsVariantArrayConsistent_NoArray_ReturnsFalse()
+    On Error GoTo TestFail
+    
+    'Arrange:
+    Dim Scalar As Long
     
     
-    Set V(1) = Range("A1")
-    Set V(2) = Nothing
-    Set V(3) = Range("A3")
+    'Act:
+    'Assert:
+    Assert.IsFalse modArraySupport.IsVariantArrayConsistent(Scalar)
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+End Sub
 
-    B = modArraySupport.IsVariantArrayConsistent(V)
-Debug.Print "IsVariantArrayConsistent:", B
 
+'@TestMethod
+Public Sub IsVariantArrayConsistent_UnallocatedArray_ReturnsFalse()
+    On Error GoTo TestFail
+    
+    'Arrange:
+    Dim Arr() As Long
+    
+    
+    'Act:
+    'Assert:
+    Assert.IsFalse modArraySupport.IsVariantArrayConsistent(Arr)
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+End Sub
+
+
+'@TestMethod
+Public Sub IsVariantArrayConsistent_AllocatedLongTypeArray_ReturnsTrue()
+    On Error GoTo TestFail
+    
+    'Arrange:
+    Dim Arr(5 To 6) As Long
+    
+    
+    'Act:
+    'Assert:
+    Assert.IsTrue modArraySupport.IsVariantArrayConsistent(Arr)
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+End Sub
+
+
+'@TestMethod
+Public Sub IsVariantArrayConsistent_AllocatedObjectTypeArray_ReturnsTrue()
+    On Error GoTo TestFail
+    
+    'Arrange:
+    Dim Arr(5 To 6) As Object
+    
+    
+    'Act:
+    'Assert:
+    Assert.IsTrue modArraySupport.IsVariantArrayConsistent(Arr)
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+End Sub
+
+
+'@TestMethod
+Public Sub IsVariantArrayConsistent_AllocatedVariantTypeArrayConsistentIntegers_ReturnsTrue()
+    On Error GoTo TestFail
+    
+    Dim Arr(5 To 6) As Variant
+    
+    
+    'Arrange:
+    Arr(5) = -100
+    Arr(6) = 3
+    
+    'Act:
+    'Assert:
+    Assert.IsTrue modArraySupport.IsVariantArrayConsistent(Arr)
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+End Sub
+
+
+'@TestMethod
+Public Sub IsVariantArrayConsistent_AllocatedVariantTypeArrayConsistentObjects_ReturnsTrue()
+    On Error GoTo TestFail
+    
+    Dim Arr(5 To 7) As Variant
+    
+    
+    'Arrange:
+    With ThisWorkbook.Worksheets(1)
+        Set Arr(5) = .Range("A5")
+        Set Arr(6) = Nothing
+        Set Arr(7) = .Range("A7")
+    End With
+    
+    'Act:
+    'Assert:
+    Assert.IsTrue modArraySupport.IsVariantArrayConsistent(Arr)
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+End Sub
+
+
+'@TestMethod
+Public Sub IsVariantArrayConsistent_AllocatedVariantTypeArrayInconsistentTypes_ReturnsFalse()
+    On Error GoTo TestFail
+    
+    Dim Arr(5 To 6) As Variant
+    
+    
+    'Arrange:
+    Arr(5) = -100
+    Arr(6) = "abc"
+    
+    'Act:
+    'Assert:
+    Assert.IsFalse modArraySupport.IsVariantArrayConsistent(Arr)
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+End Sub
+
+
+'@TestMethod
+Public Sub IsVariantArrayConsistent_2DAllocatedVariantTypeArrayConsistentIntegers_ReturnsTrue()
+    On Error GoTo TestFail
+    
+    Dim Arr(5 To 6, 3 To 4) As Variant
+    
+    
+    'Arrange:
+    Arr(5, 3) = 10
+    Arr(6, 3) = 11
+    Arr(5, 4) = 20
+    Arr(6, 4) = 21
+    
+    'Act:
+    'Assert:
+    Assert.IsTrue modArraySupport.IsVariantArrayConsistent(Arr)
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+End Sub
+
+
+'@TestMethod
+Public Sub IsVariantArrayConsistent_2DAllocatedVariantTypeArrayConsistentObjects_ReturnsTrue()
+    On Error GoTo TestFail
+    
+    Dim Arr(5 To 6, 3 To 4) As Variant
+    
+    
+    'Arrange:
+    With ThisWorkbook.Worksheets(1)
+        Set Arr(5, 3) = .Range("A5")
+        Set Arr(6, 3) = Nothing
+        Set Arr(5, 4) = .Range("A7")
+        Set Arr(6, 4) = Nothing
+    End With
+    
+    'Act:
+    'Assert:
+    Assert.IsTrue modArraySupport.IsVariantArrayConsistent(Arr)
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+End Sub
+
+
+'@TestMethod
+Public Sub IsVariantArrayConsistent_2DAllocatedVariantTypeArrayInconsistentTypes_ReturnsFalse()
+    On Error GoTo TestFail
+    
+    Dim Arr(5 To 6, 3 To 4) As Variant
+    
+    
+    'Arrange:
+    Arr(5, 3) = -100
+    Arr(6, 3) = "abc"
+    Arr(5, 4) = Empty
+    Set Arr(6, 4) = Nothing
+    
+    'Act:
+    'Assert:
+    Assert.IsFalse modArraySupport.IsVariantArrayConsistent(Arr)
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
 End Sub
 
 

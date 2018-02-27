@@ -1212,38 +1212,34 @@ Public Function IsNumericDataType( _
 End Function
 
 
-''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 'IsVariantArrayConsistent
-'
-'This returns TRUE or FALSE indicating whether an array of variants
-'contains all the same data types. Returns FALSE under the following
+'This returns 'True' or 'False' indicating whether an array of variants
+'contains all the same data types. Returns 'False' under the following
 'circumstances:
-'    Arr is not an array
-'    Arr is an array but is unallocated
-'    Arr is a multidimensional array
-'    Arr is allocated but does not contain consistant data types.
-'
-'If Arr is an array of objects, objects that are Nothing are ignored.
-'As long as all non-Nothing objects are the same object type, the
-'function returns True.
-'
-'It returns TRUE if all the elements of the array have the same
-'data type. If Arr is an array of a specific data types, not variants,
-'(E.g., Dim V(1 To 3) As Long), the function will return True. If
-'an array of variants contains an uninitialized element (VarType =
-'vbEmpty) that element is skipped and not used in the comparison. The
-'reasoning behind this is that an empty variable will return the
-'data type of the variable to which it is assigned (e.g., it will
-'return vbNullString to a String and 0 to a Double).
-'
+'    'Arr' is not an array,
+'    'Arr' is an array but is unallocated,
+'    'Arr' is a multi-dimensional array,
+'    'Arr' is allocated but does not contain consistent data types.
+'If 'Arr' is an array of objects, objects that are 'Nothing' are ignored. As
+'long as all non-'Nothing' objects are the same object type, the function
+'returns 'True'.
+'It returns 'True' if all the elements of the array have the same data type.
+'If 'Arr' is an array of a specific data types, not 'Variant's, e.g.
+'    Dim V(1 To 3) As Long
+'the function will return 'True'. If an array of variants contains an
+'uninitialized element ('VarType = vbEmpty') that element is skipped and not
+'used in the comparison. The reasoning behind this is that an empty variable
+'will return the data type of the variable to which it is assigned (e.g. it
+'will return 'vbNullString' to a 'String' and '0' to a 'Double').
 'The function does not support arrays of User Defined Types.
-'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 Public Function IsVariantArrayConsistent( _
-    Arr As Variant _
+    ByVal Arr As Variant _
         ) As Boolean
-
+    
     Dim FirstDataType As VbVarType
-    Dim Ndx As Long
+    Dim Element As Variant
     
     
     'Set the default return value
@@ -1252,38 +1248,35 @@ Public Function IsVariantArrayConsistent( _
     If Not IsArray(Arr) Then Exit Function
     If Not IsArrayAllocated(Arr) Then Exit Function
     
-    'Exit with false on multi-dimensional arrays
-'---
-'2do: can this be changed if still true?
-'---
-    If NumberOfArrayDimensions(Arr) <> 1 Then Exit Function
-    
-    'Test if we have an array of a specific type rather than Variants. If so,
-    'return TRUE and get out.
-    If (VarType(Arr) <= vbArray) And _
-            (VarType(Arr) <> vbVariant) Then
+    'Test if we have an array of a specific type rather than 'Variant's. If so,
+    'return 'True' and get out.
+    If VarType(Arr) - vbArray <> vbVariant Then
         IsVariantArrayConsistent = True
         Exit Function
     End If
     
     'Get the data type of the first element
-    FirstDataType = VarType(Arr(LBound(Arr)))
+    For Each Element In Arr
+        FirstDataType = VarType(Element)
+        Exit For
+    Next
+    
     'Loop through the array and exit if a differing data type if found.
-    For Ndx = LBound(Arr) + 1 To UBound(Arr)
-        If VarType(Arr(Ndx)) <> vbEmpty Then
-            If IsObject(Arr(Ndx)) Then
-                If Not Arr(Ndx) Is Nothing Then
-                    If VarType(Arr(Ndx)) <> FirstDataType Then Exit Function
+    For Each Element In Arr
+        If VarType(Element) <> vbEmpty Then
+            If IsObject(Element) Then
+                If Not Element Is Nothing Then
+                    If VarType(Element) <> FirstDataType Then Exit Function
                 End If
             Else
-                If VarType(Arr(Ndx)) <> FirstDataType Then Exit Function
+                If VarType(Element) <> FirstDataType Then Exit Function
             End If
         End If
     Next
     
     'If we make it up to here, then the array is consistent
     IsVariantArrayConsistent = True
-
+    
 End Function
 
 
