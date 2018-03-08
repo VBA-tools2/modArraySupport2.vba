@@ -2019,11 +2019,11 @@ End Sub
 
 
 '==============================================================================
-'unit tests for 'DeleteArrayElement'
+'unit tests for 'DeleteVectorElement'
 '==============================================================================
 
 '@TestMethod
-Public Sub DeleteArrayElement_NoArray_ReturnsFalse()
+Public Sub DeleteVectorElement_NoArray_ReturnsFalse()
     On Error GoTo TestFail
     
     'Arrange:
@@ -2037,7 +2037,7 @@ Public Sub DeleteArrayElement_NoArray_ReturnsFalse()
     
     'Act:
     'Assert:
-    Assert.IsFalse modArraySupport.DeleteArrayElement( _
+    Assert.IsFalse modArraySupport.DeleteVectorElement( _
             Scalar, _
             ElementNumber, _
             ResizeDynamic _
@@ -2051,7 +2051,7 @@ End Sub
 
 
 '@TestMethod
-Public Sub DeleteArrayElement_UnallocatedArray_ReturnsFalse()
+Public Sub DeleteVectorElement_UnallocatedArray_ReturnsFalse()
     On Error GoTo TestFail
     
     'Arrange:
@@ -2065,7 +2065,7 @@ Public Sub DeleteArrayElement_UnallocatedArray_ReturnsFalse()
     
     'Act:
     'Assert:
-    Assert.IsFalse modArraySupport.DeleteArrayElement( _
+    Assert.IsFalse modArraySupport.DeleteVectorElement( _
             InputArray, _
             ElementNumber, _
             ResizeDynamic _
@@ -2079,7 +2079,7 @@ End Sub
 
 
 '@TestMethod
-Public Sub DeleteArrayElement_2DArray_ReturnsFalse()
+Public Sub DeleteVectorElement_2DArray_ReturnsFalse()
     On Error GoTo TestFail
     
     'Arrange:
@@ -2093,7 +2093,7 @@ Public Sub DeleteArrayElement_2DArray_ReturnsFalse()
     
     'Act:
     'Assert:
-    Assert.IsFalse modArraySupport.DeleteArrayElement( _
+    Assert.IsFalse modArraySupport.DeleteVectorElement( _
             InputArray, _
             ElementNumber, _
             ResizeDynamic _
@@ -2107,7 +2107,7 @@ End Sub
 
 
 '@TestMethod
-Public Sub DeleteArrayElement_TooLowElementNumber_ReturnsFalse()
+Public Sub DeleteVectorElement_TooLowElementNumber_ReturnsFalse()
     On Error GoTo TestFail
     
     'Arrange:
@@ -2121,7 +2121,7 @@ Public Sub DeleteArrayElement_TooLowElementNumber_ReturnsFalse()
     
     'Act:
     'Assert:
-    Assert.IsFalse modArraySupport.DeleteArrayElement( _
+    Assert.IsFalse modArraySupport.DeleteVectorElement( _
             InputArray, _
             ElementNumber, _
             ResizeDynamic _
@@ -2135,7 +2135,7 @@ End Sub
 
 
 '@TestMethod
-Public Sub DeleteArrayElement_TooHighElementNumber_ReturnsFalse()
+Public Sub DeleteVectorElement_TooHighElementNumber_ReturnsFalse()
     On Error GoTo TestFail
     
     'Arrange:
@@ -2149,7 +2149,7 @@ Public Sub DeleteArrayElement_TooHighElementNumber_ReturnsFalse()
     
     'Act:
     'Assert:
-    Assert.IsFalse modArraySupport.DeleteArrayElement( _
+    Assert.IsFalse modArraySupport.DeleteVectorElement( _
             InputArray, _
             ElementNumber, _
             ResizeDynamic _
@@ -2163,7 +2163,7 @@ End Sub
 
 
 '@TestMethod
-Public Sub DeleteArrayElement_RemoveElementOfStaticArray_ReturnsTrueAndModifiedInputArray()
+Public Sub DeleteVectorElement_RemoveElementOfStaticArray_ReturnsTrueAndModifiedInputArray()
     On Error GoTo TestFail
     
     Dim InputArray(5 To 7) As Long
@@ -2185,7 +2185,7 @@ Public Sub DeleteArrayElement_RemoveElementOfStaticArray_ReturnsTrueAndModifiedI
     InputArray(7) = 30
     
     'Act:
-    If Not modArraySupport.DeleteArrayElement( _
+    If Not modArraySupport.DeleteVectorElement( _
             InputArray, _
             ElementNumber, _
             ResizeDynamic _
@@ -2203,7 +2203,7 @@ End Sub
 
 
 '@TestMethod
-Public Sub DeleteArrayElement_RemoveElementOfStaticObjectArray_ReturnsTrueAndModifiedInputArray()
+Public Sub DeleteVectorElement_RemoveElementOfStaticObjectArray_ReturnsTrueAndModifiedInputArray()
     On Error GoTo TestFail
     
     Dim InputArray(5 To 7) As Object
@@ -2230,7 +2230,7 @@ Public Sub DeleteArrayElement_RemoveElementOfStaticObjectArray_ReturnsTrueAndMod
     End With
     
     'Act:
-    If Not modArraySupport.DeleteArrayElement( _
+    If Not modArraySupport.DeleteVectorElement( _
             InputArray, _
             ElementNumber, _
             ResizeDynamic _
@@ -2254,7 +2254,7 @@ End Sub
 
 
 '@TestMethod
-Public Sub DeleteArrayElement_RemoveElementOfDynamicArrayDontResize_ReturnsTrueAndModifiedInputArray()
+Public Sub DeleteVectorElement_RemoveElementOfDynamicArrayDontResize_ReturnsTrueAndModifiedInputArray()
     On Error GoTo TestFail
     
     Dim InputArray() As Long
@@ -2277,7 +2277,7 @@ Public Sub DeleteArrayElement_RemoveElementOfDynamicArrayDontResize_ReturnsTrueA
     InputArray(7) = 30
     
     'Act:
-    If Not modArraySupport.DeleteArrayElement( _
+    If Not modArraySupport.DeleteVectorElement( _
             InputArray, _
             ElementNumber, _
             ResizeDynamic _
@@ -2296,7 +2296,7 @@ End Sub
 
 '2do: why does this test fail?
 ''@TestMethod
-'Public Sub DeleteArrayElement_RemoveElementOfDynamicArrayDontResize2_ReturnsTrueAndModifiedInputArray()
+'Public Sub DeleteVectorElement_RemoveElementOfDynamicArrayDontResize2_ReturnsTrueAndModifiedInputArray()
 '    On Error GoTo TestFail
 '
 '    Dim InputArray() As Variant
@@ -2319,7 +2319,7 @@ End Sub
 '    InputArray(7) = "ABC"
 '
 '    'Act:
-'    If Not modArraySupport.DeleteArrayElement( _
+'    If Not modArraySupport.DeleteVectorElement( _
 '            InputArray, _
 '            ElementNumber, _
 '            ResizeDynamic _
@@ -2337,7 +2337,7 @@ End Sub
 
 
 '@TestMethod
-Public Sub DeleteArrayElement_RemoveElementOfDynamicObjectArrayDontResize_ReturnsTrueAndModifiedInputArray()
+Public Sub DeleteVectorElement_RemoveElementOfDynamicObjectArrayDontResize_ReturnsTrueAndModifiedInputArray()
     On Error GoTo TestFail
     
     Dim InputArray() As Object
@@ -2365,7 +2365,7 @@ Public Sub DeleteArrayElement_RemoveElementOfDynamicObjectArrayDontResize_Return
     End With
     
     'Act:
-    If Not modArraySupport.DeleteArrayElement( _
+    If Not modArraySupport.DeleteVectorElement( _
             InputArray, _
             ElementNumber, _
             ResizeDynamic _
@@ -2389,7 +2389,7 @@ End Sub
 
 
 '@TestMethod
-Public Sub DeleteArrayElement_RemoveElementOfDynamicArrayResize_ReturnsTrueAndModifiedInputArray()
+Public Sub DeleteVectorElement_RemoveElementOfDynamicArrayResize_ReturnsTrueAndModifiedInputArray()
     On Error GoTo TestFail
     
     Dim InputArray() As Long
@@ -2411,7 +2411,7 @@ Public Sub DeleteArrayElement_RemoveElementOfDynamicArrayResize_ReturnsTrueAndMo
     InputArray(7) = 30
     
     'Act:
-    If Not modArraySupport.DeleteArrayElement( _
+    If Not modArraySupport.DeleteVectorElement( _
             InputArray, _
             ElementNumber, _
             ResizeDynamic _
@@ -2429,7 +2429,7 @@ End Sub
 
 
 '@TestMethod
-Public Sub DeleteArrayElement_RemoveElementOfDynamicObjectArrayResize_ReturnsTrueAndModifiedInputArray()
+Public Sub DeleteVectorElement_RemoveElementOfDynamicObjectArrayResize_ReturnsTrueAndModifiedInputArray()
     On Error GoTo TestFail
     
     Dim InputArray() As Object
@@ -2456,7 +2456,7 @@ Public Sub DeleteArrayElement_RemoveElementOfDynamicObjectArrayResize_ReturnsTru
     End With
     
     'Act:
-    If Not modArraySupport.DeleteArrayElement( _
+    If Not modArraySupport.DeleteVectorElement( _
             InputArray, _
             ElementNumber, _
             ResizeDynamic _
@@ -2480,7 +2480,7 @@ End Sub
 
 
 '@TestMethod
-Public Sub DeleteArrayElement_RemoveOnlyElementOfDynamicObjectArrayResize_ReturnsTrueAndModifiedInputArray()
+Public Sub DeleteVectorElement_RemoveOnlyElementOfDynamicObjectArrayResize_ReturnsTrueAndModifiedInputArray()
     On Error GoTo TestFail
     
     Dim InputArray() As String
@@ -2499,7 +2499,7 @@ Public Sub DeleteArrayElement_RemoveOnlyElementOfDynamicObjectArrayResize_Return
     InputArray(5) = "abc"
     
     'Act:
-    If Not modArraySupport.DeleteArrayElement( _
+    If Not modArraySupport.DeleteVectorElement( _
             InputArray, _
             ElementNumber, _
             ResizeDynamic _

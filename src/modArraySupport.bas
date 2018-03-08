@@ -25,7 +25,7 @@ Option Compare Text
 '     CopyVectorSubSetToVector         --> renamed from 'CopyArraySubSetToArray'
 '     CopyNonNothingObjectsToVector    --> renamed from 'CopyNonNothingObjectsToArray'
 '     DataTypeOfArray
-'     DeleteArrayElement
+'     DeleteVectorElement              --> renamed from 'DeleteArrayElement'
 '     ExpandArray
 '     FirstNonEmptyStringIndexInArray
 '     GetColumn
@@ -685,9 +685,9 @@ End Function
 
 
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-'DeleteArrayElement
-'This function deletes an element from 'InputArray', and shifts elements that
-'are to the right of the deleted element to the left. If 'InputArray' is a
+'DeleteVectorElement
+'This function deletes an element from 'InputVector', and shifts elements that
+'are to the right of the deleted element to the left. If 'InputVector' is a
 'dynamic array, and the 'ResizeDynamic' parameter is 'True', the array will be
 'resized one element smaller. Otherwise, the right-most entry in the array is
 'set to the default value appropriate to the data type of the array
@@ -695,12 +695,11 @@ End Function
 'types, the default data type is the data type of the last element in the
 'array. The function returns 'True' if the element was successfully deleted and
 ''False' otherwise. This procedure works only on single-dimensional arrays.
-'(In case the only element is deleted, 'InputArray' is dynamic and
-''ResizeDynamic' is 'True' 'InputArray' will be erased.)
+'(In case the only element is deleted, 'InputVector' is dynamic and
+''ResizeDynamic' is 'True' 'InputVector' will be erased.)
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-'2do: rename to 'DeleteVectorElement'
-Public Function DeleteArrayElement( _
-    ByRef InputArray As Variant, _
+Public Function DeleteVectorElement( _
+    ByRef InputVector As Variant, _
     ByVal ElementNumber As Long, _
     Optional ByVal ResizeDynamic As Boolean = False _
         ) As Boolean
@@ -713,57 +712,57 @@ Public Function DeleteArrayElement( _
     
     
     'Set the default return value
-    DeleteArrayElement = False
+    DeleteVectorElement = False
     
-    If Not IsArray(InputArray) Then Exit Function
-    If NumberOfArrayDimensions(InputArray) <> 1 Then Exit Function
+    If Not IsArray(InputVector) Then Exit Function
+    If NumberOfArrayDimensions(InputVector) <> 1 Then Exit Function
     
     'Ensure we have a valid 'ElementNumber'
-    If ElementNumber < LBound(InputArray) Then Exit Function
-    If ElementNumber > UBound(InputArray) Then Exit Function
+    If ElementNumber < LBound(InputVector) Then Exit Function
+    If ElementNumber > UBound(InputVector) Then Exit Function
     
     'Get the variable data type of the element we are deleting
-    VType = VarType(InputArray(UBound(InputArray)))
-    If IsObject(InputArray(UBound(InputArray))) Then
+    VType = VarType(InputVector(UBound(InputVector)))
+    If IsObject(InputVector(UBound(InputVector))) Then
         VType = vbObject
     ElseIf VType >= vbArray Then
         VType = VType - vbArray
     End If
     
     'Shift everything to the left
-    For i = ElementNumber To UBound(InputArray) - 1
-        If IsObject(InputArray(i)) Then
-            Set InputArray(i) = InputArray(i + 1)
+    For i = ElementNumber To UBound(InputVector) - 1
+        If IsObject(InputVector(i)) Then
+            Set InputVector(i) = InputVector(i + 1)
         Else
-            InputArray(i) = InputArray(i + 1)
+            InputVector(i) = InputVector(i + 1)
         End If
     Next
     
-    If IsArrayDynamic(InputArray) And ResizeDynamic = True Then
-        If UBound(InputArray) > LBound(InputArray) Then
-            ReDim Preserve InputArray(LBound(InputArray) To UBound(InputArray) - 1)
+    If IsArrayDynamic(InputVector) And ResizeDynamic = True Then
+        If UBound(InputVector) > LBound(InputVector) Then
+            ReDim Preserve InputVector(LBound(InputVector) To UBound(InputVector) - 1)
         Else
-            Erase InputArray
+            Erase InputVector
         End If
     Else
-        'Set the last element of the 'InputArray' to the proper default value
+        'Set the last element of the 'InputVector' to the proper default value
         Select Case VType
             Case vbByte, vbInteger, vbLong, LongLongType, vbSingle, vbDouble, vbDate, vbCurrency, vbDecimal
-                InputArray(UBound(InputArray)) = 0
+                InputVector(UBound(InputVector)) = 0
             Case vbString
-                InputArray(UBound(InputArray)) = vbNullString
+                InputVector(UBound(InputVector)) = vbNullString
             Case vbArray, vbVariant, vbEmpty, vbError, vbNull, vbUserDefinedType
-                InputArray(UBound(InputArray)) = Empty
+                InputVector(UBound(InputVector)) = Empty
             Case vbBoolean
-                InputArray(UBound(InputArray)) = False
+                InputVector(UBound(InputVector)) = False
             Case vbObject
-                Set InputArray(UBound(InputArray)) = Nothing
+                Set InputVector(UBound(InputVector)) = Nothing
             Case Else
-                InputArray(UBound(InputArray)) = 0
+                InputVector(UBound(InputVector)) = 0
         End Select
     End If
     
-    DeleteArrayElement = True
+    DeleteVectorElement = True
     
 End Function
 
