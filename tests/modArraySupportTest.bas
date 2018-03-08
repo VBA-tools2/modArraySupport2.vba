@@ -2517,11 +2517,11 @@ End Sub
 
 
 '==============================================================================
-'unit tests for 'FirstNonEmptyStringIndexInArray'
+'unit tests for 'FirstNonEmptyStringIndexInVector'
 '==============================================================================
 
 '@TestMethod
-Public Sub FirstNonEmptyStringIndexInArray_NoArray_ReturnsMinusOne()
+Public Sub FirstNonEmptyStringIndexInVector_NoArray_ReturnsMinusOne()
     On Error GoTo TestFail
     
     'Arrange:
@@ -2534,7 +2534,7 @@ Public Sub FirstNonEmptyStringIndexInArray_NoArray_ReturnsMinusOne()
     
     
     'Act:
-    aActual = modArraySupport.FirstNonEmptyStringIndexInArray(Scalar)
+    aActual = modArraySupport.FirstNonEmptyStringIndexInVector(Scalar)
     
     'Assert:
     Assert.AreEqual aExpected, aActual
@@ -2547,7 +2547,7 @@ End Sub
 
 
 '@TestMethod
-Public Sub FirstNonEmptyStringIndexInArray_UnallocatedArray_ReturnsMinusOne()
+Public Sub FirstNonEmptyStringIndexInVector_UnallocatedArray_ReturnsMinusOne()
     On Error GoTo TestFail
     
     'Arrange:
@@ -2560,7 +2560,7 @@ Public Sub FirstNonEmptyStringIndexInArray_UnallocatedArray_ReturnsMinusOne()
     
     
     'Act:
-    aActual = modArraySupport.FirstNonEmptyStringIndexInArray(InputArray)
+    aActual = modArraySupport.FirstNonEmptyStringIndexInVector(InputArray)
     
     'Assert:
     Assert.AreEqual aExpected, aActual
@@ -2573,7 +2573,7 @@ End Sub
 
 
 '@TestMethod
-Public Sub FirstNonEmptyStringIndexInArray_2DArray_ReturnsMinusOne()
+Public Sub FirstNonEmptyStringIndexInVector_2DArray_ReturnsMinusOne()
     On Error GoTo TestFail
     
     'Arrange:
@@ -2586,7 +2586,7 @@ Public Sub FirstNonEmptyStringIndexInArray_2DArray_ReturnsMinusOne()
     
     
     'Act:
-    aActual = modArraySupport.FirstNonEmptyStringIndexInArray(InputArray)
+    aActual = modArraySupport.FirstNonEmptyStringIndexInVector(InputArray)
     
     'Assert:
     Assert.AreEqual aExpected, aActual
@@ -2599,7 +2599,7 @@ End Sub
 
 
 '@TestMethod
-Public Sub FirstNonEmptyStringIndexInArray_NoNonEmptyString_ReturnsMinusOne()
+Public Sub FirstNonEmptyStringIndexInVector_NoNonEmptyString_ReturnsMinusOne()
     On Error GoTo TestFail
     
     Dim InputArray(5 To 7) As String
@@ -2616,7 +2616,7 @@ Public Sub FirstNonEmptyStringIndexInArray_NoNonEmptyString_ReturnsMinusOne()
     InputArray(7) = vbNullString
     
     'Act:
-    aActual = modArraySupport.FirstNonEmptyStringIndexInArray(InputArray)
+    aActual = modArraySupport.FirstNonEmptyStringIndexInVector(InputArray)
     
     'Assert:
     Assert.AreEqual aExpected, aActual
@@ -2629,7 +2629,7 @@ End Sub
 
 
 '@TestMethod
-Public Sub FirstNonEmptyStringIndexInArray_WithNonEmptyStringEntry_ReturnsSeven()
+Public Sub FirstNonEmptyStringIndexInVector_WithNonEmptyStringEntry_ReturnsSeven()
     On Error GoTo TestFail
     
     Dim InputArray(5 To 7) As String
@@ -2646,7 +2646,7 @@ Public Sub FirstNonEmptyStringIndexInArray_WithNonEmptyStringEntry_ReturnsSeven(
     InputArray(7) = "ghi"
     
     'Act:
-    aActual = modArraySupport.FirstNonEmptyStringIndexInArray(InputArray)
+    aActual = modArraySupport.FirstNonEmptyStringIndexInVector(InputArray)
     
     'Assert:
     Assert.AreEqual aExpected, aActual

@@ -27,7 +27,7 @@ Option Compare Text
 '     DataTypeOfArray
 '     DeleteVectorElement              --> renamed from 'DeleteArrayElement'
 '     ExpandArray
-'     FirstNonEmptyStringIndexInArray
+'     FirstNonEmptyStringIndexInVector --> renamed from 'FirstNonEmptyStringIndexInArray'
 '     GetColumn
 '     GetRow
 '     InsertElementIntoArray
@@ -768,34 +768,33 @@ End Function
 
 
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-'FirstNonEmptyStringIndexInArray
-'This returns the index in 'InputArray' of the first non-empty string.
-'This is generally used when 'InputArray' is the result of a sort operation,
+'FirstNonEmptyStringIndexInVector
+'This returns the index in 'InputVector' of the first non-empty string.
+'This is generally used when 'InputVector' is the result of a sort operation,
 'which puts empty strings at the beginning of the array.
 'Returns -1 if an error occurred or if the entire array has no empty string.
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-'2do: - rename to 'FirstNonEmptyStringIndexInVector'
-Public Function FirstNonEmptyStringIndexInArray( _
-    ByVal InputArray As Variant _
+Public Function FirstNonEmptyStringIndexInVector( _
+    ByVal InputVector As Variant _
         ) As Long
     
     Dim i As Long
     
     
     'Set the default return value
-    FirstNonEmptyStringIndexInArray = -1
+    FirstNonEmptyStringIndexInVector = -1
     
-    If Not IsArray(InputArray) Then Exit Function
-    If NumberOfArrayDimensions(InputArray) <> 1 Then Exit Function
+    If Not IsArray(InputVector) Then Exit Function
+    If NumberOfArrayDimensions(InputVector) <> 1 Then Exit Function
     
-    For i = LBound(InputArray) To UBound(InputArray)
-        If InputArray(i) <> vbNullString Then
-            FirstNonEmptyStringIndexInArray = i
+    For i = LBound(InputVector) To UBound(InputVector)
+        If InputVector(i) <> vbNullString Then
+            FirstNonEmptyStringIndexInVector = i
             Exit Function
         End If
     Next
     
-    FirstNonEmptyStringIndexInArray = -1
+    FirstNonEmptyStringIndexInVector = -1
     
 End Function
 
@@ -1354,7 +1353,7 @@ Public Function MoveEmptyStringsToEndOfArray( _
     LBoundArr = LBound(InputArray)
     UBoundArr = UBound(InputArray)
     
-    FirstNonEmptyNdx = FirstNonEmptyStringIndexInArray(InputArray)
+    FirstNonEmptyNdx = FirstNonEmptyStringIndexInVector(InputArray)
     If FirstNonEmptyNdx <= LBoundArr Then
         'No empty strings at the beginning of the array. Get out now.
         MoveEmptyStringsToEndOfArray = True
