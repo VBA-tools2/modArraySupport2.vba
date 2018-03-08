@@ -1615,49 +1615,61 @@ Public Function ReverseArrayOfObjectsInPlace( _
 End Function
 
 
-''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-'SetObjectArrrayToNothing
-'This sets all the elements of InputArray to Nothing. Use this function
-'rather than Erase because if InputArray is an array of Variants, Erase
-'will set each element to Empty, not Nothing, and the element will cease
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'SetObjectArrayToNothing
+'This sets all the elements of 'InputArray' to 'Nothing'. Use this function
+'rather than 'Erase' because if 'InputArray' is an array of 'Variants', 'Erase'
+'will set each element to 'Empty', not 'Nothing', and the element will cease
 'to be an object.
-'
-'The function returns True if successful, False otherwise.
-''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'The function returns 'True' if successful, 'False' otherwise.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 Public Function SetObjectArrayToNothing( _
-    InputArray As Variant _
+    ByRef InputArray As Variant _
         ) As Boolean
-
-    Dim N As Long
+    
+    Dim NoOfArrayDimensions As Long
+    Dim i As Long
+    Dim j As Long
+    Dim k As Long
     
     
     'Set the default return value
     SetObjectArrayToNothing = False
     
     If Not IsArray(InputArray) Then Exit Function
-    If NumberOfArrayDimensions(InputArray) <> 1 Then Exit Function
     
-    'Ensure the array is allocated and that each element is an object (or Nothing).
-    'If the array is not allocated, return True. We do this test before setting
-    'any element to Nothing so we don't end up with an array that is a mix of
-    'Empty and Nothing values. This means looping through the array twice, but
-    'it ensures all or none of the elements get set to Nothing.
-    If IsArrayAllocated(InputArray) Then
-        For N = LBound(InputArray) To UBound(InputArray)
-            If Not IsObject(InputArray(N)) Then Exit Function
-        Next
-    Else
-        SetObjectArrayToNothing = True
-        Exit Function
-    End If
+    NoOfArrayDimensions = NumberOfArrayDimensions(InputArray)
     
-    'Set each element of InputArray to Nothing
-    For N = LBound(InputArray) To UBound(InputArray)
-        Set InputArray(N) = Nothing
-    Next
+    If NoOfArrayDimensions < 1 Then Exit Function
+    If NoOfArrayDimensions > 3 Then Exit Function
+    If Not IsArrayObjects(InputArray, True) Then Exit Function
+    
+    'Set each element of 'InputArray' to 'Nothing'
+    Select Case NoOfArrayDimensions
+        Case 1
+            For i = LBound(InputArray) To UBound(InputArray)
+                Set InputArray(i) = Nothing
+            Next
+        Case 2
+            For i = LBound(InputArray, 1) To UBound(InputArray, 1)
+                For j = LBound(InputArray, 2) To UBound(InputArray, 2)
+                    Set InputArray(i, j) = Nothing
+                Next
+            Next
+        Case 3
+            For i = LBound(InputArray, 1) To UBound(InputArray, 1)
+                For j = LBound(InputArray, 2) To UBound(InputArray, 2)
+                    For k = LBound(InputArray, 3) To UBound(InputArray, 3)
+                        Set InputArray(i, j, k) = Nothing
+                    Next
+                Next
+            Next
+        Case Else
+            Exit Function
+    End Select
     
     SetObjectArrayToNothing = True
-
+    
 End Function
 
 

@@ -5812,40 +5812,278 @@ TestFail:
 End Sub
 
 
-Public Sub DemoSetObjectArrayToNothing()
-    
-    Dim StaticArray(1 To 2) As Range
-    Dim DynamicArray(1 To 2) As Range
-    Dim B As Boolean
-    Dim N As Long
-    
-    
-    Set StaticArray(1) = Range("A1")
-    Set StaticArray(2) = Nothing
-    Set DynamicArray(1) = Range("A1")
-    Set DynamicArray(2) = Range("A2")
-    
-    B = modArraySupport.SetObjectArrayToNothing(StaticArray)
-    
-    If B = True Then
-        For N = LBound(StaticArray) To UBound(StaticArray)
-            If StaticArray(N) Is Nothing Then
-Debug.Print CStr(N), "is nothing "
-            End If
-        Next N
-    End If
-    
-    
-    B = modArraySupport.SetObjectArrayToNothing(DynamicArray)
-    
-    If B = True Then
-        For N = LBound(DynamicArray) To UBound(DynamicArray)
-            If DynamicArray(N) Is Nothing Then
-Debug.Print CStr(N), "is nothing "
-            End If
-        Next N
-    End If
+'==============================================================================
+'unit tests for 'SetObjectArrayToNothing'
+'==============================================================================
 
+'@TestMethod
+Public Sub SetObjectArrayToNothing_NoArray_ReturnsFalse()
+    On Error GoTo TestFail
+    
+    'Arrange:
+    Dim Scalar As Object
+    
+    
+    'Act:
+    'Assert:
+    Assert.IsFalse modArraySupport.SetObjectArrayToNothing(Scalar)
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+End Sub
+
+
+'@TestMethod
+Public Sub SetObjectArrayToNothing_UnallocatedLongArray_ReturnsFalse()
+    On Error GoTo TestFail
+    
+    'Arrange:
+    Dim Arr() As Long
+    
+    
+    'Act:
+    'Assert:
+    Assert.IsFalse modArraySupport.SetObjectArrayToNothing(Arr)
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+End Sub
+
+
+'@TestMethod
+Public Sub SetObjectArrayToNothing_UnallocatedObjectArray_ReturnsFalse()
+    On Error GoTo TestFail
+    
+    'Arrange:
+    Dim Arr() As Object
+    
+    
+    'Act:
+    'Assert:
+    Assert.IsFalse modArraySupport.SetObjectArrayToNothing(Arr)
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+End Sub
+
+
+'@TestMethod
+Public Sub SetObjectArrayToNothing_UnallocatedVariantArray_ReturnsFalse()
+    On Error GoTo TestFail
+    
+    'Arrange:
+    Dim Arr() As Variant
+    
+    
+    'Act:
+    'Assert:
+    Assert.IsFalse modArraySupport.SetObjectArrayToNothing(Arr)
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+End Sub
+
+
+'@TestMethod
+Public Sub SetObjectArrayToNothing_1DLongArr_ReturnsFalse()
+    On Error GoTo TestFail
+    
+    'Arrange:
+    Dim Arr(5 To 7) As Long
+    
+    
+    'Act:
+    'Assert:
+    Assert.IsFalse modArraySupport.SetObjectArrayToNothing(Arr)
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+End Sub
+
+
+'@TestMethod
+Public Sub SetObjectArrayToNothing_1DObjectArr_ReturnsTrueAndNothingArr()
+    On Error GoTo TestFail
+    
+    Dim Arr(5 To 7) As Object
+    Dim Element As Variant
+    
+    
+    'Arrange:
+    With ThisWorkbook.Worksheets(1)
+        Set Arr(5) = .Range("A5")
+        Set Arr(6) = Nothing
+        Set Arr(7) = .Range("A7")
+    End With
+    
+    'Act:
+    If Not modArraySupport.SetObjectArrayToNothing(Arr) Then _
+            GoTo TestFail
+    
+    'Assert:
+    For Each Element In Arr
+        Assert.IsNothing Element
+    Next
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+End Sub
+
+
+'@TestMethod
+Public Sub SetObjectArrayToNothing_1DVariantArr_ReturnsTrueAndNothingArr()
+    On Error GoTo TestFail
+    
+    Dim Arr(5 To 7) As Variant
+    Dim Element As Variant
+    
+    
+    'Arrange:
+    With ThisWorkbook.Worksheets(1)
+        Set Arr(5) = .Range("A5")
+        Set Arr(6) = Nothing
+        Set Arr(7) = .Range("A7")
+    End With
+    
+    'Act:
+    If Not modArraySupport.SetObjectArrayToNothing(Arr) Then _
+            GoTo TestFail
+    
+    'Assert:
+    For Each Element In Arr
+        Assert.IsNothing Element
+    Next
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+End Sub
+
+
+'@TestMethod
+Public Sub SetObjectArrayToNothing_1DVariantArrWithEmptyElement_ReturnsFalse()
+    On Error GoTo TestFail
+    
+    Dim Arr(5 To 7) As Variant
+    
+    
+    'Arrange:
+    With ThisWorkbook.Worksheets(1)
+        Set Arr(5) = .Range("A5")
+        Set Arr(6) = Nothing
+        Arr(7) = Empty
+    End With
+    
+    'Act:
+    'Assert:
+    Assert.IsFalse modArraySupport.SetObjectArrayToNothing(Arr)
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+End Sub
+
+
+'@TestMethod
+Public Sub SetObjectArrayToNothing_2DObjectArr_ReturnsTrueAndNothingArr()
+    On Error GoTo TestFail
+    
+    Dim Arr(5 To 7, 3 To 4) As Object
+    Dim Element As Variant
+    
+    
+    'Arrange:
+    With ThisWorkbook.Worksheets(1)
+        Set Arr(5, 3) = .Range("A5")
+        Set Arr(6, 3) = Nothing
+        Set Arr(7, 3) = .Range("A7")
+        
+        Set Arr(5, 4) = .Range("A9")
+        Set Arr(6, 4) = Nothing
+        Set Arr(7, 4) = .Range("A11")
+    End With
+    
+    'Act:
+    If Not modArraySupport.SetObjectArrayToNothing(Arr) Then _
+            GoTo TestFail
+    
+    'Assert:
+    For Each Element In Arr
+        Assert.IsNothing Element
+    Next
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+End Sub
+
+
+'@TestMethod
+Public Sub SetObjectArrayToNothing_3DObjectArr_ReturnsTrueAndNothingArr()
+    On Error GoTo TestFail
+    
+    Dim Arr(5 To 7, 3 To 4, 2 To 2) As Object
+    Dim Element As Variant
+    
+    
+    'Arrange:
+    With ThisWorkbook.Worksheets(1)
+        Set Arr(5, 3, 2) = .Range("A5")
+        Set Arr(6, 3, 2) = Nothing
+        Set Arr(7, 3, 2) = .Range("A7")
+        
+        Set Arr(5, 4, 2) = .Range("A9")
+        Set Arr(6, 4, 2) = Nothing
+        Set Arr(7, 4, 2) = .Range("A11")
+    End With
+    
+    'Act:
+    If Not modArraySupport.SetObjectArrayToNothing(Arr) Then _
+            GoTo TestFail
+    
+    'Assert:
+    For Each Element In Arr
+        Assert.IsNothing Element
+    Next
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+End Sub
+
+
+'@TestMethod
+Public Sub SetObjectArrayToNothing_4DObjectArr_ReturnsFalse()
+    On Error GoTo TestFail
+    
+    'Arrange:
+    Dim Arr(5 To 7, 3 To 4, 2 To 2, 1 To 1) As Object
+    
+    
+    'Act:
+    'Assert:
+    Assert.IsFalse modArraySupport.SetObjectArrayToNothing(Arr)
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
 End Sub
 
 
