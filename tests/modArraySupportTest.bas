@@ -6858,11 +6858,11 @@ End Sub
 
 
 '==============================================================================
-'unit tests for 'IsArraySorted'
+'unit tests for 'IsVectorSorted'
 '==============================================================================
 
 '@TestMethod
-Public Sub IsArraySorted_NoArray_ReturnsNull()
+Public Sub IsVectorSorted_NoArray_ReturnsNull()
     On Error GoTo TestFail
     
     'Arrange:
@@ -6875,7 +6875,7 @@ Public Sub IsArraySorted_NoArray_ReturnsNull()
     
     
     'Act:
-    aResult = modArraySupport.IsArraySorted( _
+    aResult = modArraySupport.IsVectorSorted( _
             Scalar, _
             Descending _
     )
@@ -6891,7 +6891,7 @@ End Sub
 
 
 '@TestMethod
-Public Sub IsArraySorted_UnallocatedArray_ReturnsNull()
+Public Sub IsVectorSorted_UnallocatedArray_ReturnsNull()
     On Error GoTo TestFail
     
     'Arrange:
@@ -6904,7 +6904,7 @@ Public Sub IsArraySorted_UnallocatedArray_ReturnsNull()
     
     
     'Act:
-    aResult = modArraySupport.IsArraySorted( _
+    aResult = modArraySupport.IsVectorSorted( _
             InputArray, _
             Descending _
     )
@@ -6920,7 +6920,7 @@ End Sub
 
 
 '@TestMethod
-Public Sub IsArraySorted_2DArray_ReturnsNull()
+Public Sub IsVectorSorted_2DArray_ReturnsNull()
     On Error GoTo TestFail
     
     'Arrange:
@@ -6933,7 +6933,7 @@ Public Sub IsArraySorted_2DArray_ReturnsNull()
     
     
     'Act:
-    aResult = modArraySupport.IsArraySorted( _
+    aResult = modArraySupport.IsVectorSorted( _
             InputArray, _
             Descending _
     )
@@ -6949,7 +6949,7 @@ End Sub
 
 
 '@TestMethod
-Public Sub IsArraySorted_ObjectArray_ReturnsNull()
+Public Sub IsVectorSorted_ObjectArray_ReturnsNull()
     On Error GoTo TestFail
     
     'Arrange:
@@ -6962,7 +6962,7 @@ Public Sub IsArraySorted_ObjectArray_ReturnsNull()
     
     
     'Act:
-    aResult = modArraySupport.IsArraySorted( _
+    aResult = modArraySupport.IsVectorSorted( _
             InputArray, _
             Descending _
     )
@@ -6978,7 +6978,7 @@ End Sub
 
 
 '@TestMethod
-Public Sub IsArraySorted_StringArrayDescendingFalse_ReturnsTrue()
+Public Sub IsVectorSorted_StringArrayDescendingFalse_ReturnsTrue()
     On Error GoTo TestFail
     
     Dim InputArray(5 To 6) As String
@@ -6994,7 +6994,7 @@ Public Sub IsArraySorted_StringArrayDescendingFalse_ReturnsTrue()
     InputArray(6) = "abc"
     
     'Act:
-    aResult = modArraySupport.IsArraySorted( _
+    aResult = modArraySupport.IsVectorSorted( _
             InputArray, _
             Descending _
     )
@@ -7010,7 +7010,7 @@ End Sub
 
 
 '@TestMethod
-Public Sub IsArraySorted_VariantArrayContainingObjectDescendingFalse_ReturnsFalse()
+Public Sub IsVectorSorted_VariantArrayContainingObjectDescendingFalse_ReturnsFalse()
     On Error GoTo TestFail
     
     Dim InputArray(5 To 6) As Variant
@@ -7026,7 +7026,7 @@ Public Sub IsArraySorted_VariantArrayContainingObjectDescendingFalse_ReturnsFals
     InputArray(6) = vbNullString
     
     'Act:
-    aResult = modArraySupport.IsArraySorted( _
+    aResult = modArraySupport.IsVectorSorted( _
             InputArray, _
             Descending _
     )
@@ -7042,7 +7042,7 @@ End Sub
 
 
 '@TestMethod
-Public Sub IsArraySorted_VariantArraySmallNumericStringPlusLargerNumberDescendingFalse_ReturnsFalse()
+Public Sub IsVectorSorted_VariantArraySmallNumericStringPlusLargerNumberDescendingFalse_ReturnsFalse()
     On Error GoTo TestFail
     
     Dim InputArray(5 To 6) As Variant
@@ -7058,7 +7058,7 @@ Public Sub IsArraySorted_VariantArraySmallNumericStringPlusLargerNumberDescendin
     InputArray(6) = 123
     
     'Act:
-    aResult = modArraySupport.IsArraySorted( _
+    aResult = modArraySupport.IsVectorSorted( _
             InputArray, _
             Descending _
     )
@@ -7074,7 +7074,7 @@ End Sub
 
 
 '@TestMethod
-Public Sub IsArraySorted_VariantArraySmallNumberPlusLargerNumericStringDescendingFalse_ReturnsTrue()
+Public Sub IsVectorSorted_VariantArraySmallNumberPlusLargerNumericStringDescendingFalse_ReturnsTrue()
     On Error GoTo TestFail
     
     Dim InputArray(5 To 6) As Variant
@@ -7090,7 +7090,7 @@ Public Sub IsArraySorted_VariantArraySmallNumberPlusLargerNumericStringDescendin
     InputArray(6) = "123"
     
     'Act:
-    aResult = modArraySupport.IsArraySorted( _
+    aResult = modArraySupport.IsVectorSorted( _
             InputArray, _
             Descending _
     )
@@ -7106,7 +7106,7 @@ End Sub
 
 
 '@TestMethod
-Public Sub IsArraySorted_VariantArrayLargeNumberPlusSmallNumericStringDescendingFalse_ReturnsTrue()
+Public Sub IsVectorSorted_VariantArrayLargeNumberPlusSmallNumericStringDescendingFalse_ReturnsTrue()
     On Error GoTo TestFail
     
     Dim InputArray(5 To 6) As Variant
@@ -7123,7 +7123,7 @@ Public Sub IsArraySorted_VariantArrayLargeNumberPlusSmallNumericStringDescending
     InputArray(6) = ""
     
     'Act:
-    aResult = modArraySupport.IsArraySorted( _
+    aResult = modArraySupport.IsVectorSorted( _
             InputArray, _
             Descending _
     )
@@ -7139,7 +7139,7 @@ End Sub
 
 
 '@TestMethod
-Public Sub IsArraySorted_VariantArrayNumberPlusStringDescendingFalse_ReturnsTrue()
+Public Sub IsVectorSorted_VariantArrayNumberPlusStringDescendingFalse_ReturnsTrue()
     On Error GoTo TestFail
     
     Dim InputArray(5 To 6) As Variant
@@ -7155,7 +7155,7 @@ Public Sub IsArraySorted_VariantArrayNumberPlusStringDescendingFalse_ReturnsTrue
     InputArray(6) = "abc"
     
     'Act:
-    aResult = modArraySupport.IsArraySorted( _
+    aResult = modArraySupport.IsVectorSorted( _
             InputArray, _
             Descending _
     )
@@ -7171,7 +7171,7 @@ End Sub
 
 
 '@TestMethod
-Public Sub IsArraySorted_VariantArrayNumberPlusStringsDescendingFalse_ReturnsTrue()
+Public Sub IsVectorSorted_VariantArrayNumberPlusStringsDescendingFalse_ReturnsTrue()
     On Error GoTo TestFail
     
     Dim InputArray(5 To 8) As Variant
@@ -7190,7 +7190,7 @@ Public Sub IsArraySorted_VariantArrayNumberPlusStringsDescendingFalse_ReturnsTru
     InputArray(8) = "defg"
     
     'Act:
-    aResult = modArraySupport.IsArraySorted( _
+    aResult = modArraySupport.IsVectorSorted( _
             InputArray, _
             Descending _
     )
@@ -7206,7 +7206,7 @@ End Sub
 
 
 '@TestMethod
-Public Sub IsArraySorted_VariantArrayNumberPlusStrings2DescendingFalse_ReturnsFalse()
+Public Sub IsVectorSorted_VariantArrayNumberPlusStrings2DescendingFalse_ReturnsFalse()
     On Error GoTo TestFail
     
     Dim InputArray(5 To 8) As Variant
@@ -7223,7 +7223,7 @@ Public Sub IsArraySorted_VariantArrayNumberPlusStrings2DescendingFalse_ReturnsFa
     InputArray(7) = "defg"
     
     'Act:
-    aResult = modArraySupport.IsArraySorted( _
+    aResult = modArraySupport.IsVectorSorted( _
             InputArray, _
             Descending _
     )
@@ -7239,7 +7239,7 @@ End Sub
 
 
 '@TestMethod
-Public Sub IsArraySorted_StringArrayDescendingTrue_ReturnsTrue()
+Public Sub IsVectorSorted_StringArrayDescendingTrue_ReturnsTrue()
     On Error GoTo TestFail
     
     Dim InputArray(5 To 6) As String
@@ -7255,7 +7255,7 @@ Public Sub IsArraySorted_StringArrayDescendingTrue_ReturnsTrue()
     InputArray(6) = "abc"
     
     'Act:
-    aResult = modArraySupport.IsArraySorted( _
+    aResult = modArraySupport.IsVectorSorted( _
             InputArray, _
             Descending _
     )
@@ -7271,7 +7271,7 @@ End Sub
 
 
 '@TestMethod
-Public Sub IsArraySorted_VariantArrayContainingObjectDescendingTrue_ReturnsTrue()
+Public Sub IsVectorSorted_VariantArrayContainingObjectDescendingTrue_ReturnsTrue()
     On Error GoTo TestFail
     
     Dim InputArray(5 To 6) As Variant
@@ -7287,7 +7287,7 @@ Public Sub IsArraySorted_VariantArrayContainingObjectDescendingTrue_ReturnsTrue(
     InputArray(6) = vbNullString
     
     'Act:
-    aResult = modArraySupport.IsArraySorted( _
+    aResult = modArraySupport.IsVectorSorted( _
             InputArray, _
             Descending _
     )
@@ -7303,7 +7303,7 @@ End Sub
 
 
 '@TestMethod
-Public Sub IsArraySorted_VariantArraySmallNumericStringPlusLargerNumberDescendingTrue_ReturnsTrue()
+Public Sub IsVectorSorted_VariantArraySmallNumericStringPlusLargerNumberDescendingTrue_ReturnsTrue()
     On Error GoTo TestFail
     
     Dim InputArray(5 To 6) As Variant
@@ -7319,7 +7319,7 @@ Public Sub IsArraySorted_VariantArraySmallNumericStringPlusLargerNumberDescendin
     InputArray(6) = 123
     
     'Act:
-    aResult = modArraySupport.IsArraySorted( _
+    aResult = modArraySupport.IsVectorSorted( _
             InputArray, _
             Descending _
     )
@@ -7335,7 +7335,7 @@ End Sub
 
 
 '@TestMethod
-Public Sub IsArraySorted_VariantArraySmallNumberPlusLargerNumericStringDescendingTrue_ReturnsFalse()
+Public Sub IsVectorSorted_VariantArraySmallNumberPlusLargerNumericStringDescendingTrue_ReturnsFalse()
     On Error GoTo TestFail
     
     Dim InputArray(5 To 6) As Variant
@@ -7351,7 +7351,7 @@ Public Sub IsArraySorted_VariantArraySmallNumberPlusLargerNumericStringDescendin
     InputArray(6) = "123"
     
     'Act:
-    aResult = modArraySupport.IsArraySorted( _
+    aResult = modArraySupport.IsVectorSorted( _
             InputArray, _
             Descending _
     )
@@ -7367,7 +7367,7 @@ End Sub
 
 
 '@TestMethod
-Public Sub IsArraySorted_VariantArrayLargeNumberPlusSmallNumericStringDescendingTrue_ReturnsFalse()
+Public Sub IsVectorSorted_VariantArrayLargeNumberPlusSmallNumericStringDescendingTrue_ReturnsFalse()
     On Error GoTo TestFail
     
     Dim InputArray(5 To 6) As Variant
@@ -7384,7 +7384,7 @@ Public Sub IsArraySorted_VariantArrayLargeNumberPlusSmallNumericStringDescending
     InputArray(6) = ""
     
     'Act:
-    aResult = modArraySupport.IsArraySorted( _
+    aResult = modArraySupport.IsVectorSorted( _
             InputArray, _
             Descending _
     )
@@ -7400,7 +7400,7 @@ End Sub
 
 
 '@TestMethod
-Public Sub IsArraySorted_VariantArrayNumberPlusStringDescendingTrue_ReturnsFalse()
+Public Sub IsVectorSorted_VariantArrayNumberPlusStringDescendingTrue_ReturnsFalse()
     On Error GoTo TestFail
     
     Dim InputArray(5 To 6) As Variant
@@ -7416,7 +7416,7 @@ Public Sub IsArraySorted_VariantArrayNumberPlusStringDescendingTrue_ReturnsFalse
     InputArray(6) = "abc"
     
     'Act:
-    aResult = modArraySupport.IsArraySorted( _
+    aResult = modArraySupport.IsVectorSorted( _
             InputArray, _
             Descending _
     )
@@ -7432,7 +7432,7 @@ End Sub
 
 
 '@TestMethod
-Public Sub IsArraySorted_VariantArrayNumberPlusStringsDescendingTrue_ReturnsFalse()
+Public Sub IsVectorSorted_VariantArrayNumberPlusStringsDescendingTrue_ReturnsFalse()
     On Error GoTo TestFail
     
     Dim InputArray(5 To 8) As Variant
@@ -7451,7 +7451,7 @@ Public Sub IsArraySorted_VariantArrayNumberPlusStringsDescendingTrue_ReturnsFals
     InputArray(8) = "defg"
     
     'Act:
-    aResult = modArraySupport.IsArraySorted( _
+    aResult = modArraySupport.IsVectorSorted( _
             InputArray, _
             Descending _
     )
@@ -7467,7 +7467,7 @@ End Sub
 
 
 '@TestMethod
-Public Sub IsArraySorted_VariantArrayNumberPlusStrings2DescendingTrue_ReturnsFalse()
+Public Sub IsVectorSorted_VariantArrayNumberPlusStrings2DescendingTrue_ReturnsFalse()
     On Error GoTo TestFail
     
     Dim InputArray(5 To 8) As Variant
@@ -7484,7 +7484,7 @@ Public Sub IsArraySorted_VariantArrayNumberPlusStrings2DescendingTrue_ReturnsFal
     InputArray(7) = "defg"
     
     'Act:
-    aResult = modArraySupport.IsArraySorted( _
+    aResult = modArraySupport.IsVectorSorted( _
             InputArray, _
             Descending _
     )

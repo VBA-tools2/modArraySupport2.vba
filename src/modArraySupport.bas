@@ -37,7 +37,7 @@ Option Compare Text
 '     IsArrayDynamic
 '     (IsArrayEmpty)                   --> = Not IsArrayAllocated
 '     IsArrayObjects
-'     IsArraySorted
+'     IsVectorSorted                   --> renamed from 'IsArraySorted'
 '     IsNumericDataType
 '     IsVariantArrayConsistent
 '     (IsVariantArrayNumeric)          --> merged into `IsArrayAllNumeric'
@@ -2137,7 +2137,7 @@ End Function
 
 
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-'IsArraySorted
+'IsVectorSorted
 'This function determines whether a single-dimensional array is sorted. Because
 'sorting is an expensive operation, especially so on a large array of 'Variant's,
 'you may want to determine if an array is already in sorted order prior to
@@ -2147,14 +2147,12 @@ End Function
 'is 'False' = Ascending). The decision to do a string comparison (with 'StrComp')
 'or a numeric comparison (with < or >) is based on the data type of the first
 'element of the array.
-'If 'InputArray' is not an array, is an unallocated array, or has more than
-'one dimension, or the VarType of 'InputArray' is not compatible, the function
+'If 'InputVector' is not an array, is an unallocated array, or has more than
+'one dimension, or the VarType of 'InputVector' is not compatible, the function
 'returns 'Null'. Thus, one knows that there is nothing to sort.
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-'2do:
-'- rename to 'IsVectorSorted'
-Public Function IsArraySorted( _
-    ByVal InputArray As Variant, _
+Public Function IsVectorSorted( _
+    ByVal InputVector As Variant, _
     Optional ByVal Descending As Boolean = False _
         ) As Variant
     
@@ -2169,14 +2167,14 @@ Public Function IsArraySorted( _
     
     
     'Set the default return value
-    IsArraySorted = Null
+    IsVectorSorted = Null
     
-    If Not IsArray(InputArray) Then Exit Function
-    If NumberOfArrayDimensions(InputArray) <> 1 Then Exit Function
+    If Not IsArray(InputVector) Then Exit Function
+    If NumberOfArrayDimensions(InputVector) <> 1 Then Exit Function
     
     'Determine whether we are going to do a string comparison or a numeric
     'comparison
-    VType = VarType(InputArray(LBound(InputArray)))
+    VType = VarType(InputVector(LBound(InputVector)))
     Select Case VType
         Case vbArray, vbDataObject, vbEmpty, vbError, vbNull, vbObject, vbUserDefinedType
             'Unsupported types.
@@ -2201,24 +2199,24 @@ Public Function IsArraySorted( _
         NumericResultFail = True
     End If
     
-    For i = LBound(InputArray) To UBound(InputArray) - 1
+    For i = LBound(InputVector) To UBound(InputVector) - 1
         If IsString Then
-            StrCompResult = StrComp(InputArray(i), InputArray(i + 1))
+            StrCompResult = StrComp(InputVector(i), InputVector(i + 1))
             If StrCompResult = StrCompResultFail Then
-                IsArraySorted = False
+                IsVectorSorted = False
                 Exit Function
             End If
         Else
-            NumCompareResult = (InputArray(i) >= InputArray(i + 1))
+            NumCompareResult = (InputVector(i) >= InputVector(i + 1))
             If NumCompareResult = NumericResultFail Then
-                IsArraySorted = False
+                IsVectorSorted = False
                 Exit Function
             End If
         End If
     Next
     
     'If we made it up to here, then the array is in sorted order.
-    IsArraySorted = True
+    IsVectorSorted = True
     
 End Function
 
