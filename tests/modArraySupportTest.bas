@@ -203,8 +203,8 @@ End Sub
 
 
 ''2do: How to do this test?
-''     --> in 'ChangeBoundsOfArray_VariantArr_ReturnsTrueAndChangedArr' are
-''         'Empty' entries added at the end of the array
+''     --> in 'ChangeBoundsOfVector_VariantArr_ReturnsTrueAndChangedArr' are
+''         'Empty' entries added at the end of the vector
 ''@TestMethod
 'Public Sub AreDataTypesCompatible_VariantSourceEmptyDest_ReturnsTrue()
 '    On Error GoTo TestFail
@@ -6464,11 +6464,11 @@ End Sub
 
 
 '==============================================================================
-'unit tests for 'ChangeBoundsOfArray'
+'unit tests for 'ChangeBoundsOfVector'
 '==============================================================================
 
 '@TestMethod
-Public Sub ChangeBoundsOfArray_LBGreaterUB_ReturnsFalse()
+Public Sub ChangeBoundsOfVector_LBGreaterUB_ReturnsFalse()
     On Error GoTo TestFail
     
     'Arrange:
@@ -6482,7 +6482,7 @@ Public Sub ChangeBoundsOfArray_LBGreaterUB_ReturnsFalse()
     
     'Act:
     'Assert:
-    Assert.IsFalse modArraySupport.ChangeBoundsOfArray(Arr, NewLB, NewUB)
+    Assert.IsFalse modArraySupport.ChangeBoundsOfVector(Arr, NewLB, NewUB)
     
 TestExit:
     Exit Sub
@@ -6492,7 +6492,7 @@ End Sub
 
 
 '@TestMethod
-Public Sub ChangeBoundsOfArray_ScalarInput_ReturnsFalse()
+Public Sub ChangeBoundsOfVector_ScalarInput_ReturnsFalse()
     On Error GoTo TestFail
     
     'Arrange:
@@ -6506,7 +6506,7 @@ Public Sub ChangeBoundsOfArray_ScalarInput_ReturnsFalse()
     
     'Act:
     'Assert:
-    Assert.IsFalse modArraySupport.ChangeBoundsOfArray(Scalar, NewLB, NewUB)
+    Assert.IsFalse modArraySupport.ChangeBoundsOfVector(Scalar, NewLB, NewUB)
     
 TestExit:
     Exit Sub
@@ -6516,7 +6516,7 @@ End Sub
 
 
 '@TestMethod
-Public Sub ChangeBoundsOfArray_StaticArray_ReturnsFalse()
+Public Sub ChangeBoundsOfVector_StaticArray_ReturnsFalse()
     On Error GoTo TestFail
     
     'Arrange:
@@ -6530,7 +6530,7 @@ Public Sub ChangeBoundsOfArray_StaticArray_ReturnsFalse()
     
     'Act:
     'Assert:
-    Assert.IsFalse modArraySupport.ChangeBoundsOfArray(Arr, NewLB, NewUB)
+    Assert.IsFalse modArraySupport.ChangeBoundsOfVector(Arr, NewLB, NewUB)
     
 TestExit:
     Exit Sub
@@ -6540,7 +6540,7 @@ End Sub
 
 
 '@TestMethod
-Public Sub ChangeBoundsOfArray_UnallocatedArray_ReturnsFalse()
+Public Sub ChangeBoundsOfVector_UnallocatedArray_ReturnsFalse()
     On Error GoTo TestFail
     
     'Arrange:
@@ -6554,7 +6554,7 @@ Public Sub ChangeBoundsOfArray_UnallocatedArray_ReturnsFalse()
     
     'Act:
     'Assert:
-    Assert.IsFalse modArraySupport.ChangeBoundsOfArray(Arr, NewLB, NewUB)
+    Assert.IsFalse modArraySupport.ChangeBoundsOfVector(Arr, NewLB, NewUB)
     
 TestExit:
     Exit Sub
@@ -6564,7 +6564,7 @@ End Sub
 
 
 '@TestMethod
-Public Sub ChangeBoundsOfArray_2DArray_ReturnsFalse()
+Public Sub ChangeBoundsOfVector_2DArray_ReturnsFalse()
     On Error GoTo TestFail
     
     'Arrange:
@@ -6578,7 +6578,7 @@ Public Sub ChangeBoundsOfArray_2DArray_ReturnsFalse()
     
     'Act:
     'Assert:
-    Assert.IsFalse modArraySupport.ChangeBoundsOfArray(Arr, NewLB, NewUB)
+    Assert.IsFalse modArraySupport.ChangeBoundsOfVector(Arr, NewLB, NewUB)
     
 TestExit:
     Exit Sub
@@ -6588,7 +6588,7 @@ End Sub
 
 
 '@TestMethod
-Public Sub ChangeBoundsOfArray_LongInputArr_ReturnsTrueAndChangedArr()
+Public Sub ChangeBoundsOfVector_LongInputArr_ReturnsTrueAndChangedArr()
     On Error GoTo TestFail
     
     Dim Arr() As Long
@@ -6614,7 +6614,7 @@ Public Sub ChangeBoundsOfArray_LongInputArr_ReturnsTrueAndChangedArr()
     
     
     'Act:
-    If Not modArraySupport.ChangeBoundsOfArray(Arr, NewLB, NewUB) _
+    If Not modArraySupport.ChangeBoundsOfVector(Arr, NewLB, NewUB) _
             Then GoTo TestFail
     
     'Assert:
@@ -6628,7 +6628,7 @@ End Sub
 
 
 '@TestMethod
-Public Sub ChangeBoundsOfArray_SmallerUBDiffThanSource_ReturnsTrueAndChangedArr()
+Public Sub ChangeBoundsOfVector_SmallerUBDiffThanSource_ReturnsTrueAndChangedArr()
     On Error GoTo TestFail
     
     Dim Arr() As Long
@@ -6650,7 +6650,7 @@ Public Sub ChangeBoundsOfArray_SmallerUBDiffThanSource_ReturnsTrueAndChangedArr(
     
     
     'Act:
-    If Not modArraySupport.ChangeBoundsOfArray(Arr, NewLB, NewUB) _
+    If Not modArraySupport.ChangeBoundsOfVector(Arr, NewLB, NewUB) _
             Then GoTo TestFail
     
     'Assert:
@@ -6664,7 +6664,7 @@ End Sub
 
 
 '@TestMethod
-Public Sub ChangeBoundsOfArray_VariantArr_ReturnsTrueAndChangedArr()
+Public Sub ChangeBoundsOfVector_VariantArr_ReturnsTrueAndChangedArr()
     On Error GoTo TestFail
     
     Dim Arr() As Variant
@@ -6691,7 +6691,7 @@ Public Sub ChangeBoundsOfArray_VariantArr_ReturnsTrueAndChangedArr()
     
     
     'Act:
-    If Not modArraySupport.ChangeBoundsOfArray(Arr, NewLB, NewUB) _
+    If Not modArraySupport.ChangeBoundsOfVector(Arr, NewLB, NewUB) _
             Then GoTo TestFail
     
     'Assert:
@@ -6711,7 +6711,7 @@ End Sub
 
 
 '@TestMethod
-Public Sub ChangeBoundsOfArray_LongInputArrNoUpperBound_ReturnsTrueAndChangedArr()
+Public Sub ChangeBoundsOfVector_LongInputArrNoUpperBound_ReturnsTrueAndChangedArr()
     On Error GoTo TestFail
     
     Dim Arr() As Long
@@ -6734,7 +6734,7 @@ Public Sub ChangeBoundsOfArray_LongInputArrNoUpperBound_ReturnsTrueAndChangedArr
     
     
     'Act:
-    If Not modArraySupport.ChangeBoundsOfArray(Arr, NewLB) _
+    If Not modArraySupport.ChangeBoundsOfVector(Arr, NewLB) _
             Then GoTo TestFail
     
     'Assert:
@@ -6750,7 +6750,7 @@ End Sub
 '2do: not sure if the test is done right
 '     --> is testing for 'Is(Not)Nothing sufficient?
 '@TestMethod
-Public Sub ChangeBoundsOfArray_RangeArr_ReturnsTrueAndChangedArr()
+Public Sub ChangeBoundsOfVector_RangeArr_ReturnsTrueAndChangedArr()
     On Error GoTo TestFail
     
     Dim Arr() As Range
@@ -6780,7 +6780,7 @@ Public Sub ChangeBoundsOfArray_RangeArr_ReturnsTrueAndChangedArr()
     End With
     
     'Act:
-    If Not modArraySupport.ChangeBoundsOfArray(Arr, NewLB, NewUB) _
+    If Not modArraySupport.ChangeBoundsOfVector(Arr, NewLB, NewUB) _
             Then GoTo TestFail
     
     'Assert:
@@ -6800,7 +6800,7 @@ End Sub
 
 
 '@TestMethod
-Public Sub ChangeBoundsOfArray_CustomClass_ReturnsTrueAndChangedArr()
+Public Sub ChangeBoundsOfVector_CustomClass_ReturnsTrueAndChangedArr()
     On Error GoTo TestFail
     
     Dim Arr() As clsDummy_4_modArraySupportTest
@@ -6838,7 +6838,7 @@ Public Sub ChangeBoundsOfArray_CustomClass_ReturnsTrueAndChangedArr()
     Arr(7).Value = 3
     
     'Act:
-    If Not modArraySupport.ChangeBoundsOfArray(Arr, NewLB, NewUB) _
+    If Not modArraySupport.ChangeBoundsOfVector(Arr, NewLB, NewUB) _
             Then GoTo TestFail
     
     'Assert:

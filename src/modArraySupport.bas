@@ -17,7 +17,7 @@ Option Compare Text
 '
 'This module contains the following functions:
 '     AreDataTypesCompatible           --> changed order of arguments
-'     ChangeBoundsOfArray
+'     ChangeBoundsOfVector             --> renamed from 'ChangeBoundsOfArray'
 '     CombineTwoDArrays
 '     CompareArrays
 '     ConcatenateArrays
@@ -2041,27 +2041,25 @@ End Function
 
 
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-'ChangeBoundsOfArray
-'This function changes the upper and lower bounds of the specified array.
-''InputArr' MUST be a single-dimensional dynamic array.
-'If the new size of the array (NewUpperBound - NewLowerBound + 1) is greater
-'than the original array, the unused elements on the right side of the array
-'are the default values for the data type of the array. If the new size is less
-'than the original size, only the first (left-most) 'N' elements are included
-'in the new array.
-'The elements of the array may be simple variables ('String's, 'Long's, etc.),
+'ChangeBoundsOfVector
+'This function changes the upper and lower bounds of the specified vector.
+''InputVector' MUST be a single-dimensional dynamic array.
+'If the new size of the vector (NewUpperBound - NewLowerBound + 1) is greater
+'than the original vector, the unused elements on the right side of the vector
+'are the default values for the data type of the vector. If the new size is
+'less than the original size, only the first (left-most) 'N' elements are
+'included in the new vector.
+'The elements of the vector may be simple variables ('String's, 'Long's, etc.),
 'objects, or arrays. User-Defined Types are not supported.
-'The function returns True if successful, False otherwise.
+'The function returns 'True' if successful, 'False' otherwise.
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-'2do: better name would be 'ChangeBoundsOfVector', because 'InputArr' has to be
-'     a single dimensional array
-Public Function ChangeBoundsOfArray( _
-    ByRef InputArr As Variant, _
+Public Function ChangeBoundsOfVector( _
+    ByRef InputVector As Variant, _
     ByVal NewLowerBound As Long, _
     Optional ByVal NewUpperBound As Variant _
         ) As Boolean
     
-    Dim TempArr() As Variant
+    Dim TempVector() As Variant
     Dim InNdx As Long
     Dim OutNdx As Long
     Dim TempNdx As Long
@@ -2069,10 +2067,10 @@ Public Function ChangeBoundsOfArray( _
     
     
     'Set the default return value
-    ChangeBoundsOfArray = False
+    ChangeBoundsOfVector = False
     
     If IsMissing(NewUpperBound) Or IsEmpty(NewUpperBound) Then
-        NewUpperBound = NewLowerBound + UBound(InputArr) - LBound(InputArr)
+        NewUpperBound = NewLowerBound + UBound(InputVector) - LBound(InputVector)
     ElseIf Not IsNumeric(NewUpperBound) Then
         Exit Function
     ElseIf NewUpperBound <> CLng(NewUpperBound) Then
@@ -2080,56 +2078,56 @@ Public Function ChangeBoundsOfArray( _
     End If
     
     If NewLowerBound > NewUpperBound Then Exit Function
-    If Not IsArrayDynamic(InputArr) Then Exit Function
-    If NumberOfArrayDimensions(InputArr) <> 1 Then Exit Function
+    If Not IsArrayDynamic(InputVector) Then Exit Function
+    If NumberOfArrayDimensions(InputVector) <> 1 Then Exit Function
     
-    'We need to save the 'IsObject' status of the first element of 'InputArr'
-    'to properly handle 'Empty' variables if we are making the array larger
+    'We need to save the 'IsObject' status of the first element of 'InputVector'
+    'to properly handle 'Empty' variables if we are making the vector larger
     'than it was before.
-    FirstIsObject = IsObject(InputArr(LBound(InputArr)))
+    FirstIsObject = IsObject(InputVector(LBound(InputVector)))
     
     
-    'Resize 'TempArr' and save the values in 'InputArr' in 'TempArr'. 'TempArr'
-    'will have an 'LBound' of 1 and a 'UBound' of the size of
+    'Resize 'TempVector' and save the values in 'InputVector' in 'TempVector'.
+    ''TempVector' will have an 'LBound' of 1 and a 'UBound' of the size of
     '(NewUpperBound - NewLowerBound +1)
-    ReDim TempArr(1 To (NewUpperBound - NewLowerBound + 1))
-    'Load up 'TempArr'
+    ReDim TempVector(1 To (NewUpperBound - NewLowerBound + 1))
+    'Load up 'TempVector'
     TempNdx = 0
-    For InNdx = LBound(InputArr) To UBound(InputArr)
+    For InNdx = LBound(InputVector) To UBound(InputVector)
         TempNdx = TempNdx + 1
-        If TempNdx > UBound(TempArr) Then
+        If TempNdx > UBound(TempVector) Then
             Exit For
         End If
         
-        If (IsObject(InputArr(InNdx)) = True) Then
-            If InputArr(InNdx) Is Nothing Then
-                Set TempArr(TempNdx) = Nothing
+        If (IsObject(InputVector(InNdx)) = True) Then
+            If InputVector(InNdx) Is Nothing Then
+                Set TempVector(TempNdx) = Nothing
             Else
-                Set TempArr(TempNdx) = InputArr(InNdx)
+                Set TempVector(TempNdx) = InputVector(InNdx)
             End If
         Else
-            TempArr(TempNdx) = InputArr(InNdx)
+            TempVector(TempNdx) = InputVector(InNdx)
         End If
     Next
     
-    'Now, erase 'InputArr', resize it to the new bounds, and load up the values
-    'from 'TempArr' to the new 'InputArr'
-    Erase InputArr
-    ReDim InputArr(NewLowerBound To NewUpperBound)
-    OutNdx = LBound(InputArr)
-    For TempNdx = LBound(TempArr) To UBound(TempArr)
-        If OutNdx <= UBound(InputArr) Then
-            If IsObject(TempArr(TempNdx)) Then
-                Set InputArr(OutNdx) = TempArr(TempNdx)
+    'Now, erase 'InputVector', resize it to the new bounds, and load up the
+    'values from 'TempVector' to the new 'InputVector'
+    Erase InputVector
+    ReDim InputVector(NewLowerBound To NewUpperBound)
+    OutNdx = LBound(InputVector)
+    For TempNdx = LBound(TempVector) To UBound(TempVector)
+        If OutNdx <= UBound(InputVector) Then
+            If IsObject(TempVector(TempNdx)) Then
+                Set InputVector(OutNdx) = TempVector(TempNdx)
             Else
                 If FirstIsObject = True Then
-                    If IsEmpty(TempArr(TempNdx)) Then
-                        Set InputArr(OutNdx) = Nothing
+                    If IsEmpty(TempVector(TempNdx)) Then
+                        Set InputVector(OutNdx) = Nothing
                     Else
-                        Set InputArr(OutNdx) = TempArr(TempNdx)
+                        Set InputVector(OutNdx) = TempVector(TempNdx)
                     End If
                 Else
-                    InputArr(OutNdx) = TempArr(TempNdx)
+                    InputVector(OutNdx) = TempVector(TempNdx)
                 End If
             End If
         Else
@@ -2138,7 +2136,7 @@ Public Function ChangeBoundsOfArray( _
         OutNdx = OutNdx + 1
     Next
     
-    ChangeBoundsOfArray = True
+    ChangeBoundsOfVector = True
     
 End Function
 
