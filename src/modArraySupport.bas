@@ -1934,112 +1934,109 @@ Public Function TransposeArray( _
 End Function
 
 
-'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 'VectorsToArray
-'This function takes 1 or more single-dimensional arrays and converts
-'them into a single multi-dimensional array. Each array in Vectors
-'comprises one row of the new array. The number of columns in the
-'new array is the maximum of the number of elements in each vector.
-'Arr MUST be a dynamic array of a data type compatible with ALL the
-'elements in each Vector. The code does NOT trap for an error
+'This function takes one or more single-dimensional arrays (vectors) and
+'converts them into a single two-dimensional array. Each array in 'Vectors'
+'comprises one row of the new array. The number of columns in the new array is
+'the maximum of the number of elements in each vector.
+''Arr' MUST be a dynamic array of a data type compatible with ALL the
+'elements in each vector. The code does NOT trap for an error
 '13 - Type Mismatch.
-'
-'If the Vectors are of differing sizes, Arr is sized to hold the
-'maximum number of elements in a Vector. The procedure Erases the
-'Arr array, so when it is reallocated with Redim, all elements will
-'be the reset to their default value (0 or vbNullString or Empty).
-'Unused elements in the new array will remain the default value for
-'that data type.
-'
-'Each Vector in Vectors must be a single dimensional array, but
-'the Vectors may be of different sizes and LBounds.
-'
-'Each element in each Vector must be a simple data type. The elements
-'may NOT be Object, Arrays, or User-Defined Types.
-'
+'If the 'Vectors' are of differing sizes, 'Arr' is sized to hold the maximum
+'number of elements in a vector. The procedure erases the 'Arr' array, so when
+'it is reallocated with 'ReDim', all elements will be the reset to their
+'default value ('0', 'vbNullString' or 'Empty').
+'Unused elements in the new array will remain the default value for that data
+'type.
+'Each vector in 'Vectors' must be a single-dimensional array, but the vectors
+'may be of different sizes and 'LBound's.
+'Each element in each vector must be a simple data type. The elements may NOT
+'be 'Object's, 'Array's, or 'User-Defined Types'.
 'The rows and columns of the result array are 0-based, regardless of
-'the LBound of each vector and regardless of the Option Base statement.
-'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'the 'LBound' of each vector and regardless of the 'Option Base' statement.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 Public Function VectorsToArray( _
-    Arr As Variant, _
+    ByRef Arr As Variant, _
     ParamArray Vectors() _
         ) As Boolean
-
+    
     Dim Vector As Variant
     Dim NumRows As Long
     Dim NumCols As Long
+    Dim NoOfElements As Long
+    Dim LBoundVector As Long
     Dim RowNdx As Long
     Dim ColNdx As Long
     Dim VType As VbVarType
+    
+    Dim LongLongType As Byte
+    LongLongType = DeclareLongLong
     
     
     'Set the default return value
     VectorsToArray = False
     
-    If Not IsArray(Arr) Then Exit Function
     If Not IsArrayDynamic(Arr) Then Exit Function
     
-    'Ensure that at least one vector was passed in Vectors
+    'Ensure that at least one vector was passed in 'Vectors'
     If IsMissing(Vectors) Then Exit Function
     
-    'Loop through Vectors to determine the size of the result array. We do this
-    'loop first to prevent having to do a Redim Preserve. This requires looping
-    'through Vectors a second time, but this is still faster than doing
-    'Redim Preserves.
+    NumRows = 0
+    NumCols = 0
+    
+    'Loop through 'Vectors' to determine the size of the result array.
+    '(We do this loop first to prevent having to do a 'ReDim Preserve'. This
+    ' requires looping through 'Vectors' a second time, but this is still faster
+    ' than doing 'ReDim Preserve's.)
     For Each Vector In Vectors
-        'Ensure Vector is single dimensional array. This will take care of the
-        'case if Vector is an unallocated array (NumberOfArrayDimensions = 0
-        'for an unallocated array).
-        If NumberOfArrayDimensions(Vector) <> 1 Then Exit Function
-'---
-'2do: this test is a bit late, right?
-'---
-        'Ensure that Vector is not an array
         If Not IsArray(Vector) Then Exit Function
-        'Increment the number of rows. Each Vector is one row or the result array.
-        'Test the size of Vector. If it is larger than the existing value of
-        'NumCols, set NumCols to the new, larger, value.
-        NumRows = NumRows + 1
-        If NumCols < UBound(Vector) - LBound(Vector) + 1 Then
-            NumCols = UBound(Vector) - LBound(Vector) + 1
-        End If
+        If NumberOfArrayDimensions(Vector) <> 1 Then Exit Function
+        
+        'Increment the number of rows. Each 'Vector' is one row or the result array.
+        NumCols = NumCols + 1
+        
+        LBoundVector = LBound(Vector)
+        
+        'Store number of elements in 'Vector' and use the larger value for
+        ''NumRows'.
+        NoOfElements = UBound(Vector) - LBoundVector + 1
+        NumRows = Application.WorksheetFunction.Max(NumRows, NoOfElements)
     Next
-    'Redim Arr to the appropriate size. Arr is 0-based in both directions,
-    'regardless of the LBound of the original Arr and regardless of the
-    'LBounds of the Vectors.
+    
+    'ReDim 'Arr' to the appropriate size. 'Arr' is 0-based in both directions,
+    'regardless of the 'LBound' of the original 'Arr' and regardless of the
+    ''LBounds' of the 'Vectors'.
     ReDim Arr(0 To NumRows - 1, 0 To NumCols - 1)
     
-    'Loop through the rows
-    For RowNdx = 0 To NumRows - 1
-        'Loop through the columns
-        For ColNdx = 0 To NumCols - 1
-            'Set Vector (a Variant) to the Vectors(RowNdx) array. We declare
-            'Vector as a variant so it can take an array of any simple data type.
-            Vector = Vectors(RowNdx)
-            'The vectors need not ber
-            If ColNdx < UBound(Vector) - LBound(Vector) + 1 Then
-                VType = VarType(Vector(LBound(Vector) + ColNdx))
-                If VType >= vbArray Then
-                    'Test for VType >= vbArray. The VarType of an array is
-                    'vbArray + VarType(element of array). E.g., the VarType of an
-                    'array of Longs equal vbArray + vbLong. Anything greater than
-                    'or equal to vbArray is an array of some time.
+    For ColNdx = 0 To NumCols - 1
+        For RowNdx = 0 To NumRows - 1
+            'Set 'Vector' (a Variant) to the 'Vectors(ColNdx)' array. We declare
+            ''Vector' as a variant so it can take an array of any simple data type.
+            Vector = Vectors(ColNdx)
+            
+            LBoundVector = LBound(Vector)
+            
+            VType = VarType(Vector(LBoundVector + RowNdx))
+            'define allowed data types and exit function for all others
+            Select Case VType
+                Case vbByte, vbInteger, vbLong, LongLongType, vbSingle, vbDouble, vbDate, vbCurrency, vbDecimal
+                Case vbString
+'                Case vbArray, vbVariant, vbEmpty, vbError, vbNull, vbUserDefinedType
+'                    Exit Function
+                Case vbBoolean
+'                Case vbObject
+'                    Exit Function
+                Case Else
                     Exit Function
-                End If
-                If VType = vbObject Then
-                    Exit Function
-                End If
-                'Vector(LBound(Vector) + ColNdx) is a simple data type.
-                'If Vector(LBound(Vector) + ColNdx) is not a compatible data type
-                'with Arr, then a Type Mismatch error will occur. We do NOT trap
-                'this error.
-                Arr(RowNdx, ColNdx) = Vector(LBound(Vector) + ColNdx)
-            End If
+            End Select
+            'transfer value to 'Arr'
+            Arr(RowNdx, ColNdx) = Vector(LBoundVector + RowNdx)
         Next
     Next
     
     VectorsToArray = True
-
+    
 End Function
 
 
