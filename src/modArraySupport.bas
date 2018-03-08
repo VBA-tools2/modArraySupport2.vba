@@ -45,7 +45,7 @@ Option Compare Text
 '     NumberOfArrayDimensions
 '     NumElements
 '     ResetVariantArrayToDefaults
-'     ReverseArrayInPlace
+'     ReverseVectorInPlace             --> renamed from 'ReverseArrayInPlace'
 '     ReverseArrayOfObjectsInPlace
 '     SetObjectArrayToNothing
 '     SetVariableToDefault
@@ -1504,7 +1504,7 @@ End Function
 
 
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-'ReverseArrayInPlace
+'ReverseVectorInPlace
 'This procedure reverses the order of an array in place -- this is, the array
 'variable in the calling procedure is reversed. This works only on
 'single-dimensional arrays of simple data types ('String', 'Single', 'Double',
@@ -1512,10 +1512,9 @@ End Function
 ''ReverseArrayOfObjectsInPlace' to reverse an array of objects.
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 '2do:
-'- rename to 'ReverseVectorInPlace?
 '- combine with 'ReverseArrayOfObjectsInPlace'?
-Public Function ReverseArrayInPlace( _
-    ByRef InputArray As Variant _
+Public Function ReverseVectorInPlace( _
+    ByRef InputVector As Variant _
         ) As Boolean
     
     Dim Temp As Variant
@@ -1528,16 +1527,16 @@ Public Function ReverseArrayInPlace( _
     
     
     'Set the default return value
-    ReverseArrayInPlace = False
+    ReverseVectorInPlace = False
     
-    If Not IsArray(InputArray) Then Exit Function
-    If NumberOfArrayDimensions(InputArray) <> 1 Then Exit Function
+    If Not IsArray(InputVector) Then Exit Function
+    If NumberOfArrayDimensions(InputVector) <> 1 Then Exit Function
     
-    LBoundArr = LBound(InputArray)
-    UBoundArr = UBound(InputArray)
+    LBoundArr = LBound(InputVector)
+    UBoundArr = UBound(InputVector)
     NoOfElements = UBoundArr - LBoundArr + 1
     
-    'calculate midpoint index of 'InputArray'
+    'calculate midpoint index of 'InputVector'
     MidPoint = LBoundArr + (NoOfElements \ 2) - 1
     
     'initialize 'Ndx2'
@@ -1545,14 +1544,14 @@ Public Function ReverseArrayInPlace( _
     
     For Ndx = LBoundArr To MidPoint
         'swap the elements
-        Temp = InputArray(Ndx)
-        InputArray(Ndx) = InputArray(Ndx2)
-        InputArray(Ndx2) = Temp
+        Temp = InputVector(Ndx)
+        InputVector(Ndx) = InputVector(Ndx2)
+        InputVector(Ndx2) = Temp
         'decrement the upper index
         Ndx2 = Ndx2 - 1
     Next
     
-    ReverseArrayInPlace = True
+    ReverseVectorInPlace = True
     
 End Function
 
@@ -1561,7 +1560,7 @@ End Function
 'ReverseArrayOfObjectsInPlace
 'This procedure reverses the order of an array in place -- this is, the array
 'variable in the calling procedure is reversed. This works only with arrays of
-'objects. It does not work on simple variables. Use 'ReverseArrayInPlace' for
+'objects. It does not work on simple variables. Use 'ReverseVectorInPlace' for
 'simple variables. An error will occur if an element of the array is not an
 'object.
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''

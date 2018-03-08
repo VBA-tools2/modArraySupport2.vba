@@ -5391,11 +5391,11 @@ End Sub
 
 
 '==============================================================================
-'unit tests for 'ReverseArrayInPlace'
+'unit tests for 'ReverseVectorInPlace'
 '==============================================================================
 
 '@TestMethod
-Public Sub ReverseArrayInPlace_NoArray_ReturnsFalse()
+Public Sub ReverseVectorInPlace_NoArray_ReturnsFalse()
     On Error GoTo TestFail
     
     'Arrange:
@@ -5404,7 +5404,7 @@ Public Sub ReverseArrayInPlace_NoArray_ReturnsFalse()
     
     'Act:
     'Assert:
-    Assert.IsFalse modArraySupport.ReverseArrayInPlace(Scalar)
+    Assert.IsFalse modArraySupport.ReverseVectorInPlace(Scalar)
     
 TestExit:
     Exit Sub
@@ -5414,7 +5414,7 @@ End Sub
 
 
 '@TestMethod
-Public Sub ReverseArrayInPlace_UnallocatedArray_ReturnsFalse()
+Public Sub ReverseVectorInPlace_UnallocatedArray_ReturnsFalse()
     On Error GoTo TestFail
     
     'Arrange:
@@ -5423,7 +5423,7 @@ Public Sub ReverseArrayInPlace_UnallocatedArray_ReturnsFalse()
     
     'Act:
     'Assert:
-    Assert.IsFalse modArraySupport.ReverseArrayInPlace(Arr)
+    Assert.IsFalse modArraySupport.ReverseVectorInPlace(Arr)
     
 TestExit:
     Exit Sub
@@ -5433,7 +5433,7 @@ End Sub
 
 
 '@TestMethod
-Public Sub ReverseArrayInPlace_2DArr_ReturnsFalse()
+Public Sub ReverseVectorInPlace_2DArr_ReturnsFalse()
     On Error GoTo TestFail
     
     'Arrange:
@@ -5442,7 +5442,7 @@ Public Sub ReverseArrayInPlace_2DArr_ReturnsFalse()
     
     'Act:
     'Assert:
-    Assert.IsFalse modArraySupport.ReverseArrayInPlace(Arr)
+    Assert.IsFalse modArraySupport.ReverseVectorInPlace(Arr)
     
 TestExit:
     Exit Sub
@@ -5452,7 +5452,7 @@ End Sub
 
 
 '@TestMethod
-Public Sub ReverseArrayInPlace_ValidEven1DArr_ReturnsTrueAndReversedArr()
+Public Sub ReverseVectorInPlace_ValidEven1DArr_ReturnsTrueAndReversedArr()
     On Error GoTo TestFail
     
     Dim Arr(5 To 8) As Long
@@ -5473,7 +5473,7 @@ Public Sub ReverseArrayInPlace_ValidEven1DArr_ReturnsTrueAndReversedArr()
     Arr(8) = 8
     
     'Act:
-    If Not modArraySupport.ReverseArrayInPlace(Arr) Then _
+    If Not modArraySupport.ReverseVectorInPlace(Arr) Then _
             GoTo TestFail
     
     'Assert:
@@ -5487,7 +5487,7 @@ End Sub
 
 
 '@TestMethod
-Public Sub ReverseArrayInPlace_ValidEven1DVariantArr_ReturnsTrueAndReversedArr()
+Public Sub ReverseVectorInPlace_ValidEven1DVariantArr_ReturnsTrueAndReversedArr()
     On Error GoTo TestFail
     
     Dim Arr(5 To 8) As Variant
@@ -5508,7 +5508,7 @@ Public Sub ReverseArrayInPlace_ValidEven1DVariantArr_ReturnsTrueAndReversedArr()
     Arr(8) = 8
     
     'Act:
-    If Not modArraySupport.ReverseArrayInPlace(Arr) Then _
+    If Not modArraySupport.ReverseVectorInPlace(Arr) Then _
             GoTo TestFail
     
     'Assert:
@@ -5522,7 +5522,7 @@ End Sub
 
 
 '@TestMethod
-Public Sub ReverseArrayInPlace_1DVariantArrWithObject_ReturnsTrueAndReversedArr()
+Public Sub ReverseVectorInPlace_1DVariantArrWithObject_ReturnsTrueAndReversedArr()
     On Error GoTo TestFail
     
     Dim Arr(5 To 6) As Variant
@@ -5539,7 +5539,7 @@ Public Sub ReverseArrayInPlace_1DVariantArrWithObject_ReturnsTrueAndReversedArr(
     Set Arr(6) = ThisWorkbook.Worksheets(1).Range("A5")
     
     'Act:
-    If Not modArraySupport.ReverseArrayInPlace(Arr) Then _
+    If Not modArraySupport.ReverseVectorInPlace(Arr) Then _
             GoTo TestFail
     
     'Assert:
@@ -5553,7 +5553,7 @@ End Sub
 
 
 '@TestMethod
-Public Sub ReverseArrayInPlace_ValidOdd1DArr_ReturnsTrueAndReversedArr()
+Public Sub ReverseVectorInPlace_ValidOdd1DArr_ReturnsTrueAndReversedArr()
     On Error GoTo TestFail
     
     Dim Arr(5 To 9) As Long
@@ -5576,7 +5576,7 @@ Public Sub ReverseArrayInPlace_ValidOdd1DArr_ReturnsTrueAndReversedArr()
     Arr(9) = 9
     
     'Act:
-    If Not modArraySupport.ReverseArrayInPlace(Arr) Then _
+    If Not modArraySupport.ReverseVectorInPlace(Arr) Then _
             GoTo TestFail
     
     'Assert:
