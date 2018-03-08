@@ -5590,11 +5590,11 @@ End Sub
 
 
 '==============================================================================
-'unit tests for 'ReverseArrayOfObjectsInPlace'
+'unit tests for 'ReverseVectorOfObjectsInPlace'
 '==============================================================================
 
 '@TestMethod
-Public Sub ReverseArrayOfObjectsInPlace_NoArray_ReturnsFalse()
+Public Sub ReverseVectorOfObjectsInPlace_NoArray_ReturnsFalse()
     On Error GoTo TestFail
     
     'Arrange:
@@ -5603,7 +5603,7 @@ Public Sub ReverseArrayOfObjectsInPlace_NoArray_ReturnsFalse()
     
     'Act:
     'Assert:
-    Assert.IsFalse modArraySupport.ReverseArrayOfObjectsInPlace(Scalar)
+    Assert.IsFalse modArraySupport.ReverseVectorOfObjectsInPlace(Scalar)
     
 TestExit:
     Exit Sub
@@ -5613,7 +5613,7 @@ End Sub
 
 
 '@TestMethod
-Public Sub ReverseArrayOfObjectsInPlace_UnallocatedObjectArray_ReturnsFalse()
+Public Sub ReverseVectorOfObjectsInPlace_UnallocatedObjectArray_ReturnsFalse()
     On Error GoTo TestFail
     
     'Arrange:
@@ -5622,7 +5622,7 @@ Public Sub ReverseArrayOfObjectsInPlace_UnallocatedObjectArray_ReturnsFalse()
     
     'Act:
     'Assert:
-    Assert.IsFalse modArraySupport.ReverseArrayOfObjectsInPlace(Arr)
+    Assert.IsFalse modArraySupport.ReverseVectorOfObjectsInPlace(Arr)
     
 TestExit:
     Exit Sub
@@ -5632,7 +5632,7 @@ End Sub
 
 
 '@TestMethod
-Public Sub ReverseArrayOfObjectsInPlace_2DObjectArr_ReturnsFalse()
+Public Sub ReverseVectorOfObjectsInPlace_2DObjectArr_ReturnsFalse()
     On Error GoTo TestFail
     
     'Arrange:
@@ -5641,7 +5641,7 @@ Public Sub ReverseArrayOfObjectsInPlace_2DObjectArr_ReturnsFalse()
     
     'Act:
     'Assert:
-    Assert.IsFalse modArraySupport.ReverseArrayOfObjectsInPlace(Arr)
+    Assert.IsFalse modArraySupport.ReverseVectorOfObjectsInPlace(Arr)
     
 TestExit:
     Exit Sub
@@ -5651,7 +5651,7 @@ End Sub
 
 
 '@TestMethod
-Public Sub ReverseArrayOfObjectsInPlace_ValidEven1DObjectArr_ReturnsTrueAndReversedArr()
+Public Sub ReverseVectorOfObjectsInPlace_ValidEven1DObjectArr_ReturnsTrueAndReversedArr()
     On Error GoTo TestFail
     
     Dim Arr(5 To 8) As Object
@@ -5677,7 +5677,7 @@ Public Sub ReverseArrayOfObjectsInPlace_ValidEven1DObjectArr_ReturnsTrueAndRever
     End With
     
     'Act:
-    If Not modArraySupport.ReverseArrayOfObjectsInPlace(Arr) Then _
+    If Not modArraySupport.ReverseVectorOfObjectsInPlace(Arr) Then _
             GoTo TestFail
     
     'Assert:
@@ -5697,7 +5697,7 @@ End Sub
 
 
 '@TestMethod
-Public Sub ReverseArrayOfObjectsInPlace_ValidEven1DVariantArr_ReturnsTrueAndReversedArr()
+Public Sub ReverseVectorOfObjectsInPlace_ValidEven1DVariantArr_ReturnsTrueAndReversedArr()
     On Error GoTo TestFail
     
     Dim Arr(5 To 8) As Variant
@@ -5723,7 +5723,7 @@ Public Sub ReverseArrayOfObjectsInPlace_ValidEven1DVariantArr_ReturnsTrueAndReve
     End With
     
     'Act:
-    If Not modArraySupport.ReverseArrayOfObjectsInPlace(Arr) Then _
+    If Not modArraySupport.ReverseVectorOfObjectsInPlace(Arr) Then _
             GoTo TestFail
     
     'Assert:
@@ -5743,7 +5743,7 @@ End Sub
 
 
 '@TestMethod
-Public Sub ReverseArrayOfObjectsInPlace_1DVariantArrWithNonObject_ReturnsFalse()
+Public Sub ReverseVectorOfObjectsInPlace_1DVariantArrWithNonObject_ReturnsFalse()
     On Error GoTo TestFail
     
     Dim Arr(5 To 6) As Variant
@@ -5755,7 +5755,7 @@ Public Sub ReverseArrayOfObjectsInPlace_1DVariantArrWithNonObject_ReturnsFalse()
     
     'Act:
     'Assert:
-    Assert.IsFalse modArraySupport.ReverseArrayOfObjectsInPlace(Arr)
+    Assert.IsFalse modArraySupport.ReverseVectorOfObjectsInPlace(Arr)
     
 TestExit:
     Exit Sub
@@ -5765,7 +5765,7 @@ End Sub
 
 
 '@TestMethod
-Public Sub ReverseArrayOfObjectsInPlace_ValidOdd1DObjectArr_ReturnsTrueAndReversedArr()
+Public Sub ReverseVectorOfObjectsInPlace_ValidOdd1DObjectArr_ReturnsTrueAndReversedArr()
     On Error GoTo TestFail
     
     Dim Arr(5 To 9) As Object
@@ -5793,7 +5793,7 @@ Public Sub ReverseArrayOfObjectsInPlace_ValidOdd1DObjectArr_ReturnsTrueAndRevers
     End With
     
     'Act:
-    If Not modArraySupport.ReverseArrayOfObjectsInPlace(Arr) Then _
+    If Not modArraySupport.ReverseVectorOfObjectsInPlace(Arr) Then _
             GoTo TestFail
     
     'Assert:
