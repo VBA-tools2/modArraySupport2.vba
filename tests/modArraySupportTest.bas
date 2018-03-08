@@ -8701,42 +8701,339 @@ TestFail:
 End Sub
 
 
-Public Sub DemoSwapArrayColumns()
+'==============================================================================
+'unit tests for 'SwapArrayColumns'
+'==============================================================================
+
+'@TestMethod
+Public Sub SwapArrayColumns_NoArray_ReturnsNull()
+    On Error GoTo TestFail
     
-    Dim R As Long
-    Dim C As Long
-    Dim S As String
-    Dim A(1 To 3, 1 To 2)
-    Dim B()
+    'Arrange:
+    Dim Scalar As Long
+    Dim ResultArr As Variant
+    
+    '==========================================================================
+    Const Col1 As Long = 3
+    Const Col2 As Long = 4
+    '==========================================================================
     
     
-    A(1, 1) = "a"
-    A(1, 2) = "b"
-    A(2, 1) = "c"
-    A(2, 2) = "d"
-    A(3, 1) = "e"
-    A(3, 2) = "f"
+    'Act:
+    ResultArr = modArraySupport.SwapArrayColumns( _
+            Scalar, _
+            Col1, _
+            Col2 _
+    )
+    
+    'Assert:
+    Assert.IsTrue IsNull(ResultArr)
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+End Sub
 
-Debug.Print "BEFORE============================"
-    For R = LBound(A, 1) To UBound(A, 1)
-        S = vbNullString
-        For C = LBound(A, 2) To UBound(A, 2)
-            S = S & A(R, C) & " "
-        Next C
-Debug.Print S
-    Next R
 
-    B = modArraySupport.SwapArrayColumns(A, 1, 2)
+'@TestMethod
+Public Sub SwapArrayColumns_UnallocatedArr_ReturnsNull()
+    On Error GoTo TestFail
+    
+    'Arrange:
+    Dim Arr() As Long
+    Dim ResultArr As Variant
+    
+    '==========================================================================
+    Const Col1 As Long = 3
+    Const Col2 As Long = 4
+    '==========================================================================
+    
+    
+    'Act:
+    ResultArr = modArraySupport.SwapArrayColumns( _
+            Arr, _
+            Col1, _
+            Col2 _
+    )
+    
+    'Assert:
+    Assert.IsTrue IsNull(ResultArr)
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+End Sub
 
-Debug.Print "AFTER============================"
-    For R = LBound(B, 1) To UBound(B, 1)
-        S = vbNullString
-        For C = LBound(B, 2) To UBound(B, 2)
-            S = S & B(R, C) & " "
-        Next C
-Debug.Print S
-    Next R
 
+'@TestMethod
+Public Sub SwapArrayColumns_1DArr_ReturnsNull()
+    On Error GoTo TestFail
+    
+    'Arrange:
+    Dim Arr(5 To 6) As Long
+    Dim ResultArr As Variant
+    
+    '==========================================================================
+    Const Col1 As Long = 3
+    Const Col2 As Long = 4
+    '==========================================================================
+    
+    
+    'Act:
+    ResultArr = modArraySupport.SwapArrayColumns( _
+            Arr, _
+            Col1, _
+            Col2 _
+    )
+    
+    'Assert:
+    Assert.IsTrue IsNull(ResultArr)
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+End Sub
+
+
+'@TestMethod
+Public Sub SwapArrayColumns_3DArr_ReturnsNull()
+    On Error GoTo TestFail
+    
+    'Arrange:
+    Dim Arr(5 To 6, 3 To 4, 2 To 2) As Long
+    Dim ResultArr As Variant
+    
+    '==========================================================================
+    Const Col1 As Long = 3
+    Const Col2 As Long = 4
+    '==========================================================================
+    
+    
+    'Act:
+    ResultArr = modArraySupport.SwapArrayColumns( _
+            Arr, _
+            Col1, _
+            Col2 _
+    )
+    
+    'Assert:
+    Assert.IsTrue IsNull(ResultArr)
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+End Sub
+
+
+'@TestMethod
+Public Sub SwapArrayColumns_TooSmallCol1_ReturnsNull()
+    On Error GoTo TestFail
+    
+    'Arrange:
+    Dim Arr(5 To 6, 3 To 4) As Long
+    Dim ResultArr As Variant
+    
+    '==========================================================================
+    Const Col1 As Long = 2
+    Const Col2 As Long = 4
+    '==========================================================================
+    
+    
+    'Act:
+    ResultArr = modArraySupport.SwapArrayColumns( _
+            Arr, _
+            Col1, _
+            Col2 _
+    )
+    
+    'Assert:
+    Assert.IsTrue IsNull(ResultArr)
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+End Sub
+
+
+'@TestMethod
+Public Sub SwapArrayColumns_TooSmallCol2_ReturnsNull()
+    On Error GoTo TestFail
+    
+    'Arrange:
+    Dim Arr(5 To 6, 3 To 4) As Long
+    Dim ResultArr As Variant
+    
+    '==========================================================================
+    Const Col1 As Long = 3
+    Const Col2 As Long = 2
+    '==========================================================================
+    
+    
+    'Act:
+    ResultArr = modArraySupport.SwapArrayColumns( _
+            Arr, _
+            Col1, _
+            Col2 _
+    )
+    
+    'Assert:
+    Assert.IsTrue IsNull(ResultArr)
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+End Sub
+
+
+'@TestMethod
+Public Sub SwapArrayColumns_TooLargeCol1_ReturnsNull()
+    On Error GoTo TestFail
+    
+    'Arrange:
+    Dim Arr(5 To 6, 3 To 4) As Long
+    Dim ResultArr As Variant
+    
+    '==========================================================================
+    Const Col1 As Long = 5
+    Const Col2 As Long = 4
+    '==========================================================================
+    
+    
+    'Act:
+    ResultArr = modArraySupport.SwapArrayColumns( _
+            Arr, _
+            Col1, _
+            Col2 _
+    )
+    
+    'Assert:
+    Assert.IsTrue IsNull(ResultArr)
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+End Sub
+
+
+'@TestMethod
+Public Sub SwapArrayColumns_TooLargeCol2_ReturnsNull()
+    On Error GoTo TestFail
+    
+    'Arrange:
+    Dim Arr(5 To 6, 3 To 4) As Long
+    Dim ResultArr As Variant
+    
+    '==========================================================================
+    Const Col1 As Long = 3
+    Const Col2 As Long = 5
+    '==========================================================================
+    
+    
+    'Act:
+    ResultArr = modArraySupport.SwapArrayColumns( _
+            Arr, _
+            Col1, _
+            Col2 _
+    )
+    
+    'Assert:
+    Assert.IsTrue IsNull(ResultArr)
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+End Sub
+
+
+'@TestMethod
+Public Sub SwapArrayColumns_EqualColNumbers_ReturnsResultArrEqualToArr()
+    On Error GoTo TestFail
+    
+    Dim Arr(5 To 6, 3 To 4) As Long
+    Dim ResultArr As Variant
+    
+    '==========================================================================
+    Const Col1 As Long = 3
+    Const Col2 As Long = 3
+    
+    Dim aExpected(5 To 6, 3 To 4) As Long
+        aExpected(5, 3) = 10
+        aExpected(6, 3) = 11
+        aExpected(5, 4) = 20
+        aExpected(6, 4) = 21
+    '==========================================================================
+    
+    
+    'Arrange:
+    Arr(5, 3) = 10
+    Arr(6, 3) = 11
+    Arr(5, 4) = 20
+    Arr(6, 4) = 21
+    
+    'Act:
+    ResultArr = modArraySupport.SwapArrayColumns( _
+            Arr, _
+            Col1, _
+            Col2 _
+    )
+    
+    'Assert:
+    Assert.SequenceEquals aExpected, ResultArr
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+End Sub
+
+
+'@TestMethod
+Public Sub SwapArrayColumns_UnequalColNumbers_ReturnsResultArrWithSwappedColumns()
+    On Error GoTo TestFail
+    
+    Dim Arr(5 To 6, 3 To 4) As Long
+    Dim ResultArr As Variant
+    
+    '==========================================================================
+    Const Col1 As Long = 3
+    Const Col2 As Long = 4
+    
+    Dim aExpected(5 To 6, 3 To 4) As Long
+        aExpected(5, 3) = 20
+        aExpected(6, 3) = 21
+        aExpected(5, 4) = 10
+        aExpected(6, 4) = 11
+    '==========================================================================
+    
+    
+    'Arrange:
+    Arr(5, 3) = 10
+    Arr(6, 3) = 11
+    Arr(5, 4) = 20
+    Arr(6, 4) = 21
+    
+    'Act:
+    ResultArr = modArraySupport.SwapArrayColumns( _
+            Arr, _
+            Col1, _
+            Col2 _
+    )
+    
+    'Assert:
+    Assert.SequenceEquals aExpected, ResultArr
+    
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
 End Sub
 
 

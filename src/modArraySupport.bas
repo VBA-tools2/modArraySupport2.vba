@@ -2532,18 +2532,18 @@ Public Function SwapArrayRows( _
 End Function
 
 
-'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 'SwapArrayColumns
-'This function returns an array based on Arr with Col1 and Col2 swapped.
-'It returns the result array or NULL if an error occurred.
-'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'This function returns an array based on 'Arr' with 'Col1' and 'Col2' swapped.
+'It returns the result array or 'Null' if an error occurred.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 Public Function SwapArrayColumns( _
-    Arr As Variant, _
-    Col1 As Long, _
-    Col2 As Long _
+    ByRef Arr As Variant, _
+    ByVal Col1 As Long, _
+    ByVal Col2 As Long _
         ) As Variant
-
-    Dim V As Variant
+    
+    Dim Temp As Variant
     Dim Result As Variant
     Dim RowNdx As Long
     
@@ -2554,30 +2554,31 @@ Public Function SwapArrayColumns( _
     If Not IsArray(Arr) Then Exit Function
     If NumberOfArrayDimensions(Arr) <> 2 Then Exit Function
     
-    'Ensure Col1 and Col2 are less than or equal to the number of columns
+    'Ensure 'Col1' and 'Col2' are valid column numbers
+    If Col1 < LBound(Arr, 2) Then Exit Function
     If Col1 > UBound(Arr, 2) Then Exit Function
+    If Col2 < LBound(Arr, 2) Then Exit Function
     If Col2 > UBound(Arr, 2) Then Exit Function
     
-    'If Col1 = Col2, just return the array and exit. Nothing to do.
+    'If 'Col1 = Col2', just return the array and exit. Nothing to do.
     If Col1 = Col2 Then
         SwapArrayColumns = Arr
         Exit Function
     End If
     
-    'Set Result to Arr
+    'Set 'Result' to 'Arr'
     Result = Arr
     
-    'Redim V to the number of columns
-    ReDim V(LBound(Arr, 1) To UBound(Arr, 1))
-    'Put Col2 in V
+    'ReDim 'Temp' to the number of columns
+    ReDim Temp(LBound(Arr, 1) To UBound(Arr, 1))
     For RowNdx = LBound(Arr, 1) To UBound(Arr, 1)
-        V(RowNdx) = Arr(RowNdx, Col1)
+        Temp(RowNdx) = Arr(RowNdx, Col1)
         Result(RowNdx, Col1) = Arr(RowNdx, Col2)
-        Result(RowNdx, Col2) = V(RowNdx)
+        Result(RowNdx, Col2) = Temp(RowNdx)
     Next
     
     SwapArrayColumns = Result
-
+    
 End Function
 
 
