@@ -1562,11 +1562,11 @@ End Sub
 
 
 '==============================================================================
-'unit tests for 'CopyNonNothingObjectsToArray'
+'unit tests for 'CopyNonNothingObjectsToVector'
 '==============================================================================
 
 '@TestMethod
-Public Sub CopyNonNothingObjectsToArray_ScalarResultArray_ReturnsFalse()
+Public Sub CopyNonNothingObjectsToVector_ScalarResultArray_ReturnsFalse()
     On Error GoTo TestFail
     
     'Arrange:
@@ -1576,7 +1576,7 @@ Public Sub CopyNonNothingObjectsToArray_ScalarResultArray_ReturnsFalse()
     
     'Act:
     'Assert:
-    Assert.IsFalse modArraySupport.CopyNonNothingObjectsToArray( _
+    Assert.IsFalse modArraySupport.CopyNonNothingObjectsToVector( _
             SourceArray, _
             ScalarResult _
     )
@@ -1589,7 +1589,7 @@ End Sub
 
 
 '@TestMethod
-Public Sub CopyNonNothingObjectsToArray_StaticResultArray_ReturnsFalse()
+Public Sub CopyNonNothingObjectsToVector_StaticResultArray_ReturnsFalse()
     On Error GoTo TestFail
     
     'Arrange:
@@ -1599,7 +1599,7 @@ Public Sub CopyNonNothingObjectsToArray_StaticResultArray_ReturnsFalse()
     
     'Act:
     'Assert:
-    Assert.IsFalse modArraySupport.CopyNonNothingObjectsToArray( _
+    Assert.IsFalse modArraySupport.CopyNonNothingObjectsToVector( _
             SourceArray, _
             ResultArray _
     )
@@ -1612,7 +1612,7 @@ End Sub
 
 
 '@TestMethod
-Public Sub CopyNonNothingObjectsToArray_2DResultArray_ReturnsFalse()
+Public Sub CopyNonNothingObjectsToVector_2DResultArray_ReturnsFalse()
     On Error GoTo TestFail
     
     Dim SourceArray() As Object
@@ -1624,7 +1624,7 @@ Public Sub CopyNonNothingObjectsToArray_2DResultArray_ReturnsFalse()
     
     'Act:
     'Assert:
-    Assert.IsFalse modArraySupport.CopyNonNothingObjectsToArray( _
+    Assert.IsFalse modArraySupport.CopyNonNothingObjectsToVector( _
             SourceArray, _
             ResultArray _
     )
@@ -1637,7 +1637,7 @@ End Sub
 
 
 '@TestMethod
-Public Sub CopyNonNothingObjectsToArray_NonObjectOnlySourceArray_ReturnsFalse()
+Public Sub CopyNonNothingObjectsToVector_NonObjectOnlySourceArray_ReturnsFalse()
     On Error GoTo TestFail
     
     Dim SourceArray(5 To 6) As Variant
@@ -1650,7 +1650,7 @@ Public Sub CopyNonNothingObjectsToArray_NonObjectOnlySourceArray_ReturnsFalse()
     
     'Act:
     'Assert:
-    Assert.IsFalse modArraySupport.CopyNonNothingObjectsToArray( _
+    Assert.IsFalse modArraySupport.CopyNonNothingObjectsToVector( _
             SourceArray, _
             ResultArray _
     )
@@ -1663,7 +1663,7 @@ End Sub
 
 
 '@TestMethod
-Public Sub CopyNonNothingObjectsToArray_ValidNonNothingOnlySourceArray_ReturnsTrueAndResultArray()
+Public Sub CopyNonNothingObjectsToVector_ValidNonNothingOnlySourceArray_ReturnsTrueAndResultArray()
     On Error GoTo TestFail
     
     Dim SourceArray(5 To 6) As Variant
@@ -1676,7 +1676,7 @@ Public Sub CopyNonNothingObjectsToArray_ValidNonNothingOnlySourceArray_ReturnsTr
     Set SourceArray(6) = ThisWorkbook.Worksheets(1).Range("A2")
     
     'Act:
-    If Not modArraySupport.CopyNonNothingObjectsToArray( _
+    If Not modArraySupport.CopyNonNothingObjectsToVector( _
             SourceArray, _
             ResultArray _
     ) Then _
@@ -1695,7 +1695,7 @@ End Sub
 
 
 '@TestMethod
-Public Sub CopyNonNothingObjectsToArray_NothingOnlySourceArray_ReturnsFalse()
+Public Sub CopyNonNothingObjectsToVector_NothingOnlySourceArray_ReturnsFalse()
     On Error GoTo TestFail
     
     Dim SourceArray(5 To 6) As Variant
@@ -1708,7 +1708,7 @@ Public Sub CopyNonNothingObjectsToArray_NothingOnlySourceArray_ReturnsFalse()
     Set SourceArray(6) = Nothing
     
     'Act:
-    If Not modArraySupport.CopyNonNothingObjectsToArray( _
+    If Not modArraySupport.CopyNonNothingObjectsToVector( _
             SourceArray, _
             ResultArray _
     ) Then _

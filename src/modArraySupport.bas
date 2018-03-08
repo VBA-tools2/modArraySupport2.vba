@@ -23,7 +23,7 @@ Option Compare Text
 '     ConcatenateArrays
 '     CopyArray                        --> changed order of arguments
 '     CopyVectorSubSetToVector         --> renamed from 'CopyArraySubSetToArray'
-'     CopyNonNothingObjectsToArray
+'     CopyNonNothingObjectsToVector    --> renamed from 'CopyNonNothingObjectsToArray'
 '     DataTypeOfArray
 '     DeleteArrayElement
 '     ExpandArray
@@ -541,26 +541,25 @@ End Function
 
 
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-'CopyNonNothingObjectsToArray
-'This function copies all objects that are not Nothing from 'SourceArray'
-'to 'ResultArray'. 'ResultArray' MUST be a dynamic array of type 'Object' or
+'CopyNonNothingObjectsToVector
+'This function copies all objects that are not Nothing from 'SourceVector'
+'to 'ResultVector'. 'ResultVector' MUST be a dynamic array of type 'Object' or
 ''Variant', e.g.,
-'    Dim ResultArray() As Object
+'    Dim ResultVector() As Object
 'or
-'    Dim ResultArray() as Variant
+'    Dim ResultVector() as Variant
 '
-''ResultArray' will be erased and then resized to hold the non-Nothing elements
-'from 'SourceArray'. The 'LBound' of 'ResultArray' will be the same as the
-''LBound' of 'SourceArray', regardless of what its 'LBound' was prior to
-'calling this procedure.
+''ResultVector' will be erased and then resized to hold the non-Nothing
+'elements from 'SourceVector'. The 'LBound' of 'ResultVector' will be the same
+'as the 'LBound' of 'SourceVector', regardless of what its 'LBound' was prior
+'to calling this procedure.
 '
 'This function returns 'True' if the operation was successful or 'False' if an
 'error occurs.
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-'2do: rename to 'CopyNonNothingObjectsToVector'
-Public Function CopyNonNothingObjectsToArray( _
-    ByVal SourceArray As Variant, _
-    ByRef ResultArray As Variant _
+Public Function CopyNonNothingObjectsToVector( _
+    ByVal SourceVector As Variant, _
+    ByRef ResultVector As Variant _
         ) As Boolean
     
     Dim SrcNdx As Long
@@ -568,48 +567,49 @@ Public Function CopyNonNothingObjectsToArray( _
     
     
     'Set the default return value
-    CopyNonNothingObjectsToArray = False
+    CopyNonNothingObjectsToVector = False
     
-    If Not IsArrayDynamic(ResultArray) Then Exit Function
-    'Ensure 'ResultArray' is unallocated or single-dimensional
-    If NumberOfArrayDimensions(ResultArray) > 1 Then Exit Function
+    If Not IsArrayDynamic(ResultVector) Then Exit Function
+    'Ensure 'ResultVector' is unallocated or single-dimensional
+    If NumberOfArrayDimensions(ResultVector) > 1 Then Exit Function
     
-    'Ensure that all the elements of 'SourceArray' are in fact objects
-    If Not IsArrayObjects(SourceArray) Then Exit Function
+    'Ensure that all the elements of 'SourceVector' are in fact objects
+    If Not IsArrayObjects(SourceVector) Then Exit Function
     
-    'Erase the 'ResultArray'. Since 'ResultArray' is dynamic, this will release
-    'the memory used by 'ResultArray' and return the array to an unallocated
-    'state.
-    Erase ResultArray
-    'Now, size 'ResultArray' to the size of 'SourceArray'. After moving all the
-    'non-Nothing elements, we'll do another resize to get 'ResultArray' to the
-    'used size. This method allows us to avoid 'ReDim Preserve' for every element.
-    ReDim ResultArray(LBound(SourceArray) To UBound(SourceArray))
+    'Erase the 'ResultVector'. Since 'ResultVector' is dynamic, this will
+    'release the memory used by 'ResultVector' and return the array to an
+    'unallocated state.
+    Erase ResultVector
+    'Now, size 'ResultVector' to the size of 'SourceVector'. After moving all
+    'the non-Nothing elements, we'll do another resize to get 'ResultVector' to
+    'the used size. This method allows us to avoid 'ReDim Preserve' for every
+    'element.
+    ReDim ResultVector(LBound(SourceVector) To UBound(SourceVector))
     
-    ResNdx = LBound(SourceArray)
-    For SrcNdx = LBound(SourceArray) To UBound(SourceArray)
-        If Not SourceArray(SrcNdx) Is Nothing Then
-            Set ResultArray(ResNdx) = SourceArray(SrcNdx)
+    ResNdx = LBound(SourceVector)
+    For SrcNdx = LBound(SourceVector) To UBound(SourceVector)
+        If Not SourceVector(SrcNdx) Is Nothing Then
+            Set ResultVector(ResNdx) = SourceVector(SrcNdx)
             ResNdx = ResNdx + 1
         End If
     Next
     
     'Now that we've copied all the non-Nothing elements we call 'ReDim Preserve'
-    'to resize the 'ResultArray' to the size actually used. Test 'ResNdx' to see
-    'if we actually copied any elements.
+    'to resize the 'ResultVector' to the size actually used. Test 'ResNdx' to
+    'see if we actually copied any elements.
     '
-    'If 'ResNdx > LBound(SourceArray)' then we copied at least one element out
-    'of 'SourceArray' ...
-    If ResNdx > LBound(SourceArray) Then
-        ReDim Preserve ResultArray(LBound(ResultArray) To ResNdx - 1)
-    '... otherwise we didn't copy any elements from 'SourceArray'
-    '(all elements in 'SourceArray' were 'Nothing'). In this case,
-    ''Erase ResultArray'.
+    'If 'ResNdx > LBound(SourceVector)' then we copied at least one element out
+    'of 'SourceVector' ...
+    If ResNdx > LBound(SourceVector) Then
+        ReDim Preserve ResultVector(LBound(ResultVector) To ResNdx - 1)
+    '... otherwise we didn't copy any elements from 'SourceVector'
+    '(all elements in 'SourceVector' were 'Nothing'). In this case,
+    ''Erase ResultVector'.
     Else
-        Erase ResultArray
+        Erase ResultVector
     End If
     
-    CopyNonNothingObjectsToArray = True
+    CopyNonNothingObjectsToVector = True
     
 End Function
 
