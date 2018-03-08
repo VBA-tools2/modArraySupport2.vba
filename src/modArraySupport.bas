@@ -22,7 +22,7 @@ Option Compare Text
 '     CompareVectors                   --> renamed from 'CompareArrays'
 '     ConcatenateArrays
 '     CopyArray                        --> changed order of arguments
-'     CopyArraySubSetToArray
+'     CopyVectorSubSetToVector         --> renamed from 'CopyArraySubSetToArray'
 '     CopyNonNothingObjectsToArray
 '     DataTypeOfArray
 '     DeleteArrayElement
@@ -412,21 +412,19 @@ End Function
 
 
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-'CopyArraySubSetToArray
-'This function copies elements of 'SourceArray' to 'ResultArray'. It takes the
-'elements from 'FirstElementToCopy' to 'LastElementToCopy' (inclusive) from
-''SourceArray' and copies them to 'ResultArray', starting at 'DestinationElement'.
-'Existing data in 'ResultArray' will be overwritten. If 'ResultArray' is a
-'dynamic array, it will be resized if needed. If 'ResultArray' is a static
+'CopyVectorSubSetToVector
+'This function copies elements of 'SourceVector' to 'ResultVector'. It takes
+'the elements from 'FirstElementToCopy' to 'LastElementToCopy' (inclusive) from
+''SourceVector' and copies them to 'ResultVector', starting at 'DestinationElement'.
+'Existing data in 'ResultVector' will be overwritten. If 'ResultVector' is a
+'dynamic array, it will be resized if needed. If 'ResultVector' is a static
 'array and it is not large enough to copy all the elements, no elements are
 'copied and the function returns 'False'.
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-'2do: - a better name might be 'CopyVectorSubSetToVector' since only Vectors are
-'       allowed
-'     - add type compatibility checking (as optional argument)?
-Public Function CopyArraySubSetToArray( _
-    ByVal SourceArray As Variant, _
-    ByRef ResultArray As Variant, _
+'2do: add type compatibility checking (as optional argument)?
+Public Function CopyVectorSubSetToVector( _
+    ByVal SourceVector As Variant, _
+    ByRef ResultVector As Variant, _
     ByVal FirstElementToCopy As Long, _
     ByVal LastElementToCopy As Long, _
     ByVal DestinationElement As Long _
@@ -434,111 +432,110 @@ Public Function CopyArraySubSetToArray( _
     
     Dim SrcNdx As Long
     Dim ResNdx As Long
-    Dim LBoundOrgResultArray As Long
-    Dim UBoundOrgResultArray As Long
+    Dim LBoundOrgResultVector As Long
+    Dim UBoundOrgResultVector As Long
     Dim NumElementsToCopy As Long
-    Dim FinalIndexToCopyInResultArray As Long
+    Dim FinalIndexToCopyInResultVector As Long
     Dim TempArray() As Variant
     
     
     'Set the default return value
-    CopyArraySubSetToArray = False
+    CopyVectorSubSetToVector = False
     
-    If Not IsArray(SourceArray) Then Exit Function
-    If Not IsArray(ResultArray) Then Exit Function
-    If NumberOfArrayDimensions(SourceArray) <> 1 Then Exit Function
-    'Ensure 'ResultArray' is unallocated or single dimensional
-    If NumberOfArrayDimensions(ResultArray) > 1 Then Exit Function
+    If Not IsArray(SourceVector) Then Exit Function
+    If Not IsArray(ResultVector) Then Exit Function
+    If NumberOfArrayDimensions(SourceVector) <> 1 Then Exit Function
+    'Ensure 'ResultVector' is unallocated or single dimensional
+    If NumberOfArrayDimensions(ResultVector) > 1 Then Exit Function
     
     'Ensure the bounds and indices are valid
-    If FirstElementToCopy < LBound(SourceArray) Then Exit Function
-    If LastElementToCopy > UBound(SourceArray) Then Exit Function
+    If FirstElementToCopy < LBound(SourceVector) Then Exit Function
+    If LastElementToCopy > UBound(SourceVector) Then Exit Function
     If FirstElementToCopy > LastElementToCopy Then Exit Function
     
     
-    'Store bounds of (original) 'ResultArray'
-        'in case 'ResultArray' is unallocated and thus has no bounds
+    'Store bounds of (original) 'ResultVector'
+        'in case 'ResultVector' is unallocated and thus has no bounds
         On Error Resume Next
-    LBoundOrgResultArray = LBound(ResultArray)
-    UBoundOrgResultArray = UBound(ResultArray)
+    LBoundOrgResultVector = LBound(ResultVector)
+    UBoundOrgResultVector = UBound(ResultVector)
         On Error GoTo 0
     
-    'Calculate the number of elements we'll copy from 'SourceArray' to 'ResultArray'
+    'Calculate the number of elements we'll copy from 'SourceVector' to 'ResultVector'
     NumElementsToCopy = LastElementToCopy - FirstElementToCopy + 1
     
-    'Calculate the final element/index to copy in 'ResultArray'
-    FinalIndexToCopyInResultArray = DestinationElement + NumElementsToCopy - 1
+    'Calculate the final element/index to copy in 'ResultVector'
+    FinalIndexToCopyInResultVector = DestinationElement + NumElementsToCopy - 1
     
-    If Not IsArrayDynamic(ResultArray) Then
-        If (FirstElementToCopy < LBoundOrgResultArray) Or _
-                (FinalIndexToCopyInResultArray <= UBoundOrgResultArray) Then
-            ''ResultArray' is static and can't be resized.
-            'There is not enough room in the array to copy all the data.
+    If Not IsArrayDynamic(ResultVector) Then
+        If (FirstElementToCopy < LBoundOrgResultVector) Or _
+                (FinalIndexToCopyInResultVector <= UBoundOrgResultVector) Then
+            ''ResultVector' is static and can't be resized.
+            'There is not enough room in the vector to copy all the data.
             Exit Function
         End If
-    ''ResultArray' is dynamic and can be resized
+    ''ResultVector' is dynamic and can be resized
     Else
-        'Test whether we need to resize the array, and resize it if required
-        If Not IsArrayAllocated(ResultArray) Then
-            ''ResultArray' is unallocated. Resize it to
-            ''FinalIndexToCopyInResultArray'.
+        'Test whether we need to resize the ResultVector, and resize it if required
+        If Not IsArrayAllocated(ResultVector) Then
+            ''ResultVector' is unallocated. Resize it to 'FinalIndexToCopyInResultVector'.
             'This provides empty elements to the left of the 'DestinationElement'
             'and room to copy 'NumElementsToCopy',
             'if 'DestinationElement' is larger than 'Option Base' ...
             If DestinationElement > 1 Then
-                ReDim ResultArray(1 To FinalIndexToCopyInResultArray)
+                ReDim ResultVector(1 To FinalIndexToCopyInResultVector)
             '... and maybe empty elements to the right, if the largest element is
             'smaller than 'Option Base'
-            ElseIf FinalIndexToCopyInResultArray < 1 Then
-                ReDim ResultArray(DestinationElement To 1)
+            ElseIf FinalIndexToCopyInResultVector < 1 Then
+                ReDim ResultVector(DestinationElement To 1)
             Else
-                ReDim ResultArray(DestinationElement To FinalIndexToCopyInResultArray)
+                ReDim ResultVector(DestinationElement To FinalIndexToCopyInResultVector)
             End If
-        ''ResultArray' is allocated.
+        ''ResultVector' is allocated.
         Else
-            If (DestinationElement >= LBoundOrgResultArray) And _
-                    (FinalIndexToCopyInResultArray <= UBoundOrgResultArray) Then
+            If (DestinationElement >= LBoundOrgResultVector) And _
+                    (FinalIndexToCopyInResultVector <= UBoundOrgResultVector) Then
                 'nothing to do in this case
-            ElseIf (DestinationElement <= LBoundOrgResultArray) And _
-                    (FinalIndexToCopyInResultArray >= UBoundOrgResultArray) Then
-                'in this case all elements of 'ResultArray' will be overwritten
-                'just 'ReDim ResultArray'
-                ReDim ResultArray(DestinationElement To FinalIndexToCopyInResultArray)
-            ElseIf DestinationElement < LBoundOrgResultArray Then
+            ElseIf (DestinationElement <= LBoundOrgResultVector) And _
+                    (FinalIndexToCopyInResultVector >= UBoundOrgResultVector) Then
+                'in this case all elements of 'ResultVector' will be overwritten
+                'just 'ReDim ResultVector'
+                ReDim ResultVector(DestinationElement To FinalIndexToCopyInResultVector)
+            ElseIf DestinationElement < LBoundOrgResultVector Then
                 'when we ReDim the 'LBound' the data are shifted to the new indices
-                'as well, e.g. a former 'ResultArray(0) = 10' would become
-                ''ResultArray(-2) = 10' if 'DestinationElement = -2' etc.
+                'as well, e.g. a former 'ResultVector(0) = 10' would become
+                ''ResultVector(-2) = 10' if 'DestinationElement = -2' etc.
                 'Thus, we have to restore the elements that are not overwritten.
                 
-                'before 'ReDim'ing 'ResultArray' make a dummy copy of it
-                If Not CopyArray(ResultArray, TempArray) Then Exit Function
-                ReDim Preserve ResultArray(DestinationElement To UBoundOrgResultArray)
+                'before 'ReDim'ing 'ResultVector' make a dummy copy of it
+                If Not CopyArray(ResultVector, TempArray) Then Exit Function
+                ReDim Preserve ResultVector(DestinationElement To UBoundOrgResultVector)
                 
                 'only copy the elements back that will not be overwritten
-                For ResNdx = FinalIndexToCopyInResultArray + 1 To UBoundOrgResultArray
-                    ResultArray(ResNdx) = TempArray(ResNdx)
+                For ResNdx = FinalIndexToCopyInResultVector + 1 To UBoundOrgResultVector
+                    ResultVector(ResNdx) = TempArray(ResNdx)
                 Next
-            ElseIf FinalIndexToCopyInResultArray > UBoundOrgResultArray Then
-                ReDim Preserve ResultArray(LBoundOrgResultArray To FinalIndexToCopyInResultArray)
+            ElseIf FinalIndexToCopyInResultVector > UBoundOrgResultVector Then
+                ReDim Preserve ResultVector(LBoundOrgResultVector To FinalIndexToCopyInResultVector)
             End If
         End If
     End If
     
-    'Copy the elements from 'SourceArray' to 'ResultArray'.
+    'Copy the elements from 'SourceVector' to 'ResultVector'.
     'Note that there is no type compatibility checking when copying the elements.
     ResNdx = DestinationElement
     For SrcNdx = FirstElementToCopy To LastElementToCopy
-        If IsObject(SourceArray(SrcNdx)) Then
-            Set ResultArray(ResNdx) = SourceArray(SrcNdx)
+        If IsObject(SourceVector(SrcNdx)) Then
+            Set ResultVector(ResNdx) = SourceVector(SrcNdx)
         Else
             On Error Resume Next
-            ResultArray(ResNdx) = SourceArray(SrcNdx)
+            ResultVector(ResNdx) = SourceVector(SrcNdx)
             On Error GoTo 0
         End If
         ResNdx = ResNdx + 1
     Next
     
-    CopyArraySubSetToArray = True
+    CopyVectorSubSetToVector = True
     
 End Function
 

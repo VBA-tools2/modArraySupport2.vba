@@ -689,11 +689,11 @@ End Sub
 
 
 '==============================================================================
-'unit tests for 'CopyArraySubSetToArray'
+'unit tests for 'CopyVectorSubSetToVector'
 '==============================================================================
 
 '@TestMethod
-Public Sub CopyArraySubSetToArray_ScalarInput_ReturnsFalse()
+Public Sub CopyVectorSubSetToVector_ScalarInput_ReturnsFalse()
     On Error GoTo TestFail
     
     'Arrange:
@@ -709,7 +709,7 @@ Public Sub CopyArraySubSetToArray_ScalarInput_ReturnsFalse()
     
     'Act:
     'Assert:
-    Assert.IsFalse modArraySupport.CopyArraySubSetToArray( _
+    Assert.IsFalse modArraySupport.CopyVectorSubSetToVector( _
             Scalar, _
             ResultArray, _
             FirstElementToCopy, _
@@ -725,7 +725,7 @@ End Sub
 
 
 '@TestMethod
-Public Sub CopyArraySubSetToArray_ScalarResult_ReturnsFalse()
+Public Sub CopyVectorSubSetToVector_ScalarResult_ReturnsFalse()
     On Error GoTo TestFail
     
     'Arrange:
@@ -741,7 +741,7 @@ Public Sub CopyArraySubSetToArray_ScalarResult_ReturnsFalse()
     
     'Act:
     'Assert:
-    Assert.IsFalse modArraySupport.CopyArraySubSetToArray( _
+    Assert.IsFalse modArraySupport.CopyVectorSubSetToVector( _
             InputArray, _
             ScalarResult, _
             FirstElementToCopy, _
@@ -757,7 +757,7 @@ End Sub
 
 
 '@TestMethod
-Public Sub CopyArraySubSetToArray_UnallocatedInputArray_ReturnsFalse()
+Public Sub CopyVectorSubSetToVector_UnallocatedInputArray_ReturnsFalse()
     On Error GoTo TestFail
     
     'Arrange:
@@ -773,7 +773,7 @@ Public Sub CopyArraySubSetToArray_UnallocatedInputArray_ReturnsFalse()
     
     'Act:
     'Assert:
-    Assert.IsFalse modArraySupport.CopyArraySubSetToArray( _
+    Assert.IsFalse modArraySupport.CopyVectorSubSetToVector( _
             InputArray, _
             ResultArray, _
             FirstElementToCopy, _
@@ -789,7 +789,7 @@ End Sub
 
 
 '@TestMethod
-Public Sub CopyArraySubSetToArray_2DInputArray_ReturnsFalse()
+Public Sub CopyVectorSubSetToVector_2DInputArray_ReturnsFalse()
     On Error GoTo TestFail
     
     Dim InputArray() As Long
@@ -807,7 +807,7 @@ Public Sub CopyArraySubSetToArray_2DInputArray_ReturnsFalse()
     
     'Act:
     'Assert:
-    Assert.IsFalse modArraySupport.CopyArraySubSetToArray( _
+    Assert.IsFalse modArraySupport.CopyVectorSubSetToVector( _
             InputArray, _
             ResultArray, _
             FirstElementToCopy, _
@@ -823,7 +823,7 @@ End Sub
 
 
 '@TestMethod
-Public Sub CopyArraySubSetToArray_2DResultArray_ReturnsFalse()
+Public Sub CopyVectorSubSetToVector_2DResultArray_ReturnsFalse()
     On Error GoTo TestFail
     
     Dim InputArray() As Long
@@ -842,7 +842,7 @@ Public Sub CopyArraySubSetToArray_2DResultArray_ReturnsFalse()
     
     'Act:
     'Assert:
-    Assert.IsFalse modArraySupport.CopyArraySubSetToArray( _
+    Assert.IsFalse modArraySupport.CopyVectorSubSetToVector( _
             InputArray, _
             ResultArray, _
             FirstElementToCopy, _
@@ -858,7 +858,7 @@ End Sub
 
 
 '@TestMethod
-Public Sub CopyArraySubSetToArray_TooSmallFirstElementToCopy_ReturnsFalse()
+Public Sub CopyVectorSubSetToVector_TooSmallFirstElementToCopy_ReturnsFalse()
     On Error GoTo TestFail
     
     Dim InputArray() As Long
@@ -877,7 +877,7 @@ Public Sub CopyArraySubSetToArray_TooSmallFirstElementToCopy_ReturnsFalse()
     
     'Act:
     'Assert:
-    Assert.IsFalse modArraySupport.CopyArraySubSetToArray( _
+    Assert.IsFalse modArraySupport.CopyVectorSubSetToVector( _
             InputArray, _
             ResultArray, _
             FirstElementToCopy, _
@@ -893,7 +893,7 @@ End Sub
 
 
 '@TestMethod
-Public Sub CopyArraySubSetToArray_TooLargeLastElementToCopy_ReturnsFalse()
+Public Sub CopyVectorSubSetToVector_TooLargeLastElementToCopy_ReturnsFalse()
     On Error GoTo TestFail
     
     Dim InputArray() As Long
@@ -912,7 +912,7 @@ Public Sub CopyArraySubSetToArray_TooLargeLastElementToCopy_ReturnsFalse()
     
     'Act:
     'Assert:
-    Assert.IsFalse modArraySupport.CopyArraySubSetToArray( _
+    Assert.IsFalse modArraySupport.CopyVectorSubSetToVector( _
             InputArray, _
             ResultArray, _
             FirstElementToCopy, _
@@ -928,7 +928,7 @@ End Sub
 
 
 '@TestMethod
-Public Sub CopyArraySubSetToArray_FirstElementLargerLastElement_ReturnsFalse()
+Public Sub CopyVectorSubSetToVector_FirstElementLargerLastElement_ReturnsFalse()
     On Error GoTo TestFail
     
     Dim InputArray() As Long
@@ -947,7 +947,7 @@ Public Sub CopyArraySubSetToArray_FirstElementLargerLastElement_ReturnsFalse()
     
     'Act:
     'Assert:
-    Assert.IsFalse modArraySupport.CopyArraySubSetToArray( _
+    Assert.IsFalse modArraySupport.CopyVectorSubSetToVector( _
             InputArray, _
             ResultArray, _
             FirstElementToCopy, _
@@ -963,7 +963,7 @@ End Sub
 
 
 '@TestMethod
-Public Sub CopyArraySubSetToArray_NotEnoughRoomInStaticResultArray_ReturnsFalse()
+Public Sub CopyVectorSubSetToVector_NotEnoughRoomInStaticResultArray_ReturnsFalse()
     On Error GoTo TestFail
     
     'Arrange:
@@ -979,7 +979,7 @@ Public Sub CopyArraySubSetToArray_NotEnoughRoomInStaticResultArray_ReturnsFalse(
     
     'Act:
     'Assert:
-    Assert.IsTrue modArraySupport.CopyArraySubSetToArray( _
+    Assert.IsTrue modArraySupport.CopyVectorSubSetToVector( _
             InputArray, _
             ResultArray, _
             FirstElementToCopy, _
@@ -995,7 +995,7 @@ End Sub
 
 
 '@TestMethod
-Public Sub CopyArraySubSetToArray_TooSmallDestinationElementInStaticResultArray_ReturnsFalse()
+Public Sub CopyVectorSubSetToVector_TooSmallDestinationElementInStaticResultArray_ReturnsFalse()
     On Error GoTo TestFail
     
     Dim InputArray(0 To 1) As Long
@@ -1018,7 +1018,7 @@ Public Sub CopyArraySubSetToArray_TooSmallDestinationElementInStaticResultArray_
     
     'Act:
     'Assert:
-    Assert.IsFalse modArraySupport.CopyArraySubSetToArray( _
+    Assert.IsFalse modArraySupport.CopyVectorSubSetToVector( _
             InputArray, _
             ResultArray, _
             FirstElementToCopy, _
@@ -1034,7 +1034,7 @@ End Sub
 
 
 '@TestMethod
-Public Sub CopyArraySubSetToArray_UnallocatedResultArrayDestinationElementLargerBase_ReturnsTrueAndResultArray()
+Public Sub CopyVectorSubSetToVector_UnallocatedResultArrayDestinationElementLargerBase_ReturnsTrueAndResultArray()
     On Error GoTo TestFail
     
     Dim InputArray(10 To 11) As Long
@@ -1059,7 +1059,7 @@ Public Sub CopyArraySubSetToArray_UnallocatedResultArrayDestinationElementLarger
     InputArray(11) = 20
     
     'Act:
-    If Not modArraySupport.CopyArraySubSetToArray( _
+    If Not modArraySupport.CopyVectorSubSetToVector( _
             InputArray, _
             ResultArray, _
             FirstElementToCopy, _
@@ -1079,7 +1079,7 @@ End Sub
 
 
 '@TestMethod
-Public Sub CopyArraySubSetToArray_UnallocatedResultArrayLastDestinationElementSmallerBase_ReturnsTrueAndResultArray()
+Public Sub CopyVectorSubSetToVector_UnallocatedResultArrayLastDestinationElementSmallerBase_ReturnsTrueAndResultArray()
     On Error GoTo TestFail
     
     Dim InputArray(10 To 11) As Long
@@ -1106,7 +1106,7 @@ Public Sub CopyArraySubSetToArray_UnallocatedResultArrayLastDestinationElementSm
     InputArray(11) = 20
     
     'Act:
-    If Not modArraySupport.CopyArraySubSetToArray( _
+    If Not modArraySupport.CopyVectorSubSetToVector( _
             InputArray, _
             ResultArray, _
             FirstElementToCopy, _
@@ -1126,7 +1126,7 @@ End Sub
 
 
 '@TestMethod
-Public Sub CopyArraySubSetToArray_UnallocatedResultArrayFromNegToPos_ReturnsTrueAndResultArray()
+Public Sub CopyVectorSubSetToVector_UnallocatedResultArrayFromNegToPos_ReturnsTrueAndResultArray()
     On Error GoTo TestFail
     
     Dim InputArray(10 To 13) As Long
@@ -1152,7 +1152,7 @@ Public Sub CopyArraySubSetToArray_UnallocatedResultArrayFromNegToPos_ReturnsTrue
     InputArray(13) = 40
     
     'Act:
-    If Not modArraySupport.CopyArraySubSetToArray( _
+    If Not modArraySupport.CopyVectorSubSetToVector( _
             InputArray, _
             ResultArray, _
             FirstElementToCopy, _
@@ -1172,7 +1172,7 @@ End Sub
 
 
 '@TestMethod
-Public Sub CopyArraySubSetToArray_UnallocatedResultArray_ReturnsTrueAndResultArray()
+Public Sub CopyVectorSubSetToVector_UnallocatedResultArray_ReturnsTrueAndResultArray()
     On Error GoTo TestFail
     
     Dim InputArray(10 To 11) As Long
@@ -1193,7 +1193,7 @@ Public Sub CopyArraySubSetToArray_UnallocatedResultArray_ReturnsTrueAndResultArr
     InputArray(11) = 1
     
     'Act:
-    If Not modArraySupport.CopyArraySubSetToArray( _
+    If Not modArraySupport.CopyVectorSubSetToVector( _
             InputArray, _
             ResultArray, _
             FirstElementToCopy, _
@@ -1213,7 +1213,7 @@ End Sub
 
 
 '@TestMethod
-Public Sub CopyArraySubSetToArray_SubArrayLargerThanAllocatedResultArray1_ReturnsTrueAndResultArray()
+Public Sub CopyVectorSubSetToVector_SubArrayLargerThanAllocatedResultArray1_ReturnsTrueAndResultArray()
     On Error GoTo TestFail
     
     Dim InputArray(10 To 13) As Long
@@ -1243,7 +1243,7 @@ Public Sub CopyArraySubSetToArray_SubArrayLargerThanAllocatedResultArray1_Return
     ResultArray(1) = 20
     
     'Act:
-    If Not modArraySupport.CopyArraySubSetToArray( _
+    If Not modArraySupport.CopyVectorSubSetToVector( _
             InputArray, _
             ResultArray, _
             FirstElementToCopy, _
@@ -1263,7 +1263,7 @@ End Sub
 
 
 '@TestMethod
-Public Sub CopyArraySubSetToArray_SubArrayLargerThanAllocatedResultArray2_ReturnsTrueAndResultArray()
+Public Sub CopyVectorSubSetToVector_SubArrayLargerThanAllocatedResultArray2_ReturnsTrueAndResultArray()
     On Error GoTo TestFail
     
     Dim InputArray(10 To 12) As Long
@@ -1291,7 +1291,7 @@ Public Sub CopyArraySubSetToArray_SubArrayLargerThanAllocatedResultArray2_Return
     ResultArray(1) = 20
     
     'Act:
-    If Not modArraySupport.CopyArraySubSetToArray( _
+    If Not modArraySupport.CopyVectorSubSetToVector( _
             InputArray, _
             ResultArray, _
             FirstElementToCopy, _
@@ -1311,7 +1311,7 @@ End Sub
 
 
 '@TestMethod
-Public Sub CopyArraySubSetToArray_SubArrayLargerThanAllocatedResultArray3_ReturnsTrueAndResultArray()
+Public Sub CopyVectorSubSetToVector_SubArrayLargerThanAllocatedResultArray3_ReturnsTrueAndResultArray()
     On Error GoTo TestFail
     
     Dim InputArray(10 To 12) As Long
@@ -1339,7 +1339,7 @@ Public Sub CopyArraySubSetToArray_SubArrayLargerThanAllocatedResultArray3_Return
     ResultArray(2) = 20
     
     'Act:
-    If Not modArraySupport.CopyArraySubSetToArray( _
+    If Not modArraySupport.CopyVectorSubSetToVector( _
             InputArray, _
             ResultArray, _
             FirstElementToCopy, _
@@ -1359,7 +1359,7 @@ End Sub
 
 
 '@TestMethod
-Public Sub CopyArraySubSetToArray_TooSmallFirstDestinationElementInDynamicAllocatedResultArray_ReturnsTrueAndResultArray()
+Public Sub CopyVectorSubSetToVector_TooSmallFirstDestinationElementInDynamicAllocatedResultArray_ReturnsTrueAndResultArray()
     On Error GoTo TestFail
     
     Dim InputArray(10 To 11) As Long
@@ -1386,7 +1386,7 @@ Public Sub CopyArraySubSetToArray_TooSmallFirstDestinationElementInDynamicAlloca
     ResultArray(1) = 20
     
     'Act:
-    If Not modArraySupport.CopyArraySubSetToArray( _
+    If Not modArraySupport.CopyVectorSubSetToVector( _
             InputArray, _
             ResultArray, _
             FirstElementToCopy, _
@@ -1406,7 +1406,7 @@ End Sub
 
 
 '@TestMethod
-Public Sub CopyArraySubSetToArray_TooLargeLastDestinationElementInDynamicAllocatedResultArray_ReturnsTrueAndResultArray()
+Public Sub CopyVectorSubSetToVector_TooLargeLastDestinationElementInDynamicAllocatedResultArray_ReturnsTrueAndResultArray()
     On Error GoTo TestFail
     
     Dim InputArray(10 To 11) As Long
@@ -1433,7 +1433,7 @@ Public Sub CopyArraySubSetToArray_TooLargeLastDestinationElementInDynamicAllocat
     ResultArray(1) = 20
     
     'Act:
-    If Not modArraySupport.CopyArraySubSetToArray( _
+    If Not modArraySupport.CopyVectorSubSetToVector( _
             InputArray, _
             ResultArray, _
             FirstElementToCopy, _
@@ -1453,7 +1453,7 @@ End Sub
 
 
 '@TestMethod
-Public Sub CopyArraySubSetToArray_DestinationElementEvenLargerThanUboundInDynamicAllocatedResultArray_ReturnsTrueAndResultArray()
+Public Sub CopyVectorSubSetToVector_DestinationElementEvenLargerThanUboundInDynamicAllocatedResultArray_ReturnsTrueAndResultArray()
     On Error GoTo TestFail
     
     Dim InputArray(10 To 11) As Long
@@ -1484,7 +1484,7 @@ Public Sub CopyArraySubSetToArray_DestinationElementEvenLargerThanUboundInDynami
     ResultArray(1) = 20
     
     'Act:
-    If Not modArraySupport.CopyArraySubSetToArray( _
+    If Not modArraySupport.CopyVectorSubSetToVector( _
             InputArray, _
             ResultArray, _
             FirstElementToCopy, _
@@ -1504,7 +1504,7 @@ End Sub
 
 
 '@TestMethod
-Public Sub CopyArraySubSetToArray_TestWithObjects_ReturnsTrueAndResultArray()
+Public Sub CopyVectorSubSetToVector_TestWithObjects_ReturnsTrueAndResultArray()
     On Error GoTo TestFail
     
     Dim InputArray(10 To 11) As Object
@@ -1536,7 +1536,7 @@ Public Sub CopyArraySubSetToArray_TestWithObjects_ReturnsTrueAndResultArray()
     End With
     
     'Act:
-    If Not modArraySupport.CopyArraySubSetToArray( _
+    If Not modArraySupport.CopyVectorSubSetToVector( _
             InputArray, _
             ResultArray, _
             FirstElementToCopy, _
