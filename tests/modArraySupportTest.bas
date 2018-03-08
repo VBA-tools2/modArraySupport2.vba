@@ -2659,11 +2659,11 @@ End Sub
 
 
 '==============================================================================
-'unit tests for 'InsertElementIntoArray'
+'unit tests for 'InsertElementIntoVector'
 '==============================================================================
 
 '@TestMethod
-Public Sub InsertElementIntoArray_StaticInputArray_ReturnsFalse()
+Public Sub InsertElementIntoVector_StaticInputArray_ReturnsFalse()
     On Error GoTo TestFail
     
     'Arrange:
@@ -2677,7 +2677,7 @@ Public Sub InsertElementIntoArray_StaticInputArray_ReturnsFalse()
     
     'Act:
     'Assert:
-    Assert.IsFalse modArraySupport.InsertElementIntoArray( _
+    Assert.IsFalse modArraySupport.InsertElementIntoVector( _
             InputArray, _
             Index, _
             Value _
@@ -2691,7 +2691,7 @@ End Sub
 
 
 '@TestMethod
-Public Sub InsertElementIntoArray_2DInputArray_ReturnsFalse()
+Public Sub InsertElementIntoVector_2DInputArray_ReturnsFalse()
     On Error GoTo TestFail
     
     Dim InputArray() As Long
@@ -2707,7 +2707,7 @@ Public Sub InsertElementIntoArray_2DInputArray_ReturnsFalse()
     
     'Act:
     'Assert:
-    Assert.IsFalse modArraySupport.InsertElementIntoArray( _
+    Assert.IsFalse modArraySupport.InsertElementIntoVector( _
             InputArray, _
             Index, _
             Value _
@@ -2721,7 +2721,7 @@ End Sub
 
 
 '@TestMethod
-Public Sub InsertElementIntoArray_TooSmallIndex_ReturnsFalse()
+Public Sub InsertElementIntoVector_TooSmallIndex_ReturnsFalse()
     On Error GoTo TestFail
     
     Dim InputArray() As Long
@@ -2737,7 +2737,7 @@ Public Sub InsertElementIntoArray_TooSmallIndex_ReturnsFalse()
     
     'Act:
     'Assert:
-    Assert.IsFalse modArraySupport.InsertElementIntoArray( _
+    Assert.IsFalse modArraySupport.InsertElementIntoVector( _
             InputArray, _
             Index, _
             Value _
@@ -2751,7 +2751,7 @@ End Sub
 
 
 '@TestMethod
-Public Sub InsertElementIntoArray_TooLargeIndex_ReturnsFalse()
+Public Sub InsertElementIntoVector_TooLargeIndex_ReturnsFalse()
     On Error GoTo TestFail
     
     Dim InputArray() As Long
@@ -2767,7 +2767,7 @@ Public Sub InsertElementIntoArray_TooLargeIndex_ReturnsFalse()
     
     'Act:
     'Assert:
-    Assert.IsFalse modArraySupport.InsertElementIntoArray( _
+    Assert.IsFalse modArraySupport.InsertElementIntoVector( _
             InputArray, _
             Index, _
             Value _
@@ -2781,7 +2781,7 @@ End Sub
 
 
 '@TestMethod
-Public Sub InsertElementIntoArray_WrongValueType_ReturnsFalseAndUnchangedInputArray()
+Public Sub InsertElementIntoVector_WrongValueType_ReturnsFalseAndUnchangedInputArray()
     On Error GoTo TestFail
     
     Dim InputArray() As Long
@@ -2803,7 +2803,7 @@ Public Sub InsertElementIntoArray_WrongValueType_ReturnsFalseAndUnchangedInputAr
     
     'Act:
     'Assert:
-    Assert.IsFalse modArraySupport.InsertElementIntoArray( _
+    Assert.IsFalse modArraySupport.InsertElementIntoVector( _
             InputArray, _
             Index, _
             Value _
@@ -2818,7 +2818,7 @@ End Sub
 
 
 '@TestMethod
-Public Sub InsertElementIntoArray_ValidTestWithLongs_ReturnsTrueAndChangedInputArray()
+Public Sub InsertElementIntoVector_ValidTestWithLongs_ReturnsTrueAndChangedInputArray()
     On Error GoTo TestFail
     
     Dim InputArray() As Long
@@ -2840,7 +2840,7 @@ Public Sub InsertElementIntoArray_ValidTestWithLongs_ReturnsTrueAndChangedInputA
     InputArray(6) = 11
     
     'Act:
-    If Not modArraySupport.InsertElementIntoArray( _
+    If Not modArraySupport.InsertElementIntoVector( _
             InputArray, _
             Index, _
             Value _
@@ -2858,7 +2858,7 @@ End Sub
 
 
 '@TestMethod
-Public Sub InsertElementIntoArray_ValidTestWithStrings_ReturnsTrueAndChangedInputArray()
+Public Sub InsertElementIntoVector_ValidTestWithStrings_ReturnsTrueAndChangedInputArray()
     On Error GoTo TestFail
     
     Dim InputArray() As String
@@ -2881,7 +2881,7 @@ Public Sub InsertElementIntoArray_ValidTestWithStrings_ReturnsTrueAndChangedInpu
     InputArray(6) = vbNullString
     
     'Act:
-    If Not modArraySupport.InsertElementIntoArray( _
+    If Not modArraySupport.InsertElementIntoVector( _
             InputArray, _
             Index, _
             Value _
@@ -2903,7 +2903,7 @@ End Sub
 
 
 '@TestMethod
-Public Sub InsertElementIntoArray_ValidTestWithObjects_ReturnsTrueAndChangedInputArray()
+Public Sub InsertElementIntoVector_ValidTestWithObjects_ReturnsTrueAndChangedInputArray()
     On Error GoTo TestFail
     
     Dim InputArray() As Object
@@ -2932,7 +2932,7 @@ Public Sub InsertElementIntoArray_ValidTestWithObjects_ReturnsTrueAndChangedInpu
         Set InputArray(6) = Nothing
         
         'Act:
-        If Not modArraySupport.InsertElementIntoArray( _
+        If Not modArraySupport.InsertElementIntoVector( _
                 InputArray, _
                 Index, _
                 Value _
