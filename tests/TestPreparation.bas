@@ -69,8 +69,8 @@ Public Sub InitializeWorksheet4Tests( _
         .Cells(8, 1).Value = "CompareVectors"
         .Cells(9, 1).Value = "ConcatenateArrays"
         .Cells(10, 1).Value = "CopyArray"
-        .Cells(11, 1).Value = "CopyVectorSubSetToVector"
-        .Cells(12, 1).Value = "CopyNonNothingObjectsToVector"
+        .Cells(11, 1).Value = "CopyNonNothingObjectsToVector"
+        .Cells(12, 1).Value = "CopyVectorSubSetToVector"
         .Cells(13, 1).Value = "DataTypeOfArray"
         .Cells(14, 1).Value = "DeleteVectorElement"
         .Cells(15, 1).Value = "ExpandArray"
@@ -87,13 +87,13 @@ Public Sub InitializeWorksheet4Tests( _
             .Font.Strikethrough = True
         End With
         .Cells(25, 1).Value = "IsArrayObjects"
-        .Cells(26, 1).Value = "IsVectorSorted"
-        .Cells(27, 1).Value = "IsNumericDataType"
-        .Cells(28, 1).Value = "IsVariantArrayConsistent"
-        With .Cells(29, 1)
+        .Cells(26, 1).Value = "IsNumericDataType"
+        .Cells(27, 1).Value = "IsVariantArrayConsistent"
+        With .Cells(28, 1)
             .Value = "IsVariantArrayNumeric"
             .Font.Strikethrough = True
         End With
+        .Cells(29, 1).Value = "IsVectorSorted"
         .Cells(30, 1).Value = "MoveEmptyStringsToEndOfVector"
         .Cells(31, 1).Value = "NumberOfArrayDimensions"
         .Cells(32, 1).Value = "NumElements"

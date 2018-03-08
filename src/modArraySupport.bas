@@ -22,8 +22,8 @@ Option Compare Text
 '     CompareVectors                   --> renamed from 'CompareArrays'
 '     ConcatenateArrays
 '     CopyArray                        --> changed order of arguments
-'     CopyVectorSubSetToVector         --> renamed from 'CopyArraySubSetToArray'
 '     CopyNonNothingObjectsToVector    --> renamed from 'CopyNonNothingObjectsToArray'
+'     CopyVectorSubSetToVector         --> renamed from 'CopyArraySubSetToArray'
 '     DataTypeOfArray
 '     DeleteVectorElement              --> renamed from 'DeleteArrayElement'
 '     ExpandArray
@@ -37,10 +37,10 @@ Option Compare Text
 '     IsArrayDynamic
 '     (IsArrayEmpty)                   --> = Not IsArrayAllocated
 '     IsArrayObjects
-'     IsVectorSorted                   --> renamed from 'IsArraySorted'
 '     IsNumericDataType
 '     IsVariantArrayConsistent
 '     (IsVariantArrayNumeric)          --> merged into `IsArrayAllNumeric'
+'     IsVectorSorted                   --> renamed from 'IsArraySorted'
 '     MoveEmptyStringsToEndOfVector    --> renamed from 'MoveEmptyStringsToEndOfArray'
 '     NumberOfArrayDimensions
 '     NumElements
@@ -61,6 +61,385 @@ Option Compare Text
 Private Const C_ERR_NO_ERROR As Long = 0
 Private Const C_ERR_SUBSCRIPT_OUT_OF_RANGE As Long = 9
 Private Const C_ERR_ARRAY_IS_FIXED_OR_LOCKED As Long = 10
+
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'AreDataTypesCompatible
+'This function determines if 'SourceVar' is compatible with 'DestVar'. If the
+'two data types are the same, they are compatible. If the value of 'SourceVar'
+'can be stored in 'DestVar' with no loss of precision or an overflow, they are
+'compatible.
+'For example, if 'DestVar' is a 'Long' and 'SourceVar' is an 'Integer', they
+'are compatible because an 'Integer' can be stored in a 'Long' with no loss of
+'information. If 'DestVar' is a 'Long' and 'SourceVar' is a 'Double', they are
+'not compatible because information will be lost converting from a 'Double' to
+'a 'Long' (the decimal portion will be lost).
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Public Function AreDataTypesCompatible( _
+    ByVal SourceVar As Variant, _
+    ByVal DestVar As Variant _
+        ) As Boolean
+    
+    Dim SVType As VbVarType
+    Dim DVType As VbVarType
+    
+    Dim LongLongType As Byte
+    LongLongType = DeclareLongLong
+    
+    
+    'Set the default return value
+    AreDataTypesCompatible = False
+    
+    'If one variable is an array and the other is not an array, they are incompatible
+    If (IsArray(SourceVar) And Not IsArray(DestVar)) Or _
+            (Not IsArray(SourceVar) And IsArray(DestVar)) Then
+        Exit Function
+    End If
+    
+    'If 'SourceVar' is an array, get the type of array. If it is an array its
+    ''VarType' is 'vbArray + VarType(element)' so we subtract 'vbArray' to get
+    'the data type of the array. E.g., the 'VarType' of an array of 'Long's is
+    '8195 = vbArray + vbLong,
+    '8195 - vbArray = vbLong (= 3).
+    If IsArray(SourceVar) Then
+        SVType = VarType(SourceVar) - vbArray
+    Else
+        SVType = VarType(SourceVar)
+    End If
+    'If 'DestVar' is an array, get the type of array
+    If IsArray(DestVar) Then
+        DVType = VarType(DestVar) - vbArray
+    Else
+        DVType = VarType(DestVar)
+    End If
+    
+    'Test the data type of 'DestVar' and return a result if 'SourceVar' is
+    'compatible with that type.
+    If SVType = DVType Then
+        'The variable types are the same --> they are compatible
+        AreDataTypesCompatible = True
+    'If the data types are not the same, determine whether they are compatible
+    Else
+        Select Case DVType
+            Case vbInteger
+                'there is no compatible match for that
+                '(that isn't already caught above)
+            Case vbLong, LongLongType
+                Select Case SVType
+                    Case vbInteger, vbLong, LongLongType
+                        AreDataTypesCompatible = True
+                End Select
+            Case vbSingle
+                Select Case SVType
+                    Case vbInteger, vbLong, LongLongType, vbSingle
+                        AreDataTypesCompatible = True
+                End Select
+            Case vbDouble
+                Select Case SVType
+                    Case vbInteger, vbLong, LongLongType, vbSingle, vbDouble
+                        AreDataTypesCompatible = True
+                End Select
+'            'this is already covered above
+'            Case vbString
+'                Select Case SVType
+'                    Case vbString
+'                        AreDataTypesCompatible = True
+'                End Select
+'            'this is already covered above
+'            Case vbObject
+'                Select Case SVType
+'                    Case vbObject
+'                        AreDataTypesCompatible = True
+'                End Select
+            Case vbBoolean
+                Select Case SVType
+                    Case vbBoolean, vbInteger
+                        AreDataTypesCompatible = True
+                End Select
+'            'this is already covered above
+'            Case vbByte
+'                Select Case SVType
+'                    Case vbByte
+'                        AreDataTypesCompatible = True
+'                End Select
+            Case vbCurrency
+                Select Case SVType
+                    Case vbInteger, vbLong, LongLongType, vbSingle, vbDouble
+                        AreDataTypesCompatible = True
+                End Select
+            Case vbDecimal
+                Select Case SVType
+                    Case vbInteger, vbLong, LongLongType, vbSingle, vbDouble
+                        AreDataTypesCompatible = True
+                End Select
+            Case vbDate
+                Select Case SVType
+                    Case vbLong, LongLongType, vbSingle, vbDouble
+                        AreDataTypesCompatible = True
+                End Select
+            Case vbEmpty
+                Select Case SVType
+                    Case vbVariant
+                        AreDataTypesCompatible = True
+                End Select
+            Case vbError
+            Case vbNull
+'            'this is already covered above
+'            Case vbObject
+'                Select Case SVType
+'                    Case vbObject
+'                        AreDataTypesCompatible = True
+'                End Select
+            Case vbVariant
+                'everything is compatible to a 'Variant'
+                AreDataTypesCompatible = True
+        End Select
+    End If
+    
+End Function
+
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'ChangeBoundsOfVector
+'This function changes the upper and lower bounds of the specified vector.
+''InputVector' MUST be a single-dimensional dynamic array.
+'If the new size of the vector (NewUpperBound - NewLowerBound + 1) is greater
+'than the original vector, the unused elements on the right side of the vector
+'are the default values for the data type of the vector. If the new size is
+'less than the original size, only the first (left-most) 'N' elements are
+'included in the new vector.
+'The elements of the vector may be simple variables ('String's, 'Long's, etc.),
+'objects, or arrays. User-Defined Types are not supported.
+'The function returns 'True' if successful, 'False' otherwise.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Public Function ChangeBoundsOfVector( _
+    ByRef InputVector As Variant, _
+    ByVal NewLowerBound As Long, _
+    Optional ByVal NewUpperBound As Variant _
+        ) As Boolean
+    
+    Dim TempVector() As Variant
+    Dim InNdx As Long
+    Dim OutNdx As Long
+    Dim TempNdx As Long
+    Dim FirstIsObject As Boolean
+    
+    
+    'Set the default return value
+    ChangeBoundsOfVector = False
+    
+    If IsMissing(NewUpperBound) Or IsEmpty(NewUpperBound) Then
+        NewUpperBound = NewLowerBound + UBound(InputVector) - LBound(InputVector)
+    ElseIf Not IsNumeric(NewUpperBound) Then
+        Exit Function
+    ElseIf NewUpperBound <> CLng(NewUpperBound) Then
+        Exit Function
+    End If
+    
+    If NewLowerBound > NewUpperBound Then Exit Function
+    If Not IsArrayDynamic(InputVector) Then Exit Function
+    If NumberOfArrayDimensions(InputVector) <> 1 Then Exit Function
+    
+    'We need to save the 'IsObject' status of the first element of 'InputVector'
+    'to properly handle 'Empty' variables if we are making the vector larger
+    'than it was before.
+    FirstIsObject = IsObject(InputVector(LBound(InputVector)))
+    
+    
+    'Resize 'TempVector' and save the values in 'InputVector' in 'TempVector'.
+    ''TempVector' will have an 'LBound' of 1 and a 'UBound' of the size of
+    '(NewUpperBound - NewLowerBound +1)
+    ReDim TempVector(1 To (NewUpperBound - NewLowerBound + 1))
+    'Load up 'TempVector'
+    TempNdx = 0
+    For InNdx = LBound(InputVector) To UBound(InputVector)
+        TempNdx = TempNdx + 1
+        If TempNdx > UBound(TempVector) Then
+            Exit For
+        End If
+        
+        If (IsObject(InputVector(InNdx)) = True) Then
+            If InputVector(InNdx) Is Nothing Then
+                Set TempVector(TempNdx) = Nothing
+            Else
+                Set TempVector(TempNdx) = InputVector(InNdx)
+            End If
+        Else
+            TempVector(TempNdx) = InputVector(InNdx)
+        End If
+    Next
+    
+    'Now, erase 'InputVector', resize it to the new bounds, and load up the
+    'values from 'TempVector' to the new 'InputVector'
+    Erase InputVector
+    ReDim InputVector(NewLowerBound To NewUpperBound)
+    OutNdx = LBound(InputVector)
+    For TempNdx = LBound(TempVector) To UBound(TempVector)
+        If OutNdx <= UBound(InputVector) Then
+            If IsObject(TempVector(TempNdx)) Then
+                Set InputVector(OutNdx) = TempVector(TempNdx)
+            Else
+                If FirstIsObject = True Then
+                    If IsEmpty(TempVector(TempNdx)) Then
+                        Set InputVector(OutNdx) = Nothing
+                    Else
+                        Set InputVector(OutNdx) = TempVector(TempNdx)
+                    End If
+                Else
+                    InputVector(OutNdx) = TempVector(TempNdx)
+                End If
+            End If
+        Else
+            Exit For
+        End If
+        OutNdx = OutNdx + 1
+    Next
+    
+    ChangeBoundsOfVector = True
+    
+End Function
+
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'CombineTwoDArrays
+'This takes two 2-dimensional arrays, 'Arr1' and 'Arr2', and returns an array
+'combining the two. The number of rows in the result is 'NumRows(Arr1)' +
+''NumRows(Arr2)'. 'Arr1' and 'Arr2' must have the same number of columns, and
+'the result array will have that many columns as well. All the 'LBounds' must
+'be the same. E.g.,
+'The following arrays are legal:
+'    Dim Arr1(0 To 4, 0 To 10)
+'    Dim Arr2(0 To 3, 0 To 10)
+'The following arrays are illegal
+'    Dim Arr1(0 To 4, 1 To 10)
+'    Dim Arr2(0 To 3, 0 To 10)
+'
+'The returned result array is 'Arr1' with additional rows appended from 'Arr2'.
+'For example, the arrays
+'    a    b        and     e    f
+'    c    d                g    h
+'become
+'    a    b
+'    c    d
+'    e    f
+'    g    h
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Public Function CombineTwoDArrays( _
+    ByVal Arr1 As Variant, _
+    ByVal Arr2 As Variant _
+        ) As Variant
+    
+    'Upper and lower bounds of 'Arr1'
+    Dim LBoundRow1 As Long
+    Dim UBoundRow1 As Long
+    Dim LBoundCol1 As Long
+    Dim UBoundCol1 As Long
+    
+    'Upper and lower bounds of 'Arr2'
+    Dim LBoundRow2 As Long
+    Dim UBoundRow2 As Long
+    Dim LBoundCol2 As Long
+    Dim UBoundCol2 As Long
+    
+    'Upper and lower bounds of Result
+    Dim UBoundRowResult As Long
+    Dim LBoundColResult As Long
+    Dim UBoundColResult As Long
+    
+    'Index Variables
+    Dim RowNdx1 As Long
+    Dim ColNdx1 As Long
+    Dim RowNdx2 As Long
+    Dim ColNdx2 As Long
+    Dim RowNdxResult As Long
+    
+    'Array Sizes
+    Dim NumRows1 As Long
+    Dim NumCols1 As Long
+    
+    Dim NumRows2 As Long
+    Dim NumCols2 As Long
+    
+    Dim Done As Boolean
+    Dim Result() As Variant
+    
+    Dim V As Variant
+    
+    
+    'Set the default return value
+    CombineTwoDArrays = Null
+    
+    If Not IsArray(Arr1) Then Exit Function
+    If Not IsArray(Arr2) Then Exit Function
+    If NumberOfArrayDimensions(Arr1) <> 2 Then Exit Function
+    If NumberOfArrayDimensions(Arr2) <> 2 Then Exit Function
+    
+    'Get the existing bounds
+    LBoundRow1 = LBound(Arr1, 1)
+    UBoundRow1 = UBound(Arr1, 1)
+    
+    LBoundCol1 = LBound(Arr1, 2)
+    UBoundCol1 = UBound(Arr1, 2)
+    
+    LBoundRow2 = LBound(Arr2, 1)
+    UBoundRow2 = UBound(Arr2, 1)
+    
+    LBoundCol2 = LBound(Arr2, 2)
+    UBoundCol2 = UBound(Arr2, 2)
+    
+    'Get the total number of rows for the result array
+    NumRows1 = UBoundRow1 - LBoundRow1 + 1
+    NumCols1 = UBoundCol1 - LBoundCol1 + 1
+    NumRows2 = UBoundRow2 - LBoundRow2 + 1
+    NumCols2 = UBoundCol2 - LBoundCol2 + 1
+    
+    'Ensure the number of columns are equal
+    If NumCols1 <> NumCols2 Then Exit Function
+    
+    'Ensure that ALL the 'LBound's are equal
+    If (LBoundRow1 <> LBoundRow2) Or _
+            (LBoundRow1 <> LBoundCol1) Or _
+            (LBoundRow1 <> LBoundCol2) Then _
+                    Exit Function
+    
+    'Set the bounds of the columns of the result array
+    LBoundColResult = LBoundRow1
+    UBoundColResult = UBoundCol1
+    UBoundRowResult = LBoundRow1 + NumRows1 + NumRows2 - 1
+    
+    'ReDim the result array to have number of rows equal to
+    ''number-of-rows(Arr1) + number-of-rows(Arr2)'
+    'and number-of-columns equal to number-of-columns(Arr1)
+    ReDim Result(LBoundRow1 To UBoundRowResult, LBoundColResult To UBoundColResult)
+    
+    RowNdxResult = LBound(Result, 1) - 1
+    
+    Done = False
+    Do
+        'Copy elements of 'Arr1' to 'Result'
+        For RowNdx1 = LBoundRow1 To UBoundRow1
+            RowNdxResult = RowNdxResult + 1
+            For ColNdx1 = LBoundCol1 To UBoundCol1
+                V = Arr1(RowNdx1, ColNdx1)
+                Result(RowNdxResult, ColNdx1) = V
+            Next
+        Next
+        
+        'Copy elements of 'Arr2' to 'Result'
+        For RowNdx2 = LBoundRow2 To UBoundRow2
+            RowNdxResult = RowNdxResult + 1
+            For ColNdx2 = LBoundCol2 To UBoundCol2
+                V = Arr2(RowNdx2, ColNdx2)
+                Result(RowNdxResult, ColNdx2) = V
+            Next
+        Next
+        
+        Done = RowNdxResult >= UBoundRowResult
+    Loop Until Done
+    
+    CombineTwoDArrays = Result
+    
+End Function
 
 
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
@@ -412,6 +791,80 @@ End Function
 
 
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'CopyNonNothingObjectsToVector
+'This function copies all objects that are not Nothing from 'SourceVector'
+'to 'ResultVector'. 'ResultVector' MUST be a dynamic array of type 'Object' or
+''Variant', e.g.,
+'    Dim ResultVector() As Object
+'or
+'    Dim ResultVector() as Variant
+'
+''ResultVector' will be erased and then resized to hold the non-Nothing
+'elements from 'SourceVector'. The 'LBound' of 'ResultVector' will be the same
+'as the 'LBound' of 'SourceVector', regardless of what its 'LBound' was prior
+'to calling this procedure.
+'
+'This function returns 'True' if the operation was successful or 'False' if an
+'error occurs.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Public Function CopyNonNothingObjectsToVector( _
+    ByVal SourceVector As Variant, _
+    ByRef ResultVector As Variant _
+        ) As Boolean
+    
+    Dim SrcNdx As Long
+    Dim ResNdx As Long
+    
+    
+    'Set the default return value
+    CopyNonNothingObjectsToVector = False
+    
+    If Not IsArrayDynamic(ResultVector) Then Exit Function
+    'Ensure 'ResultVector' is unallocated or single-dimensional
+    If NumberOfArrayDimensions(ResultVector) > 1 Then Exit Function
+    
+    'Ensure that all the elements of 'SourceVector' are in fact objects
+    If Not IsArrayObjects(SourceVector) Then Exit Function
+    
+    'Erase the 'ResultVector'. Since 'ResultVector' is dynamic, this will
+    'release the memory used by 'ResultVector' and return the array to an
+    'unallocated state.
+    Erase ResultVector
+    'Now, size 'ResultVector' to the size of 'SourceVector'. After moving all
+    'the non-Nothing elements, we'll do another resize to get 'ResultVector' to
+    'the used size. This method allows us to avoid 'ReDim Preserve' for every
+    'element.
+    ReDim ResultVector(LBound(SourceVector) To UBound(SourceVector))
+    
+    ResNdx = LBound(SourceVector)
+    For SrcNdx = LBound(SourceVector) To UBound(SourceVector)
+        If Not SourceVector(SrcNdx) Is Nothing Then
+            Set ResultVector(ResNdx) = SourceVector(SrcNdx)
+            ResNdx = ResNdx + 1
+        End If
+    Next
+    
+    'Now that we've copied all the non-Nothing elements we call 'ReDim Preserve'
+    'to resize the 'ResultVector' to the size actually used. Test 'ResNdx' to
+    'see if we actually copied any elements.
+    '
+    'If 'ResNdx > LBound(SourceVector)' then we copied at least one element out
+    'of 'SourceVector' ...
+    If ResNdx > LBound(SourceVector) Then
+        ReDim Preserve ResultVector(LBound(ResultVector) To ResNdx - 1)
+    '... otherwise we didn't copy any elements from 'SourceVector'
+    '(all elements in 'SourceVector' were 'Nothing'). In this case,
+    ''Erase ResultVector'.
+    Else
+        Erase ResultVector
+    End If
+    
+    CopyNonNothingObjectsToVector = True
+    
+End Function
+
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 'CopyVectorSubSetToVector
 'This function copies elements of 'SourceVector' to 'ResultVector'. It takes
 'the elements from 'FirstElementToCopy' to 'LastElementToCopy' (inclusive) from
@@ -536,80 +989,6 @@ Public Function CopyVectorSubSetToVector( _
     Next
     
     CopyVectorSubSetToVector = True
-    
-End Function
-
-
-'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-'CopyNonNothingObjectsToVector
-'This function copies all objects that are not Nothing from 'SourceVector'
-'to 'ResultVector'. 'ResultVector' MUST be a dynamic array of type 'Object' or
-''Variant', e.g.,
-'    Dim ResultVector() As Object
-'or
-'    Dim ResultVector() as Variant
-'
-''ResultVector' will be erased and then resized to hold the non-Nothing
-'elements from 'SourceVector'. The 'LBound' of 'ResultVector' will be the same
-'as the 'LBound' of 'SourceVector', regardless of what its 'LBound' was prior
-'to calling this procedure.
-'
-'This function returns 'True' if the operation was successful or 'False' if an
-'error occurs.
-'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-Public Function CopyNonNothingObjectsToVector( _
-    ByVal SourceVector As Variant, _
-    ByRef ResultVector As Variant _
-        ) As Boolean
-    
-    Dim SrcNdx As Long
-    Dim ResNdx As Long
-    
-    
-    'Set the default return value
-    CopyNonNothingObjectsToVector = False
-    
-    If Not IsArrayDynamic(ResultVector) Then Exit Function
-    'Ensure 'ResultVector' is unallocated or single-dimensional
-    If NumberOfArrayDimensions(ResultVector) > 1 Then Exit Function
-    
-    'Ensure that all the elements of 'SourceVector' are in fact objects
-    If Not IsArrayObjects(SourceVector) Then Exit Function
-    
-    'Erase the 'ResultVector'. Since 'ResultVector' is dynamic, this will
-    'release the memory used by 'ResultVector' and return the array to an
-    'unallocated state.
-    Erase ResultVector
-    'Now, size 'ResultVector' to the size of 'SourceVector'. After moving all
-    'the non-Nothing elements, we'll do another resize to get 'ResultVector' to
-    'the used size. This method allows us to avoid 'ReDim Preserve' for every
-    'element.
-    ReDim ResultVector(LBound(SourceVector) To UBound(SourceVector))
-    
-    ResNdx = LBound(SourceVector)
-    For SrcNdx = LBound(SourceVector) To UBound(SourceVector)
-        If Not SourceVector(SrcNdx) Is Nothing Then
-            Set ResultVector(ResNdx) = SourceVector(SrcNdx)
-            ResNdx = ResNdx + 1
-        End If
-    Next
-    
-    'Now that we've copied all the non-Nothing elements we call 'ReDim Preserve'
-    'to resize the 'ResultVector' to the size actually used. Test 'ResNdx' to
-    'see if we actually copied any elements.
-    '
-    'If 'ResNdx > LBound(SourceVector)' then we copied at least one element out
-    'of 'SourceVector' ...
-    If ResNdx > LBound(SourceVector) Then
-        ReDim Preserve ResultVector(LBound(ResultVector) To ResNdx - 1)
-    '... otherwise we didn't copy any elements from 'SourceVector'
-    '(all elements in 'SourceVector' were 'Nothing'). In this case,
-    ''Erase ResultVector'.
-    Else
-        Erase ResultVector
-    End If
-    
-    CopyNonNothingObjectsToVector = True
     
 End Function
 
@@ -767,6 +1146,161 @@ Public Function DeleteVectorElement( _
 End Function
 
 
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+''IsVariantArrayNumeric
+''This function returns 'True' if all the elements of an array of variants are
+''numeric data types. They need not all be the same data type. You can have a
+''mix of 'Integer's, 'Long's, 'Double's, and 'Single's.
+''As long as they are all numeric data types, the function will return 'True'.
+''If a non-numeric data type is encountered, the function will return 'False'.
+''Also, it will return 'False' if 'InputArray' is not an array, or if
+'''InputArray' has not been allocated. 'InputArray' may be a multi-dimensional
+''array. This procedure uses the 'IsNumericDataType' function to determine
+''whether a variable is a numeric data type. If there is an uninitialized
+''variant ('VarType = vbEmpty') in the array, it is skipped and not used in the
+''comparison (i.e., 'Empty' is considered a valid numeric data type since you
+''can assign a number to it).
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'Public Function IsVariantArrayNumeric( _
+'    InputArray As Variant _
+'        ) As Boolean
+'
+'    Dim Element As Variant
+'
+'
+'    'Set the default return value
+'    IsVariantArrayNumeric = False
+'
+'    If Not IsArray(InputArray) Then Exit Function
+'    If Not IsArrayAllocated(InputArray) Then Exit Function
+'
+'    For Each Element In InputArray
+'        If IsObject(Element) Then Exit Function
+'
+'        Select Case VarType(Element)
+'            Case vbEmpty
+'                'allowed
+'            Case Else
+'                If Not IsNumericDataType(Element) Then Exit Function
+'        End Select
+'    Next
+'
+'    'If we made it up to here, then the array is entirely numeric
+'    IsVariantArrayNumeric = True
+'
+'End Function
+
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'ExpandArray
+'This expands a two-dimensional array in either dimension. It returns the
+'result array if successful, or 'Null' if an error occurred. The original array
+'is never changed.
+'Parameters:
+'- Arr                  is the array to be expanded
+'- WhichDim             is either 1 for additional rows or
+'                       2 for additional columns
+'- AdditionalElements   is the number of additional rows or columns to create.
+'- FillValue            is the value to which the new array elements should be
+'                       initialized
+'You can nest calls to expand array to expand both the number of rows and
+'columns, e.g.
+'
+'C = ExpandArray( _
+'        ExpandArray( _
+'            Arr:=A, _
+'            WhichDim:=1, _
+'            AdditionalElements:=3, _
+'            FillValue:="R") _
+'        , _
+'        WhichDim:=2, _
+'        AdditionalElements:=4, _
+'        FillValue:="C")
+'
+'This first adds three rows at the bottom of the array, and then adds four
+'columns on the right of the array.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'2do:
+'- create a type for 'WhichDim' and also replace 'ROWs_' then?
+'- should this work for objects as well?
+Public Function ExpandArray( _
+    ByVal Arr As Variant, _
+    ByVal WhichDim As Long, _
+    ByVal AdditionalElements As Long, _
+    ByVal FillValue As Variant _
+        ) As Variant
+    
+    Dim Result As Variant
+    Dim RowNdx As Long
+    Dim ColNdx As Long
+    
+    '==========================================================================
+    Const ROWS_ As Long = 1
+    '==========================================================================
+    
+    
+    'Set the default return value
+    ExpandArray = Null
+    
+    If Not IsArray(Arr) Then Exit Function
+    If NumberOfArrayDimensions(Arr) <> 2 Then Exit Function
+    
+    'Ensure the dimension is 1 or 2
+    Select Case WhichDim
+        Case 1, 2
+        Case Else
+            Exit Function
+    End Select
+    
+    If AdditionalElements < 0 Then Exit Function
+    If AdditionalElements = 0 Then
+        ExpandArray = Arr
+        Exit Function
+    End If
+    
+    If WhichDim = ROWS_ Then
+        'ReDim 'Result'
+        ReDim Result(LBound(Arr, 1) To UBound(Arr, 1) + AdditionalElements, _
+                LBound(Arr, 2) To UBound(Arr, 2))
+        
+        'Transfer 'Arr' array to 'Result'
+        For RowNdx = LBound(Arr, 1) To UBound(Arr, 1)
+            For ColNdx = LBound(Arr, 2) To UBound(Arr, 2)
+                Result(RowNdx, ColNdx) = Arr(RowNdx, ColNdx)
+            Next
+        Next
+        
+        'Fill the rest of the result array with 'FillValue'
+        For RowNdx = UBound(Arr, 1) + 1 To UBound(Result, 1)
+            For ColNdx = LBound(Arr, 2) To UBound(Arr, 2)
+                Result(RowNdx, ColNdx) = FillValue
+            Next
+        Next
+    Else
+        'ReDim 'Result'
+        ReDim Result(LBound(Arr, 1) To UBound(Arr, 1), _
+                LBound(Arr, 2) To UBound(Arr, 2) + AdditionalElements)
+        
+        'Transfer 'Arr' array to 'Result'
+        For RowNdx = LBound(Arr, 1) To UBound(Arr, 1)
+            For ColNdx = LBound(Arr, 2) To UBound(Arr, 2)
+                Result(RowNdx, ColNdx) = Arr(RowNdx, ColNdx)
+            Next
+        Next
+        
+        'Fill the rest of the result array with 'FillValue'
+        For RowNdx = LBound(Arr, 1) To UBound(Arr, 1)
+            For ColNdx = UBound(Arr, 2) + 1 To UBound(Result, 2)
+                Result(RowNdx, ColNdx) = FillValue
+            Next
+        Next
+    End If
+    
+    ExpandArray = Result
+    
+End Function
+
+
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 'FirstNonEmptyStringIndexInVector
 'This returns the index in 'InputVector' of the first non-empty string.
@@ -795,6 +1329,89 @@ Public Function FirstNonEmptyStringIndexInVector( _
     Next
     
     FirstNonEmptyStringIndexInVector = -1
+    
+End Function
+
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'GetColumn
+'This populates 'ResultArr' with a one-dimensional array that is the specified
+'column of 'Arr'. The existing contents of 'ResultArr' are erased.
+''ResultArr' must be a dynamic array. Returns 'True' or 'False' indicating
+'success.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Public Function GetColumn( _
+    ByVal Arr As Variant, _
+    ByRef ResultArr As Variant, _
+    ByVal ColumnNumber As Long _
+        ) As Boolean
+    
+    Dim RowNdx As Long
+    
+    
+    'Set the default return value
+    GetColumn = False
+    
+    If Not IsArray(Arr) Then Exit Function
+    If NumberOfArrayDimensions(Arr) <> 2 Then Exit Function
+    If Not IsArrayDynamic(ResultArr) Then Exit Function
+    
+    'Ensure 'ColumnNumber' is less than or equal to the number of columns
+    If UBound(Arr, 2) < ColumnNumber Then Exit Function
+    If LBound(Arr, 2) > ColumnNumber Then Exit Function
+    
+    Erase ResultArr
+    ReDim ResultArr(LBound(Arr, 1) To UBound(Arr, 1))
+    For RowNdx = LBound(ResultArr) To UBound(ResultArr)
+        If IsObject(Arr(RowNdx, ColumnNumber)) Then
+            Set ResultArr(RowNdx) = Arr(RowNdx, ColumnNumber)
+        Else
+            ResultArr(RowNdx) = Arr(RowNdx, ColumnNumber)
+        End If
+    Next
+    
+    GetColumn = True
+    
+End Function
+
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'GetRow
+'This populates 'ResultArr' with a one-dimensional array that is the specified
+'row of 'Arr'. The existing contents of 'ResultArr' are erased. 'ResultArr'
+'must be a dynamic array. Returns 'True' or 'False' indicating success.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Public Function GetRow( _
+    ByVal Arr As Variant, _
+    ByRef ResultArr As Variant, _
+    ByVal RowNumber As Long _
+        ) As Boolean
+    
+    Dim ColNdx As Long
+    
+    
+    'Set the default return value
+    GetRow = False
+    
+    If Not IsArray(Arr) Then Exit Function
+    If NumberOfArrayDimensions(Arr) <> 2 Then Exit Function
+    If Not IsArrayDynamic(ResultArr) Then Exit Function
+    
+    'Ensure 'RowNumber' is less than or equal to the number of rows
+    If UBound(Arr, 1) < RowNumber Then Exit Function
+    If LBound(Arr, 1) > RowNumber Then Exit Function
+    
+    Erase ResultArr
+    ReDim ResultArr(LBound(Arr, 2) To UBound(Arr, 2))
+    For ColNdx = LBound(ResultArr) To UBound(ResultArr)
+        If IsObject(Arr(RowNumber, ColNdx)) Then
+            Set ResultArr(ColNdx) = Arr(RowNumber, ColNdx)
+        Else
+            ResultArr(ColNdx) = Arr(RowNumber, ColNdx)
+        End If
+    Next
+    
+    GetRow = True
     
 End Function
 
@@ -1275,49 +1892,89 @@ Public Function IsVariantArrayConsistent( _
 End Function
 
 
-''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-''IsVariantArrayNumeric
-''This function returns 'True' if all the elements of an array of variants are
-''numeric data types. They need not all be the same data type. You can have a
-''mix of 'Integer's, 'Long's, 'Double's, and 'Single's.
-''As long as they are all numeric data types, the function will return 'True'.
-''If a non-numeric data type is encountered, the function will return 'False'.
-''Also, it will return 'False' if 'InputArray' is not an array, or if
-'''InputArray' has not been allocated. 'InputArray' may be a multi-dimensional
-''array. This procedure uses the 'IsNumericDataType' function to determine
-''whether a variable is a numeric data type. If there is an uninitialized
-''variant ('VarType = vbEmpty') in the array, it is skipped and not used in the
-''comparison (i.e., 'Empty' is considered a valid numeric data type since you
-''can assign a number to it).
-''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-'Public Function IsVariantArrayNumeric( _
-'    InputArray As Variant _
-'        ) As Boolean
-'
-'    Dim Element As Variant
-'
-'
-'    'Set the default return value
-'    IsVariantArrayNumeric = False
-'
-'    If Not IsArray(InputArray) Then Exit Function
-'    If Not IsArrayAllocated(InputArray) Then Exit Function
-'
-'    For Each Element In InputArray
-'        If IsObject(Element) Then Exit Function
-'
-'        Select Case VarType(Element)
-'            Case vbEmpty
-'                'allowed
-'            Case Else
-'                If Not IsNumericDataType(Element) Then Exit Function
-'        End Select
-'    Next
-'
-'    'If we made it up to here, then the array is entirely numeric
-'    IsVariantArrayNumeric = True
-'
-'End Function
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'IsVectorSorted
+'This function determines whether a single-dimensional array is sorted. Because
+'sorting is an expensive operation, especially so on a large array of 'Variant's,
+'you may want to determine if an array is already in sorted order prior to
+'doing an actual sort.
+'This function returns 'True' if an array is in sorted order (either ascending
+'or descending, depending on the value of the 'Descending' parameter -- default
+'is 'False' = Ascending). The decision to do a string comparison (with 'StrComp')
+'or a numeric comparison (with < or >) is based on the data type of the first
+'element of the array.
+'If 'InputVector' is not an array, is an unallocated array, or has more than
+'one dimension, or the VarType of 'InputVector' is not compatible, the function
+'returns 'Null'. Thus, one knows that there is nothing to sort.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Public Function IsVectorSorted( _
+    ByVal InputVector As Variant, _
+    Optional ByVal Descending As Boolean = False _
+        ) As Variant
+    
+    Dim StrCompResultFail As Long
+    Dim NumericResultFail As Boolean
+    Dim i As Long
+    Dim NumCompareResult As Boolean
+    Dim StrCompResult As Long
+    
+    Dim IsString As Boolean
+    Dim VType As VbVarType
+    
+    
+    'Set the default return value
+    IsVectorSorted = Null
+    
+    If Not IsArray(InputVector) Then Exit Function
+    If NumberOfArrayDimensions(InputVector) <> 1 Then Exit Function
+    
+    'Determine whether we are going to do a string comparison or a numeric
+    'comparison
+    VType = VarType(InputVector(LBound(InputVector)))
+    Select Case VType
+        Case vbArray, vbDataObject, vbEmpty, vbError, vbNull, vbObject, vbUserDefinedType
+            'Unsupported types.
+            Exit Function
+        Case vbString, vbVariant
+            'Compare as string
+            IsString = True
+        Case Else
+            'Compare as numeric
+            IsString = False
+    End Select
+    
+    'The following code sets the values of comparison that will indicate that
+    'the array is unsorted. Is the result of 'StrComp' (for strings) or ">="
+    '(for numerics) equal the value specified below, we know that the array is
+    'unsorted.
+    If Descending = True Then
+        StrCompResultFail = -1
+        NumericResultFail = False
+    Else
+        StrCompResultFail = 1
+        NumericResultFail = True
+    End If
+    
+    For i = LBound(InputVector) To UBound(InputVector) - 1
+        If IsString Then
+            StrCompResult = StrComp(InputVector(i), InputVector(i + 1))
+            If StrCompResult = StrCompResultFail Then
+                IsVectorSorted = False
+                Exit Function
+            End If
+        Else
+            NumCompareResult = (InputVector(i) >= InputVector(i + 1))
+            If NumCompareResult = NumericResultFail Then
+                IsVectorSorted = False
+                Exit Function
+            End If
+        End If
+    Next
+    
+    'If we made it up to here, then the array is in sorted order.
+    IsVectorSorted = True
+    
+End Function
 
 
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
@@ -1666,142 +2323,6 @@ End Function
 
 
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-'AreDataTypesCompatible
-'This function determines if 'SourceVar' is compatible with 'DestVar'. If the
-'two data types are the same, they are compatible. If the value of 'SourceVar'
-'can be stored in 'DestVar' with no loss of precision or an overflow, they are
-'compatible.
-'For example, if 'DestVar' is a 'Long' and 'SourceVar' is an 'Integer', they
-'are compatible because an 'Integer' can be stored in a 'Long' with no loss of
-'information. If 'DestVar' is a 'Long' and 'SourceVar' is a 'Double', they are
-'not compatible because information will be lost converting from a 'Double' to
-'a 'Long' (the decimal portion will be lost).
-'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-Public Function AreDataTypesCompatible( _
-    ByVal SourceVar As Variant, _
-    ByVal DestVar As Variant _
-        ) As Boolean
-    
-    Dim SVType As VbVarType
-    Dim DVType As VbVarType
-    
-    Dim LongLongType As Byte
-    LongLongType = DeclareLongLong
-    
-    
-    'Set the default return value
-    AreDataTypesCompatible = False
-    
-    'If one variable is an array and the other is not an array, they are incompatible
-    If (IsArray(SourceVar) And Not IsArray(DestVar)) Or _
-            (Not IsArray(SourceVar) And IsArray(DestVar)) Then
-        Exit Function
-    End If
-    
-    'If 'SourceVar' is an array, get the type of array. If it is an array its
-    ''VarType' is 'vbArray + VarType(element)' so we subtract 'vbArray' to get
-    'the data type of the array. E.g., the 'VarType' of an array of 'Long's is
-    '8195 = vbArray + vbLong,
-    '8195 - vbArray = vbLong (= 3).
-    If IsArray(SourceVar) Then
-        SVType = VarType(SourceVar) - vbArray
-    Else
-        SVType = VarType(SourceVar)
-    End If
-    'If 'DestVar' is an array, get the type of array
-    If IsArray(DestVar) Then
-        DVType = VarType(DestVar) - vbArray
-    Else
-        DVType = VarType(DestVar)
-    End If
-    
-    'Test the data type of 'DestVar' and return a result if 'SourceVar' is
-    'compatible with that type.
-    If SVType = DVType Then
-        'The variable types are the same --> they are compatible
-        AreDataTypesCompatible = True
-    'If the data types are not the same, determine whether they are compatible
-    Else
-        Select Case DVType
-            Case vbInteger
-                'there is no compatible match for that
-                '(that isn't already caught above)
-            Case vbLong, LongLongType
-                Select Case SVType
-                    Case vbInteger, vbLong, LongLongType
-                        AreDataTypesCompatible = True
-                End Select
-            Case vbSingle
-                Select Case SVType
-                    Case vbInteger, vbLong, LongLongType, vbSingle
-                        AreDataTypesCompatible = True
-                End Select
-            Case vbDouble
-                Select Case SVType
-                    Case vbInteger, vbLong, LongLongType, vbSingle, vbDouble
-                        AreDataTypesCompatible = True
-                End Select
-'            'this is already covered above
-'            Case vbString
-'                Select Case SVType
-'                    Case vbString
-'                        AreDataTypesCompatible = True
-'                End Select
-'            'this is already covered above
-'            Case vbObject
-'                Select Case SVType
-'                    Case vbObject
-'                        AreDataTypesCompatible = True
-'                End Select
-            Case vbBoolean
-                Select Case SVType
-                    Case vbBoolean, vbInteger
-                        AreDataTypesCompatible = True
-                End Select
-'            'this is already covered above
-'            Case vbByte
-'                Select Case SVType
-'                    Case vbByte
-'                        AreDataTypesCompatible = True
-'                End Select
-            Case vbCurrency
-                Select Case SVType
-                    Case vbInteger, vbLong, LongLongType, vbSingle, vbDouble
-                        AreDataTypesCompatible = True
-                End Select
-            Case vbDecimal
-                Select Case SVType
-                    Case vbInteger, vbLong, LongLongType, vbSingle, vbDouble
-                        AreDataTypesCompatible = True
-                End Select
-            Case vbDate
-                Select Case SVType
-                    Case vbLong, LongLongType, vbSingle, vbDouble
-                        AreDataTypesCompatible = True
-                End Select
-            Case vbEmpty
-                Select Case SVType
-                    Case vbVariant
-                        AreDataTypesCompatible = True
-                End Select
-            Case vbError
-            Case vbNull
-'            'this is already covered above
-'            Case vbObject
-'                Select Case SVType
-'                    Case vbObject
-'                        AreDataTypesCompatible = True
-'                End Select
-            Case vbVariant
-                'everything is compatible to a 'Variant'
-                AreDataTypesCompatible = True
-        End Select
-    End If
-    
-End Function
-
-
-'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 'SetVariableToDefault
 'This procedure sets 'Variable' to the appropriate default value for its data
 'type. Note that it cannot change User-Defined Types.
@@ -1874,6 +2395,106 @@ Public Sub SetVariableToDefault( _
     End If
     
 End Sub
+
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'SwapArrayColumns
+'This function returns an array based on 'Arr' with 'Col1' and 'Col2' swapped.
+'It returns the result array or 'Null' if an error occurred.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Public Function SwapArrayColumns( _
+    ByRef Arr As Variant, _
+    ByVal Col1 As Long, _
+    ByVal Col2 As Long _
+        ) As Variant
+    
+    Dim Temp As Variant
+    Dim Result As Variant
+    Dim RowNdx As Long
+    
+    
+    'Set the default return value
+    SwapArrayColumns = Null
+    
+    If Not IsArray(Arr) Then Exit Function
+    If NumberOfArrayDimensions(Arr) <> 2 Then Exit Function
+    
+    'Ensure 'Col1' and 'Col2' are valid column numbers
+    If Col1 < LBound(Arr, 2) Then Exit Function
+    If Col1 > UBound(Arr, 2) Then Exit Function
+    If Col2 < LBound(Arr, 2) Then Exit Function
+    If Col2 > UBound(Arr, 2) Then Exit Function
+    
+    'If 'Col1 = Col2', just return the array and exit. Nothing to do.
+    If Col1 = Col2 Then
+        SwapArrayColumns = Arr
+        Exit Function
+    End If
+    
+    'Set 'Result' to 'Arr'
+    Result = Arr
+    
+    'ReDim 'Temp' to the number of columns
+    ReDim Temp(LBound(Arr, 1) To UBound(Arr, 1))
+    For RowNdx = LBound(Arr, 1) To UBound(Arr, 1)
+        Temp(RowNdx) = Arr(RowNdx, Col1)
+        Result(RowNdx, Col1) = Arr(RowNdx, Col2)
+        Result(RowNdx, Col2) = Temp(RowNdx)
+    Next
+    
+    SwapArrayColumns = Result
+    
+End Function
+
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'SwapArrayRows
+'This function returns an array based on 'Arr' with 'Row1' and 'Row2' swapped.
+'It returns the result array or 'Null' if an error occurred.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Public Function SwapArrayRows( _
+    ByRef Arr As Variant, _
+    ByVal Row1 As Long, _
+    ByVal Row2 As Long _
+        ) As Variant
+    
+    Dim Temp As Variant
+    Dim Result As Variant
+    Dim ColNdx As Long
+    
+    
+    'Set the default return value
+    SwapArrayRows = Null
+    
+    If Not IsArray(Arr) Then Exit Function
+    If NumberOfArrayDimensions(Arr) <> 2 Then Exit Function
+    
+    'Ensure 'Row1' and 'Row2' are valid numbers
+    If Row1 < LBound(Arr, 1) Then Exit Function
+    If Row1 > UBound(Arr, 1) Then Exit Function
+    If Row2 < LBound(Arr, 1) Then Exit Function
+    If Row2 > UBound(Arr, 1) Then Exit Function
+    
+    'If 'Row1 = Row2', just return the array and exit. Nothing to do.
+    If Row1 = Row2 Then
+        SwapArrayRows = Arr
+        Exit Function
+    End If
+    
+    'Set 'Result' to 'Arr'
+    Result = Arr
+    
+    'ReDim 'Temp' to the number of columns
+    ReDim Temp(LBound(Arr, 2) To UBound(Arr, 2))
+    For ColNdx = LBound(Arr, 2) To UBound(Arr, 2)
+        Temp(ColNdx) = Arr(Row1, ColNdx)
+        Result(Row1, ColNdx) = Arr(Row2, ColNdx)
+        Result(Row2, ColNdx) = Temp(ColNdx)
+    Next
+    
+    SwapArrayRows = Result
+    
+End Function
 
 
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
@@ -2031,626 +2652,6 @@ Public Function VectorsToArray( _
     
 End Function
 
-
-'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-'ChangeBoundsOfVector
-'This function changes the upper and lower bounds of the specified vector.
-''InputVector' MUST be a single-dimensional dynamic array.
-'If the new size of the vector (NewUpperBound - NewLowerBound + 1) is greater
-'than the original vector, the unused elements on the right side of the vector
-'are the default values for the data type of the vector. If the new size is
-'less than the original size, only the first (left-most) 'N' elements are
-'included in the new vector.
-'The elements of the vector may be simple variables ('String's, 'Long's, etc.),
-'objects, or arrays. User-Defined Types are not supported.
-'The function returns 'True' if successful, 'False' otherwise.
-'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-Public Function ChangeBoundsOfVector( _
-    ByRef InputVector As Variant, _
-    ByVal NewLowerBound As Long, _
-    Optional ByVal NewUpperBound As Variant _
-        ) As Boolean
-    
-    Dim TempVector() As Variant
-    Dim InNdx As Long
-    Dim OutNdx As Long
-    Dim TempNdx As Long
-    Dim FirstIsObject As Boolean
-    
-    
-    'Set the default return value
-    ChangeBoundsOfVector = False
-    
-    If IsMissing(NewUpperBound) Or IsEmpty(NewUpperBound) Then
-        NewUpperBound = NewLowerBound + UBound(InputVector) - LBound(InputVector)
-    ElseIf Not IsNumeric(NewUpperBound) Then
-        Exit Function
-    ElseIf NewUpperBound <> CLng(NewUpperBound) Then
-        Exit Function
-    End If
-    
-    If NewLowerBound > NewUpperBound Then Exit Function
-    If Not IsArrayDynamic(InputVector) Then Exit Function
-    If NumberOfArrayDimensions(InputVector) <> 1 Then Exit Function
-    
-    'We need to save the 'IsObject' status of the first element of 'InputVector'
-    'to properly handle 'Empty' variables if we are making the vector larger
-    'than it was before.
-    FirstIsObject = IsObject(InputVector(LBound(InputVector)))
-    
-    
-    'Resize 'TempVector' and save the values in 'InputVector' in 'TempVector'.
-    ''TempVector' will have an 'LBound' of 1 and a 'UBound' of the size of
-    '(NewUpperBound - NewLowerBound +1)
-    ReDim TempVector(1 To (NewUpperBound - NewLowerBound + 1))
-    'Load up 'TempVector'
-    TempNdx = 0
-    For InNdx = LBound(InputVector) To UBound(InputVector)
-        TempNdx = TempNdx + 1
-        If TempNdx > UBound(TempVector) Then
-            Exit For
-        End If
-        
-        If (IsObject(InputVector(InNdx)) = True) Then
-            If InputVector(InNdx) Is Nothing Then
-                Set TempVector(TempNdx) = Nothing
-            Else
-                Set TempVector(TempNdx) = InputVector(InNdx)
-            End If
-        Else
-            TempVector(TempNdx) = InputVector(InNdx)
-        End If
-    Next
-    
-    'Now, erase 'InputVector', resize it to the new bounds, and load up the
-    'values from 'TempVector' to the new 'InputVector'
-    Erase InputVector
-    ReDim InputVector(NewLowerBound To NewUpperBound)
-    OutNdx = LBound(InputVector)
-    For TempNdx = LBound(TempVector) To UBound(TempVector)
-        If OutNdx <= UBound(InputVector) Then
-            If IsObject(TempVector(TempNdx)) Then
-                Set InputVector(OutNdx) = TempVector(TempNdx)
-            Else
-                If FirstIsObject = True Then
-                    If IsEmpty(TempVector(TempNdx)) Then
-                        Set InputVector(OutNdx) = Nothing
-                    Else
-                        Set InputVector(OutNdx) = TempVector(TempNdx)
-                    End If
-                Else
-                    InputVector(OutNdx) = TempVector(TempNdx)
-                End If
-            End If
-        Else
-            Exit For
-        End If
-        OutNdx = OutNdx + 1
-    Next
-    
-    ChangeBoundsOfVector = True
-    
-End Function
-
-
-'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-'IsVectorSorted
-'This function determines whether a single-dimensional array is sorted. Because
-'sorting is an expensive operation, especially so on a large array of 'Variant's,
-'you may want to determine if an array is already in sorted order prior to
-'doing an actual sort.
-'This function returns 'True' if an array is in sorted order (either ascending
-'or descending, depending on the value of the 'Descending' parameter -- default
-'is 'False' = Ascending). The decision to do a string comparison (with 'StrComp')
-'or a numeric comparison (with < or >) is based on the data type of the first
-'element of the array.
-'If 'InputVector' is not an array, is an unallocated array, or has more than
-'one dimension, or the VarType of 'InputVector' is not compatible, the function
-'returns 'Null'. Thus, one knows that there is nothing to sort.
-'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-Public Function IsVectorSorted( _
-    ByVal InputVector As Variant, _
-    Optional ByVal Descending As Boolean = False _
-        ) As Variant
-    
-    Dim StrCompResultFail As Long
-    Dim NumericResultFail As Boolean
-    Dim i As Long
-    Dim NumCompareResult As Boolean
-    Dim StrCompResult As Long
-    
-    Dim IsString As Boolean
-    Dim VType As VbVarType
-    
-    
-    'Set the default return value
-    IsVectorSorted = Null
-    
-    If Not IsArray(InputVector) Then Exit Function
-    If NumberOfArrayDimensions(InputVector) <> 1 Then Exit Function
-    
-    'Determine whether we are going to do a string comparison or a numeric
-    'comparison
-    VType = VarType(InputVector(LBound(InputVector)))
-    Select Case VType
-        Case vbArray, vbDataObject, vbEmpty, vbError, vbNull, vbObject, vbUserDefinedType
-            'Unsupported types.
-            Exit Function
-        Case vbString, vbVariant
-            'Compare as string
-            IsString = True
-        Case Else
-            'Compare as numeric
-            IsString = False
-    End Select
-    
-    'The following code sets the values of comparison that will indicate that
-    'the array is unsorted. Is the result of 'StrComp' (for strings) or ">="
-    '(for numerics) equal the value specified below, we know that the array is
-    'unsorted.
-    If Descending = True Then
-        StrCompResultFail = -1
-        NumericResultFail = False
-    Else
-        StrCompResultFail = 1
-        NumericResultFail = True
-    End If
-    
-    For i = LBound(InputVector) To UBound(InputVector) - 1
-        If IsString Then
-            StrCompResult = StrComp(InputVector(i), InputVector(i + 1))
-            If StrCompResult = StrCompResultFail Then
-                IsVectorSorted = False
-                Exit Function
-            End If
-        Else
-            NumCompareResult = (InputVector(i) >= InputVector(i + 1))
-            If NumCompareResult = NumericResultFail Then
-                IsVectorSorted = False
-                Exit Function
-            End If
-        End If
-    Next
-    
-    'If we made it up to here, then the array is in sorted order.
-    IsVectorSorted = True
-    
-End Function
-
-
-'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-'CombineTwoDArrays
-'This takes two 2-dimensional arrays, 'Arr1' and 'Arr2', and returns an array
-'combining the two. The number of rows in the result is 'NumRows(Arr1)' +
-''NumRows(Arr2)'. 'Arr1' and 'Arr2' must have the same number of columns, and
-'the result array will have that many columns as well. All the 'LBounds' must
-'be the same. E.g.,
-'The following arrays are legal:
-'    Dim Arr1(0 To 4, 0 To 10)
-'    Dim Arr2(0 To 3, 0 To 10)
-'The following arrays are illegal
-'    Dim Arr1(0 To 4, 1 To 10)
-'    Dim Arr2(0 To 3, 0 To 10)
-'
-'The returned result array is 'Arr1' with additional rows appended from 'Arr2'.
-'For example, the arrays
-'    a    b        and     e    f
-'    c    d                g    h
-'become
-'    a    b
-'    c    d
-'    e    f
-'    g    h
-'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-Public Function CombineTwoDArrays( _
-    ByVal Arr1 As Variant, _
-    ByVal Arr2 As Variant _
-        ) As Variant
-    
-    'Upper and lower bounds of 'Arr1'
-    Dim LBoundRow1 As Long
-    Dim UBoundRow1 As Long
-    Dim LBoundCol1 As Long
-    Dim UBoundCol1 As Long
-    
-    'Upper and lower bounds of 'Arr2'
-    Dim LBoundRow2 As Long
-    Dim UBoundRow2 As Long
-    Dim LBoundCol2 As Long
-    Dim UBoundCol2 As Long
-    
-    'Upper and lower bounds of Result
-    Dim UBoundRowResult As Long
-    Dim LBoundColResult As Long
-    Dim UBoundColResult As Long
-    
-    'Index Variables
-    Dim RowNdx1 As Long
-    Dim ColNdx1 As Long
-    Dim RowNdx2 As Long
-    Dim ColNdx2 As Long
-    Dim RowNdxResult As Long
-    
-    'Array Sizes
-    Dim NumRows1 As Long
-    Dim NumCols1 As Long
-    
-    Dim NumRows2 As Long
-    Dim NumCols2 As Long
-    
-    Dim Done As Boolean
-    Dim Result() As Variant
-    
-    Dim V As Variant
-    
-    
-    'Set the default return value
-    CombineTwoDArrays = Null
-    
-    If Not IsArray(Arr1) Then Exit Function
-    If Not IsArray(Arr2) Then Exit Function
-    If NumberOfArrayDimensions(Arr1) <> 2 Then Exit Function
-    If NumberOfArrayDimensions(Arr2) <> 2 Then Exit Function
-    
-    'Get the existing bounds
-    LBoundRow1 = LBound(Arr1, 1)
-    UBoundRow1 = UBound(Arr1, 1)
-    
-    LBoundCol1 = LBound(Arr1, 2)
-    UBoundCol1 = UBound(Arr1, 2)
-    
-    LBoundRow2 = LBound(Arr2, 1)
-    UBoundRow2 = UBound(Arr2, 1)
-    
-    LBoundCol2 = LBound(Arr2, 2)
-    UBoundCol2 = UBound(Arr2, 2)
-    
-    'Get the total number of rows for the result array
-    NumRows1 = UBoundRow1 - LBoundRow1 + 1
-    NumCols1 = UBoundCol1 - LBoundCol1 + 1
-    NumRows2 = UBoundRow2 - LBoundRow2 + 1
-    NumCols2 = UBoundCol2 - LBoundCol2 + 1
-    
-    'Ensure the number of columns are equal
-    If NumCols1 <> NumCols2 Then Exit Function
-    
-    'Ensure that ALL the 'LBound's are equal
-    If (LBoundRow1 <> LBoundRow2) Or _
-            (LBoundRow1 <> LBoundCol1) Or _
-            (LBoundRow1 <> LBoundCol2) Then _
-                    Exit Function
-    
-    'Set the bounds of the columns of the result array
-    LBoundColResult = LBoundRow1
-    UBoundColResult = UBoundCol1
-    UBoundRowResult = LBoundRow1 + NumRows1 + NumRows2 - 1
-    
-    'ReDim the result array to have number of rows equal to
-    ''number-of-rows(Arr1) + number-of-rows(Arr2)'
-    'and number-of-columns equal to number-of-columns(Arr1)
-    ReDim Result(LBoundRow1 To UBoundRowResult, LBoundColResult To UBoundColResult)
-    
-    RowNdxResult = LBound(Result, 1) - 1
-    
-    Done = False
-    Do
-        'Copy elements of 'Arr1' to 'Result'
-        For RowNdx1 = LBoundRow1 To UBoundRow1
-            RowNdxResult = RowNdxResult + 1
-            For ColNdx1 = LBoundCol1 To UBoundCol1
-                V = Arr1(RowNdx1, ColNdx1)
-                Result(RowNdxResult, ColNdx1) = V
-            Next
-        Next
-        
-        'Copy elements of 'Arr2' to 'Result'
-        For RowNdx2 = LBoundRow2 To UBoundRow2
-            RowNdxResult = RowNdxResult + 1
-            For ColNdx2 = LBoundCol2 To UBoundCol2
-                V = Arr2(RowNdx2, ColNdx2)
-                Result(RowNdxResult, ColNdx2) = V
-            Next
-        Next
-        
-        Done = RowNdxResult >= UBoundRowResult
-    Loop Until Done
-    
-    CombineTwoDArrays = Result
-    
-End Function
-
-
-'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-'ExpandArray
-'This expands a two-dimensional array in either dimension. It returns the
-'result array if successful, or 'Null' if an error occurred. The original array
-'is never changed.
-'Parameters:
-'- Arr                  is the array to be expanded
-'- WhichDim             is either 1 for additional rows or
-'                       2 for additional columns
-'- AdditionalElements   is the number of additional rows or columns to create.
-'- FillValue            is the value to which the new array elements should be
-'                       initialized
-'You can nest calls to expand array to expand both the number of rows and
-'columns, e.g.
-'
-'C = ExpandArray( _
-'        ExpandArray( _
-'            Arr:=A, _
-'            WhichDim:=1, _
-'            AdditionalElements:=3, _
-'            FillValue:="R") _
-'        , _
-'        WhichDim:=2, _
-'        AdditionalElements:=4, _
-'        FillValue:="C")
-'
-'This first adds three rows at the bottom of the array, and then adds four
-'columns on the right of the array.
-'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-'2do:
-'- create a type for 'WhichDim' and also replace 'ROWs_' then?
-'- should this work for objects as well?
-Public Function ExpandArray( _
-    ByVal Arr As Variant, _
-    ByVal WhichDim As Long, _
-    ByVal AdditionalElements As Long, _
-    ByVal FillValue As Variant _
-        ) As Variant
-    
-    Dim Result As Variant
-    Dim RowNdx As Long
-    Dim ColNdx As Long
-    
-    '==========================================================================
-    Const ROWS_ As Long = 1
-    '==========================================================================
-    
-    
-    'Set the default return value
-    ExpandArray = Null
-    
-    If Not IsArray(Arr) Then Exit Function
-    If NumberOfArrayDimensions(Arr) <> 2 Then Exit Function
-    
-    'Ensure the dimension is 1 or 2
-    Select Case WhichDim
-        Case 1, 2
-        Case Else
-            Exit Function
-    End Select
-    
-    If AdditionalElements < 0 Then Exit Function
-    If AdditionalElements = 0 Then
-        ExpandArray = Arr
-        Exit Function
-    End If
-    
-    If WhichDim = ROWS_ Then
-        'ReDim 'Result'
-        ReDim Result(LBound(Arr, 1) To UBound(Arr, 1) + AdditionalElements, _
-                LBound(Arr, 2) To UBound(Arr, 2))
-        
-        'Transfer 'Arr' array to 'Result'
-        For RowNdx = LBound(Arr, 1) To UBound(Arr, 1)
-            For ColNdx = LBound(Arr, 2) To UBound(Arr, 2)
-                Result(RowNdx, ColNdx) = Arr(RowNdx, ColNdx)
-            Next
-        Next
-        
-        'Fill the rest of the result array with 'FillValue'
-        For RowNdx = UBound(Arr, 1) + 1 To UBound(Result, 1)
-            For ColNdx = LBound(Arr, 2) To UBound(Arr, 2)
-                Result(RowNdx, ColNdx) = FillValue
-            Next
-        Next
-    Else
-        'ReDim 'Result'
-        ReDim Result(LBound(Arr, 1) To UBound(Arr, 1), _
-                LBound(Arr, 2) To UBound(Arr, 2) + AdditionalElements)
-        
-        'Transfer 'Arr' array to 'Result'
-        For RowNdx = LBound(Arr, 1) To UBound(Arr, 1)
-            For ColNdx = LBound(Arr, 2) To UBound(Arr, 2)
-                Result(RowNdx, ColNdx) = Arr(RowNdx, ColNdx)
-            Next
-        Next
-        
-        'Fill the rest of the result array with 'FillValue'
-        For RowNdx = LBound(Arr, 1) To UBound(Arr, 1)
-            For ColNdx = UBound(Arr, 2) + 1 To UBound(Result, 2)
-                Result(RowNdx, ColNdx) = FillValue
-            Next
-        Next
-    End If
-    
-    ExpandArray = Result
-    
-End Function
-
-
-'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-'SwapArrayRows
-'This function returns an array based on 'Arr' with 'Row1' and 'Row2' swapped.
-'It returns the result array or 'Null' if an error occurred.
-'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-Public Function SwapArrayRows( _
-    ByRef Arr As Variant, _
-    ByVal Row1 As Long, _
-    ByVal Row2 As Long _
-        ) As Variant
-    
-    Dim Temp As Variant
-    Dim Result As Variant
-    Dim ColNdx As Long
-    
-    
-    'Set the default return value
-    SwapArrayRows = Null
-    
-    If Not IsArray(Arr) Then Exit Function
-    If NumberOfArrayDimensions(Arr) <> 2 Then Exit Function
-    
-    'Ensure 'Row1' and 'Row2' are valid numbers
-    If Row1 < LBound(Arr, 1) Then Exit Function
-    If Row1 > UBound(Arr, 1) Then Exit Function
-    If Row2 < LBound(Arr, 1) Then Exit Function
-    If Row2 > UBound(Arr, 1) Then Exit Function
-    
-    'If 'Row1 = Row2', just return the array and exit. Nothing to do.
-    If Row1 = Row2 Then
-        SwapArrayRows = Arr
-        Exit Function
-    End If
-    
-    'Set 'Result' to 'Arr'
-    Result = Arr
-    
-    'ReDim 'Temp' to the number of columns
-    ReDim Temp(LBound(Arr, 2) To UBound(Arr, 2))
-    For ColNdx = LBound(Arr, 2) To UBound(Arr, 2)
-        Temp(ColNdx) = Arr(Row1, ColNdx)
-        Result(Row1, ColNdx) = Arr(Row2, ColNdx)
-        Result(Row2, ColNdx) = Temp(ColNdx)
-    Next
-    
-    SwapArrayRows = Result
-    
-End Function
-
-
-'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-'SwapArrayColumns
-'This function returns an array based on 'Arr' with 'Col1' and 'Col2' swapped.
-'It returns the result array or 'Null' if an error occurred.
-'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-Public Function SwapArrayColumns( _
-    ByRef Arr As Variant, _
-    ByVal Col1 As Long, _
-    ByVal Col2 As Long _
-        ) As Variant
-    
-    Dim Temp As Variant
-    Dim Result As Variant
-    Dim RowNdx As Long
-    
-    
-    'Set the default return value
-    SwapArrayColumns = Null
-    
-    If Not IsArray(Arr) Then Exit Function
-    If NumberOfArrayDimensions(Arr) <> 2 Then Exit Function
-    
-    'Ensure 'Col1' and 'Col2' are valid column numbers
-    If Col1 < LBound(Arr, 2) Then Exit Function
-    If Col1 > UBound(Arr, 2) Then Exit Function
-    If Col2 < LBound(Arr, 2) Then Exit Function
-    If Col2 > UBound(Arr, 2) Then Exit Function
-    
-    'If 'Col1 = Col2', just return the array and exit. Nothing to do.
-    If Col1 = Col2 Then
-        SwapArrayColumns = Arr
-        Exit Function
-    End If
-    
-    'Set 'Result' to 'Arr'
-    Result = Arr
-    
-    'ReDim 'Temp' to the number of columns
-    ReDim Temp(LBound(Arr, 1) To UBound(Arr, 1))
-    For RowNdx = LBound(Arr, 1) To UBound(Arr, 1)
-        Temp(RowNdx) = Arr(RowNdx, Col1)
-        Result(RowNdx, Col1) = Arr(RowNdx, Col2)
-        Result(RowNdx, Col2) = Temp(RowNdx)
-    Next
-    
-    SwapArrayColumns = Result
-    
-End Function
-
-
-'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-'GetColumn
-'This populates 'ResultArr' with a one-dimensional array that is the specified
-'column of 'Arr'. The existing contents of 'ResultArr' are erased.
-''ResultArr' must be a dynamic array. Returns 'True' or 'False' indicating
-'success.
-'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-Public Function GetColumn( _
-    ByVal Arr As Variant, _
-    ByRef ResultArr As Variant, _
-    ByVal ColumnNumber As Long _
-        ) As Boolean
-    
-    Dim RowNdx As Long
-    
-    
-    'Set the default return value
-    GetColumn = False
-    
-    If Not IsArray(Arr) Then Exit Function
-    If NumberOfArrayDimensions(Arr) <> 2 Then Exit Function
-    If Not IsArrayDynamic(ResultArr) Then Exit Function
-    
-    'Ensure 'ColumnNumber' is less than or equal to the number of columns
-    If UBound(Arr, 2) < ColumnNumber Then Exit Function
-    If LBound(Arr, 2) > ColumnNumber Then Exit Function
-    
-    Erase ResultArr
-    ReDim ResultArr(LBound(Arr, 1) To UBound(Arr, 1))
-    For RowNdx = LBound(ResultArr) To UBound(ResultArr)
-        If IsObject(Arr(RowNdx, ColumnNumber)) Then
-            Set ResultArr(RowNdx) = Arr(RowNdx, ColumnNumber)
-        Else
-            ResultArr(RowNdx) = Arr(RowNdx, ColumnNumber)
-        End If
-    Next
-    
-    GetColumn = True
-    
-End Function
-
-
-'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-'GetRow
-'This populates 'ResultArr' with a one-dimensional array that is the specified
-'row of 'Arr'. The existing contents of 'ResultArr' are erased. 'ResultArr'
-'must be a dynamic array. Returns 'True' or 'False' indicating success.
-'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-Public Function GetRow( _
-    ByVal Arr As Variant, _
-    ByRef ResultArr As Variant, _
-    ByVal RowNumber As Long _
-        ) As Boolean
-    
-    Dim ColNdx As Long
-    
-    
-    'Set the default return value
-    GetRow = False
-    
-    If Not IsArray(Arr) Then Exit Function
-    If NumberOfArrayDimensions(Arr) <> 2 Then Exit Function
-    If Not IsArrayDynamic(ResultArr) Then Exit Function
-    
-    'Ensure 'RowNumber' is less than or equal to the number of rows
-    If UBound(Arr, 1) < RowNumber Then Exit Function
-    If LBound(Arr, 1) > RowNumber Then Exit Function
-    
-    Erase ResultArr
-    ReDim ResultArr(LBound(Arr, 2) To UBound(Arr, 2))
-    For ColNdx = LBound(ResultArr) To UBound(ResultArr)
-        If IsObject(Arr(RowNumber, ColNdx)) Then
-            Set ResultArr(ColNdx) = Arr(RowNumber, ColNdx)
-        Else
-            ResultArr(ColNdx) = Arr(RowNumber, ColNdx)
-        End If
-    Next
-    
-    GetRow = True
-    
-End Function
 
 '------------------------------------------------------------------------------
 
