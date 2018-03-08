@@ -4542,11 +4542,11 @@ End Sub
 
 
 '==============================================================================
-'unit tests for 'MoveEmptyStringsToEndOfArray'
+'unit tests for 'MoveEmptyStringsToEndOfVector'
 '==============================================================================
 
 '@TestMethod
-Public Sub MoveEmptyStringsToEndOfArray_NoArray_ReturnsFalse()
+Public Sub MoveEmptyStringsToEndOfVector_NoArray_ReturnsFalse()
     On Error GoTo TestFail
     
     'Arrange:
@@ -4555,7 +4555,7 @@ Public Sub MoveEmptyStringsToEndOfArray_NoArray_ReturnsFalse()
     
     'Act:
     'Assert:
-    Assert.IsFalse modArraySupport.MoveEmptyStringsToEndOfArray(Scalar)
+    Assert.IsFalse modArraySupport.MoveEmptyStringsToEndOfVector(Scalar)
     
 TestExit:
     Exit Sub
@@ -4565,7 +4565,7 @@ End Sub
 
 
 '@TestMethod
-Public Sub MoveEmptyStringsToEndOfArray_UnallocatedArray_ReturnsFalse()
+Public Sub MoveEmptyStringsToEndOfVector_UnallocatedArray_ReturnsFalse()
     On Error GoTo TestFail
     
     'Arrange:
@@ -4574,7 +4574,7 @@ Public Sub MoveEmptyStringsToEndOfArray_UnallocatedArray_ReturnsFalse()
     
     'Act:
     'Assert:
-    Assert.IsFalse modArraySupport.MoveEmptyStringsToEndOfArray(InputArray)
+    Assert.IsFalse modArraySupport.MoveEmptyStringsToEndOfVector(InputArray)
     
 TestExit:
     Exit Sub
@@ -4584,7 +4584,7 @@ End Sub
 
 
 '@TestMethod
-Public Sub MoveEmptyStringsToEndOfArray_2DArray_ReturnsFalse()
+Public Sub MoveEmptyStringsToEndOfVector_2DArray_ReturnsFalse()
     On Error GoTo TestFail
     
     'Arrange:
@@ -4593,7 +4593,7 @@ Public Sub MoveEmptyStringsToEndOfArray_2DArray_ReturnsFalse()
     
     'Act:
     'Assert:
-    Assert.IsFalse modArraySupport.MoveEmptyStringsToEndOfArray(InputArray)
+    Assert.IsFalse modArraySupport.MoveEmptyStringsToEndOfVector(InputArray)
     
 TestExit:
     Exit Sub
@@ -4603,7 +4603,7 @@ End Sub
 
 
 '@TestMethod
-Public Sub MoveEmptyStringsToEndOfArray_vbNullStringArrayOnly_ReturnsTrue()
+Public Sub MoveEmptyStringsToEndOfVector_vbNullStringArrayOnly_ReturnsTrue()
     On Error GoTo TestFail
     
     Dim InputArray(5 To 7) As String
@@ -4616,7 +4616,7 @@ Public Sub MoveEmptyStringsToEndOfArray_vbNullStringArrayOnly_ReturnsTrue()
     
     'Act:
     'Assert:
-    Assert.IsTrue modArraySupport.MoveEmptyStringsToEndOfArray(InputArray)
+    Assert.IsTrue modArraySupport.MoveEmptyStringsToEndOfVector(InputArray)
     
 TestExit:
     Exit Sub
@@ -4626,7 +4626,7 @@ End Sub
 
 
 '@TestMethod
-Public Sub MoveEmptyStringsToEndOfArray_NoneVbNullStringArrayOnly_ReturnsTrue()
+Public Sub MoveEmptyStringsToEndOfVector_NoneVbNullStringArrayOnly_ReturnsTrue()
     On Error GoTo TestFail
     
     Dim InputArray(5 To 7) As String
@@ -4639,7 +4639,7 @@ Public Sub MoveEmptyStringsToEndOfArray_NoneVbNullStringArrayOnly_ReturnsTrue()
     
     'Act:
     'Assert:
-    Assert.IsTrue modArraySupport.MoveEmptyStringsToEndOfArray(InputArray)
+    Assert.IsTrue modArraySupport.MoveEmptyStringsToEndOfVector(InputArray)
     
 TestExit:
     Exit Sub
@@ -4649,7 +4649,7 @@ End Sub
 
 
 '@TestMethod
-Public Sub MoveEmptyStringsToEndOfArray_StringArray_ReturnsTrueAndModifiedArr()
+Public Sub MoveEmptyStringsToEndOfVector_StringArray_ReturnsTrueAndModifiedArr()
     On Error GoTo TestFail
     
     Dim InputArray(5 To 7) As String
@@ -4669,7 +4669,7 @@ Public Sub MoveEmptyStringsToEndOfArray_StringArray_ReturnsTrueAndModifiedArr()
     InputArray(7) = "abc"
     
     'Act:
-    If Not modArraySupport.MoveEmptyStringsToEndOfArray(InputArray) Then _
+    If Not modArraySupport.MoveEmptyStringsToEndOfVector(InputArray) Then _
             GoTo TestFail
     
     'Assert:
@@ -4686,7 +4686,7 @@ End Sub
 
 
 '@TestMethod
-Public Sub MoveEmptyStringsToEndOfArray_VariantArray_ReturnsTrueAndModifiedArr()
+Public Sub MoveEmptyStringsToEndOfVector_VariantArray_ReturnsTrueAndModifiedArr()
     On Error GoTo TestFail
     
     Dim InputArray(5 To 7) As Variant
@@ -4706,7 +4706,7 @@ Public Sub MoveEmptyStringsToEndOfArray_VariantArray_ReturnsTrueAndModifiedArr()
     InputArray(7) = "def"
     
     'Act:
-    If Not modArraySupport.MoveEmptyStringsToEndOfArray(InputArray) Then _
+    If Not modArraySupport.MoveEmptyStringsToEndOfVector(InputArray) Then _
             GoTo TestFail
     
     'Assert:
@@ -4723,7 +4723,7 @@ End Sub
 
 
 ''@TestMethod
-'Public Sub MoveEmptyStringsToEndOfArray_StringArray2_ReturnsTrueAndModifiedArr()
+'Public Sub MoveEmptyStringsToEndOfVector_StringArray2_ReturnsTrueAndModifiedArr()
 '    On Error GoTo TestFail
 '
 '    Dim Arr As Variant
@@ -4741,7 +4741,7 @@ End Sub
 '
 '    'Act:
 '    If Not modArraySupport.GetColumn(Arr, InputArray, 1) Then GoTo TestFail
-'    If Not modArraySupport.MoveEmptyStringsToEndOfArray(InputArray) Then _
+'    If Not modArraySupport.MoveEmptyStringsToEndOfVector(InputArray) Then _
 '            GoTo TestFail
 '    Arr = ThisWorkbook.Worksheets(1).Range("A35:B47")
 '    If Not modArraySupport.GetColumn(Arr, aExpected, 1) Then GoTo TestFail
