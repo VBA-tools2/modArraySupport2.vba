@@ -19,7 +19,7 @@ Option Compare Text
 '     AreDataTypesCompatible           --> changed order of arguments
 '     ChangeBoundsOfVector             --> renamed from 'ChangeBoundsOfArray'
 '     CombineTwoDArrays
-'     CompareArrays
+'     CompareVectors                   --> renamed from 'CompareArrays'
 '     ConcatenateArrays
 '     CopyArray                        --> changed order of arguments
 '     CopyArraySubSetToArray
@@ -64,18 +64,18 @@ Private Const C_ERR_ARRAY_IS_FIXED_OR_LOCKED As Long = 10
 
 
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-'CompareArrays
-'This function compares two arrays, 'Array1' and 'Array2', element by element,
-'and puts the results of the comparisons in 'ResultArray' with the same
-''LBound' as 'Array1'. Each element of 'ResultArray' will be -1, 0, or +1. A -1
-'indicates that the element in 'Array1' was less than the corresponding element
-'in 'Array2'. A 0 indicates that the elements are equal, and +1 indicates that
-'the element in 'Array1' is greater than 'Array2'.
+'CompareVectors
+'This function compares two vectors, 'Vector1' and 'Vector2', element by
+'element, and puts the results of the comparisons in 'ResultVector' with the
+'same 'LBound' as 'Vector1'. Each element of 'ResultVector' will be -1, 0, or
+'+1. A -1 indicates that the element in 'Vector1' was less than the
+'corresponding element in 'Vector2'. A 0 indicates that the elements are equal,
+'and +1 indicates that the element in 'Vector1' is greater than 'Vector2'.
 '
-'Both 'Array1' and 'Array2' must be allocated single-dimensional arrays, and
-''ResultArray' must be dynamic array of a numeric data type (typically 'Long').
-''Array1' and 'Array2' must contain the same number of elements, and have the
-'same lower bound. Also 'Array1' and 'Array2' are not allowed to contain an
+'Both 'Vector1' and 'Vector2' must be allocated single-dimensional arrays, and
+''ResultVector' must be dynamic array of a numeric data type (typically 'Long').
+''Vector1' and 'Vector2' must contain the same number of elements, and have the
+'same lower bound. Also 'Vector1' and 'Vector2' are not allowed to contain an
 'Object or User Defined Type. The function will return 'False' if not all of
 'the previous conditions are met.
 '
@@ -91,10 +91,10 @@ Private Const C_ERR_ARRAY_IS_FIXED_OR_LOCKED As Long = 10
 '- If either element is not a numeric string, the elements are converted and
 '  compared with 'StrComp'.
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-Public Function CompareArrays( _
-    ByVal Array1 As Variant, _
-    ByVal Array2 As Variant, _
-    ByRef ResultArray As Variant, _
+Public Function CompareVectors( _
+    ByVal Vector1 As Variant, _
+    ByVal Vector2 As Variant, _
+    ByRef ResultVector As Variant, _
     Optional ByVal CompareMode As VbCompareMethod = vbTextCompare _
         ) As Boolean
     
@@ -107,7 +107,7 @@ Public Function CompareArrays( _
     
     
     'Set the default return value
-    CompareArrays = False
+    CompareVectors = False
     
     'Ensure we have a compare mode value
     If CompareMode = vbBinaryCompare Then
@@ -116,53 +116,53 @@ Public Function CompareArrays( _
         Compare = vbTextCompare
     End If
     
-    If Not IsArray(Array1) Then Exit Function
-    If Not IsArray(Array2) Then Exit Function
-    If Not IsArrayDynamic(ResultArray) Then Exit Function
-    If NumberOfArrayDimensions(Array1) <> 1 Then Exit Function
-    If NumberOfArrayDimensions(Array2) <> 1 Then Exit Function
+    If Not IsArray(Vector1) Then Exit Function
+    If Not IsArray(Vector2) Then Exit Function
+    If Not IsArrayDynamic(ResultVector) Then Exit Function
+    If NumberOfArrayDimensions(Vector1) <> 1 Then Exit Function
+    If NumberOfArrayDimensions(Vector2) <> 1 Then Exit Function
     
-    'Ensure the LBounds are the same and size of the arrays is the same
-    If LBound(Array1) <> LBound(Array2) Then Exit Function
-    If UBound(Array1) <> UBound(Array2) Then Exit Function
+    'Ensure the LBounds are the same and size of the vectors is the same
+    If LBound(Vector1) <> LBound(Vector2) Then Exit Function
+    If UBound(Vector1) <> UBound(Vector2) Then Exit Function
     
-    'ReDim ResultArray to the number of elements in 'Array1'
-    ReDim ResultArray(LBound(Array1) To UBound(Array1))
+    'ReDim ResultVector to the number of elements in 'Vector1'
+    ReDim ResultVector(LBound(Vector1) To UBound(Vector1))
     
-    'Scan each array to see if it contains objects or User-Defined Types
+    'Scan each vector to see if it contains objects or User-Defined Types
     'If found, exit with 'False'
-    For i = LBound(Array1) To UBound(Array1)
-        If IsObject(Array1(i)) Then Exit Function
-        If VarType(Array1(i)) >= vbArray Then Exit Function
-        If VarType(Array1(i)) = vbUserDefinedType Then Exit Function
+    For i = LBound(Vector1) To UBound(Vector1)
+        If IsObject(Vector1(i)) Then Exit Function
+        If VarType(Vector1(i)) >= vbArray Then Exit Function
+        If VarType(Vector1(i)) = vbUserDefinedType Then Exit Function
     Next
-    For i = LBound(Array2) To UBound(Array2)
-        If IsObject(Array2(i)) Then Exit Function
-        If VarType(Array2(i)) >= vbArray Then Exit Function
-        If VarType(Array2(i)) = vbUserDefinedType Then Exit Function
+    For i = LBound(Vector2) To UBound(Vector2)
+        If IsObject(Vector2(i)) Then Exit Function
+        If VarType(Vector2(i)) >= vbArray Then Exit Function
+        If VarType(Vector2(i)) = vbUserDefinedType Then Exit Function
     Next
     
     
     'test each entry
-    For i = LBound(Array1) To UBound(Array1)
-        If IsNumeric(Array1(i)) And IsNumeric(Array2(i)) Then
-            D1 = CDbl(Array1(i))
-            D2 = CDbl(Array2(i))
+    For i = LBound(Vector1) To UBound(Vector1)
+        If IsNumeric(Vector1(i)) And IsNumeric(Vector2(i)) Then
+            D1 = CDbl(Vector1(i))
+            D2 = CDbl(Vector2(i))
             If D1 = D2 Then
-                ResultArray(i) = 0
+                ResultVector(i) = 0
             ElseIf D1 < D2 Then
-                ResultArray(i) = -1
+                ResultVector(i) = -1
             Else
-                ResultArray(i) = 1
+                ResultVector(i) = 1
             End If
         Else
-            S1 = CStr(Array1(i))
-            S2 = CStr(Array2(i))
-            ResultArray(i) = StrComp(S1, S2, Compare)
+            S1 = CStr(Vector1(i))
+            S2 = CStr(Vector2(i))
+            ResultVector(i) = StrComp(S1, S2, Compare)
         End If
     Next
     
-    CompareArrays = True
+    CompareVectors = True
     
 End Function
 

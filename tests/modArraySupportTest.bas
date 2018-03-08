@@ -231,11 +231,11 @@ End Sub
 
 
 '==============================================================================
-'unit tests for 'CompareArrays'
+'unit tests for 'CompareVectors'
 '==============================================================================
 
 '@TestMethod
-Public Sub CompareArrays_UnallocatedArrays_ReturnsFalse()
+Public Sub CompareVectors_UnallocatedArrays_ReturnsFalse()
     On Error GoTo TestFail
     
     'Arrange:
@@ -246,7 +246,7 @@ Public Sub CompareArrays_UnallocatedArrays_ReturnsFalse()
     
     'Act:
     'Assert:
-    Assert.IsFalse modArraySupport.CompareArrays(Arr1, Arr2, ResArr)
+    Assert.IsFalse modArraySupport.CompareVectors(Arr1, Arr2, ResArr)
     
 TestExit:
     Exit Sub
@@ -256,7 +256,7 @@ End Sub
 
 
 '@TestMethod
-Public Sub CompareArrays_LegalAndTextCompare_ReturnsTrueAndResArr()
+Public Sub CompareVectors_LegalAndTextCompare_ReturnsTrueAndResArr()
     On Error GoTo TestFail
     
     Dim Arr1(1 To 5) As String
@@ -287,7 +287,7 @@ Public Sub CompareArrays_LegalAndTextCompare_ReturnsTrueAndResArr()
     Arr2(5) = "b"
     
     'Act:
-    If Not modArraySupport.CompareArrays(Arr1, Arr2, ResArr, vbTextCompare) _
+    If Not modArraySupport.CompareVectors(Arr1, Arr2, ResArr, vbTextCompare) _
             Then GoTo TestFail
     
     'Assert:
@@ -301,7 +301,7 @@ End Sub
 
 
 '@TestMethod
-Public Sub CompareArrays_LegalAndBinaryCompare_ReturnsTrueAndResArr()
+Public Sub CompareVectors_LegalAndBinaryCompare_ReturnsTrueAndResArr()
     On Error GoTo TestFail
     
     Dim Arr1(1 To 5) As String
@@ -332,7 +332,7 @@ Public Sub CompareArrays_LegalAndBinaryCompare_ReturnsTrueAndResArr()
     Arr2(5) = "b"
     
     'Act:
-    If Not modArraySupport.CompareArrays(Arr1, Arr2, ResArr, vbBinaryCompare) _
+    If Not modArraySupport.CompareVectors(Arr1, Arr2, ResArr, vbBinaryCompare) _
             Then GoTo TestFail
     
     'Assert:
