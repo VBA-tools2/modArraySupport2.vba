@@ -1,12 +1,13 @@
-Attribute VB_Name = "modArraySupport"
+Attribute VB_Name = "modArraySupport2"
 
 Option Explicit
 Option Private Module
 Option Compare Text
 
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-'modArraySupport
+'(modArraySupport) --> modArraySupport2
 'By Chip Pearson, chip@cpearson.com, www.cpearson.com
+'Heavily modified by Stefan Pinnow <https://github.com/VBA-tools2/modArraySupport2.vba>
 '
 'This module contains procedures that provide information about and manipulate
 'VB/VBA arrays. NOTE: These functions call one another. It is strongly

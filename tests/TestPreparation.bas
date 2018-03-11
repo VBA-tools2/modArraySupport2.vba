@@ -22,7 +22,7 @@ Private Function GetTestWorksheet( _
         ) As Worksheet
     
     '==========================================================================
-    Const TestWorksheetName As String = "__modArraySupportTest__"
+    Const TestWorksheetName As String = "__modArraySupport2Test__"
     '==========================================================================
     
     Dim ws As Worksheet
@@ -54,7 +54,7 @@ Public Sub InitializeWorksheet4Tests( _
     With wks
         .UsedRange.Clear
         
-        .Cells(2, 1).Value = "SEE VBA CODE MODULE 'modArraySupport' for code"
+        .Cells(2, 1).Value = "SEE VBA CODE MODULE 'modArraySupport2' for code"
         With .Cells(4, 1)
             .Value = "Functions in the VBA Code"
             With .Interior

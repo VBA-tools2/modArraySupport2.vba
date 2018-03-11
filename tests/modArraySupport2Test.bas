@@ -1,4 +1,4 @@
-Attribute VB_Name = "modArraySupportTest"
+Attribute VB_Name = "modArraySupport2Test"
 
 Option Explicit
 Option Compare Text
@@ -53,7 +53,7 @@ Public Sub AreDataTypesCompatible_ScalarSourceArrayDest_ReturnsFalse()
     
     'Act:
     'Assert:
-    Assert.IsFalse modArraySupport.AreDataTypesCompatible(Source, Dest)
+    Assert.IsFalse modArraySupport2.AreDataTypesCompatible(Source, Dest)
     
 TestExit:
     Exit Sub
@@ -73,7 +73,7 @@ Public Sub AreDataTypesCompatible_BothStringScalars_ReturnsTrue()
     
     'Act:
     'Assert:
-    Assert.IsTrue modArraySupport.AreDataTypesCompatible(Source, Dest)
+    Assert.IsTrue modArraySupport2.AreDataTypesCompatible(Source, Dest)
     
 TestExit:
     Exit Sub
@@ -93,7 +93,7 @@ Public Sub AreDataTypesCompatible_BothStringArrays_ReturnsTrue()
     
     'Act:
     'Assert:
-    Assert.IsTrue modArraySupport.AreDataTypesCompatible(Source, Dest)
+    Assert.IsTrue modArraySupport2.AreDataTypesCompatible(Source, Dest)
     
 TestExit:
     Exit Sub
@@ -113,7 +113,7 @@ Public Sub AreDataTypesCompatible_LongSourceIntegerDest_ReturnsFalse()
     
     'Act:
     'Assert:
-    Assert.IsFalse modArraySupport.AreDataTypesCompatible(Source, Dest)
+    Assert.IsFalse modArraySupport2.AreDataTypesCompatible(Source, Dest)
     
 TestExit:
     Exit Sub
@@ -133,7 +133,7 @@ Public Sub AreDataTypesCompatible_IntegerSourceLongDest_ReturnsTrue()
     
     'Act:
     'Assert:
-    Assert.IsTrue modArraySupport.AreDataTypesCompatible(Source, Dest)
+    Assert.IsTrue modArraySupport2.AreDataTypesCompatible(Source, Dest)
     
 TestExit:
     Exit Sub
@@ -153,7 +153,7 @@ Public Sub AreDataTypesCompatible_DoubleSourceLongDest_ReturnsFalse()
     
     'Act:
     'Assert:
-    Assert.IsFalse modArraySupport.AreDataTypesCompatible(Source, Dest)
+    Assert.IsFalse modArraySupport2.AreDataTypesCompatible(Source, Dest)
     
 TestExit:
     Exit Sub
@@ -173,7 +173,7 @@ Public Sub AreDataTypesCompatible_BothObjects_ReturnsTrue()
     
     'Act:
     'Assert:
-    Assert.IsTrue modArraySupport.AreDataTypesCompatible(Source, Dest)
+    Assert.IsTrue modArraySupport2.AreDataTypesCompatible(Source, Dest)
     
 TestExit:
     Exit Sub
@@ -193,7 +193,7 @@ Public Sub AreDataTypesCompatible_SingleSourceDateDest_ReturnsTrue()
     
     'Act:
     'Assert:
-    Assert.IsTrue modArraySupport.AreDataTypesCompatible(Source, Dest)
+    Assert.IsTrue modArraySupport2.AreDataTypesCompatible(Source, Dest)
     
 TestExit:
     Exit Sub
@@ -221,7 +221,7 @@ End Sub
 '    Dest(0) = Empty
 '
 '    'Assert:
-'    Assert.IsTrue modArraySupport.AreDataTypesCompatible(Source(0), Dest(0))
+'    Assert.IsTrue modArraySupport2.AreDataTypesCompatible(Source(0), Dest(0))
 '
 'TestExit:
 '    Exit Sub
@@ -249,7 +249,7 @@ Public Sub ChangeBoundsOfVector_LBGreaterUB_ReturnsFalse()
     
     'Act:
     'Assert:
-    Assert.IsFalse modArraySupport.ChangeBoundsOfVector(Arr, NewLB, NewUB)
+    Assert.IsFalse modArraySupport2.ChangeBoundsOfVector(Arr, NewLB, NewUB)
     
 TestExit:
     Exit Sub
@@ -273,7 +273,7 @@ Public Sub ChangeBoundsOfVector_ScalarInput_ReturnsFalse()
     
     'Act:
     'Assert:
-    Assert.IsFalse modArraySupport.ChangeBoundsOfVector(Scalar, NewLB, NewUB)
+    Assert.IsFalse modArraySupport2.ChangeBoundsOfVector(Scalar, NewLB, NewUB)
     
 TestExit:
     Exit Sub
@@ -297,7 +297,7 @@ Public Sub ChangeBoundsOfVector_StaticArray_ReturnsFalse()
     
     'Act:
     'Assert:
-    Assert.IsFalse modArraySupport.ChangeBoundsOfVector(Arr, NewLB, NewUB)
+    Assert.IsFalse modArraySupport2.ChangeBoundsOfVector(Arr, NewLB, NewUB)
     
 TestExit:
     Exit Sub
@@ -321,7 +321,7 @@ Public Sub ChangeBoundsOfVector_UnallocatedArray_ReturnsFalse()
     
     'Act:
     'Assert:
-    Assert.IsFalse modArraySupport.ChangeBoundsOfVector(Arr, NewLB, NewUB)
+    Assert.IsFalse modArraySupport2.ChangeBoundsOfVector(Arr, NewLB, NewUB)
     
 TestExit:
     Exit Sub
@@ -345,7 +345,7 @@ Public Sub ChangeBoundsOfVector_2DArray_ReturnsFalse()
     
     'Act:
     'Assert:
-    Assert.IsFalse modArraySupport.ChangeBoundsOfVector(Arr, NewLB, NewUB)
+    Assert.IsFalse modArraySupport2.ChangeBoundsOfVector(Arr, NewLB, NewUB)
     
 TestExit:
     Exit Sub
@@ -381,7 +381,7 @@ Public Sub ChangeBoundsOfVector_LongInputArr_ReturnsTrueAndChangedArr()
     
     
     'Act:
-    If Not modArraySupport.ChangeBoundsOfVector(Arr, NewLB, NewUB) _
+    If Not modArraySupport2.ChangeBoundsOfVector(Arr, NewLB, NewUB) _
             Then GoTo TestFail
     
     'Assert:
@@ -417,7 +417,7 @@ Public Sub ChangeBoundsOfVector_SmallerUBDiffThanSource_ReturnsTrueAndChangedArr
     
     
     'Act:
-    If Not modArraySupport.ChangeBoundsOfVector(Arr, NewLB, NewUB) _
+    If Not modArraySupport2.ChangeBoundsOfVector(Arr, NewLB, NewUB) _
             Then GoTo TestFail
     
     'Assert:
@@ -458,7 +458,7 @@ Public Sub ChangeBoundsOfVector_VariantArr_ReturnsTrueAndChangedArr()
     
     
     'Act:
-    If Not modArraySupport.ChangeBoundsOfVector(Arr, NewLB, NewUB) _
+    If Not modArraySupport2.ChangeBoundsOfVector(Arr, NewLB, NewUB) _
             Then GoTo TestFail
     
     'Assert:
@@ -501,7 +501,7 @@ Public Sub ChangeBoundsOfVector_LongInputArrNoUpperBound_ReturnsTrueAndChangedAr
     
     
     'Act:
-    If Not modArraySupport.ChangeBoundsOfVector(Arr, NewLB) _
+    If Not modArraySupport2.ChangeBoundsOfVector(Arr, NewLB) _
             Then GoTo TestFail
     
     'Assert:
@@ -547,7 +547,7 @@ Public Sub ChangeBoundsOfVector_RangeArr_ReturnsTrueAndChangedArr()
     End With
     
     'Act:
-    If Not modArraySupport.ChangeBoundsOfVector(Arr, NewLB, NewUB) _
+    If Not modArraySupport2.ChangeBoundsOfVector(Arr, NewLB, NewUB) _
             Then GoTo TestFail
     
     'Assert:
@@ -570,17 +570,17 @@ End Sub
 Public Sub ChangeBoundsOfVector_CustomClass_ReturnsTrueAndChangedArr()
     On Error GoTo TestFail
     
-    Dim Arr() As clsDummy_4_modArraySupportTest
+    Dim Arr() As clsDummy_4_modArraySupport2Test
     Dim i As Long
     
     '==========================================================================
     Const NewLB As Long = 20
     Const NewUB As Long = 25
     '==========================================================================
-    Dim aExpected(NewLB To NewUB) As clsDummy_4_modArraySupportTest
-    Set aExpected(20) = New clsDummy_4_modArraySupportTest
-    Set aExpected(21) = New clsDummy_4_modArraySupportTest
-    Set aExpected(22) = New clsDummy_4_modArraySupportTest
+    Dim aExpected(NewLB To NewUB) As clsDummy_4_modArraySupport2Test
+    Set aExpected(20) = New clsDummy_4_modArraySupport2Test
+    Set aExpected(21) = New clsDummy_4_modArraySupport2Test
+    Set aExpected(22) = New clsDummy_4_modArraySupport2Test
     aExpected(20).Name = "Name 1"
     aExpected(20).Value = 1
     aExpected(21).Name = "Name 2"
@@ -594,9 +594,9 @@ Public Sub ChangeBoundsOfVector_CustomClass_ReturnsTrueAndChangedArr()
     
     'Arrange:
     ReDim Arr(5 To 7)
-    Set Arr(5) = New clsDummy_4_modArraySupportTest
-    Set Arr(6) = New clsDummy_4_modArraySupportTest
-    Set Arr(7) = New clsDummy_4_modArraySupportTest
+    Set Arr(5) = New clsDummy_4_modArraySupport2Test
+    Set Arr(6) = New clsDummy_4_modArraySupport2Test
+    Set Arr(7) = New clsDummy_4_modArraySupport2Test
     Arr(5).Name = "Name 1"
     Arr(5).Value = 1
     Arr(6).Name = "Name 2"
@@ -605,7 +605,7 @@ Public Sub ChangeBoundsOfVector_CustomClass_ReturnsTrueAndChangedArr()
     Arr(7).Value = 3
     
     'Act:
-    If Not modArraySupport.ChangeBoundsOfVector(Arr, NewLB, NewUB) _
+    If Not modArraySupport2.ChangeBoundsOfVector(Arr, NewLB, NewUB) _
             Then GoTo TestFail
     
     'Assert:
@@ -639,7 +639,7 @@ Public Sub CombineTwoDArrays_ScalarArr1_ReturnsNull()
     
     
     'Act:
-    ResArr = modArraySupport.CombineTwoDArrays(Scalar1, Arr2)
+    ResArr = modArraySupport2.CombineTwoDArrays(Scalar1, Arr2)
     
     'Assert:
     Assert.IsTrue IsNull(ResArr)
@@ -662,7 +662,7 @@ Public Sub CombineTwoDArrays_ScalarArr2_ReturnsNull()
     
     
     'Act:
-    ResArr = modArraySupport.CombineTwoDArrays(Arr1, Scalar2)
+    ResArr = modArraySupport2.CombineTwoDArrays(Arr1, Scalar2)
     
     'Assert:
     Assert.IsTrue IsNull(ResArr)
@@ -685,7 +685,7 @@ Public Sub CombineTwoDArrays_1DArr1_ReturnsNull()
     
     
     'Act:
-    ResArr = modArraySupport.CombineTwoDArrays(Arr1, Arr2)
+    ResArr = modArraySupport2.CombineTwoDArrays(Arr1, Arr2)
     
     'Assert:
     Assert.IsTrue IsNull(ResArr)
@@ -708,7 +708,7 @@ Public Sub CombineTwoDArrays_3DArr1_ReturnsNull()
     
     
     'Act:
-    ResArr = modArraySupport.CombineTwoDArrays(Arr1, Arr2)
+    ResArr = modArraySupport2.CombineTwoDArrays(Arr1, Arr2)
     
     'Assert:
     Assert.IsTrue IsNull(ResArr)
@@ -731,7 +731,7 @@ Public Sub CombineTwoDArrays_1DArr2_ReturnsNull()
     
     
     'Act:
-    ResArr = modArraySupport.CombineTwoDArrays(Arr1, Arr2)
+    ResArr = modArraySupport2.CombineTwoDArrays(Arr1, Arr2)
     
     'Assert:
     Assert.IsTrue IsNull(ResArr)
@@ -754,7 +754,7 @@ Public Sub CombineTwoDArrays_3DArr2_ReturnsNull()
     
     
     'Act:
-    ResArr = modArraySupport.CombineTwoDArrays(Arr1, Arr2)
+    ResArr = modArraySupport2.CombineTwoDArrays(Arr1, Arr2)
     
     'Assert:
     Assert.IsTrue IsNull(ResArr)
@@ -777,7 +777,7 @@ Public Sub CombineTwoDArrays_DifferentColNumbers_ReturnsNull()
     
     
     'Act:
-    ResArr = modArraySupport.CombineTwoDArrays(Arr1, Arr2)
+    ResArr = modArraySupport2.CombineTwoDArrays(Arr1, Arr2)
     
     'Assert:
     Assert.IsTrue IsNull(ResArr)
@@ -800,7 +800,7 @@ Public Sub CombineTwoDArrays_DifferentLBoundRows_ReturnsNull()
     
     
     'Act:
-    ResArr = modArraySupport.CombineTwoDArrays(Arr1, Arr2)
+    ResArr = modArraySupport2.CombineTwoDArrays(Arr1, Arr2)
     
     'Assert:
     Assert.IsTrue IsNull(ResArr)
@@ -823,7 +823,7 @@ Public Sub CombineTwoDArrays_DifferentLBoundCol1_ReturnsNull()
     
     
     'Act:
-    ResArr = modArraySupport.CombineTwoDArrays(Arr1, Arr2)
+    ResArr = modArraySupport2.CombineTwoDArrays(Arr1, Arr2)
     
     'Assert:
     Assert.IsTrue IsNull(ResArr)
@@ -846,7 +846,7 @@ Public Sub CombineTwoDArrays_DifferentLBoundCol2_ReturnsNull()
     
     
     'Act:
-    ResArr = modArraySupport.CombineTwoDArrays(Arr1, Arr2)
+    ResArr = modArraySupport2.CombineTwoDArrays(Arr1, Arr2)
     
     'Assert:
     Assert.IsTrue IsNull(ResArr)
@@ -892,7 +892,7 @@ Public Sub CombineTwoDArrays_1BasedStringArrays_ReturnsCombinedResultArr()
     Arr2(2, 2) = "h"
     
     'Act:
-    ResArr = modArraySupport.CombineTwoDArrays(Arr1, Arr2)
+    ResArr = modArraySupport2.CombineTwoDArrays(Arr1, Arr2)
     
     'Assert:
     Assert.SequenceEquals aExpected, ResArr
@@ -938,7 +938,7 @@ Public Sub CombineTwoDArrays_0BasedStringArrays_ReturnsCombinedResultArr()
     Arr2(1, 1) = "h"
     
     'Act:
-    ResArr = modArraySupport.CombineTwoDArrays(Arr1, Arr2)
+    ResArr = modArraySupport2.CombineTwoDArrays(Arr1, Arr2)
     
     'Assert:
     Assert.SequenceEquals aExpected, ResArr
@@ -984,7 +984,7 @@ Public Sub CombineTwoDArrays_PositiveBasedStringArrays_ReturnsCombinedResultArr(
     Arr2(6, 6) = "h"
     
     'Act:
-    ResArr = modArraySupport.CombineTwoDArrays(Arr1, Arr2)
+    ResArr = modArraySupport2.CombineTwoDArrays(Arr1, Arr2)
     
     'Assert:
     Assert.SequenceEquals aExpected, ResArr
@@ -1030,7 +1030,7 @@ Public Sub CombineTwoDArrays_NegativeBasedStringArrays_ReturnsCombinedResultArr(
     Arr2(-5, -5) = "h"
     
     'Act:
-    ResArr = modArraySupport.CombineTwoDArrays(Arr1, Arr2)
+    ResArr = modArraySupport2.CombineTwoDArrays(Arr1, Arr2)
     
     'Assert:
     Assert.SequenceEquals aExpected, ResArr
@@ -1098,9 +1098,9 @@ Public Sub CombineTwoDArrays_NestedStringArrays_ReturnsCombinedResultArr()
     Arr4(2, 2) = "p"
     
     'Act:
-    ResArr = modArraySupport.CombineTwoDArrays( _
-            modArraySupport.CombineTwoDArrays( _
-                    modArraySupport.CombineTwoDArrays(Arr1, Arr2), _
+    ResArr = modArraySupport2.CombineTwoDArrays( _
+            modArraySupport2.CombineTwoDArrays( _
+                    modArraySupport2.CombineTwoDArrays(Arr1, Arr2), _
                     Arr3), _
             Arr4 _
     )
@@ -1131,7 +1131,7 @@ Public Sub CompareVectors_UnallocatedArrays_ReturnsFalse()
     
     'Act:
     'Assert:
-    Assert.IsFalse modArraySupport.CompareVectors(Arr1, Arr2, ResArr)
+    Assert.IsFalse modArraySupport2.CompareVectors(Arr1, Arr2, ResArr)
     
 TestExit:
     Exit Sub
@@ -1172,7 +1172,7 @@ Public Sub CompareVectors_LegalAndTextCompare_ReturnsTrueAndResArr()
     Arr2(5) = "b"
     
     'Act:
-    If Not modArraySupport.CompareVectors(Arr1, Arr2, ResArr, vbTextCompare) _
+    If Not modArraySupport2.CompareVectors(Arr1, Arr2, ResArr, vbTextCompare) _
             Then GoTo TestFail
     
     'Assert:
@@ -1217,7 +1217,7 @@ Public Sub CompareVectors_LegalAndBinaryCompare_ReturnsTrueAndResArr()
     Arr2(5) = "b"
     
     'Act:
-    If Not modArraySupport.CompareVectors(Arr1, Arr2, ResArr, vbBinaryCompare) _
+    If Not modArraySupport2.CompareVectors(Arr1, Arr2, ResArr, vbBinaryCompare) _
             Then GoTo TestFail
     
     'Assert:
@@ -1252,7 +1252,7 @@ Public Sub ConcatenateArrays_StaticResultArray_ResultsFalse()
     
     'Act:
     'Assert:
-    Assert.IsFalse modArraySupport.ConcatenateArrays( _
+    Assert.IsFalse modArraySupport2.ConcatenateArrays( _
             ResultArray, _
             ArrayToAppend, _
             CompatibilityCheck _
@@ -1279,7 +1279,7 @@ Public Sub ConcatenateArrays_BothArraysUnallocated_ResultsTrueAndUnallocatedArra
     
     
     'Act:
-    If Not modArraySupport.ConcatenateArrays( _
+    If Not modArraySupport2.ConcatenateArrays( _
             ResultArray, _
             ArrayToAppend, _
             CompatibilityCheck _
@@ -1318,7 +1318,7 @@ Public Sub ConcatenateArrays_UnallocatedArrayToAppend_ResultsTrueAndUnchangedRes
     ResultArray(2) = 9
     
     'Act:
-    If Not modArraySupport.ConcatenateArrays( _
+    If Not modArraySupport2.ConcatenateArrays( _
             ResultArray, _
             ArrayToAppend, _
             CompatibilityCheck _
@@ -1366,7 +1366,7 @@ Public Sub ConcatenateArrays_IntegerArrayToAppendLongResultArray_ResultsTrueAndR
     ArrayToAppend(3) = 113
     
     'Act:
-    If Not modArraySupport.ConcatenateArrays( _
+    If Not modArraySupport2.ConcatenateArrays( _
             ResultArray, _
             ArrayToAppend, _
             CompatibilityCheck _
@@ -1407,7 +1407,7 @@ Public Sub ConcatenateArrays_LongArrayToAppendIntegerResultArray_ResultsFalse()
     
     'Assert:
     'Act:
-    Assert.IsFalse modArraySupport.ConcatenateArrays( _
+    Assert.IsFalse modArraySupport2.ConcatenateArrays( _
             ResultArray, _
             ArrayToAppend, _
             CompatibilityCheck _
@@ -1451,7 +1451,7 @@ Public Sub ConcatenateArrays_LongArrayToAppendIntegerResultArrayFalseCompatibili
     ArrayToAppend(3) = 113
     
     'Act:
-    If Not modArraySupport.ConcatenateArrays( _
+    If Not modArraySupport2.ConcatenateArrays( _
             ResultArray, _
             ArrayToAppend, _
             CompatibilityCheck _
@@ -1494,7 +1494,7 @@ Public Sub ConcatenateArrays_LongArrayToAppendWithLongNumberIntegerResultArrayFa
     ArrayToAppend(3) = 113
     
     'Act:
-    Success = modArraySupport.ConcatenateArrays( _
+    Success = modArraySupport2.ConcatenateArrays( _
             ResultArray, _
             ArrayToAppend, _
             CompatibilityCheck _
@@ -1546,7 +1546,7 @@ End Sub
 '    End With
 '
 '    'Act:
-'    If Not modArraySupport.ConcatenateArrays( _
+'    If Not modArraySupport2.ConcatenateArrays( _
 '            ResultArray, _
 '            ArrayToAppend, _
 '            CompatibilityCheck _
@@ -1560,7 +1560,7 @@ End Sub
 '    Next
 '
 ''    If B = True Then
-''        If modArraySupport.IsArrayAllocated(ResultArray) = True Then
+''        If modArraySupport2.IsArrayAllocated(ResultArray) = True Then
 ''            For i = LBound(ResultArray) To UBound(ResultArray)
 ''                If IsObject(ResultArray(i)) = True Then
 ''Debug.Print CStr(i), "is object", TypeName(ResultArray(i))
@@ -1605,7 +1605,7 @@ Public Sub CopyArray_UnallocatedSrc_ResultsTrueAndUnchangedDest()
     Dest(0) = 50
     
     'Act:
-    If Not modArraySupport.CopyArray( _
+    If Not modArraySupport2.CopyArray( _
             Src, _
             Dest, _
             CompatibilityCheck _
@@ -1637,7 +1637,7 @@ Public Sub CopyArray_IncompatibleDest_ResultsFalse()
     
     'Act:
     'Assert:
-    Assert.IsFalse modArraySupport.CopyArray( _
+    Assert.IsFalse modArraySupport2.CopyArray( _
             Src, _
             Dest, _
             CompatibilityCheck _
@@ -1672,7 +1672,7 @@ Public Sub CopyArray_AllocatedDestLessElementsThenSrc_ResultsTrueAndDestArray()
     Src(3) = 3
     
     'Act:
-    If Not modArraySupport.CopyArray( _
+    If Not modArraySupport2.CopyArray( _
             Src, _
             Dest, _
             CompatibilityCheck _
@@ -1713,7 +1713,7 @@ Public Sub CopyArray_AllocatedDestMoreElementsThenSrc_ResultsTrueAndDestArray()
     Src(3) = 3
     
     'Act:
-    If Not modArraySupport.CopyArray( _
+    If Not modArraySupport2.CopyArray( _
             Src, _
             Dest, _
             CompatibilityCheck _
@@ -1751,7 +1751,7 @@ Public Sub CopyArray_NoCompatibilityCheck_ResultsTrueAndDestArrayWithOverflow()
     Src(2) = 32768                               'no valid Integer
     
     'Act:
-    If Not modArraySupport.CopyArray( _
+    If Not modArraySupport2.CopyArray( _
             Src, _
             Dest, _
             CompatibilityCheck _
@@ -1786,7 +1786,7 @@ Public Sub CopyNonNothingObjectsToVector_ScalarResultArray_ReturnsFalse()
     
     'Act:
     'Assert:
-    Assert.IsFalse modArraySupport.CopyNonNothingObjectsToVector( _
+    Assert.IsFalse modArraySupport2.CopyNonNothingObjectsToVector( _
             SourceArray, _
             ScalarResult _
     )
@@ -1809,7 +1809,7 @@ Public Sub CopyNonNothingObjectsToVector_StaticResultArray_ReturnsFalse()
     
     'Act:
     'Assert:
-    Assert.IsFalse modArraySupport.CopyNonNothingObjectsToVector( _
+    Assert.IsFalse modArraySupport2.CopyNonNothingObjectsToVector( _
             SourceArray, _
             ResultArray _
     )
@@ -1834,7 +1834,7 @@ Public Sub CopyNonNothingObjectsToVector_2DResultArray_ReturnsFalse()
     
     'Act:
     'Assert:
-    Assert.IsFalse modArraySupport.CopyNonNothingObjectsToVector( _
+    Assert.IsFalse modArraySupport2.CopyNonNothingObjectsToVector( _
             SourceArray, _
             ResultArray _
     )
@@ -1860,7 +1860,7 @@ Public Sub CopyNonNothingObjectsToVector_NonObjectOnlySourceArray_ReturnsFalse()
     
     'Act:
     'Assert:
-    Assert.IsFalse modArraySupport.CopyNonNothingObjectsToVector( _
+    Assert.IsFalse modArraySupport2.CopyNonNothingObjectsToVector( _
             SourceArray, _
             ResultArray _
     )
@@ -1886,7 +1886,7 @@ Public Sub CopyNonNothingObjectsToVector_ValidNonNothingOnlySourceArray_ReturnsT
     Set SourceArray(6) = ThisWorkbook.Worksheets(1).Range("A2")
     
     'Act:
-    If Not modArraySupport.CopyNonNothingObjectsToVector( _
+    If Not modArraySupport2.CopyNonNothingObjectsToVector( _
             SourceArray, _
             ResultArray _
     ) Then _
@@ -1918,14 +1918,14 @@ Public Sub CopyNonNothingObjectsToVector_NothingOnlySourceArray_ReturnsFalse()
     Set SourceArray(6) = Nothing
     
     'Act:
-    If Not modArraySupport.CopyNonNothingObjectsToVector( _
+    If Not modArraySupport2.CopyNonNothingObjectsToVector( _
             SourceArray, _
             ResultArray _
     ) Then _
             GoTo TestFail
     
     'Assert:
-    Assert.IsFalse modArraySupport.IsArrayAllocated(ResultArray)
+    Assert.IsFalse modArraySupport2.IsArrayAllocated(ResultArray)
     
 TestExit:
     Exit Sub
@@ -1955,7 +1955,7 @@ Public Sub CopyVectorSubSetToVector_ScalarInput_ReturnsFalse()
     
     'Act:
     'Assert:
-    Assert.IsFalse modArraySupport.CopyVectorSubSetToVector( _
+    Assert.IsFalse modArraySupport2.CopyVectorSubSetToVector( _
             Scalar, _
             ResultArray, _
             FirstElementToCopy, _
@@ -1987,7 +1987,7 @@ Public Sub CopyVectorSubSetToVector_ScalarResult_ReturnsFalse()
     
     'Act:
     'Assert:
-    Assert.IsFalse modArraySupport.CopyVectorSubSetToVector( _
+    Assert.IsFalse modArraySupport2.CopyVectorSubSetToVector( _
             InputArray, _
             ScalarResult, _
             FirstElementToCopy, _
@@ -2019,7 +2019,7 @@ Public Sub CopyVectorSubSetToVector_UnallocatedInputArray_ReturnsFalse()
     
     'Act:
     'Assert:
-    Assert.IsFalse modArraySupport.CopyVectorSubSetToVector( _
+    Assert.IsFalse modArraySupport2.CopyVectorSubSetToVector( _
             InputArray, _
             ResultArray, _
             FirstElementToCopy, _
@@ -2053,7 +2053,7 @@ Public Sub CopyVectorSubSetToVector_2DInputArray_ReturnsFalse()
     
     'Act:
     'Assert:
-    Assert.IsFalse modArraySupport.CopyVectorSubSetToVector( _
+    Assert.IsFalse modArraySupport2.CopyVectorSubSetToVector( _
             InputArray, _
             ResultArray, _
             FirstElementToCopy, _
@@ -2088,7 +2088,7 @@ Public Sub CopyVectorSubSetToVector_2DResultArray_ReturnsFalse()
     
     'Act:
     'Assert:
-    Assert.IsFalse modArraySupport.CopyVectorSubSetToVector( _
+    Assert.IsFalse modArraySupport2.CopyVectorSubSetToVector( _
             InputArray, _
             ResultArray, _
             FirstElementToCopy, _
@@ -2123,7 +2123,7 @@ Public Sub CopyVectorSubSetToVector_TooSmallFirstElementToCopy_ReturnsFalse()
     
     'Act:
     'Assert:
-    Assert.IsFalse modArraySupport.CopyVectorSubSetToVector( _
+    Assert.IsFalse modArraySupport2.CopyVectorSubSetToVector( _
             InputArray, _
             ResultArray, _
             FirstElementToCopy, _
@@ -2158,7 +2158,7 @@ Public Sub CopyVectorSubSetToVector_TooLargeLastElementToCopy_ReturnsFalse()
     
     'Act:
     'Assert:
-    Assert.IsFalse modArraySupport.CopyVectorSubSetToVector( _
+    Assert.IsFalse modArraySupport2.CopyVectorSubSetToVector( _
             InputArray, _
             ResultArray, _
             FirstElementToCopy, _
@@ -2193,7 +2193,7 @@ Public Sub CopyVectorSubSetToVector_FirstElementLargerLastElement_ReturnsFalse()
     
     'Act:
     'Assert:
-    Assert.IsFalse modArraySupport.CopyVectorSubSetToVector( _
+    Assert.IsFalse modArraySupport2.CopyVectorSubSetToVector( _
             InputArray, _
             ResultArray, _
             FirstElementToCopy, _
@@ -2225,7 +2225,7 @@ Public Sub CopyVectorSubSetToVector_NotEnoughRoomInStaticResultArray_ReturnsFals
     
     'Act:
     'Assert:
-    Assert.IsTrue modArraySupport.CopyVectorSubSetToVector( _
+    Assert.IsTrue modArraySupport2.CopyVectorSubSetToVector( _
             InputArray, _
             ResultArray, _
             FirstElementToCopy, _
@@ -2264,7 +2264,7 @@ Public Sub CopyVectorSubSetToVector_TooSmallDestinationElementInStaticResultArra
     
     'Act:
     'Assert:
-    Assert.IsFalse modArraySupport.CopyVectorSubSetToVector( _
+    Assert.IsFalse modArraySupport2.CopyVectorSubSetToVector( _
             InputArray, _
             ResultArray, _
             FirstElementToCopy, _
@@ -2305,7 +2305,7 @@ Public Sub CopyVectorSubSetToVector_UnallocatedResultArrayDestinationElementLarg
     InputArray(11) = 20
     
     'Act:
-    If Not modArraySupport.CopyVectorSubSetToVector( _
+    If Not modArraySupport2.CopyVectorSubSetToVector( _
             InputArray, _
             ResultArray, _
             FirstElementToCopy, _
@@ -2352,7 +2352,7 @@ Public Sub CopyVectorSubSetToVector_UnallocatedResultArrayLastDestinationElement
     InputArray(11) = 20
     
     'Act:
-    If Not modArraySupport.CopyVectorSubSetToVector( _
+    If Not modArraySupport2.CopyVectorSubSetToVector( _
             InputArray, _
             ResultArray, _
             FirstElementToCopy, _
@@ -2398,7 +2398,7 @@ Public Sub CopyVectorSubSetToVector_UnallocatedResultArrayFromNegToPos_ReturnsTr
     InputArray(13) = 40
     
     'Act:
-    If Not modArraySupport.CopyVectorSubSetToVector( _
+    If Not modArraySupport2.CopyVectorSubSetToVector( _
             InputArray, _
             ResultArray, _
             FirstElementToCopy, _
@@ -2439,7 +2439,7 @@ Public Sub CopyVectorSubSetToVector_UnallocatedResultArray_ReturnsTrueAndResultA
     InputArray(11) = 1
     
     'Act:
-    If Not modArraySupport.CopyVectorSubSetToVector( _
+    If Not modArraySupport2.CopyVectorSubSetToVector( _
             InputArray, _
             ResultArray, _
             FirstElementToCopy, _
@@ -2489,7 +2489,7 @@ Public Sub CopyVectorSubSetToVector_SubArrayLargerThanAllocatedResultArray1_Retu
     ResultArray(1) = 20
     
     'Act:
-    If Not modArraySupport.CopyVectorSubSetToVector( _
+    If Not modArraySupport2.CopyVectorSubSetToVector( _
             InputArray, _
             ResultArray, _
             FirstElementToCopy, _
@@ -2537,7 +2537,7 @@ Public Sub CopyVectorSubSetToVector_SubArrayLargerThanAllocatedResultArray2_Retu
     ResultArray(1) = 20
     
     'Act:
-    If Not modArraySupport.CopyVectorSubSetToVector( _
+    If Not modArraySupport2.CopyVectorSubSetToVector( _
             InputArray, _
             ResultArray, _
             FirstElementToCopy, _
@@ -2585,7 +2585,7 @@ Public Sub CopyVectorSubSetToVector_SubArrayLargerThanAllocatedResultArray3_Retu
     ResultArray(2) = 20
     
     'Act:
-    If Not modArraySupport.CopyVectorSubSetToVector( _
+    If Not modArraySupport2.CopyVectorSubSetToVector( _
             InputArray, _
             ResultArray, _
             FirstElementToCopy, _
@@ -2632,7 +2632,7 @@ Public Sub CopyVectorSubSetToVector_TooSmallFirstDestinationElementInDynamicAllo
     ResultArray(1) = 20
     
     'Act:
-    If Not modArraySupport.CopyVectorSubSetToVector( _
+    If Not modArraySupport2.CopyVectorSubSetToVector( _
             InputArray, _
             ResultArray, _
             FirstElementToCopy, _
@@ -2679,7 +2679,7 @@ Public Sub CopyVectorSubSetToVector_TooLargeLastDestinationElementInDynamicAlloc
     ResultArray(1) = 20
     
     'Act:
-    If Not modArraySupport.CopyVectorSubSetToVector( _
+    If Not modArraySupport2.CopyVectorSubSetToVector( _
             InputArray, _
             ResultArray, _
             FirstElementToCopy, _
@@ -2730,7 +2730,7 @@ Public Sub CopyVectorSubSetToVector_DestinationElementEvenLargerThanUboundInDyna
     ResultArray(1) = 20
     
     'Act:
-    If Not modArraySupport.CopyVectorSubSetToVector( _
+    If Not modArraySupport2.CopyVectorSubSetToVector( _
             InputArray, _
             ResultArray, _
             FirstElementToCopy, _
@@ -2782,7 +2782,7 @@ Public Sub CopyVectorSubSetToVector_TestWithObjects_ReturnsTrueAndResultArray()
     End With
     
     'Act:
-    If Not modArraySupport.CopyVectorSubSetToVector( _
+    If Not modArraySupport2.CopyVectorSubSetToVector( _
             InputArray, _
             ResultArray, _
             FirstElementToCopy, _
@@ -2825,7 +2825,7 @@ Public Sub DataTypeOfArray_NoArray_ReturnsMinusOne()
     
     
     'Act:
-    aActual = modArraySupport.DataTypeOfArray(sTest)
+    aActual = modArraySupport2.DataTypeOfArray(sTest)
     
     'Assert:
     Assert.AreEqual aExpected, aActual
@@ -2851,7 +2851,7 @@ Public Sub DataTypeOfArray_UnallocatedDoubleArray_ReturnsVbDouble()
     
     
     'Act:
-    aActual = modArraySupport.DataTypeOfArray(Arr)
+    aActual = modArraySupport2.DataTypeOfArray(Arr)
     
     'Assert:
     Assert.AreEqual aExpected, aActual
@@ -2877,7 +2877,7 @@ Public Sub DataTypeOfArray_Test1DStringArray_ReturnsVbString()
     
     
     'Act:
-    aActual = modArraySupport.DataTypeOfArray(Arr)
+    aActual = modArraySupport2.DataTypeOfArray(Arr)
     
     'Assert:
     Assert.AreEqual aExpected, aActual
@@ -2903,7 +2903,7 @@ Public Sub DataTypeOfArray_Test2DStringArray_ReturnsVbString()
     
     
     'Act:
-    aActual = modArraySupport.DataTypeOfArray(Arr)
+    aActual = modArraySupport2.DataTypeOfArray(Arr)
     
     'Assert:
     Assert.AreEqual aExpected, aActual
@@ -2929,7 +2929,7 @@ Public Sub DataTypeOfArray_Test3DStringArray_ReturnsVbString()
     
     
     'Act:
-    aActual = modArraySupport.DataTypeOfArray(Arr)
+    aActual = modArraySupport2.DataTypeOfArray(Arr)
     
     'Assert:
     Assert.AreEqual aExpected, aActual
@@ -3120,7 +3120,7 @@ Public Sub DeleteVectorElement_NoArray_ReturnsFalse()
     
     'Act:
     'Assert:
-    Assert.IsFalse modArraySupport.DeleteVectorElement( _
+    Assert.IsFalse modArraySupport2.DeleteVectorElement( _
             Scalar, _
             ElementNumber, _
             ResizeDynamic _
@@ -3148,7 +3148,7 @@ Public Sub DeleteVectorElement_UnallocatedArray_ReturnsFalse()
     
     'Act:
     'Assert:
-    Assert.IsFalse modArraySupport.DeleteVectorElement( _
+    Assert.IsFalse modArraySupport2.DeleteVectorElement( _
             InputArray, _
             ElementNumber, _
             ResizeDynamic _
@@ -3176,7 +3176,7 @@ Public Sub DeleteVectorElement_2DArray_ReturnsFalse()
     
     'Act:
     'Assert:
-    Assert.IsFalse modArraySupport.DeleteVectorElement( _
+    Assert.IsFalse modArraySupport2.DeleteVectorElement( _
             InputArray, _
             ElementNumber, _
             ResizeDynamic _
@@ -3204,7 +3204,7 @@ Public Sub DeleteVectorElement_TooLowElementNumber_ReturnsFalse()
     
     'Act:
     'Assert:
-    Assert.IsFalse modArraySupport.DeleteVectorElement( _
+    Assert.IsFalse modArraySupport2.DeleteVectorElement( _
             InputArray, _
             ElementNumber, _
             ResizeDynamic _
@@ -3232,7 +3232,7 @@ Public Sub DeleteVectorElement_TooHighElementNumber_ReturnsFalse()
     
     'Act:
     'Assert:
-    Assert.IsFalse modArraySupport.DeleteVectorElement( _
+    Assert.IsFalse modArraySupport2.DeleteVectorElement( _
             InputArray, _
             ElementNumber, _
             ResizeDynamic _
@@ -3268,7 +3268,7 @@ Public Sub DeleteVectorElement_RemoveElementOfStaticArray_ReturnsTrueAndModified
     InputArray(7) = 30
     
     'Act:
-    If Not modArraySupport.DeleteVectorElement( _
+    If Not modArraySupport2.DeleteVectorElement( _
             InputArray, _
             ElementNumber, _
             ResizeDynamic _
@@ -3313,7 +3313,7 @@ Public Sub DeleteVectorElement_RemoveElementOfStaticObjectArray_ReturnsTrueAndMo
     End With
     
     'Act:
-    If Not modArraySupport.DeleteVectorElement( _
+    If Not modArraySupport2.DeleteVectorElement( _
             InputArray, _
             ElementNumber, _
             ResizeDynamic _
@@ -3360,7 +3360,7 @@ Public Sub DeleteVectorElement_RemoveElementOfDynamicArrayDontResize_ReturnsTrue
     InputArray(7) = 30
     
     'Act:
-    If Not modArraySupport.DeleteVectorElement( _
+    If Not modArraySupport2.DeleteVectorElement( _
             InputArray, _
             ElementNumber, _
             ResizeDynamic _
@@ -3402,7 +3402,7 @@ End Sub
 '    InputArray(7) = "ABC"
 '
 '    'Act:
-'    If Not modArraySupport.DeleteVectorElement( _
+'    If Not modArraySupport2.DeleteVectorElement( _
 '            InputArray, _
 '            ElementNumber, _
 '            ResizeDynamic _
@@ -3448,7 +3448,7 @@ Public Sub DeleteVectorElement_RemoveElementOfDynamicObjectArrayDontResize_Retur
     End With
     
     'Act:
-    If Not modArraySupport.DeleteVectorElement( _
+    If Not modArraySupport2.DeleteVectorElement( _
             InputArray, _
             ElementNumber, _
             ResizeDynamic _
@@ -3494,7 +3494,7 @@ Public Sub DeleteVectorElement_RemoveElementOfDynamicArrayResize_ReturnsTrueAndM
     InputArray(7) = 30
     
     'Act:
-    If Not modArraySupport.DeleteVectorElement( _
+    If Not modArraySupport2.DeleteVectorElement( _
             InputArray, _
             ElementNumber, _
             ResizeDynamic _
@@ -3539,7 +3539,7 @@ Public Sub DeleteVectorElement_RemoveElementOfDynamicObjectArrayResize_ReturnsTr
     End With
     
     'Act:
-    If Not modArraySupport.DeleteVectorElement( _
+    If Not modArraySupport2.DeleteVectorElement( _
             InputArray, _
             ElementNumber, _
             ResizeDynamic _
@@ -3582,7 +3582,7 @@ Public Sub DeleteVectorElement_RemoveOnlyElementOfDynamicObjectArrayResize_Retur
     InputArray(5) = "abc"
     
     'Act:
-    If Not modArraySupport.DeleteVectorElement( _
+    If Not modArraySupport2.DeleteVectorElement( _
             InputArray, _
             ElementNumber, _
             ResizeDynamic _
@@ -3619,7 +3619,7 @@ Public Sub ExpandArray_NoArray_ReturnsNull()
     
     
     'Act:
-    ResultArr = modArraySupport.ExpandArray( _
+    ResultArr = modArraySupport2.ExpandArray( _
             Arr, _
             WhichDim, _
             AdditionalElements, _
@@ -3652,7 +3652,7 @@ Public Sub ExpandArray_UnallocatedArr_ReturnsNull()
     
     
     'Act:
-    ResultArr = modArraySupport.ExpandArray( _
+    ResultArr = modArraySupport2.ExpandArray( _
             Arr, _
             WhichDim, _
             AdditionalElements, _
@@ -3685,7 +3685,7 @@ Public Sub ExpandArray_1DArr_ReturnsNull()
     
     
     'Act:
-    ResultArr = modArraySupport.ExpandArray( _
+    ResultArr = modArraySupport2.ExpandArray( _
             Arr, _
             WhichDim, _
             AdditionalElements, _
@@ -3718,7 +3718,7 @@ Public Sub ExpandArray_3DArr_ReturnsNull()
     
     
     'Act:
-    ResultArr = modArraySupport.ExpandArray( _
+    ResultArr = modArraySupport2.ExpandArray( _
             Arr, _
             WhichDim, _
             AdditionalElements, _
@@ -3751,7 +3751,7 @@ Public Sub ExpandArray_WhichDimSmallerOne_ReturnsNull()
     
     
     'Act:
-    ResultArr = modArraySupport.ExpandArray( _
+    ResultArr = modArraySupport2.ExpandArray( _
             Arr, _
             WhichDim, _
             AdditionalElements, _
@@ -3784,7 +3784,7 @@ Public Sub ExpandArray_WhichDimLargerTwo_ReturnsNull()
     
     
     'Act:
-    ResultArr = modArraySupport.ExpandArray( _
+    ResultArr = modArraySupport2.ExpandArray( _
             Arr, _
             WhichDim, _
             AdditionalElements, _
@@ -3817,7 +3817,7 @@ Public Sub ExpandArray_AdditionalElementsSmallerZero_ReturnsNull()
     
     
     'Act:
-    ResultArr = modArraySupport.ExpandArray( _
+    ResultArr = modArraySupport2.ExpandArray( _
             Arr, _
             WhichDim, _
             AdditionalElements, _
@@ -3861,7 +3861,7 @@ Public Sub ExpandArray_AdditionalElementsEqualsZero_ReturnsExpandedArray()
     Arr(6, 4) = 21
     
     'Act:
-    ResultArr = modArraySupport.ExpandArray( _
+    ResultArr = modArraySupport2.ExpandArray( _
             Arr, _
             WhichDim, _
             AdditionalElements, _
@@ -3909,7 +3909,7 @@ Public Sub ExpandArray_AddTwoAdditionalRows_ReturnsExpandedArray()
     Arr(6, 4) = 21
     
     'Act:
-    ResultArr = modArraySupport.ExpandArray( _
+    ResultArr = modArraySupport2.ExpandArray( _
             Arr, _
             WhichDim, _
             AdditionalElements, _
@@ -3957,7 +3957,7 @@ Public Sub ExpandArray_AddTwoAdditionalCols_ReturnsExpandedArray()
     Arr(6, 4) = 21
     
     'Act:
-    ResultArr = modArraySupport.ExpandArray( _
+    ResultArr = modArraySupport2.ExpandArray( _
             Arr, _
             WhichDim, _
             AdditionalElements, _
@@ -3992,7 +3992,7 @@ Public Sub FirstNonEmptyStringIndexInVector_NoArray_ReturnsMinusOne()
     
     
     'Act:
-    aActual = modArraySupport.FirstNonEmptyStringIndexInVector(Scalar)
+    aActual = modArraySupport2.FirstNonEmptyStringIndexInVector(Scalar)
     
     'Assert:
     Assert.AreEqual aExpected, aActual
@@ -4018,7 +4018,7 @@ Public Sub FirstNonEmptyStringIndexInVector_UnallocatedArray_ReturnsMinusOne()
     
     
     'Act:
-    aActual = modArraySupport.FirstNonEmptyStringIndexInVector(InputArray)
+    aActual = modArraySupport2.FirstNonEmptyStringIndexInVector(InputArray)
     
     'Assert:
     Assert.AreEqual aExpected, aActual
@@ -4044,7 +4044,7 @@ Public Sub FirstNonEmptyStringIndexInVector_2DArray_ReturnsMinusOne()
     
     
     'Act:
-    aActual = modArraySupport.FirstNonEmptyStringIndexInVector(InputArray)
+    aActual = modArraySupport2.FirstNonEmptyStringIndexInVector(InputArray)
     
     'Assert:
     Assert.AreEqual aExpected, aActual
@@ -4074,7 +4074,7 @@ Public Sub FirstNonEmptyStringIndexInVector_NoNonEmptyString_ReturnsMinusOne()
     InputArray(7) = vbNullString
     
     'Act:
-    aActual = modArraySupport.FirstNonEmptyStringIndexInVector(InputArray)
+    aActual = modArraySupport2.FirstNonEmptyStringIndexInVector(InputArray)
     
     'Assert:
     Assert.AreEqual aExpected, aActual
@@ -4104,7 +4104,7 @@ Public Sub FirstNonEmptyStringIndexInVector_WithNonEmptyStringEntry_ReturnsSeven
     InputArray(7) = "ghi"
     
     'Act:
-    aActual = modArraySupport.FirstNonEmptyStringIndexInVector(InputArray)
+    aActual = modArraySupport2.FirstNonEmptyStringIndexInVector(InputArray)
     
     'Assert:
     Assert.AreEqual aExpected, aActual
@@ -4135,7 +4135,7 @@ Public Sub GetColumn_NoArray_ReturnsFalse()
     
     'Act:
     'Assert:
-    Assert.IsFalse modArraySupport.GetColumn( _
+    Assert.IsFalse modArraySupport2.GetColumn( _
             Scalar, _
             ResultArr, _
             ColumnNumber _
@@ -4163,7 +4163,7 @@ Public Sub GetColumn_1DArray_ReturnsFalse()
     
     'Act:
     'Assert:
-    Assert.IsFalse modArraySupport.GetColumn( _
+    Assert.IsFalse modArraySupport2.GetColumn( _
             Arr, _
             ResultArr, _
             ColumnNumber _
@@ -4191,7 +4191,7 @@ Public Sub GetColumn_3DArray_ReturnsFalse()
     
     'Act:
     'Assert:
-    Assert.IsFalse modArraySupport.GetColumn( _
+    Assert.IsFalse modArraySupport2.GetColumn( _
             Arr, _
             ResultArr, _
             ColumnNumber _
@@ -4219,7 +4219,7 @@ Public Sub GetColumn_StaticResultArr_ReturnsFalse()
     
     'Act:
     'Assert:
-    Assert.IsFalse modArraySupport.GetColumn( _
+    Assert.IsFalse modArraySupport2.GetColumn( _
             Arr, _
             ResultArr, _
             ColumnNumber _
@@ -4247,7 +4247,7 @@ Public Sub GetColumn_TooSmallColumnNumber_ReturnsFalse()
     
     'Act:
     'Assert:
-    Assert.IsFalse modArraySupport.GetColumn( _
+    Assert.IsFalse modArraySupport2.GetColumn( _
             Arr, _
             ResultArr, _
             ColumnNumber _
@@ -4275,7 +4275,7 @@ Public Sub GetColumn_TooLargeColumnNumber_ReturnsFalse()
     
     'Act:
     'Assert:
-    Assert.IsFalse modArraySupport.GetColumn( _
+    Assert.IsFalse modArraySupport2.GetColumn( _
             Arr, _
             ResultArr, _
             ColumnNumber _
@@ -4311,7 +4311,7 @@ Public Sub GetColumn_LegalEntries_ReturnsTrueAndResultArr()
     Arr(6, 4) = 21
     
     'Act:
-    If Not modArraySupport.GetColumn( _
+    If Not modArraySupport2.GetColumn( _
             Arr, _
             ResultArr, _
             ColumnNumber _
@@ -4356,7 +4356,7 @@ Public Sub GetColumn_LegalEntriesWithObjects_ReturnsTrueAndResultArr()
     End With
     
     'Act:
-    If Not modArraySupport.GetColumn( _
+    If Not modArraySupport2.GetColumn( _
             Arr, _
             ResultArr, _
             ColumnNumber _
@@ -4402,7 +4402,7 @@ Public Sub GetRow_NoArray_ReturnsFalse()
     
     'Act:
     'Assert:
-    Assert.IsFalse modArraySupport.GetRow( _
+    Assert.IsFalse modArraySupport2.GetRow( _
             Scalar, _
             ResultArr, _
             RowNumber _
@@ -4430,7 +4430,7 @@ Public Sub GetRow_1DArray_ReturnsFalse()
     
     'Act:
     'Assert:
-    Assert.IsFalse modArraySupport.GetRow( _
+    Assert.IsFalse modArraySupport2.GetRow( _
             Arr, _
             ResultArr, _
             RowNumber _
@@ -4458,7 +4458,7 @@ Public Sub GetRow_3DArray_ReturnsFalse()
     
     'Act:
     'Assert:
-    Assert.IsFalse modArraySupport.GetRow( _
+    Assert.IsFalse modArraySupport2.GetRow( _
             Arr, _
             ResultArr, _
             RowNumber _
@@ -4486,7 +4486,7 @@ Public Sub GetRow_StaticResultArr_ReturnsFalse()
     
     'Act:
     'Assert:
-    Assert.IsFalse modArraySupport.GetRow( _
+    Assert.IsFalse modArraySupport2.GetRow( _
             Arr, _
             ResultArr, _
             RowNumber _
@@ -4514,7 +4514,7 @@ Public Sub GetRow_TooSmallRowNumber_ReturnsFalse()
     
     'Act:
     'Assert:
-    Assert.IsFalse modArraySupport.GetRow( _
+    Assert.IsFalse modArraySupport2.GetRow( _
             Arr, _
             ResultArr, _
             RowNumber _
@@ -4542,7 +4542,7 @@ Public Sub GetRow_TooLargeRowNumber_ReturnsFalse()
     
     'Act:
     'Assert:
-    Assert.IsFalse modArraySupport.GetRow( _
+    Assert.IsFalse modArraySupport2.GetRow( _
             Arr, _
             ResultArr, _
             RowNumber _
@@ -4578,7 +4578,7 @@ Public Sub GetRow_LegalEntries_ReturnsTrueAndResultArr()
     Arr(6, 4) = 21
     
     'Act:
-    If Not modArraySupport.GetRow( _
+    If Not modArraySupport2.GetRow( _
             Arr, _
             ResultArr, _
             RowNumber _
@@ -4623,7 +4623,7 @@ Public Sub GetRow_LegalEntriesWithObjects_ReturnsTrueAndResultArr()
     End With
     
     'Act:
-    If Not modArraySupport.GetRow( _
+    If Not modArraySupport2.GetRow( _
             Arr, _
             ResultArr, _
             RowNumber _
@@ -4669,7 +4669,7 @@ Public Sub InsertElementIntoVector_StaticInputArray_ReturnsFalse()
     
     'Act:
     'Assert:
-    Assert.IsFalse modArraySupport.InsertElementIntoVector( _
+    Assert.IsFalse modArraySupport2.InsertElementIntoVector( _
             InputArray, _
             Index, _
             Value _
@@ -4699,7 +4699,7 @@ Public Sub InsertElementIntoVector_2DInputArray_ReturnsFalse()
     
     'Act:
     'Assert:
-    Assert.IsFalse modArraySupport.InsertElementIntoVector( _
+    Assert.IsFalse modArraySupport2.InsertElementIntoVector( _
             InputArray, _
             Index, _
             Value _
@@ -4729,7 +4729,7 @@ Public Sub InsertElementIntoVector_TooSmallIndex_ReturnsFalse()
     
     'Act:
     'Assert:
-    Assert.IsFalse modArraySupport.InsertElementIntoVector( _
+    Assert.IsFalse modArraySupport2.InsertElementIntoVector( _
             InputArray, _
             Index, _
             Value _
@@ -4759,7 +4759,7 @@ Public Sub InsertElementIntoVector_TooLargeIndex_ReturnsFalse()
     
     'Act:
     'Assert:
-    Assert.IsFalse modArraySupport.InsertElementIntoVector( _
+    Assert.IsFalse modArraySupport2.InsertElementIntoVector( _
             InputArray, _
             Index, _
             Value _
@@ -4795,7 +4795,7 @@ Public Sub InsertElementIntoVector_WrongValueType_ReturnsFalseAndUnchangedInputA
     
     'Act:
     'Assert:
-    Assert.IsFalse modArraySupport.InsertElementIntoVector( _
+    Assert.IsFalse modArraySupport2.InsertElementIntoVector( _
             InputArray, _
             Index, _
             Value _
@@ -4832,7 +4832,7 @@ Public Sub InsertElementIntoVector_ValidTestWithLongs_ReturnsTrueAndChangedInput
     InputArray(6) = 11
     
     'Act:
-    If Not modArraySupport.InsertElementIntoVector( _
+    If Not modArraySupport2.InsertElementIntoVector( _
             InputArray, _
             Index, _
             Value _
@@ -4873,7 +4873,7 @@ Public Sub InsertElementIntoVector_ValidTestWithStrings_ReturnsTrueAndChangedInp
     InputArray(6) = vbNullString
     
     'Act:
-    If Not modArraySupport.InsertElementIntoVector( _
+    If Not modArraySupport2.InsertElementIntoVector( _
             InputArray, _
             Index, _
             Value _
@@ -4924,7 +4924,7 @@ Public Sub InsertElementIntoVector_ValidTestWithObjects_ReturnsTrueAndChangedInp
         Set InputArray(6) = Nothing
         
         'Act:
-        If Not modArraySupport.InsertElementIntoVector( _
+        If Not modArraySupport2.InsertElementIntoVector( _
                 InputArray, _
                 Index, _
                 Value _
@@ -4962,7 +4962,7 @@ Public Sub IsArrayAllDefault_NoArray_ReturnsFalse()
     
     'Act:
     'Assert:
-    Assert.IsFalse modArraySupport.IsArrayAllDefault(Scalar)
+    Assert.IsFalse modArraySupport2.IsArrayAllDefault(Scalar)
     
 TestExit:
     Exit Sub
@@ -4981,7 +4981,7 @@ Public Sub IsArrayAllDefault_UnallocatedArray_ReturnsTrue()
     
     'Act:
     'Assert:
-    Assert.IsTrue modArraySupport.IsArrayAllDefault(InputArray)
+    Assert.IsTrue modArraySupport2.IsArrayAllDefault(InputArray)
     
 TestExit:
     Exit Sub
@@ -5002,7 +5002,7 @@ Public Sub IsArrayAllDefault_DefaultVariantArray_ReturnsTrue()
     
     'Act:
     'Assert:
-    Assert.IsTrue modArraySupport.IsArrayAllDefault(InputArray)
+    Assert.IsTrue modArraySupport2.IsArrayAllDefault(InputArray)
     
 TestExit:
     Exit Sub
@@ -5023,7 +5023,7 @@ Public Sub IsArrayAllDefault_NonDefaultVariantArray_ReturnsFalse()
     
     'Act:
     'Assert:
-    Assert.IsFalse modArraySupport.IsArrayAllDefault(InputArray)
+    Assert.IsFalse modArraySupport2.IsArrayAllDefault(InputArray)
     
 TestExit:
     Exit Sub
@@ -5044,7 +5044,7 @@ Public Sub IsArrayAllDefault_DefaultStringArray_ReturnsTrue()
     
     'Act:
     'Assert:
-    Assert.IsTrue modArraySupport.IsArrayAllDefault(InputArray)
+    Assert.IsTrue modArraySupport2.IsArrayAllDefault(InputArray)
     
 TestExit:
     Exit Sub
@@ -5065,7 +5065,7 @@ Public Sub IsArrayAllDefault_NonDefaultStringArray_ReturnsFalse()
     
     'Act:
     'Assert:
-    Assert.IsFalse modArraySupport.IsArrayAllDefault(InputArray)
+    Assert.IsFalse modArraySupport2.IsArrayAllDefault(InputArray)
     
 TestExit:
     Exit Sub
@@ -5086,7 +5086,7 @@ Public Sub IsArrayAllDefault_DefaultNumericArray_ReturnsTrue()
     
     'Act:
     'Assert:
-    Assert.IsTrue modArraySupport.IsArrayAllDefault(InputArray)
+    Assert.IsTrue modArraySupport2.IsArrayAllDefault(InputArray)
     
 TestExit:
     Exit Sub
@@ -5107,7 +5107,7 @@ Public Sub IsArrayAllDefault_NonDefaultNumericArray_ReturnsFalse()
     
     'Act:
     'Assert:
-    Assert.IsFalse modArraySupport.IsArrayAllDefault(InputArray)
+    Assert.IsFalse modArraySupport2.IsArrayAllDefault(InputArray)
     
 TestExit:
     Exit Sub
@@ -5128,7 +5128,7 @@ Public Sub IsArrayAllDefault_Default3DNumericArray_ReturnsTrue()
     
     'Act:
     'Assert:
-    Assert.IsTrue modArraySupport.IsArrayAllDefault(InputArray)
+    Assert.IsTrue modArraySupport2.IsArrayAllDefault(InputArray)
     
 TestExit:
     Exit Sub
@@ -5149,7 +5149,7 @@ Public Sub IsArrayAllDefault_NonDefault3DNumericArray_ReturnsFalse()
     
     'Act:
     'Assert:
-    Assert.IsFalse modArraySupport.IsArrayAllDefault(InputArray)
+    Assert.IsFalse modArraySupport2.IsArrayAllDefault(InputArray)
     
 TestExit:
     Exit Sub
@@ -5170,7 +5170,7 @@ Public Sub IsArrayAllDefault_DefaultObjectArray_ReturnsTrue()
     
     'Act:
     'Assert:
-    Assert.IsTrue modArraySupport.IsArrayAllDefault(InputArray)
+    Assert.IsTrue modArraySupport2.IsArrayAllDefault(InputArray)
     
 TestExit:
     Exit Sub
@@ -5191,7 +5191,7 @@ Public Sub IsArrayAllDefault_NonDefaultObjectArray_ReturnsFalse()
     
     'Act:
     'Assert:
-    Assert.IsFalse modArraySupport.IsArrayAllDefault(InputArray)
+    Assert.IsFalse modArraySupport2.IsArrayAllDefault(InputArray)
     
 TestExit:
     Exit Sub
@@ -5214,7 +5214,7 @@ Public Sub IsArrayAllNumeric_NoArray_ReturnsFalse()
     
     'Act:
     'Assert:
-    Assert.IsFalse modArraySupport.IsArrayAllNumeric(V)
+    Assert.IsFalse modArraySupport2.IsArrayAllNumeric(V)
     
 TestExit:
     Exit Sub
@@ -5233,7 +5233,7 @@ Public Sub IsArrayAllNumeric_UnallocatedArray_ReturnsFalse()
     
     'Act:
     'Assert:
-    Assert.IsFalse modArraySupport.IsArrayAllNumeric(V)
+    Assert.IsFalse modArraySupport2.IsArrayAllNumeric(V)
     
 TestExit:
     Exit Sub
@@ -5256,7 +5256,7 @@ Public Sub IsArrayAllNumeric_IncludingNumericStringAllowNumericStringsFalse_Retu
     
     'Act:
     'Assert:
-    Assert.IsFalse modArraySupport.IsArrayAllNumeric(V, False)
+    Assert.IsFalse modArraySupport2.IsArrayAllNumeric(V, False)
     
 TestExit:
     Exit Sub
@@ -5279,7 +5279,7 @@ Public Sub IsArrayAllNumeric_IncludingNumericStringAllowNumericStringsTrue_Retur
     
     'Act:
     'Assert:
-    Assert.IsTrue modArraySupport.IsArrayAllNumeric(V, True)
+    Assert.IsTrue modArraySupport2.IsArrayAllNumeric(V, True)
     
 TestExit:
     Exit Sub
@@ -5302,7 +5302,7 @@ Public Sub IsArrayAllNumeric_IncludingNonNumericString_ReturnsFalse()
     
     'Act:
     'Assert:
-    Assert.IsFalse modArraySupport.IsArrayAllNumeric(V, True)
+    Assert.IsFalse modArraySupport2.IsArrayAllNumeric(V, True)
     
 TestExit:
     Exit Sub
@@ -5325,7 +5325,7 @@ Public Sub IsArrayAllNumeric_Numeric1DVariantArray_ReturnsTrue()
     
     'Act:
     'Assert:
-    Assert.IsTrue modArraySupport.IsArrayAllNumeric(V)
+    Assert.IsTrue modArraySupport2.IsArrayAllNumeric(V)
     
 TestExit:
     Exit Sub
@@ -5348,7 +5348,7 @@ Public Sub IsArrayAllNumeric_1DVariantArrayWithObject_ReturnsFalse()
     
     'Act:
     'Assert:
-    Assert.IsFalse modArraySupport.IsArrayAllNumeric(V)
+    Assert.IsFalse modArraySupport2.IsArrayAllNumeric(V)
     
 TestExit:
     Exit Sub
@@ -5370,7 +5370,7 @@ Public Sub IsArrayAllNumeric_1DVariantArrayWithUnallocatedEntry_ReturnsTrue()
     
     'Act:
     'Assert:
-    Assert.IsTrue modArraySupport.IsArrayAllNumeric(V)
+    Assert.IsTrue modArraySupport2.IsArrayAllNumeric(V)
     
 TestExit:
     Exit Sub
@@ -5396,7 +5396,7 @@ Public Sub IsArrayAllNumeric_Numeric2DVariantArray_ReturnsTrue()
     
     'Act:
     'Assert:
-    Assert.IsTrue modArraySupport.IsArrayAllNumeric(V)
+    Assert.IsTrue modArraySupport2.IsArrayAllNumeric(V)
     
 TestExit:
     Exit Sub
@@ -5422,7 +5422,7 @@ Public Sub IsArrayAllNumeric_2DVariantArrayWithObject_ReturnsFalse()
     
     'Act:
     'Assert:
-    Assert.IsFalse modArraySupport.IsArrayAllNumeric(V)
+    Assert.IsFalse modArraySupport2.IsArrayAllNumeric(V)
     
 TestExit:
     Exit Sub
@@ -5445,7 +5445,7 @@ Public Sub IsArrayAllNumeric_1DVariantArrayWithArrayAllowArrayElementsFalse_Retu
     
     'Act:
     'Assert:
-    Assert.IsFalse modArraySupport.IsArrayAllNumeric(V)
+    Assert.IsFalse modArraySupport2.IsArrayAllNumeric(V)
     
 TestExit:
     Exit Sub
@@ -5468,7 +5468,7 @@ Public Sub IsArrayAllNumeric_1DVariantArrayWithArrayAllowArrayElementsTrue_Retur
     
     'Act:
     'Assert:
-    Assert.IsTrue modArraySupport.IsArrayAllNumeric(V, , True)
+    Assert.IsTrue modArraySupport2.IsArrayAllNumeric(V, , True)
     
 TestExit:
     Exit Sub
@@ -5491,7 +5491,7 @@ Public Sub IsArrayAllNumeric_1DVariantArrayWithArrayAllowArrayElementsTrue_Retur
     
     'Act:
     'Assert:
-    Assert.IsFalse modArraySupport.IsArrayAllNumeric(V, , True)
+    Assert.IsFalse modArraySupport2.IsArrayAllNumeric(V, , True)
     
 TestExit:
     Exit Sub
@@ -5514,7 +5514,7 @@ Public Sub IsArrayAllNumeric_1DVariantArrayWithArrayAllowNumericStringsTrueAllow
     
     'Act:
     'Assert:
-    Assert.IsTrue modArraySupport.IsArrayAllNumeric(V, True, True)
+    Assert.IsTrue modArraySupport2.IsArrayAllNumeric(V, True, True)
     
 TestExit:
     Exit Sub
@@ -5537,7 +5537,7 @@ Public Sub IsArrayAllocated_AllocatedArray_ReturnsTrue()
     
     'Act:
     'Assert:
-    Assert.IsTrue modArraySupport.IsArrayAllocated(AllocatedArray)
+    Assert.IsTrue modArraySupport2.IsArrayAllocated(AllocatedArray)
     
 TestExit:
     Exit Sub
@@ -5556,7 +5556,7 @@ Public Sub IsArrayAllocated_UnAllocatedArray_ReturnsFalse()
     
     'Act:
     'Assert:
-    Assert.IsFalse modArraySupport.IsArrayAllocated(UnAllocatedArray)
+    Assert.IsFalse modArraySupport2.IsArrayAllocated(UnAllocatedArray)
     
 TestExit:
     Exit Sub
@@ -5579,7 +5579,7 @@ Public Sub IsArrayDynamic_NoArray_ReturnsFalse()
     
     'Act:
     'Assert:
-    Assert.IsFalse modArraySupport.IsArrayDynamic(Scalar)
+    Assert.IsFalse modArraySupport2.IsArrayDynamic(Scalar)
     
 TestExit:
     Exit Sub
@@ -5598,7 +5598,7 @@ Public Sub IsArrayDynamic_UnallocatedArray_ReturnsTrue()
     
     'Act:
     'Assert:
-    Assert.IsTrue modArraySupport.IsArrayDynamic(Arr)
+    Assert.IsTrue modArraySupport2.IsArrayDynamic(Arr)
     
 TestExit:
     Exit Sub
@@ -5619,7 +5619,7 @@ Public Sub IsArrayDynamic_1DDynamicArray_ReturnsTrue()
     
     'Act:
     'Assert:
-    Assert.IsTrue modArraySupport.IsArrayDynamic(Arr)
+    Assert.IsTrue modArraySupport2.IsArrayDynamic(Arr)
     
 TestExit:
     Exit Sub
@@ -5638,7 +5638,7 @@ Public Sub IsArrayDynamic_1DStaticArray_ReturnsFalse()
     
     'Act:
     'Assert:
-    Assert.IsFalse modArraySupport.IsArrayDynamic(Arr)
+    Assert.IsFalse modArraySupport2.IsArrayDynamic(Arr)
     
 TestExit:
     Exit Sub
@@ -5659,7 +5659,7 @@ Public Sub IsArrayDynamic_2DDynamicArray_ReturnsTrue()
     
     'Act:
     'Assert:
-    Assert.IsTrue modArraySupport.IsArrayDynamic(Arr)
+    Assert.IsTrue modArraySupport2.IsArrayDynamic(Arr)
     
 TestExit:
     Exit Sub
@@ -5678,7 +5678,7 @@ Public Sub IsArrayDynamic_2DStaticArray_ReturnsFalse()
     
     'Act:
     'Assert:
-    Assert.IsFalse modArraySupport.IsArrayDynamic(Arr)
+    Assert.IsFalse modArraySupport2.IsArrayDynamic(Arr)
     
 TestExit:
     Exit Sub
@@ -5705,7 +5705,7 @@ Public Sub IsArrayObjects_NoArray_ReturnsFalse()
     
     'Act:
     'Assert:
-    Assert.IsFalse modArraySupport.IsArrayObjects(Scalar, AllowNothing)
+    Assert.IsFalse modArraySupport2.IsArrayObjects(Scalar, AllowNothing)
     
 TestExit:
     Exit Sub
@@ -5728,7 +5728,7 @@ Public Sub IsArrayObjects_LongPtrInputArray_ReturnsFalse()
     
     'Act:
     'Assert:
-    Assert.IsFalse modArraySupport.IsArrayObjects(InputArray, AllowNothing)
+    Assert.IsFalse modArraySupport2.IsArrayObjects(InputArray, AllowNothing)
     
 TestExit:
     Exit Sub
@@ -5754,7 +5754,7 @@ Public Sub IsArrayObjects_ObjectInputArrayNothingOnlyAllowNothingTrue_ReturnsTru
     Set InputArray(6) = Nothing
     
     'Act:
-    If Not modArraySupport.IsArrayObjects(InputArray, AllowNothing) Then _
+    If Not modArraySupport2.IsArrayObjects(InputArray, AllowNothing) Then _
             GoTo TestFail
     
     'Assert:
@@ -5787,7 +5787,7 @@ Public Sub IsArrayObjects_ObjectInputArrayNothingOnlyAllowNothingFalse_ReturnsFa
     
     'Act:
     'Assert:
-    Assert.IsFalse modArraySupport.IsArrayObjects(InputArray, AllowNothing)
+    Assert.IsFalse modArraySupport2.IsArrayObjects(InputArray, AllowNothing)
     
 TestExit:
     Exit Sub
@@ -5815,7 +5815,7 @@ Public Sub IsArrayObjects_ObjectInputArrayNonNothingOnlyAllowNothingTrue_Returns
     End With
     
     'Act:
-    If Not modArraySupport.IsArrayObjects(InputArray, AllowNothing) Then _
+    If Not modArraySupport2.IsArrayObjects(InputArray, AllowNothing) Then _
             GoTo TestFail
     
     'Assert:
@@ -5850,7 +5850,7 @@ Public Sub IsArrayObjects_ObjectInputArrayNonNothingOnlyAllowNothingFalse_Return
     End With
     
     'Act:
-    If Not modArraySupport.IsArrayObjects(InputArray, AllowNothing) Then _
+    If Not modArraySupport2.IsArrayObjects(InputArray, AllowNothing) Then _
             GoTo TestFail
     
     'Assert:
@@ -5886,7 +5886,7 @@ Public Sub IsArrayObjects_VariantInputArrayAllowNothingFalse_ReturnsFalse()
     
     'Act:
     'Assert:
-    Assert.IsFalse modArraySupport.IsArrayObjects(InputArray, AllowNothing)
+    Assert.IsFalse modArraySupport2.IsArrayObjects(InputArray, AllowNothing)
     
 TestExit:
     Exit Sub
@@ -5916,7 +5916,7 @@ Public Sub IsArrayObjects_VariantInputArrayAllowNothingTrue_ReturnsTrue()
     
     'Act:
     'Assert:
-    Assert.IsTrue modArraySupport.IsArrayObjects(InputArray, AllowNothing)
+    Assert.IsTrue modArraySupport2.IsArrayObjects(InputArray, AllowNothing)
     
 TestExit:
     Exit Sub
@@ -5948,7 +5948,7 @@ Public Sub IsArrayObjects_2DVariantInputArrayAllowNothingFalse_ReturnsFalse()
     
     'Act:
     'Assert:
-    Assert.IsFalse modArraySupport.IsArrayObjects(InputArray, AllowNothing)
+    Assert.IsFalse modArraySupport2.IsArrayObjects(InputArray, AllowNothing)
     
 TestExit:
     Exit Sub
@@ -5980,7 +5980,7 @@ Public Sub IsArrayObjects_2DVariantInputArrayAllowNothingTrue_ReturnsTrue()
     
     'Act:
     'Assert:
-    Assert.IsTrue modArraySupport.IsArrayObjects(InputArray, AllowNothing)
+    Assert.IsTrue modArraySupport2.IsArrayObjects(InputArray, AllowNothing)
     
 TestExit:
     Exit Sub
@@ -6003,7 +6003,7 @@ Public Sub IsNumericDataType_LongPtrScalar_ReturnsTrue()
     
     'Act:
     'Assert:
-    Assert.IsTrue modArraySupport.IsNumericDataType(Scalar)
+    Assert.IsTrue modArraySupport2.IsNumericDataType(Scalar)
     
 TestExit:
     Exit Sub
@@ -6022,7 +6022,7 @@ Public Sub IsNumericDataType_CurrencyScalar_ReturnsTrue()
     
     'Act:
     'Assert:
-    Assert.IsTrue modArraySupport.IsNumericDataType(Scalar)
+    Assert.IsTrue modArraySupport2.IsNumericDataType(Scalar)
     
 TestExit:
     Exit Sub
@@ -6041,7 +6041,7 @@ Public Sub IsNumericDataType_StringScalar_ReturnsFalse()
     
     'Act:
     'Assert:
-    Assert.IsFalse modArraySupport.IsNumericDataType(Scalar)
+    Assert.IsFalse modArraySupport2.IsNumericDataType(Scalar)
     
 TestExit:
     Exit Sub
@@ -6060,7 +6060,7 @@ Public Sub IsNumericDataType_ObjectScalar_ReturnsFalse()
     
     'Act:
     'Assert:
-    Assert.IsFalse modArraySupport.IsNumericDataType(Scalar)
+    Assert.IsFalse modArraySupport2.IsNumericDataType(Scalar)
     
 TestExit:
     Exit Sub
@@ -6079,7 +6079,7 @@ Public Sub IsNumericDataType_VariantScalarUninitialized_ReturnsFalse()
     
     'Act:
     'Assert:
-    Assert.IsFalse modArraySupport.IsNumericDataType(Scalar)
+    Assert.IsFalse modArraySupport2.IsNumericDataType(Scalar)
     
 TestExit:
     Exit Sub
@@ -6100,7 +6100,7 @@ Public Sub IsNumericDataType_VariantScalarNumericContent_ReturnsTrue()
     
     'Act:
     'Assert:
-    Assert.IsTrue modArraySupport.IsNumericDataType(Scalar)
+    Assert.IsTrue modArraySupport2.IsNumericDataType(Scalar)
     
 TestExit:
     Exit Sub
@@ -6121,7 +6121,7 @@ Public Sub IsNumericDataType_VariantScalarNonNumericContent_ReturnsFalse()
     
     'Act:
     'Assert:
-    Assert.IsFalse modArraySupport.IsNumericDataType(Scalar)
+    Assert.IsFalse modArraySupport2.IsNumericDataType(Scalar)
     
 TestExit:
     Exit Sub
@@ -6140,7 +6140,7 @@ Public Sub IsNumericDataType_LongPtrArrayUnallocated_ReturnsTrue()
     
     'Act:
     'Assert:
-    Assert.IsTrue modArraySupport.IsNumericDataType(Arr)
+    Assert.IsTrue modArraySupport2.IsNumericDataType(Arr)
     
 TestExit:
     Exit Sub
@@ -6159,7 +6159,7 @@ Public Sub IsNumericDataType_LongPtrStaticArray_ReturnsTrue()
     
     'Act:
     'Assert:
-    Assert.IsTrue modArraySupport.IsNumericDataType(Arr)
+    Assert.IsTrue modArraySupport2.IsNumericDataType(Arr)
     
 TestExit:
     Exit Sub
@@ -6178,7 +6178,7 @@ Public Sub IsNumericDataType_CurrencyArray_ReturnsTrue()
     
     'Act:
     'Assert:
-    Assert.IsTrue modArraySupport.IsNumericDataType(Arr)
+    Assert.IsTrue modArraySupport2.IsNumericDataType(Arr)
     
 TestExit:
     Exit Sub
@@ -6197,7 +6197,7 @@ Public Sub IsNumericDataType_StringArray_ReturnsFalse()
     
     'Act:
     'Assert:
-    Assert.IsFalse modArraySupport.IsNumericDataType(Arr)
+    Assert.IsFalse modArraySupport2.IsNumericDataType(Arr)
     
 TestExit:
     Exit Sub
@@ -6216,7 +6216,7 @@ Public Sub IsNumericDataType_ObjectArray_ReturnsFalse()
     
     'Act:
     'Assert:
-    Assert.IsFalse modArraySupport.IsNumericDataType(Arr)
+    Assert.IsFalse modArraySupport2.IsNumericDataType(Arr)
     
 TestExit:
     Exit Sub
@@ -6235,7 +6235,7 @@ Public Sub IsNumericDataType_VariantArrayUnallocated_ReturnsFalse()
     
     'Act:
     'Assert:
-    Assert.IsFalse modArraySupport.IsNumericDataType(Arr)
+    Assert.IsFalse modArraySupport2.IsNumericDataType(Arr)
     
 TestExit:
     Exit Sub
@@ -6257,7 +6257,7 @@ Public Sub IsNumericDataType_StaticVariantArrayNumericContent_ReturnsTrue()
     
     'Act:
     'Assert:
-    Assert.IsTrue modArraySupport.IsNumericDataType(Arr)
+    Assert.IsTrue modArraySupport2.IsNumericDataType(Arr)
     
 TestExit:
     Exit Sub
@@ -6279,7 +6279,7 @@ Public Sub IsNumericDataType_StaticVariantArrayMixedContentNumericFirst_ReturnsF
     
     'Act:
     'Assert:
-    Assert.IsFalse modArraySupport.IsNumericDataType(Arr)
+    Assert.IsFalse modArraySupport2.IsNumericDataType(Arr)
     
 TestExit:
     Exit Sub
@@ -6301,7 +6301,7 @@ Public Sub IsNumericDataType_StaticVariantArrayMixedContentNonNumericFirst_Retur
     
     'Act:
     'Assert:
-    Assert.IsFalse modArraySupport.IsNumericDataType(Arr)
+    Assert.IsFalse modArraySupport2.IsNumericDataType(Arr)
     
 TestExit:
     Exit Sub
@@ -6324,7 +6324,7 @@ Public Sub IsVariantArrayConsistent_NoArray_ReturnsFalse()
     
     'Act:
     'Assert:
-    Assert.IsFalse modArraySupport.IsVariantArrayConsistent(Scalar)
+    Assert.IsFalse modArraySupport2.IsVariantArrayConsistent(Scalar)
     
 TestExit:
     Exit Sub
@@ -6343,7 +6343,7 @@ Public Sub IsVariantArrayConsistent_UnallocatedArray_ReturnsFalse()
     
     'Act:
     'Assert:
-    Assert.IsFalse modArraySupport.IsVariantArrayConsistent(Arr)
+    Assert.IsFalse modArraySupport2.IsVariantArrayConsistent(Arr)
     
 TestExit:
     Exit Sub
@@ -6362,7 +6362,7 @@ Public Sub IsVariantArrayConsistent_AllocatedLongTypeArray_ReturnsTrue()
     
     'Act:
     'Assert:
-    Assert.IsTrue modArraySupport.IsVariantArrayConsistent(Arr)
+    Assert.IsTrue modArraySupport2.IsVariantArrayConsistent(Arr)
     
 TestExit:
     Exit Sub
@@ -6381,7 +6381,7 @@ Public Sub IsVariantArrayConsistent_AllocatedObjectTypeArray_ReturnsTrue()
     
     'Act:
     'Assert:
-    Assert.IsTrue modArraySupport.IsVariantArrayConsistent(Arr)
+    Assert.IsTrue modArraySupport2.IsVariantArrayConsistent(Arr)
     
 TestExit:
     Exit Sub
@@ -6403,7 +6403,7 @@ Public Sub IsVariantArrayConsistent_AllocatedVariantTypeArrayConsistentIntegers_
     
     'Act:
     'Assert:
-    Assert.IsTrue modArraySupport.IsVariantArrayConsistent(Arr)
+    Assert.IsTrue modArraySupport2.IsVariantArrayConsistent(Arr)
     
 TestExit:
     Exit Sub
@@ -6428,7 +6428,7 @@ Public Sub IsVariantArrayConsistent_AllocatedVariantTypeArrayConsistentObjects_R
     
     'Act:
     'Assert:
-    Assert.IsTrue modArraySupport.IsVariantArrayConsistent(Arr)
+    Assert.IsTrue modArraySupport2.IsVariantArrayConsistent(Arr)
     
 TestExit:
     Exit Sub
@@ -6450,7 +6450,7 @@ Public Sub IsVariantArrayConsistent_AllocatedVariantTypeArrayInconsistentTypes_R
     
     'Act:
     'Assert:
-    Assert.IsFalse modArraySupport.IsVariantArrayConsistent(Arr)
+    Assert.IsFalse modArraySupport2.IsVariantArrayConsistent(Arr)
     
 TestExit:
     Exit Sub
@@ -6474,7 +6474,7 @@ Public Sub IsVariantArrayConsistent_2DAllocatedVariantTypeArrayConsistentInteger
     
     'Act:
     'Assert:
-    Assert.IsTrue modArraySupport.IsVariantArrayConsistent(Arr)
+    Assert.IsTrue modArraySupport2.IsVariantArrayConsistent(Arr)
     
 TestExit:
     Exit Sub
@@ -6500,7 +6500,7 @@ Public Sub IsVariantArrayConsistent_2DAllocatedVariantTypeArrayConsistentObjects
     
     'Act:
     'Assert:
-    Assert.IsTrue modArraySupport.IsVariantArrayConsistent(Arr)
+    Assert.IsTrue modArraySupport2.IsVariantArrayConsistent(Arr)
     
 TestExit:
     Exit Sub
@@ -6524,7 +6524,7 @@ Public Sub IsVariantArrayConsistent_2DAllocatedVariantTypeArrayInconsistentTypes
     
     'Act:
     'Assert:
-    Assert.IsFalse modArraySupport.IsVariantArrayConsistent(Arr)
+    Assert.IsFalse modArraySupport2.IsVariantArrayConsistent(Arr)
     
 TestExit:
     Exit Sub
@@ -6551,7 +6551,7 @@ Public Sub IsVectorSorted_NoArray_ReturnsNull()
     
     
     'Act:
-    aResult = modArraySupport.IsVectorSorted( _
+    aResult = modArraySupport2.IsVectorSorted( _
             Scalar, _
             Descending _
     )
@@ -6580,7 +6580,7 @@ Public Sub IsVectorSorted_UnallocatedArray_ReturnsNull()
     
     
     'Act:
-    aResult = modArraySupport.IsVectorSorted( _
+    aResult = modArraySupport2.IsVectorSorted( _
             InputArray, _
             Descending _
     )
@@ -6609,7 +6609,7 @@ Public Sub IsVectorSorted_2DArray_ReturnsNull()
     
     
     'Act:
-    aResult = modArraySupport.IsVectorSorted( _
+    aResult = modArraySupport2.IsVectorSorted( _
             InputArray, _
             Descending _
     )
@@ -6638,7 +6638,7 @@ Public Sub IsVectorSorted_ObjectArray_ReturnsNull()
     
     
     'Act:
-    aResult = modArraySupport.IsVectorSorted( _
+    aResult = modArraySupport2.IsVectorSorted( _
             InputArray, _
             Descending _
     )
@@ -6670,7 +6670,7 @@ Public Sub IsVectorSorted_StringArrayDescendingFalse_ReturnsTrue()
     InputArray(6) = "abc"
     
     'Act:
-    aResult = modArraySupport.IsVectorSorted( _
+    aResult = modArraySupport2.IsVectorSorted( _
             InputArray, _
             Descending _
     )
@@ -6702,7 +6702,7 @@ Public Sub IsVectorSorted_VariantArrayContainingObjectDescendingFalse_ReturnsFal
     InputArray(6) = vbNullString
     
     'Act:
-    aResult = modArraySupport.IsVectorSorted( _
+    aResult = modArraySupport2.IsVectorSorted( _
             InputArray, _
             Descending _
     )
@@ -6734,7 +6734,7 @@ Public Sub IsVectorSorted_VariantArraySmallNumericStringPlusLargerNumberDescendi
     InputArray(6) = 123
     
     'Act:
-    aResult = modArraySupport.IsVectorSorted( _
+    aResult = modArraySupport2.IsVectorSorted( _
             InputArray, _
             Descending _
     )
@@ -6766,7 +6766,7 @@ Public Sub IsVectorSorted_VariantArraySmallNumberPlusLargerNumericStringDescendi
     InputArray(6) = "123"
     
     'Act:
-    aResult = modArraySupport.IsVectorSorted( _
+    aResult = modArraySupport2.IsVectorSorted( _
             InputArray, _
             Descending _
     )
@@ -6799,7 +6799,7 @@ Public Sub IsVectorSorted_VariantArrayLargeNumberPlusSmallNumericStringDescendin
     InputArray(6) = ""
     
     'Act:
-    aResult = modArraySupport.IsVectorSorted( _
+    aResult = modArraySupport2.IsVectorSorted( _
             InputArray, _
             Descending _
     )
@@ -6831,7 +6831,7 @@ Public Sub IsVectorSorted_VariantArrayNumberPlusStringDescendingFalse_ReturnsTru
     InputArray(6) = "abc"
     
     'Act:
-    aResult = modArraySupport.IsVectorSorted( _
+    aResult = modArraySupport2.IsVectorSorted( _
             InputArray, _
             Descending _
     )
@@ -6866,7 +6866,7 @@ Public Sub IsVectorSorted_VariantArrayNumberPlusStringsDescendingFalse_ReturnsTr
     InputArray(8) = "defg"
     
     'Act:
-    aResult = modArraySupport.IsVectorSorted( _
+    aResult = modArraySupport2.IsVectorSorted( _
             InputArray, _
             Descending _
     )
@@ -6899,7 +6899,7 @@ Public Sub IsVectorSorted_VariantArrayNumberPlusStrings2DescendingFalse_ReturnsF
     InputArray(7) = "defg"
     
     'Act:
-    aResult = modArraySupport.IsVectorSorted( _
+    aResult = modArraySupport2.IsVectorSorted( _
             InputArray, _
             Descending _
     )
@@ -6931,7 +6931,7 @@ Public Sub IsVectorSorted_StringArrayDescendingTrue_ReturnsTrue()
     InputArray(6) = "abc"
     
     'Act:
-    aResult = modArraySupport.IsVectorSorted( _
+    aResult = modArraySupport2.IsVectorSorted( _
             InputArray, _
             Descending _
     )
@@ -6963,7 +6963,7 @@ Public Sub IsVectorSorted_VariantArrayContainingObjectDescendingTrue_ReturnsTrue
     InputArray(6) = vbNullString
     
     'Act:
-    aResult = modArraySupport.IsVectorSorted( _
+    aResult = modArraySupport2.IsVectorSorted( _
             InputArray, _
             Descending _
     )
@@ -6995,7 +6995,7 @@ Public Sub IsVectorSorted_VariantArraySmallNumericStringPlusLargerNumberDescendi
     InputArray(6) = 123
     
     'Act:
-    aResult = modArraySupport.IsVectorSorted( _
+    aResult = modArraySupport2.IsVectorSorted( _
             InputArray, _
             Descending _
     )
@@ -7027,7 +7027,7 @@ Public Sub IsVectorSorted_VariantArraySmallNumberPlusLargerNumericStringDescendi
     InputArray(6) = "123"
     
     'Act:
-    aResult = modArraySupport.IsVectorSorted( _
+    aResult = modArraySupport2.IsVectorSorted( _
             InputArray, _
             Descending _
     )
@@ -7060,7 +7060,7 @@ Public Sub IsVectorSorted_VariantArrayLargeNumberPlusSmallNumericStringDescendin
     InputArray(6) = ""
     
     'Act:
-    aResult = modArraySupport.IsVectorSorted( _
+    aResult = modArraySupport2.IsVectorSorted( _
             InputArray, _
             Descending _
     )
@@ -7092,7 +7092,7 @@ Public Sub IsVectorSorted_VariantArrayNumberPlusStringDescendingTrue_ReturnsFals
     InputArray(6) = "abc"
     
     'Act:
-    aResult = modArraySupport.IsVectorSorted( _
+    aResult = modArraySupport2.IsVectorSorted( _
             InputArray, _
             Descending _
     )
@@ -7127,7 +7127,7 @@ Public Sub IsVectorSorted_VariantArrayNumberPlusStringsDescendingTrue_ReturnsFal
     InputArray(8) = "defg"
     
     'Act:
-    aResult = modArraySupport.IsVectorSorted( _
+    aResult = modArraySupport2.IsVectorSorted( _
             InputArray, _
             Descending _
     )
@@ -7160,7 +7160,7 @@ Public Sub IsVectorSorted_VariantArrayNumberPlusStrings2DescendingTrue_ReturnsFa
     InputArray(7) = "defg"
     
     'Act:
-    aResult = modArraySupport.IsVectorSorted( _
+    aResult = modArraySupport2.IsVectorSorted( _
             InputArray, _
             Descending _
     )
@@ -7189,7 +7189,7 @@ Public Sub MoveEmptyStringsToEndOfVector_NoArray_ReturnsFalse()
     
     'Act:
     'Assert:
-    Assert.IsFalse modArraySupport.MoveEmptyStringsToEndOfVector(Scalar)
+    Assert.IsFalse modArraySupport2.MoveEmptyStringsToEndOfVector(Scalar)
     
 TestExit:
     Exit Sub
@@ -7208,7 +7208,7 @@ Public Sub MoveEmptyStringsToEndOfVector_UnallocatedArray_ReturnsFalse()
     
     'Act:
     'Assert:
-    Assert.IsFalse modArraySupport.MoveEmptyStringsToEndOfVector(InputArray)
+    Assert.IsFalse modArraySupport2.MoveEmptyStringsToEndOfVector(InputArray)
     
 TestExit:
     Exit Sub
@@ -7227,7 +7227,7 @@ Public Sub MoveEmptyStringsToEndOfVector_2DArray_ReturnsFalse()
     
     'Act:
     'Assert:
-    Assert.IsFalse modArraySupport.MoveEmptyStringsToEndOfVector(InputArray)
+    Assert.IsFalse modArraySupport2.MoveEmptyStringsToEndOfVector(InputArray)
     
 TestExit:
     Exit Sub
@@ -7250,7 +7250,7 @@ Public Sub MoveEmptyStringsToEndOfVector_vbNullStringArrayOnly_ReturnsTrue()
     
     'Act:
     'Assert:
-    Assert.IsTrue modArraySupport.MoveEmptyStringsToEndOfVector(InputArray)
+    Assert.IsTrue modArraySupport2.MoveEmptyStringsToEndOfVector(InputArray)
     
 TestExit:
     Exit Sub
@@ -7273,7 +7273,7 @@ Public Sub MoveEmptyStringsToEndOfVector_NoneVbNullStringArrayOnly_ReturnsTrue()
     
     'Act:
     'Assert:
-    Assert.IsTrue modArraySupport.MoveEmptyStringsToEndOfVector(InputArray)
+    Assert.IsTrue modArraySupport2.MoveEmptyStringsToEndOfVector(InputArray)
     
 TestExit:
     Exit Sub
@@ -7303,7 +7303,7 @@ Public Sub MoveEmptyStringsToEndOfVector_StringArray_ReturnsTrueAndModifiedArr()
     InputArray(7) = "abc"
     
     'Act:
-    If Not modArraySupport.MoveEmptyStringsToEndOfVector(InputArray) Then _
+    If Not modArraySupport2.MoveEmptyStringsToEndOfVector(InputArray) Then _
             GoTo TestFail
     
     'Assert:
@@ -7340,7 +7340,7 @@ Public Sub MoveEmptyStringsToEndOfVector_VariantArray_ReturnsTrueAndModifiedArr(
     InputArray(7) = "def"
     
     'Act:
-    If Not modArraySupport.MoveEmptyStringsToEndOfVector(InputArray) Then _
+    If Not modArraySupport2.MoveEmptyStringsToEndOfVector(InputArray) Then _
             GoTo TestFail
     
     'Assert:
@@ -7374,11 +7374,11 @@ End Sub
 '    Arr = ThisWorkbook.Worksheets(1).Range("A32:B44")
 '
 '    'Act:
-'    If Not modArraySupport.GetColumn(Arr, InputArray, 1) Then GoTo TestFail
-'    If Not modArraySupport.MoveEmptyStringsToEndOfVector(InputArray) Then _
+'    If Not modArraySupport2.GetColumn(Arr, InputArray, 1) Then GoTo TestFail
+'    If Not modArraySupport2.MoveEmptyStringsToEndOfVector(InputArray) Then _
 '            GoTo TestFail
 '    Arr = ThisWorkbook.Worksheets(1).Range("A35:B47")
-'    If Not modArraySupport.GetColumn(Arr, aExpected, 1) Then GoTo TestFail
+'    If Not modArraySupport2.GetColumn(Arr, aExpected, 1) Then GoTo TestFail
 '
 '    'Assert:
 '    For i = LBound(InputArray) To UBound(InputArray)
@@ -7411,7 +7411,7 @@ Public Sub NumberOfArrayDimensions_UnallocatedLongArray_ReturnsZero()
     
     
     'Act:
-    iNoOfArrDimensions = modArraySupport.NumberOfArrayDimensions(Arr)
+    iNoOfArrDimensions = modArraySupport2.NumberOfArrayDimensions(Arr)
     
     'Assert:
     Assert.AreEqual aExpected, iNoOfArrDimensions
@@ -7437,7 +7437,7 @@ Public Sub NumberOfArrayDimensions_UnallocatedVariantArray_ReturnsZero()
     
     
     'Act:
-    iNoOfArrDimensions = modArraySupport.NumberOfArrayDimensions(Arr)
+    iNoOfArrDimensions = modArraySupport2.NumberOfArrayDimensions(Arr)
     
     'Assert:
     Assert.AreEqual aExpected, iNoOfArrDimensions
@@ -7463,7 +7463,7 @@ Public Sub NumberOfArrayDimensions_UnallocatedObjectArray_ReturnsZero()
     
     
     'Act:
-    iNoOfArrDimensions = modArraySupport.NumberOfArrayDimensions(Arr)
+    iNoOfArrDimensions = modArraySupport2.NumberOfArrayDimensions(Arr)
     
     'Assert:
     Assert.AreEqual aExpected, iNoOfArrDimensions
@@ -7489,7 +7489,7 @@ Public Sub NumberOfArrayDimensions_1DArray_ReturnsOne()
     
     
     'Act:
-    iNoOfArrDimensions = modArraySupport.NumberOfArrayDimensions(Arr)
+    iNoOfArrDimensions = modArraySupport2.NumberOfArrayDimensions(Arr)
     
     'Assert:
     Assert.AreEqual aExpected, iNoOfArrDimensions
@@ -7515,7 +7515,7 @@ Public Sub NumberOfArrayDimensions_3DArray_ReturnsThree()
     
     
     'Act:
-    iNoOfArrDimensions = modArraySupport.NumberOfArrayDimensions(Arr)
+    iNoOfArrDimensions = modArraySupport2.NumberOfArrayDimensions(Arr)
     
     'Assert:
     Assert.AreEqual aExpected, iNoOfArrDimensions
@@ -7546,7 +7546,7 @@ Public Sub NumElements_NoArray_ReturnsZero()
     
     
     'Act:
-    iNoOfElements = modArraySupport.NumElements(Scalar, Dimension)
+    iNoOfElements = modArraySupport2.NumElements(Scalar, Dimension)
     
     'Assert:
     Assert.AreEqual aExpected, iNoOfElements
@@ -7573,7 +7573,7 @@ Public Sub NumElements_UnallocatedArray_ReturnsZero()
     
     
     'Act:
-    iNoOfElements = modArraySupport.NumElements(Arr, Dimension)
+    iNoOfElements = modArraySupport2.NumElements(Arr, Dimension)
     
     'Assert:
     Assert.AreEqual aExpected, iNoOfElements
@@ -7600,7 +7600,7 @@ Public Sub NumElements_DimensionLowerOne_ReturnsZero()
     
     
     'Act:
-    iNoOfElements = modArraySupport.NumElements(Arr, Dimension)
+    iNoOfElements = modArraySupport2.NumElements(Arr, Dimension)
     
     'Assert:
     Assert.AreEqual aExpected, iNoOfElements
@@ -7627,7 +7627,7 @@ Public Sub NumElements_DimensionHigherNoOfArrDimensions_ReturnsZero()
     
     
     'Act:
-    iNoOfElements = modArraySupport.NumElements(Arr, Dimension)
+    iNoOfElements = modArraySupport2.NumElements(Arr, Dimension)
     
     'Assert:
     Assert.AreEqual aExpected, iNoOfElements
@@ -7654,7 +7654,7 @@ Public Sub NumElements_DimensionOne_ReturnsThree()
     
     
     'Act:
-    iNoOfElements = modArraySupport.NumElements(Arr, Dimension)
+    iNoOfElements = modArraySupport2.NumElements(Arr, Dimension)
     
     'Assert:
     Assert.AreEqual aExpected, iNoOfElements
@@ -7681,7 +7681,7 @@ Public Sub NumElements_DimensionTwo_ReturnsTwo()
     
     
     'Act:
-    iNoOfElements = modArraySupport.NumElements(Arr, Dimension)
+    iNoOfElements = modArraySupport2.NumElements(Arr, Dimension)
     
     'Assert:
     Assert.AreEqual aExpected, iNoOfElements
@@ -7708,7 +7708,7 @@ Public Sub NumElements_DimensionThree_ReturnsOne()
     
     
     'Act:
-    iNoOfElements = modArraySupport.NumElements(Arr, Dimension)
+    iNoOfElements = modArraySupport2.NumElements(Arr, Dimension)
     
     'Assert:
     Assert.AreEqual aExpected, iNoOfElements
@@ -7734,7 +7734,7 @@ Public Sub NumElements_DefaultDimension_ReturnsThree()
     
     
     'Act:
-    iNoOfElements = modArraySupport.NumElements(Arr)
+    iNoOfElements = modArraySupport2.NumElements(Arr)
     
     'Assert:
     Assert.AreEqual aExpected, iNoOfElements
@@ -7760,7 +7760,7 @@ Public Sub ResetVariantArrayToDefaults_NoArray_ReturnsFalse()
     
     'Act:
     'Assert:
-    Assert.IsFalse modArraySupport.ResetVariantArrayToDefaults(Scalar)
+    Assert.IsFalse modArraySupport2.ResetVariantArrayToDefaults(Scalar)
     
 TestExit:
     Exit Sub
@@ -7779,7 +7779,7 @@ Public Sub ResetVariantArrayToDefaults_UnallocatedArray_ReturnsFalse()
     
     'Act:
     'Assert:
-    Assert.IsFalse modArraySupport.ResetVariantArrayToDefaults(Arr)
+    Assert.IsFalse modArraySupport2.ResetVariantArrayToDefaults(Arr)
     
 TestExit:
     Exit Sub
@@ -7798,7 +7798,7 @@ Public Sub ResetVariantArrayToDefaults_4DArr_ReturnsFalse()
     
     'Act:
     'Assert:
-    Assert.IsFalse modArraySupport.ResetVariantArrayToDefaults(Arr)
+    Assert.IsFalse modArraySupport2.ResetVariantArrayToDefaults(Arr)
     
 TestExit:
     Exit Sub
@@ -7853,7 +7853,7 @@ Public Sub ResetVariantArrayToDefaults_AllSetVariableToDefaultElementsIn1DArr_Re
     Arr(15) = "abc"
     
     'Act:
-    If Not modArraySupport.ResetVariantArrayToDefaults(Arr) Then _
+    If Not modArraySupport2.ResetVariantArrayToDefaults(Arr) Then _
             GoTo TestFail
     
     'Assert:
@@ -7922,7 +7922,7 @@ Public Sub ResetVariantArrayToDefaults_AllSetVariableToDefaultElementsIn2DArr_Re
     Arr(7, 5) = "abc"
     
     'Act:
-    If Not modArraySupport.ResetVariantArrayToDefaults(Arr) Then _
+    If Not modArraySupport2.ResetVariantArrayToDefaults(Arr) Then _
             GoTo TestFail
     
     'Assert:
@@ -7994,7 +7994,7 @@ Public Sub ResetVariantArrayToDefaults_AllSetVariableToDefaultElementsIn3DArr_Re
     Arr(7, 5, 3) = "abc"
     
     'Act:
-    If Not modArraySupport.ResetVariantArrayToDefaults(Arr) Then _
+    If Not modArraySupport2.ResetVariantArrayToDefaults(Arr) Then _
             GoTo TestFail
     
     'Assert:
@@ -8031,7 +8031,7 @@ Public Sub ReverseVectorInPlace_NoArray_ReturnsFalse()
     
     'Act:
     'Assert:
-    Assert.IsFalse modArraySupport.ReverseVectorInPlace(Scalar)
+    Assert.IsFalse modArraySupport2.ReverseVectorInPlace(Scalar)
     
 TestExit:
     Exit Sub
@@ -8050,7 +8050,7 @@ Public Sub ReverseVectorInPlace_UnallocatedArray_ReturnsFalse()
     
     'Act:
     'Assert:
-    Assert.IsFalse modArraySupport.ReverseVectorInPlace(Arr)
+    Assert.IsFalse modArraySupport2.ReverseVectorInPlace(Arr)
     
 TestExit:
     Exit Sub
@@ -8069,7 +8069,7 @@ Public Sub ReverseVectorInPlace_2DArr_ReturnsFalse()
     
     'Act:
     'Assert:
-    Assert.IsFalse modArraySupport.ReverseVectorInPlace(Arr)
+    Assert.IsFalse modArraySupport2.ReverseVectorInPlace(Arr)
     
 TestExit:
     Exit Sub
@@ -8100,7 +8100,7 @@ Public Sub ReverseVectorInPlace_ValidEven1DArr_ReturnsTrueAndReversedArr()
     Arr(8) = 8
     
     'Act:
-    If Not modArraySupport.ReverseVectorInPlace(Arr) Then _
+    If Not modArraySupport2.ReverseVectorInPlace(Arr) Then _
             GoTo TestFail
     
     'Assert:
@@ -8135,7 +8135,7 @@ Public Sub ReverseVectorInPlace_ValidEven1DVariantArr_ReturnsTrueAndReversedArr(
     Arr(8) = 8
     
     'Act:
-    If Not modArraySupport.ReverseVectorInPlace(Arr) Then _
+    If Not modArraySupport2.ReverseVectorInPlace(Arr) Then _
             GoTo TestFail
     
     'Assert:
@@ -8166,7 +8166,7 @@ Public Sub ReverseVectorInPlace_1DVariantArrWithObject_ReturnsTrueAndReversedArr
     Set Arr(6) = ThisWorkbook.Worksheets(1).Range("A5")
     
     'Act:
-    If Not modArraySupport.ReverseVectorInPlace(Arr) Then _
+    If Not modArraySupport2.ReverseVectorInPlace(Arr) Then _
             GoTo TestFail
     
     'Assert:
@@ -8203,7 +8203,7 @@ Public Sub ReverseVectorInPlace_ValidOdd1DArr_ReturnsTrueAndReversedArr()
     Arr(9) = 9
     
     'Act:
-    If Not modArraySupport.ReverseVectorInPlace(Arr) Then _
+    If Not modArraySupport2.ReverseVectorInPlace(Arr) Then _
             GoTo TestFail
     
     'Assert:
@@ -8230,7 +8230,7 @@ Public Sub ReverseVectorOfObjectsInPlace_NoArray_ReturnsFalse()
     
     'Act:
     'Assert:
-    Assert.IsFalse modArraySupport.ReverseVectorOfObjectsInPlace(Scalar)
+    Assert.IsFalse modArraySupport2.ReverseVectorOfObjectsInPlace(Scalar)
     
 TestExit:
     Exit Sub
@@ -8249,7 +8249,7 @@ Public Sub ReverseVectorOfObjectsInPlace_UnallocatedObjectArray_ReturnsFalse()
     
     'Act:
     'Assert:
-    Assert.IsFalse modArraySupport.ReverseVectorOfObjectsInPlace(Arr)
+    Assert.IsFalse modArraySupport2.ReverseVectorOfObjectsInPlace(Arr)
     
 TestExit:
     Exit Sub
@@ -8268,7 +8268,7 @@ Public Sub ReverseVectorOfObjectsInPlace_2DObjectArr_ReturnsFalse()
     
     'Act:
     'Assert:
-    Assert.IsFalse modArraySupport.ReverseVectorOfObjectsInPlace(Arr)
+    Assert.IsFalse modArraySupport2.ReverseVectorOfObjectsInPlace(Arr)
     
 TestExit:
     Exit Sub
@@ -8304,7 +8304,7 @@ Public Sub ReverseVectorOfObjectsInPlace_ValidEven1DObjectArr_ReturnsTrueAndReve
     End With
     
     'Act:
-    If Not modArraySupport.ReverseVectorOfObjectsInPlace(Arr) Then _
+    If Not modArraySupport2.ReverseVectorOfObjectsInPlace(Arr) Then _
             GoTo TestFail
     
     'Assert:
@@ -8350,7 +8350,7 @@ Public Sub ReverseVectorOfObjectsInPlace_ValidEven1DVariantArr_ReturnsTrueAndRev
     End With
     
     'Act:
-    If Not modArraySupport.ReverseVectorOfObjectsInPlace(Arr) Then _
+    If Not modArraySupport2.ReverseVectorOfObjectsInPlace(Arr) Then _
             GoTo TestFail
     
     'Assert:
@@ -8382,7 +8382,7 @@ Public Sub ReverseVectorOfObjectsInPlace_1DVariantArrWithNonObject_ReturnsFalse(
     
     'Act:
     'Assert:
-    Assert.IsFalse modArraySupport.ReverseVectorOfObjectsInPlace(Arr)
+    Assert.IsFalse modArraySupport2.ReverseVectorOfObjectsInPlace(Arr)
     
 TestExit:
     Exit Sub
@@ -8420,7 +8420,7 @@ Public Sub ReverseVectorOfObjectsInPlace_ValidOdd1DObjectArr_ReturnsTrueAndRever
     End With
     
     'Act:
-    If Not modArraySupport.ReverseVectorOfObjectsInPlace(Arr) Then _
+    If Not modArraySupport2.ReverseVectorOfObjectsInPlace(Arr) Then _
             GoTo TestFail
     
     'Assert:
@@ -8453,7 +8453,7 @@ Public Sub SetObjectArrayToNothing_NoArray_ReturnsFalse()
     
     'Act:
     'Assert:
-    Assert.IsFalse modArraySupport.SetObjectArrayToNothing(Scalar)
+    Assert.IsFalse modArraySupport2.SetObjectArrayToNothing(Scalar)
     
 TestExit:
     Exit Sub
@@ -8472,7 +8472,7 @@ Public Sub SetObjectArrayToNothing_UnallocatedLongArray_ReturnsFalse()
     
     'Act:
     'Assert:
-    Assert.IsFalse modArraySupport.SetObjectArrayToNothing(Arr)
+    Assert.IsFalse modArraySupport2.SetObjectArrayToNothing(Arr)
     
 TestExit:
     Exit Sub
@@ -8491,7 +8491,7 @@ Public Sub SetObjectArrayToNothing_UnallocatedObjectArray_ReturnsFalse()
     
     'Act:
     'Assert:
-    Assert.IsFalse modArraySupport.SetObjectArrayToNothing(Arr)
+    Assert.IsFalse modArraySupport2.SetObjectArrayToNothing(Arr)
     
 TestExit:
     Exit Sub
@@ -8510,7 +8510,7 @@ Public Sub SetObjectArrayToNothing_UnallocatedVariantArray_ReturnsFalse()
     
     'Act:
     'Assert:
-    Assert.IsFalse modArraySupport.SetObjectArrayToNothing(Arr)
+    Assert.IsFalse modArraySupport2.SetObjectArrayToNothing(Arr)
     
 TestExit:
     Exit Sub
@@ -8529,7 +8529,7 @@ Public Sub SetObjectArrayToNothing_1DLongArr_ReturnsFalse()
     
     'Act:
     'Assert:
-    Assert.IsFalse modArraySupport.SetObjectArrayToNothing(Arr)
+    Assert.IsFalse modArraySupport2.SetObjectArrayToNothing(Arr)
     
 TestExit:
     Exit Sub
@@ -8554,7 +8554,7 @@ Public Sub SetObjectArrayToNothing_1DObjectArr_ReturnsTrueAndNothingArr()
     End With
     
     'Act:
-    If Not modArraySupport.SetObjectArrayToNothing(Arr) Then _
+    If Not modArraySupport2.SetObjectArrayToNothing(Arr) Then _
             GoTo TestFail
     
     'Assert:
@@ -8585,7 +8585,7 @@ Public Sub SetObjectArrayToNothing_1DVariantArr_ReturnsTrueAndNothingArr()
     End With
     
     'Act:
-    If Not modArraySupport.SetObjectArrayToNothing(Arr) Then _
+    If Not modArraySupport2.SetObjectArrayToNothing(Arr) Then _
             GoTo TestFail
     
     'Assert:
@@ -8616,7 +8616,7 @@ Public Sub SetObjectArrayToNothing_1DVariantArrWithEmptyElement_ReturnsFalse()
     
     'Act:
     'Assert:
-    Assert.IsFalse modArraySupport.SetObjectArrayToNothing(Arr)
+    Assert.IsFalse modArraySupport2.SetObjectArrayToNothing(Arr)
     
 TestExit:
     Exit Sub
@@ -8645,7 +8645,7 @@ Public Sub SetObjectArrayToNothing_2DObjectArr_ReturnsTrueAndNothingArr()
     End With
     
     'Act:
-    If Not modArraySupport.SetObjectArrayToNothing(Arr) Then _
+    If Not modArraySupport2.SetObjectArrayToNothing(Arr) Then _
             GoTo TestFail
     
     'Assert:
@@ -8680,7 +8680,7 @@ Public Sub SetObjectArrayToNothing_3DObjectArr_ReturnsTrueAndNothingArr()
     End With
     
     'Act:
-    If Not modArraySupport.SetObjectArrayToNothing(Arr) Then _
+    If Not modArraySupport2.SetObjectArrayToNothing(Arr) Then _
             GoTo TestFail
     
     'Assert:
@@ -8705,7 +8705,7 @@ Public Sub SetObjectArrayToNothing_4DObjectArr_ReturnsFalse()
     
     'Act:
     'Assert:
-    Assert.IsFalse modArraySupport.SetObjectArrayToNothing(Arr)
+    Assert.IsFalse modArraySupport2.SetObjectArrayToNothing(Arr)
     
 TestExit:
     Exit Sub
@@ -8740,7 +8740,7 @@ Public Sub SwapArrayColumns_NoArray_ReturnsNull()
     
     
     'Act:
-    ResultArr = modArraySupport.SwapArrayColumns( _
+    ResultArr = modArraySupport2.SwapArrayColumns( _
             Scalar, _
             Col1, _
             Col2 _
@@ -8771,7 +8771,7 @@ Public Sub SwapArrayColumns_UnallocatedArr_ReturnsNull()
     
     
     'Act:
-    ResultArr = modArraySupport.SwapArrayColumns( _
+    ResultArr = modArraySupport2.SwapArrayColumns( _
             Arr, _
             Col1, _
             Col2 _
@@ -8802,7 +8802,7 @@ Public Sub SwapArrayColumns_1DArr_ReturnsNull()
     
     
     'Act:
-    ResultArr = modArraySupport.SwapArrayColumns( _
+    ResultArr = modArraySupport2.SwapArrayColumns( _
             Arr, _
             Col1, _
             Col2 _
@@ -8833,7 +8833,7 @@ Public Sub SwapArrayColumns_3DArr_ReturnsNull()
     
     
     'Act:
-    ResultArr = modArraySupport.SwapArrayColumns( _
+    ResultArr = modArraySupport2.SwapArrayColumns( _
             Arr, _
             Col1, _
             Col2 _
@@ -8864,7 +8864,7 @@ Public Sub SwapArrayColumns_TooSmallCol1_ReturnsNull()
     
     
     'Act:
-    ResultArr = modArraySupport.SwapArrayColumns( _
+    ResultArr = modArraySupport2.SwapArrayColumns( _
             Arr, _
             Col1, _
             Col2 _
@@ -8895,7 +8895,7 @@ Public Sub SwapArrayColumns_TooSmallCol2_ReturnsNull()
     
     
     'Act:
-    ResultArr = modArraySupport.SwapArrayColumns( _
+    ResultArr = modArraySupport2.SwapArrayColumns( _
             Arr, _
             Col1, _
             Col2 _
@@ -8926,7 +8926,7 @@ Public Sub SwapArrayColumns_TooLargeCol1_ReturnsNull()
     
     
     'Act:
-    ResultArr = modArraySupport.SwapArrayColumns( _
+    ResultArr = modArraySupport2.SwapArrayColumns( _
             Arr, _
             Col1, _
             Col2 _
@@ -8957,7 +8957,7 @@ Public Sub SwapArrayColumns_TooLargeCol2_ReturnsNull()
     
     
     'Act:
-    ResultArr = modArraySupport.SwapArrayColumns( _
+    ResultArr = modArraySupport2.SwapArrayColumns( _
             Arr, _
             Col1, _
             Col2 _
@@ -8999,7 +8999,7 @@ Public Sub SwapArrayColumns_EqualColNumbers_ReturnsResultArrEqualToArr()
     Arr(6, 4) = 21
     
     'Act:
-    ResultArr = modArraySupport.SwapArrayColumns( _
+    ResultArr = modArraySupport2.SwapArrayColumns( _
             Arr, _
             Col1, _
             Col2 _
@@ -9041,7 +9041,7 @@ Public Sub SwapArrayColumns_UnequalColNumbers_ReturnsResultArrWithSwappedColumns
     Arr(6, 4) = 21
     
     'Act:
-    ResultArr = modArraySupport.SwapArrayColumns( _
+    ResultArr = modArraySupport2.SwapArrayColumns( _
             Arr, _
             Col1, _
             Col2 _
@@ -9076,7 +9076,7 @@ Public Sub SwapArrayRows_NoArray_ReturnsNull()
     
     
     'Act:
-    ResultArr = modArraySupport.SwapArrayRows( _
+    ResultArr = modArraySupport2.SwapArrayRows( _
             Scalar, _
             Row1, _
             Row2 _
@@ -9107,7 +9107,7 @@ Public Sub SwapArrayRows_UnallocatedArr_ReturnsNull()
     
     
     'Act:
-    ResultArr = modArraySupport.SwapArrayRows( _
+    ResultArr = modArraySupport2.SwapArrayRows( _
             Arr, _
             Row1, _
             Row2 _
@@ -9138,7 +9138,7 @@ Public Sub SwapArrayRows_1DArr_ReturnsNull()
     
     
     'Act:
-    ResultArr = modArraySupport.SwapArrayRows( _
+    ResultArr = modArraySupport2.SwapArrayRows( _
             Arr, _
             Row1, _
             Row2 _
@@ -9169,7 +9169,7 @@ Public Sub SwapArrayRows_3DArr_ReturnsNull()
     
     
     'Act:
-    ResultArr = modArraySupport.SwapArrayRows( _
+    ResultArr = modArraySupport2.SwapArrayRows( _
             Arr, _
             Row1, _
             Row2 _
@@ -9200,7 +9200,7 @@ Public Sub SwapArrayRows_TooSmallRow1_ReturnsNull()
     
     
     'Act:
-    ResultArr = modArraySupport.SwapArrayRows( _
+    ResultArr = modArraySupport2.SwapArrayRows( _
             Arr, _
             Row1, _
             Row2 _
@@ -9231,7 +9231,7 @@ Public Sub SwapArrayRows_TooSmallRow2_ReturnsNull()
     
     
     'Act:
-    ResultArr = modArraySupport.SwapArrayRows( _
+    ResultArr = modArraySupport2.SwapArrayRows( _
             Arr, _
             Row1, _
             Row2 _
@@ -9262,7 +9262,7 @@ Public Sub SwapArrayRows_TooLargeRow1_ReturnsNull()
     
     
     'Act:
-    ResultArr = modArraySupport.SwapArrayRows( _
+    ResultArr = modArraySupport2.SwapArrayRows( _
             Arr, _
             Row1, _
             Row2 _
@@ -9293,7 +9293,7 @@ Public Sub SwapArrayRows_TooLargeRow2_ReturnsNull()
     
     
     'Act:
-    ResultArr = modArraySupport.SwapArrayRows( _
+    ResultArr = modArraySupport2.SwapArrayRows( _
             Arr, _
             Row1, _
             Row2 _
@@ -9335,7 +9335,7 @@ Public Sub SwapArrayRows_EqualRowNumbers_ReturnsResultArrEqualToArr()
     Arr(6, 4) = 21
     
     'Act:
-    ResultArr = modArraySupport.SwapArrayRows( _
+    ResultArr = modArraySupport2.SwapArrayRows( _
             Arr, _
             Row1, _
             Row2 _
@@ -9377,7 +9377,7 @@ Public Sub SwapArrayRows_UnequalRowNumbers_ReturnsResultArrWithSwappedRows()
     Arr(6, 4) = 21
     
     'Act:
-    ResultArr = modArraySupport.SwapArrayRows( _
+    ResultArr = modArraySupport2.SwapArrayRows( _
             Arr, _
             Row1, _
             Row2 _
@@ -9408,7 +9408,7 @@ Public Sub TransposeArray_ScalarInput_ReturnsFalse()
     
     'Act:
     'Assert:
-    Assert.IsFalse modArraySupport.TransposeArray(Scalar, TransposedArr)
+    Assert.IsFalse modArraySupport2.TransposeArray(Scalar, TransposedArr)
     
 TestExit:
     Exit Sub
@@ -9428,7 +9428,7 @@ Public Sub TransposeArray_1DInputArr_ReturnsFalse()
     
     'Act:
     'Assert:
-    Assert.IsFalse modArraySupport.TransposeArray(Arr, TransposedArr)
+    Assert.IsFalse modArraySupport2.TransposeArray(Arr, TransposedArr)
     
 TestExit:
     Exit Sub
@@ -9448,7 +9448,7 @@ Public Sub TransposeArray_ScalarOutput_ReturnsFalse()
     
     'Act:
     'Assert:
-    Assert.IsFalse modArraySupport.TransposeArray(Arr, Scalar)
+    Assert.IsFalse modArraySupport2.TransposeArray(Arr, Scalar)
     
 TestExit:
     Exit Sub
@@ -9468,7 +9468,7 @@ Public Sub TransposeArray_StaticOutputArr_ReturnsFalse()
     
     'Act:
     'Assert:
-    Assert.IsFalse modArraySupport.TransposeArray(Arr, TransposedArr)
+    Assert.IsFalse modArraySupport2.TransposeArray(Arr, TransposedArr)
     
 TestExit:
     Exit Sub
@@ -9503,7 +9503,7 @@ Public Sub TransposeArray_Valid2DArr_ReturnsTrueAndTransposedArr()
     Arr(3, 5) = 100
     
     'Act:
-    If Not modArraySupport.TransposeArray(Arr, TransposedArr) _
+    If Not modArraySupport2.TransposeArray(Arr, TransposedArr) _
             Then GoTo TestFail
     
     'Assert:
@@ -9536,7 +9536,7 @@ Public Sub VectorsToArray_NoArray_ReturnsFalse()
     
     'Act:
     'Assert:
-    Assert.IsFalse modArraySupport.VectorsToArray( _
+    Assert.IsFalse modArraySupport2.VectorsToArray( _
             Scalar, _
             VectorA, _
             VectorB _
@@ -9561,7 +9561,7 @@ Public Sub VectorsToArray_StaticArr_ReturnsFalse()
     
     'Act:
     'Assert:
-    Assert.IsFalse modArraySupport.VectorsToArray( _
+    Assert.IsFalse modArraySupport2.VectorsToArray( _
             ResultArr, _
             VectorA, _
             VectorB _
@@ -9584,7 +9584,7 @@ Public Sub VectorsToArray_MissingVectors_ReturnsFalse()
     
     'Act:
     'Assert:
-    Assert.IsFalse modArraySupport.VectorsToArray( _
+    Assert.IsFalse modArraySupport2.VectorsToArray( _
             ResultArr _
     )
     
@@ -9607,7 +9607,7 @@ Public Sub VectorsToArray_ScalarVector_ReturnsFalse()
     
     'Act:
     'Assert:
-    Assert.IsFalse modArraySupport.VectorsToArray( _
+    Assert.IsFalse modArraySupport2.VectorsToArray( _
             ResultArr, _
             ScalarA, _
             VectorB _
@@ -9632,7 +9632,7 @@ Public Sub VectorsToArray_UninitializedVector_ReturnsFalse()
     
     'Act:
     'Assert:
-    Assert.IsFalse modArraySupport.VectorsToArray( _
+    Assert.IsFalse modArraySupport2.VectorsToArray( _
             ResultArr, _
             ArrayA, _
             VectorB _
@@ -9657,7 +9657,7 @@ Public Sub VectorsToArray_2DVector_ReturnsFalse()
     
     'Act:
     'Assert:
-    Assert.IsFalse modArraySupport.VectorsToArray( _
+    Assert.IsFalse modArraySupport2.VectorsToArray( _
             ResultArr, _
             ArrayA, _
             VectorB _
@@ -9684,7 +9684,7 @@ Public Sub VectorsToArray_ArrayInVector_ReturnsFalse()
     
     'Act:
     'Assert:
-    Assert.IsFalse modArraySupport.VectorsToArray( _
+    Assert.IsFalse modArraySupport2.VectorsToArray( _
             ResultArr, _
             VectorA, _
             VectorB _
@@ -9711,7 +9711,7 @@ Public Sub VectorsToArray_ObjectInVector_ReturnsFalse()
     
     'Act:
     'Assert:
-    Assert.IsFalse modArraySupport.VectorsToArray( _
+    Assert.IsFalse modArraySupport2.VectorsToArray( _
             ResultArr, _
             VectorA, _
             VectorB _
@@ -9752,7 +9752,7 @@ Public Sub VectorsToArray_ValidLongVectors_ReturnsTrueAndResultArr()
     VectorB(6) = 22
     
     'Act:
-    If Not modArraySupport.VectorsToArray( _
+    If Not modArraySupport2.VectorsToArray( _
             ResultArr, _
             VectorA, _
             VectorB _
