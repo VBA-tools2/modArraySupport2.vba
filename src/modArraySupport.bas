@@ -562,7 +562,7 @@ End Function
 'from 'Double' to 'Long' (the decimal portion would be lost).
 '
 'To skip the compatibility check and allow any variable type in 'ResultArray'
-'and 'ArrayToAppend', set the 'NoCompatibilityCheck' parameter to 'True'. If
+'and 'ArrayToAppend', set the 'CompatibilityCheck' parameter to 'False'. If
 'you do this, be aware that you may loose precision and you may will get an
 'overflow error which will cause a result of 0 in that element of 'ResultArray'.
 '
@@ -571,7 +571,7 @@ End Function
 Public Function ConcatenateArrays( _
     ByRef ResultArray As Variant, _
     ByVal ArrayToAppend As Variant, _
-    Optional ByVal NoCompatibilityCheck As Boolean = False _
+    Optional ByVal CompatibilityCheck As Boolean = True _
         ) As Boolean
     
     Dim i As Long
@@ -601,7 +601,7 @@ Public Function ConcatenateArrays( _
     End If
     
     
-    If NoCompatibilityCheck = False Then
+    If CompatibilityCheck Then
         'Ensure the array are compatible data types
         If Not AreDataTypesCompatible(ArrayToAppend, ResultArray) Then Exit Function
         
@@ -700,7 +700,7 @@ End Function
 'The function tests to ensure that the data types of the arrays are the same or
 'are compatible. See the function 'AreDataTypesCompatible' for information
 'about compatible data types. To skip this compatibility checking, set the
-''NoCompatibilityCheck' parameter to 'True'. Note that you may lose information
+''CompatibilityCheck' parameter to 'False'. Note that you may lose information
 'during data conversion (e.g., losing decimal places when converting a 'Double'
 'to a 'Long') or you may get an overflow (storing a 'Long' in an 'Integer')
 'which will result in that element in 'ResultArray' having a value of 0.
@@ -708,7 +708,7 @@ End Function
 Public Function CopyArray( _
     ByVal SourceArray As Variant, _
     ByRef ResultArray As Variant, _
-    Optional ByVal NoCompatibilityCheck As Boolean = False _
+    Optional ByVal CompatibilityCheck As Boolean = True _
         ) As Boolean
     
     Dim SrcNdx As Long
@@ -733,7 +733,7 @@ Public Function CopyArray( _
         Exit Function
     End If
     
-    If NoCompatibilityCheck = False Then
+    If CompatibilityCheck Then
         'Ensure both arrays are the same type or compatible data types. See the
         'function 'AreDataTypesCompatible' for information about compatible types.
         If Not AreDataTypesCompatible(SourceArray, ResultArray) Then
