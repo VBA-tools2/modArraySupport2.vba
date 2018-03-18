@@ -5209,12 +5209,21 @@ Public Sub IsArrayAllNumeric_NoArray_ReturnsFalse()
     On Error GoTo TestFail
     
     'Arrange:
-    Dim V As Variant
+    Dim Scalar As Variant
+    
+    '==========================================================================
+    Const AllowNumericStrings As Boolean = False
+    Const AllowArrayElements As Boolean = False
+    '==========================================================================
     
     
     'Act:
     'Assert:
-    Assert.IsFalse modArraySupport2.IsArrayAllNumeric(V)
+    Assert.IsFalse modArraySupport2.IsArrayAllNumeric( _
+            Scalar, _
+            AllowNumericStrings, _
+            AllowArrayElements _
+    )
     
 TestExit:
     Exit Sub
@@ -5228,12 +5237,21 @@ Public Sub IsArrayAllNumeric_UnallocatedArray_ReturnsFalse()
     On Error GoTo TestFail
     
     'Arrange:
-    Dim V() As Variant
+    Dim Arr() As Variant
+    
+    '==========================================================================
+    Const AllowNumericStrings As Boolean = False
+    Const AllowArrayElements As Boolean = False
+    '==========================================================================
     
     
     'Act:
     'Assert:
-    Assert.IsFalse modArraySupport2.IsArrayAllNumeric(V)
+    Assert.IsFalse modArraySupport2.IsArrayAllNumeric( _
+            Arr, _
+            AllowNumericStrings, _
+            AllowArrayElements _
+    )
     
 TestExit:
     Exit Sub
@@ -5246,17 +5264,26 @@ End Sub
 Public Sub IsArrayAllNumeric_IncludingNumericStringAllowNumericStringsFalse_ReturnsFalse()
     On Error GoTo TestFail
     
-    Dim V(1 To 3) As Variant
+    Dim Arr(1 To 3) As Variant
+    
+    '==========================================================================
+    Const AllowNumericStrings As Boolean = False
+    Const AllowArrayElements As Boolean = False
+    '==========================================================================
     
     
     'Arrange:
-    V(1) = "100"
-    V(2) = 2
-    V(3) = Empty
+    Arr(1) = "100"
+    Arr(2) = 2
+    Arr(3) = Empty
     
     'Act:
     'Assert:
-    Assert.IsFalse modArraySupport2.IsArrayAllNumeric(V, False)
+    Assert.IsFalse modArraySupport2.IsArrayAllNumeric( _
+            Arr, _
+            AllowNumericStrings, _
+            AllowArrayElements _
+    )
     
 TestExit:
     Exit Sub
@@ -5269,17 +5296,26 @@ End Sub
 Public Sub IsArrayAllNumeric_IncludingNumericStringAllowNumericStringsTrue_ReturnsTrue()
     On Error GoTo TestFail
     
-    Dim V(1 To 3) As Variant
+    Dim Arr(1 To 3) As Variant
+    
+    '==========================================================================
+    Const AllowNumericStrings As Boolean = True
+    Const AllowArrayElements As Boolean = False
+    '==========================================================================
     
     
     'Arrange:
-    V(1) = "100"
-    V(2) = 2
-    V(3) = Empty
+    Arr(1) = "100"
+    Arr(2) = 2
+    Arr(3) = Empty
     
     'Act:
     'Assert:
-    Assert.IsTrue modArraySupport2.IsArrayAllNumeric(V, True)
+    Assert.IsTrue modArraySupport2.IsArrayAllNumeric( _
+            Arr, _
+            AllowNumericStrings, _
+            AllowArrayElements _
+    )
     
 TestExit:
     Exit Sub
@@ -5292,17 +5328,26 @@ End Sub
 Public Sub IsArrayAllNumeric_IncludingNonNumericString_ReturnsFalse()
     On Error GoTo TestFail
     
-    Dim V(1 To 3) As Variant
+    Dim Arr(1 To 3) As Variant
+    
+    '==========================================================================
+    Const AllowNumericStrings As Boolean = True
+    Const AllowArrayElements As Boolean = False
+    '==========================================================================
     
     
     'Arrange:
-    V(1) = "abc"
-    V(2) = 2
-    V(3) = Empty
+    Arr(1) = "abc"
+    Arr(2) = 2
+    Arr(3) = Empty
     
     'Act:
     'Assert:
-    Assert.IsFalse modArraySupport2.IsArrayAllNumeric(V, True)
+    Assert.IsFalse modArraySupport2.IsArrayAllNumeric( _
+            Arr, _
+            AllowNumericStrings, _
+            AllowArrayElements _
+    )
     
 TestExit:
     Exit Sub
@@ -5315,17 +5360,26 @@ End Sub
 Public Sub IsArrayAllNumeric_Numeric1DVariantArray_ReturnsTrue()
     On Error GoTo TestFail
     
-    Dim V(1 To 3) As Variant
+    Dim Arr(1 To 3) As Variant
+    
+    '==========================================================================
+    Const AllowNumericStrings As Boolean = False
+    Const AllowArrayElements As Boolean = False
+    '==========================================================================
     
     
     'Arrange:
-    V(1) = 123
-    V(2) = 456
-    V(3) = 789
+    Arr(1) = 123
+    Arr(2) = 456
+    Arr(3) = 789
     
     'Act:
     'Assert:
-    Assert.IsTrue modArraySupport2.IsArrayAllNumeric(V)
+    Assert.IsTrue modArraySupport2.IsArrayAllNumeric( _
+            Arr, _
+            AllowNumericStrings, _
+            AllowArrayElements _
+    )
     
 TestExit:
     Exit Sub
@@ -5338,17 +5392,26 @@ End Sub
 Public Sub IsArrayAllNumeric_1DVariantArrayWithObject_ReturnsFalse()
     On Error GoTo TestFail
     
-    Dim V(1 To 3) As Variant
+    Dim Arr(1 To 3) As Variant
+    
+    '==========================================================================
+    Const AllowNumericStrings As Boolean = False
+    Const AllowArrayElements As Boolean = False
+    '==========================================================================
     
     
     'Arrange:
-    V(1) = 123
-    Set V(2) = ThisWorkbook.Worksheets(1).Range("A1")
-    V(3) = 789
+    Arr(1) = 123
+    Set Arr(2) = ThisWorkbook.Worksheets(1).Range("A1")
+    Arr(3) = 789
     
     'Act:
     'Assert:
-    Assert.IsFalse modArraySupport2.IsArrayAllNumeric(V)
+    Assert.IsFalse modArraySupport2.IsArrayAllNumeric( _
+            Arr, _
+            AllowNumericStrings, _
+            AllowArrayElements _
+    )
     
 TestExit:
     Exit Sub
@@ -5361,16 +5424,25 @@ End Sub
 Public Sub IsArrayAllNumeric_1DVariantArrayWithUnallocatedEntry_ReturnsTrue()
     On Error GoTo TestFail
     
-    Dim V(1 To 3) As Variant
+    Dim Arr(1 To 3) As Variant
+    
+    '==========================================================================
+    Const AllowNumericStrings As Boolean = False
+    Const AllowArrayElements As Boolean = False
+    '==========================================================================
     
     
     'Arrange:
-    V(1) = 123
-    V(3) = 789
+    Arr(1) = 123
+    Arr(3) = 789
     
     'Act:
     'Assert:
-    Assert.IsTrue modArraySupport2.IsArrayAllNumeric(V)
+    Assert.IsTrue modArraySupport2.IsArrayAllNumeric( _
+            Arr, _
+            AllowNumericStrings, _
+            AllowArrayElements _
+    )
     
 TestExit:
     Exit Sub
@@ -5383,20 +5455,29 @@ End Sub
 Public Sub IsArrayAllNumeric_Numeric2DVariantArray_ReturnsTrue()
     On Error GoTo TestFail
     
-    Dim V(1 To 3, 4 To 5) As Variant
+    Dim Arr(1 To 3, 4 To 5) As Variant
+    
+    '==========================================================================
+    Const AllowNumericStrings As Boolean = False
+    Const AllowArrayElements As Boolean = False
+    '==========================================================================
     
     
     'Arrange:
-    V(1, 4) = 123
-    V(2, 4) = 456
-    V(3, 4) = 789
+    Arr(1, 4) = 123
+    Arr(2, 4) = 456
+    Arr(3, 4) = 789
     
-    V(1, 5) = -5
-    V(3, 5) = -10
+    Arr(1, 5) = -5
+    Arr(3, 5) = -10
     
     'Act:
     'Assert:
-    Assert.IsTrue modArraySupport2.IsArrayAllNumeric(V)
+    Assert.IsTrue modArraySupport2.IsArrayAllNumeric( _
+            Arr, _
+            AllowNumericStrings, _
+            AllowArrayElements _
+    )
     
 TestExit:
     Exit Sub
@@ -5409,20 +5490,29 @@ End Sub
 Public Sub IsArrayAllNumeric_2DVariantArrayWithObject_ReturnsFalse()
     On Error GoTo TestFail
     
-    Dim V(1 To 3, 4 To 5) As Variant
+    Dim Arr(1 To 3, 4 To 5) As Variant
+    
+    '==========================================================================
+    Const AllowNumericStrings As Boolean = False
+    Const AllowArrayElements As Boolean = False
+    '==========================================================================
     
     
     'Arrange:
-    V(1, 4) = 123
-    Set V(2, 4) = ThisWorkbook.Worksheets(1).Range("A1")
-    V(3, 4) = 789
+    Arr(1, 4) = 123
+    Set Arr(2, 4) = ThisWorkbook.Worksheets(1).Range("A1")
+    Arr(3, 4) = 789
     
-    V(1, 5) = -5
-    V(3, 5) = -10
+    Arr(1, 5) = -5
+    Arr(3, 5) = -10
     
     'Act:
     'Assert:
-    Assert.IsFalse modArraySupport2.IsArrayAllNumeric(V)
+    Assert.IsFalse modArraySupport2.IsArrayAllNumeric( _
+            Arr, _
+            AllowNumericStrings, _
+            AllowArrayElements _
+    )
     
 TestExit:
     Exit Sub
@@ -5435,17 +5525,26 @@ End Sub
 Public Sub IsArrayAllNumeric_1DVariantArrayWithArrayAllowArrayElementsFalse_ReturnsFalse()
     On Error GoTo TestFail
     
-    Dim V(1 To 3) As Variant
+    Dim Arr(1 To 3) As Variant
+    
+    '==========================================================================
+    Const AllowNumericStrings As Boolean = False
+    Const AllowArrayElements As Boolean = False
+    '==========================================================================
     
     
     'Arrange:
-    V(1) = 123
-    V(2) = Array(-5)
-    V(3) = 789
+    Arr(1) = 123
+    Arr(2) = Array(-5)
+    Arr(3) = 789
     
     'Act:
     'Assert:
-    Assert.IsFalse modArraySupport2.IsArrayAllNumeric(V)
+    Assert.IsFalse modArraySupport2.IsArrayAllNumeric( _
+            Arr, _
+            AllowNumericStrings, _
+            AllowArrayElements _
+    )
     
 TestExit:
     Exit Sub
@@ -5458,17 +5557,26 @@ End Sub
 Public Sub IsArrayAllNumeric_1DVariantArrayWithArrayAllowArrayElementsTrue_ReturnsTrue()
     On Error GoTo TestFail
     
-    Dim V(1 To 3) As Variant
+    Dim Arr(1 To 3) As Variant
+    
+    '==========================================================================
+    Const AllowNumericStrings As Boolean = False
+    Const AllowArrayElements As Boolean = True
+    '==========================================================================
     
     
     'Arrange:
-    V(1) = 123
-    V(2) = Array(-5)
-    V(3) = 789
+    Arr(1) = 123
+    Arr(2) = Array(-5)
+    Arr(3) = 789
     
     'Act:
     'Assert:
-    Assert.IsTrue modArraySupport2.IsArrayAllNumeric(V, , True)
+    Assert.IsTrue modArraySupport2.IsArrayAllNumeric( _
+            Arr, _
+            AllowNumericStrings, _
+            AllowArrayElements _
+    )
     
 TestExit:
     Exit Sub
@@ -5481,17 +5589,26 @@ End Sub
 Public Sub IsArrayAllNumeric_1DVariantArrayWithArrayAllowArrayElementsTrue_ReturnsFalse()
     On Error GoTo TestFail
     
-    Dim V(1 To 3) As Variant
+    Dim Arr(1 To 3) As Variant
+    
+    '==========================================================================
+    Const AllowNumericStrings As Boolean = False
+    Const AllowArrayElements As Boolean = True
+    '==========================================================================
     
     
     'Arrange:
-    V(1) = 123
-    V(2) = Array(-5, "-5")
-    V(3) = 789
+    Arr(1) = 123
+    Arr(2) = Array(-5, "-5")
+    Arr(3) = 789
     
     'Act:
     'Assert:
-    Assert.IsFalse modArraySupport2.IsArrayAllNumeric(V, , True)
+    Assert.IsFalse modArraySupport2.IsArrayAllNumeric( _
+            Arr, _
+            AllowNumericStrings, _
+            AllowArrayElements _
+    )
     
 TestExit:
     Exit Sub
@@ -5504,17 +5621,26 @@ End Sub
 Public Sub IsArrayAllNumeric_1DVariantArrayWithArrayAllowNumericStringsTrueAllowArrayElementsTrue_ReturnsTrue()
     On Error GoTo TestFail
     
-    Dim V(1 To 3) As Variant
+    Dim Arr(1 To 3) As Variant
+    
+    '==========================================================================
+    Const AllowNumericStrings As Boolean = True
+    Const AllowArrayElements As Boolean = True
+    '==========================================================================
     
     
     'Arrange:
-    V(1) = 123
-    V(2) = Array(-5, "-5")
-    V(3) = 789
+    Arr(1) = 123
+    Arr(2) = Array(-5, "-5")
+    Arr(3) = 789
     
     'Act:
     'Assert:
-    Assert.IsTrue modArraySupport2.IsArrayAllNumeric(V, True, True)
+    Assert.IsTrue modArraySupport2.IsArrayAllNumeric( _
+            Arr, _
+            AllowNumericStrings, _
+            AllowArrayElements _
+    )
     
 TestExit:
     Exit Sub
