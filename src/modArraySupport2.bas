@@ -1473,6 +1473,7 @@ Public Function InsertElementIntoVector( _
         ReDim Preserve InputVector(LBound(InputVector) To UBound(InputVector) - 1)
         Exit Function
     End If
+    On Error GoTo 0
 '---
     
     'Shift everything to the right
@@ -1636,6 +1637,7 @@ Public Function IsArrayAllocated( _
     Else
         'error. unallocated array
     End If
+    On Error GoTo 0
     
 End Function
 
@@ -1700,6 +1702,7 @@ Public Function IsArrayDynamic( _
             'Some unexpected error occurred. Be safe and return 'False'.
             IsArrayDynamic = False
     End Select
+    On Error GoTo 0
     
 End Function
 
@@ -2038,6 +2041,7 @@ Public Function NumberOfArrayDimensions( _
         i = i + 1
         Res = UBound(Arr, i)
     Loop Until Err.Number <> 0
+    On Error GoTo 0
     
     NumberOfArrayDimensions = i - 1
     
