@@ -42,7 +42,7 @@ End Sub
 'unit tests for 'AreDataTypesCompatible'
 '==============================================================================
 
-'@TestMethod
+'@TestMethod("AreDataTypesCompatible")
 Public Sub AreDataTypesCompatible_ScalarSourceArrayDest_ReturnsFalse()
     On Error GoTo TestFail
     
@@ -62,7 +62,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("AreDataTypesCompatible")
 Public Sub AreDataTypesCompatible_BothStringScalars_ReturnsTrue()
     On Error GoTo TestFail
     
@@ -82,7 +82,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("AreDataTypesCompatible")
 Public Sub AreDataTypesCompatible_BothStringArrays_ReturnsTrue()
     On Error GoTo TestFail
     
@@ -102,7 +102,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("AreDataTypesCompatible")
 Public Sub AreDataTypesCompatible_LongSourceIntegerDest_ReturnsFalse()
     On Error GoTo TestFail
     
@@ -122,7 +122,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("AreDataTypesCompatible")
 Public Sub AreDataTypesCompatible_IntegerSourceLongDest_ReturnsTrue()
     On Error GoTo TestFail
     
@@ -142,7 +142,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("AreDataTypesCompatible")
 Public Sub AreDataTypesCompatible_DoubleSourceLongDest_ReturnsFalse()
     On Error GoTo TestFail
     
@@ -162,7 +162,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("AreDataTypesCompatible")
 Public Sub AreDataTypesCompatible_BothObjects_ReturnsTrue()
     On Error GoTo TestFail
     
@@ -182,7 +182,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("AreDataTypesCompatible")
 Public Sub AreDataTypesCompatible_SingleSourceDateDest_ReturnsTrue()
     On Error GoTo TestFail
     
@@ -205,7 +205,7 @@ End Sub
 ''2do: How to do this test?
 ''     --> in 'ChangeBoundsOfVector_VariantArr_ReturnsTrueAndChangedArr' are
 ''         'Empty' entries added at the end of the vector
-''@TestMethod
+''@TestMethod("AreDataTypesCompatible")
 'Public Sub AreDataTypesCompatible_VariantSourceEmptyDest_ReturnsTrue()
 '    On Error GoTo TestFail
 '
@@ -234,7 +234,7 @@ End Sub
 'unit tests for 'ChangeBoundsOfVector'
 '==============================================================================
 
-'@TestMethod
+'@TestMethod("ChangeBoundsOfVector")
 Public Sub ChangeBoundsOfVector_LBGreaterUB_ReturnsFalse()
     On Error GoTo TestFail
     
@@ -258,7 +258,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("ChangeBoundsOfVector")
 Public Sub ChangeBoundsOfVector_ScalarInput_ReturnsFalse()
     On Error GoTo TestFail
     
@@ -282,7 +282,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("ChangeBoundsOfVector")
 Public Sub ChangeBoundsOfVector_StaticArray_ReturnsFalse()
     On Error GoTo TestFail
     
@@ -306,7 +306,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("ChangeBoundsOfVector")
 Public Sub ChangeBoundsOfVector_UnallocatedArray_ReturnsFalse()
     On Error GoTo TestFail
     
@@ -330,7 +330,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("ChangeBoundsOfVector")
 Public Sub ChangeBoundsOfVector_2DArray_ReturnsFalse()
     On Error GoTo TestFail
     
@@ -354,7 +354,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("ChangeBoundsOfVector")
 Public Sub ChangeBoundsOfVector_LongInputArr_ReturnsTrueAndChangedArr()
     On Error GoTo TestFail
     
@@ -394,7 +394,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("ChangeBoundsOfVector")
 Public Sub ChangeBoundsOfVector_SmallerUBDiffThanSource_ReturnsTrueAndChangedArr()
     On Error GoTo TestFail
     
@@ -430,7 +430,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("ChangeBoundsOfVector")
 Public Sub ChangeBoundsOfVector_VariantArr_ReturnsTrueAndChangedArr()
     On Error GoTo TestFail
     
@@ -477,7 +477,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("ChangeBoundsOfVector")
 Public Sub ChangeBoundsOfVector_LongInputArrNoUpperBound_ReturnsTrueAndChangedArr()
     On Error GoTo TestFail
     
@@ -516,7 +516,7 @@ End Sub
 
 '2do: not sure if the test is done right
 '     --> is testing for 'Is(Not)Nothing sufficient?
-'@TestMethod
+'@TestMethod("ChangeBoundsOfVector")
 Public Sub ChangeBoundsOfVector_RangeArr_ReturnsTrueAndChangedArr()
     On Error GoTo TestFail
     
@@ -566,7 +566,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("ChangeBoundsOfVector")
 Public Sub ChangeBoundsOfVector_CustomClass_ReturnsTrueAndChangedArr()
     On Error GoTo TestFail
     
@@ -628,7 +628,7 @@ End Sub
 'unit tests for 'CombineTwoDArrays'
 '==============================================================================
 
-'@TestMethod
+'@TestMethod("CombineTwoDArrays")
 Public Sub CombineTwoDArrays_ScalarArr1_ReturnsNull()
     On Error GoTo TestFail
     
@@ -651,7 +651,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("CombineTwoDArrays")
 Public Sub CombineTwoDArrays_ScalarArr2_ReturnsNull()
     On Error GoTo TestFail
     
@@ -674,7 +674,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("CombineTwoDArrays")
 Public Sub CombineTwoDArrays_1DArr1_ReturnsNull()
     On Error GoTo TestFail
     
@@ -697,7 +697,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("CombineTwoDArrays")
 Public Sub CombineTwoDArrays_3DArr1_ReturnsNull()
     On Error GoTo TestFail
     
@@ -720,7 +720,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("CombineTwoDArrays")
 Public Sub CombineTwoDArrays_1DArr2_ReturnsNull()
     On Error GoTo TestFail
     
@@ -743,7 +743,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("CombineTwoDArrays")
 Public Sub CombineTwoDArrays_3DArr2_ReturnsNull()
     On Error GoTo TestFail
     
@@ -766,7 +766,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("CombineTwoDArrays")
 Public Sub CombineTwoDArrays_DifferentColNumbers_ReturnsNull()
     On Error GoTo TestFail
     
@@ -789,7 +789,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("CombineTwoDArrays")
 Public Sub CombineTwoDArrays_DifferentLBoundRows_ReturnsNull()
     On Error GoTo TestFail
     
@@ -812,7 +812,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("CombineTwoDArrays")
 Public Sub CombineTwoDArrays_DifferentLBoundCol1_ReturnsNull()
     On Error GoTo TestFail
     
@@ -835,7 +835,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("CombineTwoDArrays")
 Public Sub CombineTwoDArrays_DifferentLBoundCol2_ReturnsNull()
     On Error GoTo TestFail
     
@@ -858,7 +858,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("CombineTwoDArrays")
 Public Sub CombineTwoDArrays_1BasedStringArrays_ReturnsCombinedResultArr()
     On Error GoTo TestFail
     
@@ -904,7 +904,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("CombineTwoDArrays")
 Public Sub CombineTwoDArrays_0BasedStringArrays_ReturnsCombinedResultArr()
     On Error GoTo TestFail
     
@@ -950,7 +950,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("CombineTwoDArrays")
 Public Sub CombineTwoDArrays_PositiveBasedStringArrays_ReturnsCombinedResultArr()
     On Error GoTo TestFail
     
@@ -996,7 +996,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("CombineTwoDArrays")
 Public Sub CombineTwoDArrays_NegativeBasedStringArrays_ReturnsCombinedResultArr()
     On Error GoTo TestFail
     
@@ -1042,7 +1042,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("CombineTwoDArrays")
 Public Sub CombineTwoDArrays_NestedStringArrays_ReturnsCombinedResultArr()
     On Error GoTo TestFail
     
@@ -1119,7 +1119,7 @@ End Sub
 'unit tests for 'CompareVectors'
 '==============================================================================
 
-'@TestMethod
+'@TestMethod("CompareVectors")
 Public Sub CompareVectors_UnallocatedArrays_ReturnsFalse()
     On Error GoTo TestFail
     
@@ -1140,7 +1140,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("CompareVectors")
 Public Sub CompareVectors_LegalAndTextCompare_ReturnsTrueAndResArr()
     On Error GoTo TestFail
     
@@ -1185,7 +1185,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("CompareVectors")
 Public Sub CompareVectors_LegalAndBinaryCompare_ReturnsTrueAndResArr()
     On Error GoTo TestFail
     
@@ -1234,7 +1234,7 @@ End Sub
 'unit tests for 'ConcatenateArrays'
 '==============================================================================
 
-'@TestMethod
+'@TestMethod("ConcatenateArrays")
 Public Sub ConcatenateArrays_StaticResultArray_ResultsFalse()
     On Error GoTo TestFail
     
@@ -1265,7 +1265,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("ConcatenateArrays")
 Public Sub ConcatenateArrays_BothArraysUnallocated_ResultsTrueAndUnallocatedArray()
     On Error GoTo TestFail
     
@@ -1296,7 +1296,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("ConcatenateArrays")
 Public Sub ConcatenateArrays_UnallocatedArrayToAppend_ResultsTrueAndUnchangedResultArray()
     On Error GoTo TestFail
     
@@ -1335,7 +1335,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("ConcatenateArrays")
 Public Sub ConcatenateArrays_IntegerArrayToAppendLongResultArray_ResultsTrueAndResultArray()
     On Error GoTo TestFail
     
@@ -1383,7 +1383,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("ConcatenateArrays")
 Public Sub ConcatenateArrays_LongArrayToAppendIntegerResultArray_ResultsFalse()
     On Error GoTo TestFail
     
@@ -1420,7 +1420,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("ConcatenateArrays")
 Public Sub ConcatenateArrays_LongArrayToAppendIntegerResultArrayFalseCompatibilityCheck_ResultsTrueAndResultArray()
     On Error GoTo TestFail
     
@@ -1468,7 +1468,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("ConcatenateArrays")
 Public Sub ConcatenateArrays_LongArrayToAppendWithLongNumberIntegerResultArrayFalseCompatibilityCheck_ResultsFalse()
     On Error GoTo TestFail
     
@@ -1517,7 +1517,7 @@ End Sub
 
 ''2do: add a test that involves objects
 ''     (have a look at <https://stackoverflow.com/a/11254505>
-''@TestMethod
+''@TestMethod("ConcatenateArrays")
 'Public Sub ConcatenateArrays_LegalVariant_ResultsTrueAndResultArray()
 '    On Error GoTo TestFail
 '
@@ -1586,7 +1586,7 @@ End Sub
 'unit tests for 'CopyArray'
 '==============================================================================
 
-'@TestMethod
+'@TestMethod("CopyArray")
 Public Sub CopyArray_UnallocatedSrc_ResultsTrueAndUnchangedDest()
     On Error GoTo TestFail
     
@@ -1622,7 +1622,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("CopyArray")
 Public Sub CopyArray_IncompatibleDest_ResultsFalse()
     On Error GoTo TestFail
     
@@ -1650,7 +1650,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("CopyArray")
 Public Sub CopyArray_AllocatedDestLessElementsThenSrc_ResultsTrueAndDestArray()
     On Error GoTo TestFail
     
@@ -1689,7 +1689,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("CopyArray")
 Public Sub CopyArray_AllocatedDestMoreElementsThenSrc_ResultsTrueAndDestArray()
     On Error GoTo TestFail
     
@@ -1730,7 +1730,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("CopyArray")
 Public Sub CopyArray_NoCompatibilityCheck_ResultsTrueAndDestArrayWithOverflow()
     On Error GoTo TestFail
     
@@ -1775,7 +1775,7 @@ End Sub
 'unit tests for 'CopyNonNothingObjectsToVector'
 '==============================================================================
 
-'@TestMethod
+'@TestMethod("CopyNonNothingObjectsToVector")
 Public Sub CopyNonNothingObjectsToVector_ScalarResultArray_ReturnsFalse()
     On Error GoTo TestFail
     
@@ -1798,7 +1798,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("CopyNonNothingObjectsToVector")
 Public Sub CopyNonNothingObjectsToVector_StaticResultArray_ReturnsFalse()
     On Error GoTo TestFail
     
@@ -1821,7 +1821,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("CopyNonNothingObjectsToVector")
 Public Sub CopyNonNothingObjectsToVector_2DResultArray_ReturnsFalse()
     On Error GoTo TestFail
     
@@ -1846,7 +1846,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("CopyNonNothingObjectsToVector")
 Public Sub CopyNonNothingObjectsToVector_NonObjectOnlySourceArray_ReturnsFalse()
     On Error GoTo TestFail
     
@@ -1872,7 +1872,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("CopyNonNothingObjectsToVector")
 Public Sub CopyNonNothingObjectsToVector_ValidNonNothingOnlySourceArray_ReturnsTrueAndResultArray()
     On Error GoTo TestFail
     
@@ -1904,7 +1904,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("CopyNonNothingObjectsToVector")
 Public Sub CopyNonNothingObjectsToVector_NothingOnlySourceArray_ReturnsFalse()
     On Error GoTo TestFail
     
@@ -1938,7 +1938,7 @@ End Sub
 'unit tests for 'CopyVectorSubSetToVector'
 '==============================================================================
 
-'@TestMethod
+'@TestMethod("CopyVectorSubSetToVector")
 Public Sub CopyVectorSubSetToVector_ScalarInput_ReturnsFalse()
     On Error GoTo TestFail
     
@@ -1970,7 +1970,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("CopyVectorSubSetToVector")
 Public Sub CopyVectorSubSetToVector_ScalarResult_ReturnsFalse()
     On Error GoTo TestFail
     
@@ -2002,7 +2002,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("CopyVectorSubSetToVector")
 Public Sub CopyVectorSubSetToVector_UnallocatedInputArray_ReturnsFalse()
     On Error GoTo TestFail
     
@@ -2034,7 +2034,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("CopyVectorSubSetToVector")
 Public Sub CopyVectorSubSetToVector_2DInputArray_ReturnsFalse()
     On Error GoTo TestFail
     
@@ -2068,7 +2068,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("CopyVectorSubSetToVector")
 Public Sub CopyVectorSubSetToVector_2DResultArray_ReturnsFalse()
     On Error GoTo TestFail
     
@@ -2103,7 +2103,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("CopyVectorSubSetToVector")
 Public Sub CopyVectorSubSetToVector_TooSmallFirstElementToCopy_ReturnsFalse()
     On Error GoTo TestFail
     
@@ -2138,7 +2138,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("CopyVectorSubSetToVector")
 Public Sub CopyVectorSubSetToVector_TooLargeLastElementToCopy_ReturnsFalse()
     On Error GoTo TestFail
     
@@ -2173,7 +2173,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("CopyVectorSubSetToVector")
 Public Sub CopyVectorSubSetToVector_FirstElementLargerLastElement_ReturnsFalse()
     On Error GoTo TestFail
     
@@ -2208,7 +2208,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("CopyVectorSubSetToVector")
 Public Sub CopyVectorSubSetToVector_NotEnoughRoomInStaticResultArray_ReturnsFalse()
     On Error GoTo TestFail
     
@@ -2240,7 +2240,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("CopyVectorSubSetToVector")
 Public Sub CopyVectorSubSetToVector_TooSmallDestinationElementInStaticResultArray_ReturnsFalse()
     On Error GoTo TestFail
     
@@ -2279,7 +2279,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("CopyVectorSubSetToVector")
 Public Sub CopyVectorSubSetToVector_UnallocatedResultArrayDestinationElementLargerBase_ReturnsTrueAndResultArray()
     On Error GoTo TestFail
     
@@ -2324,7 +2324,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("CopyVectorSubSetToVector")
 Public Sub CopyVectorSubSetToVector_UnallocatedResultArrayLastDestinationElementSmallerBase_ReturnsTrueAndResultArray()
     On Error GoTo TestFail
     
@@ -2371,7 +2371,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("CopyVectorSubSetToVector")
 Public Sub CopyVectorSubSetToVector_UnallocatedResultArrayFromNegToPos_ReturnsTrueAndResultArray()
     On Error GoTo TestFail
     
@@ -2417,7 +2417,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("CopyVectorSubSetToVector")
 Public Sub CopyVectorSubSetToVector_UnallocatedResultArray_ReturnsTrueAndResultArray()
     On Error GoTo TestFail
     
@@ -2458,7 +2458,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("CopyVectorSubSetToVector")
 Public Sub CopyVectorSubSetToVector_SubArrayLargerThanAllocatedResultArray1_ReturnsTrueAndResultArray()
     On Error GoTo TestFail
     
@@ -2508,7 +2508,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("CopyVectorSubSetToVector")
 Public Sub CopyVectorSubSetToVector_SubArrayLargerThanAllocatedResultArray2_ReturnsTrueAndResultArray()
     On Error GoTo TestFail
     
@@ -2556,7 +2556,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("CopyVectorSubSetToVector")
 Public Sub CopyVectorSubSetToVector_SubArrayLargerThanAllocatedResultArray3_ReturnsTrueAndResultArray()
     On Error GoTo TestFail
     
@@ -2604,7 +2604,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("CopyVectorSubSetToVector")
 Public Sub CopyVectorSubSetToVector_TooSmallFirstDestinationElementInDynamicAllocatedResultArray_ReturnsTrueAndResultArray()
     On Error GoTo TestFail
     
@@ -2651,7 +2651,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("CopyVectorSubSetToVector")
 Public Sub CopyVectorSubSetToVector_TooLargeLastDestinationElementInDynamicAllocatedResultArray_ReturnsTrueAndResultArray()
     On Error GoTo TestFail
     
@@ -2698,7 +2698,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("CopyVectorSubSetToVector")
 Public Sub CopyVectorSubSetToVector_DestinationElementEvenLargerThanUboundInDynamicAllocatedResultArray_ReturnsTrueAndResultArray()
     On Error GoTo TestFail
     
@@ -2749,7 +2749,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("CopyVectorSubSetToVector")
 Public Sub CopyVectorSubSetToVector_TestWithObjects_ReturnsTrueAndResultArray()
     On Error GoTo TestFail
     
@@ -2811,7 +2811,7 @@ End Sub
 'unit tests for 'DataTypeOfArray'
 '==============================================================================
 
-'@TestMethod
+'@TestMethod("DataTypeOfArray")
 Public Sub DataTypeOfArray_NoArray_ReturnsMinusOne()
     On Error GoTo TestFail
     
@@ -2837,7 +2837,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("DataTypeOfArray")
 Public Sub DataTypeOfArray_UnallocatedDoubleArray_ReturnsVbDouble()
     On Error GoTo TestFail
     
@@ -2863,7 +2863,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("DataTypeOfArray")
 Public Sub DataTypeOfArray_Test1DStringArray_ReturnsVbString()
     On Error GoTo TestFail
     
@@ -2889,7 +2889,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("DataTypeOfArray")
 Public Sub DataTypeOfArray_Test2DStringArray_ReturnsVbString()
     On Error GoTo TestFail
     
@@ -2915,7 +2915,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("DataTypeOfArray")
 Public Sub DataTypeOfArray_Test3DStringArray_ReturnsVbString()
     On Error GoTo TestFail
     
@@ -2941,7 +2941,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("DataTypeOfArray")
 Public Sub DataTypeOfArray_UnallocatedLongArray_ReturnsVbLong()
     On Error GoTo TestFail
     
@@ -2967,7 +2967,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("DataTypeOfArray")
 Public Sub DataTypeOfArray_UnallocatedLongLongArray_ReturnsVbLongLong()
     On Error GoTo TestFail
     
@@ -2996,7 +2996,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("DataTypeOfArray")
 Public Sub DataTypeOfArray_UnallocatedObjectArray_ReturnsVbObject()
     On Error GoTo TestFail
     
@@ -3021,7 +3021,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("DataTypeOfArray")
 Public Sub DataTypeOfArray_AllocatedObjectArray_ReturnsVbObject()
     On Error GoTo TestFail
     
@@ -3046,7 +3046,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("DataTypeOfArray")
 Public Sub DataTypeOfArray_UnallocatedEmptyVariantArray_ReturnsVbVariant()
     On Error GoTo TestFail
     
@@ -3074,7 +3074,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("DataTypeOfArray")
 Public Sub DataTypeOfArray_UnallocatedDoubleArray_ReturnsVbArray()
     On Error GoTo TestFail
     
@@ -3105,7 +3105,7 @@ End Sub
 'unit tests for 'DeleteVectorElement'
 '==============================================================================
 
-'@TestMethod
+'@TestMethod("DeleteVectorElement")
 Public Sub DeleteVectorElement_NoArray_ReturnsFalse()
     On Error GoTo TestFail
     
@@ -3133,7 +3133,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("DeleteVectorElement")
 Public Sub DeleteVectorElement_UnallocatedArray_ReturnsFalse()
     On Error GoTo TestFail
     
@@ -3161,7 +3161,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("DeleteVectorElement")
 Public Sub DeleteVectorElement_2DArray_ReturnsFalse()
     On Error GoTo TestFail
     
@@ -3189,7 +3189,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("DeleteVectorElement")
 Public Sub DeleteVectorElement_TooLowElementNumber_ReturnsFalse()
     On Error GoTo TestFail
     
@@ -3217,7 +3217,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("DeleteVectorElement")
 Public Sub DeleteVectorElement_TooHighElementNumber_ReturnsFalse()
     On Error GoTo TestFail
     
@@ -3245,7 +3245,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("DeleteVectorElement")
 Public Sub DeleteVectorElement_RemoveElementOfStaticArray_ReturnsTrueAndModifiedInputArray()
     On Error GoTo TestFail
     
@@ -3285,7 +3285,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("DeleteVectorElement")
 Public Sub DeleteVectorElement_RemoveElementOfStaticObjectArray_ReturnsTrueAndModifiedInputArray()
     On Error GoTo TestFail
     
@@ -3336,7 +3336,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("DeleteVectorElement")
 Public Sub DeleteVectorElement_RemoveElementOfDynamicArrayDontResize_ReturnsTrueAndModifiedInputArray()
     On Error GoTo TestFail
     
@@ -3378,7 +3378,7 @@ End Sub
 
 
 '2do: why does this test fail?
-''@TestMethod
+''@TestMethod("DeleteVectorElement")
 'Public Sub DeleteVectorElement_RemoveElementOfDynamicArrayDontResize2_ReturnsTrueAndModifiedInputArray()
 '    On Error GoTo TestFail
 '
@@ -3419,7 +3419,7 @@ End Sub
 'End Sub
 
 
-'@TestMethod
+'@TestMethod("DeleteVectorElement")
 Public Sub DeleteVectorElement_RemoveElementOfDynamicObjectArrayDontResize_ReturnsTrueAndModifiedInputArray()
     On Error GoTo TestFail
     
@@ -3471,7 +3471,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("DeleteVectorElement")
 Public Sub DeleteVectorElement_RemoveElementOfDynamicArrayResize_ReturnsTrueAndModifiedInputArray()
     On Error GoTo TestFail
     
@@ -3511,7 +3511,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("DeleteVectorElement")
 Public Sub DeleteVectorElement_RemoveElementOfDynamicObjectArrayResize_ReturnsTrueAndModifiedInputArray()
     On Error GoTo TestFail
     
@@ -3562,7 +3562,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("DeleteVectorElement")
 Public Sub DeleteVectorElement_RemoveOnlyElementOfDynamicObjectArrayResize_ReturnsTrueAndModifiedInputArray()
     On Error GoTo TestFail
     
@@ -3603,7 +3603,7 @@ End Sub
 'unit tests for 'ExpandArray'
 '==============================================================================
 
-'@TestMethod
+'@TestMethod("ExpandArray")
 Public Sub ExpandArray_NoArray_ReturnsNull()
     On Error GoTo TestFail
     
@@ -3636,7 +3636,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("ExpandArray")
 Public Sub ExpandArray_UnallocatedArr_ReturnsNull()
     On Error GoTo TestFail
     
@@ -3669,7 +3669,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("ExpandArray")
 Public Sub ExpandArray_1DArr_ReturnsNull()
     On Error GoTo TestFail
     
@@ -3702,7 +3702,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("ExpandArray")
 Public Sub ExpandArray_3DArr_ReturnsNull()
     On Error GoTo TestFail
     
@@ -3735,7 +3735,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("ExpandArray")
 Public Sub ExpandArray_WhichDimSmallerOne_ReturnsNull()
     On Error GoTo TestFail
     
@@ -3768,7 +3768,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("ExpandArray")
 Public Sub ExpandArray_WhichDimLargerTwo_ReturnsNull()
     On Error GoTo TestFail
     
@@ -3801,7 +3801,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("ExpandArray")
 Public Sub ExpandArray_AdditionalElementsSmallerZero_ReturnsNull()
     On Error GoTo TestFail
     
@@ -3834,7 +3834,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("ExpandArray")
 Public Sub ExpandArray_AdditionalElementsEqualsZero_ReturnsExpandedArray()
     On Error GoTo TestFail
     
@@ -3878,7 +3878,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("ExpandArray")
 Public Sub ExpandArray_AddTwoAdditionalRows_ReturnsExpandedArray()
     On Error GoTo TestFail
     
@@ -3926,7 +3926,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("ExpandArray")
 Public Sub ExpandArray_AddTwoAdditionalCols_ReturnsExpandedArray()
     On Error GoTo TestFail
     
@@ -3978,7 +3978,7 @@ End Sub
 'unit tests for 'FirstNonEmptyStringIndexInVector'
 '==============================================================================
 
-'@TestMethod
+'@TestMethod("FirstNonEmptyStringIndexInVector")
 Public Sub FirstNonEmptyStringIndexInVector_NoArray_ReturnsMinusOne()
     On Error GoTo TestFail
     
@@ -4004,7 +4004,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("FirstNonEmptyStringIndexInVector")
 Public Sub FirstNonEmptyStringIndexInVector_UnallocatedArray_ReturnsMinusOne()
     On Error GoTo TestFail
     
@@ -4030,7 +4030,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("FirstNonEmptyStringIndexInVector")
 Public Sub FirstNonEmptyStringIndexInVector_2DArray_ReturnsMinusOne()
     On Error GoTo TestFail
     
@@ -4056,7 +4056,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("FirstNonEmptyStringIndexInVector")
 Public Sub FirstNonEmptyStringIndexInVector_NoNonEmptyString_ReturnsMinusOne()
     On Error GoTo TestFail
     
@@ -4086,7 +4086,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("FirstNonEmptyStringIndexInVector")
 Public Sub FirstNonEmptyStringIndexInVector_WithNonEmptyStringEntry_ReturnsSeven()
     On Error GoTo TestFail
     
@@ -4120,7 +4120,7 @@ End Sub
 'unit tests for 'GetColumn'
 '==============================================================================
 
-'@TestMethod
+'@TestMethod("GetColumn")
 Public Sub GetColumn_NoArray_ReturnsFalse()
     On Error GoTo TestFail
     
@@ -4148,7 +4148,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("GetColumn")
 Public Sub GetColumn_1DArray_ReturnsFalse()
     On Error GoTo TestFail
     
@@ -4176,7 +4176,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("GetColumn")
 Public Sub GetColumn_3DArray_ReturnsFalse()
     On Error GoTo TestFail
     
@@ -4204,7 +4204,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("GetColumn")
 Public Sub GetColumn_StaticResultArr_ReturnsFalse()
     On Error GoTo TestFail
     
@@ -4232,7 +4232,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("GetColumn")
 Public Sub GetColumn_TooSmallColumnNumber_ReturnsFalse()
     On Error GoTo TestFail
     
@@ -4260,7 +4260,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("GetColumn")
 Public Sub GetColumn_TooLargeColumnNumber_ReturnsFalse()
     On Error GoTo TestFail
     
@@ -4288,7 +4288,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("GetColumn")
 Public Sub GetColumn_LegalEntries_ReturnsTrueAndResultArr()
     On Error GoTo TestFail
     
@@ -4328,7 +4328,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("GetColumn")
 Public Sub GetColumn_LegalEntriesWithObjects_ReturnsTrueAndResultArr()
     On Error GoTo TestFail
     
@@ -4387,7 +4387,7 @@ End Sub
 'unit tests for 'GetRow'
 '==============================================================================
 
-'@TestMethod
+'@TestMethod("GetRow")
 Public Sub GetRow_NoArray_ReturnsFalse()
     On Error GoTo TestFail
     
@@ -4415,7 +4415,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("GetRow")
 Public Sub GetRow_1DArray_ReturnsFalse()
     On Error GoTo TestFail
     
@@ -4443,7 +4443,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("GetRow")
 Public Sub GetRow_3DArray_ReturnsFalse()
     On Error GoTo TestFail
     
@@ -4471,7 +4471,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("GetRow")
 Public Sub GetRow_StaticResultArr_ReturnsFalse()
     On Error GoTo TestFail
     
@@ -4499,7 +4499,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("GetRow")
 Public Sub GetRow_TooSmallRowNumber_ReturnsFalse()
     On Error GoTo TestFail
     
@@ -4527,7 +4527,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("GetRow")
 Public Sub GetRow_TooLargeRowNumber_ReturnsFalse()
     On Error GoTo TestFail
     
@@ -4555,7 +4555,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("GetRow")
 Public Sub GetRow_LegalEntries_ReturnsTrueAndResultArr()
     On Error GoTo TestFail
     
@@ -4595,7 +4595,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("GetRow")
 Public Sub GetRow_LegalEntriesWithObjects_ReturnsTrueAndResultArr()
     On Error GoTo TestFail
     
@@ -4654,7 +4654,7 @@ End Sub
 'unit tests for 'InsertElementIntoVector'
 '==============================================================================
 
-'@TestMethod
+'@TestMethod("InsertElementIntoVector")
 Public Sub InsertElementIntoVector_StaticInputArray_ReturnsFalse()
     On Error GoTo TestFail
     
@@ -4682,7 +4682,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("InsertElementIntoVector")
 Public Sub InsertElementIntoVector_2DInputArray_ReturnsFalse()
     On Error GoTo TestFail
     
@@ -4712,7 +4712,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("InsertElementIntoVector")
 Public Sub InsertElementIntoVector_TooSmallIndex_ReturnsFalse()
     On Error GoTo TestFail
     
@@ -4742,7 +4742,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("InsertElementIntoVector")
 Public Sub InsertElementIntoVector_TooLargeIndex_ReturnsFalse()
     On Error GoTo TestFail
     
@@ -4772,7 +4772,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("InsertElementIntoVector")
 Public Sub InsertElementIntoVector_WrongValueType_ReturnsFalseAndUnchangedInputArray()
     On Error GoTo TestFail
     
@@ -4809,7 +4809,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("InsertElementIntoVector")
 Public Sub InsertElementIntoVector_ValidTestWithLongs_ReturnsTrueAndChangedInputArray()
     On Error GoTo TestFail
     
@@ -4849,7 +4849,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("InsertElementIntoVector")
 Public Sub InsertElementIntoVector_ValidTestWithStrings_ReturnsTrueAndChangedInputArray()
     On Error GoTo TestFail
     
@@ -4894,7 +4894,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("InsertElementIntoVector")
 Public Sub InsertElementIntoVector_ValidTestWithObjects_ReturnsTrueAndChangedInputArray()
     On Error GoTo TestFail
     
@@ -4952,7 +4952,7 @@ End Sub
 'unit tests for 'IsArrayAllDefault'
 '==============================================================================
 
-'@TestMethod
+'@TestMethod("IsArrayAllDefault")
 Public Sub IsArrayAllDefault_NoArray_ReturnsFalse()
     On Error GoTo TestFail
     
@@ -4971,7 +4971,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("IsArrayAllDefault")
 Public Sub IsArrayAllDefault_UnallocatedArray_ReturnsTrue()
     On Error GoTo TestFail
     
@@ -4990,7 +4990,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("IsArrayAllDefault")
 Public Sub IsArrayAllDefault_DefaultVariantArray_ReturnsTrue()
     On Error GoTo TestFail
     
@@ -5011,7 +5011,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("IsArrayAllDefault")
 Public Sub IsArrayAllDefault_NonDefaultVariantArray_ReturnsFalse()
     On Error GoTo TestFail
     
@@ -5032,7 +5032,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("IsArrayAllDefault")
 Public Sub IsArrayAllDefault_DefaultStringArray_ReturnsTrue()
     On Error GoTo TestFail
     
@@ -5053,7 +5053,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("IsArrayAllDefault")
 Public Sub IsArrayAllDefault_NonDefaultStringArray_ReturnsFalse()
     On Error GoTo TestFail
     
@@ -5074,7 +5074,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("IsArrayAllDefault")
 Public Sub IsArrayAllDefault_DefaultNumericArray_ReturnsTrue()
     On Error GoTo TestFail
     
@@ -5095,7 +5095,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("IsArrayAllDefault")
 Public Sub IsArrayAllDefault_NonDefaultNumericArray_ReturnsFalse()
     On Error GoTo TestFail
     
@@ -5116,7 +5116,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("IsArrayAllDefault")
 Public Sub IsArrayAllDefault_Default3DNumericArray_ReturnsTrue()
     On Error GoTo TestFail
     
@@ -5137,7 +5137,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("IsArrayAllDefault")
 Public Sub IsArrayAllDefault_NonDefault3DNumericArray_ReturnsFalse()
     On Error GoTo TestFail
     
@@ -5158,7 +5158,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("IsArrayAllDefault")
 Public Sub IsArrayAllDefault_DefaultObjectArray_ReturnsTrue()
     On Error GoTo TestFail
     
@@ -5179,7 +5179,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("IsArrayAllDefault")
 Public Sub IsArrayAllDefault_NonDefaultObjectArray_ReturnsFalse()
     On Error GoTo TestFail
     
@@ -5204,7 +5204,7 @@ End Sub
 'unit tests for 'IsArrayAllNumeric'
 '==============================================================================
 
-'@TestMethod
+'@TestMethod("IsArrayAllNumeric")
 Public Sub IsArrayAllNumeric_NoArray_ReturnsFalse()
     On Error GoTo TestFail
     
@@ -5232,7 +5232,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("IsArrayAllNumeric")
 Public Sub IsArrayAllNumeric_UnallocatedArray_ReturnsFalse()
     On Error GoTo TestFail
     
@@ -5260,7 +5260,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("IsArrayAllNumeric")
 Public Sub IsArrayAllNumeric_IncludingNumericStringAllowNumericStringsFalse_ReturnsFalse()
     On Error GoTo TestFail
     
@@ -5292,7 +5292,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("IsArrayAllNumeric")
 Public Sub IsArrayAllNumeric_IncludingNumericStringAllowNumericStringsTrue_ReturnsTrue()
     On Error GoTo TestFail
     
@@ -5324,7 +5324,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("IsArrayAllNumeric")
 Public Sub IsArrayAllNumeric_IncludingNonNumericString_ReturnsFalse()
     On Error GoTo TestFail
     
@@ -5356,7 +5356,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("IsArrayAllNumeric")
 Public Sub IsArrayAllNumeric_Numeric1DVariantArray_ReturnsTrue()
     On Error GoTo TestFail
     
@@ -5388,7 +5388,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("IsArrayAllNumeric")
 Public Sub IsArrayAllNumeric_1DVariantArrayWithObject_ReturnsFalse()
     On Error GoTo TestFail
     
@@ -5420,7 +5420,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("IsArrayAllNumeric")
 Public Sub IsArrayAllNumeric_1DVariantArrayWithUnallocatedEntry_ReturnsTrue()
     On Error GoTo TestFail
     
@@ -5451,7 +5451,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("IsArrayAllNumeric")
 Public Sub IsArrayAllNumeric_Numeric2DVariantArray_ReturnsTrue()
     On Error GoTo TestFail
     
@@ -5486,7 +5486,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("IsArrayAllNumeric")
 Public Sub IsArrayAllNumeric_2DVariantArrayWithObject_ReturnsFalse()
     On Error GoTo TestFail
     
@@ -5521,7 +5521,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("IsArrayAllNumeric")
 Public Sub IsArrayAllNumeric_1DVariantArrayWithArrayAllowArrayElementsFalse_ReturnsFalse()
     On Error GoTo TestFail
     
@@ -5553,7 +5553,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("IsArrayAllNumeric")
 Public Sub IsArrayAllNumeric_1DVariantArrayWithArrayAllowArrayElementsTrue_ReturnsTrue()
     On Error GoTo TestFail
     
@@ -5585,7 +5585,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("IsArrayAllNumeric")
 Public Sub IsArrayAllNumeric_1DVariantArrayWithArrayAllowArrayElementsTrue_ReturnsFalse()
     On Error GoTo TestFail
     
@@ -5617,7 +5617,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("IsArrayAllNumeric")
 Public Sub IsArrayAllNumeric_1DVariantArrayWithArrayAllowNumericStringsTrueAllowArrayElementsTrue_ReturnsTrue()
     On Error GoTo TestFail
     
@@ -5653,7 +5653,7 @@ End Sub
 'unit tests for 'IsArrayAllocated'
 '==============================================================================
 
-'@TestMethod
+'@TestMethod("IsArrayAllocated")
 Public Sub IsArrayAllocated_AllocatedArray_ReturnsTrue()
     On Error GoTo TestFail
     
@@ -5672,7 +5672,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("IsArrayAllocated")
 Public Sub IsArrayAllocated_UnAllocatedArray_ReturnsFalse()
     On Error GoTo TestFail
     
@@ -5695,7 +5695,7 @@ End Sub
 'unit tests for 'IsArrayDynamic'
 '==============================================================================
 
-'@TestMethod
+'@TestMethod("IsArrayDynamic")
 Public Sub IsArrayDynamic_NoArray_ReturnsFalse()
     On Error GoTo TestFail
     
@@ -5714,7 +5714,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("IsArrayDynamic")
 Public Sub IsArrayDynamic_UnallocatedArray_ReturnsTrue()
     On Error GoTo TestFail
     
@@ -5733,7 +5733,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("IsArrayDynamic")
 Public Sub IsArrayDynamic_1DDynamicArray_ReturnsTrue()
     On Error GoTo TestFail
     
@@ -5754,7 +5754,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("IsArrayDynamic")
 Public Sub IsArrayDynamic_1DStaticArray_ReturnsFalse()
     On Error GoTo TestFail
     
@@ -5773,7 +5773,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("IsArrayDynamic")
 Public Sub IsArrayDynamic_2DDynamicArray_ReturnsTrue()
     On Error GoTo TestFail
     
@@ -5794,7 +5794,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("IsArrayDynamic")
 Public Sub IsArrayDynamic_2DStaticArray_ReturnsFalse()
     On Error GoTo TestFail
     
@@ -5817,7 +5817,7 @@ End Sub
 'unit tests for 'IsArrayObjects'
 '==============================================================================
 
-'@TestMethod
+'@TestMethod("IsArrayObjects")
 Public Sub IsArrayObjects_NoArray_ReturnsFalse()
     On Error GoTo TestFail
     
@@ -5840,7 +5840,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("IsArrayObjects")
 Public Sub IsArrayObjects_LongPtrInputArray_ReturnsFalse()
     On Error GoTo TestFail
     
@@ -5863,7 +5863,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("IsArrayObjects")
 Public Sub IsArrayObjects_ObjectInputArrayNothingOnlyAllowNothingTrue_ReturnsTrue()
     On Error GoTo TestFail
     
@@ -5895,7 +5895,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("IsArrayObjects")
 Public Sub IsArrayObjects_ObjectInputArrayNothingOnlyAllowNothingFalse_ReturnsFalse()
     On Error GoTo TestFail
     
@@ -5922,7 +5922,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("IsArrayObjects")
 Public Sub IsArrayObjects_ObjectInputArrayNonNothingOnlyAllowNothingTrue_ReturnsTrue()
     On Error GoTo TestFail
     
@@ -5956,7 +5956,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("IsArrayObjects")
 Public Sub IsArrayObjects_ObjectInputArrayNonNothingOnlyAllowNothingFalse_ReturnsTrue()
     On Error GoTo TestFail
     
@@ -5991,7 +5991,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("IsArrayObjects")
 Public Sub IsArrayObjects_VariantInputArrayAllowNothingFalse_ReturnsFalse()
     On Error GoTo TestFail
     
@@ -6021,7 +6021,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("IsArrayObjects")
 Public Sub IsArrayObjects_VariantInputArrayAllowNothingTrue_ReturnsTrue()
     On Error GoTo TestFail
     
@@ -6051,7 +6051,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("IsArrayObjects")
 Public Sub IsArrayObjects_2DVariantInputArrayAllowNothingFalse_ReturnsFalse()
     On Error GoTo TestFail
     
@@ -6083,7 +6083,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("IsArrayObjects")
 Public Sub IsArrayObjects_2DVariantInputArrayAllowNothingTrue_ReturnsTrue()
     On Error GoTo TestFail
     
@@ -6119,7 +6119,7 @@ End Sub
 'unit tests for 'IsNumericDataType'
 '==============================================================================
 
-'@TestMethod
+'@TestMethod("IsNumericDataType")
 Public Sub IsNumericDataType_LongPtrScalar_ReturnsTrue()
     On Error GoTo TestFail
     
@@ -6138,7 +6138,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("IsNumericDataType")
 Public Sub IsNumericDataType_CurrencyScalar_ReturnsTrue()
     On Error GoTo TestFail
     
@@ -6157,7 +6157,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("IsNumericDataType")
 Public Sub IsNumericDataType_StringScalar_ReturnsFalse()
     On Error GoTo TestFail
     
@@ -6176,7 +6176,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("IsNumericDataType")
 Public Sub IsNumericDataType_ObjectScalar_ReturnsFalse()
     On Error GoTo TestFail
     
@@ -6195,7 +6195,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("IsNumericDataType")
 Public Sub IsNumericDataType_VariantScalarUninitialized_ReturnsFalse()
     On Error GoTo TestFail
     
@@ -6214,7 +6214,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("IsNumericDataType")
 Public Sub IsNumericDataType_VariantScalarNumericContent_ReturnsTrue()
     On Error GoTo TestFail
     
@@ -6235,7 +6235,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("IsNumericDataType")
 Public Sub IsNumericDataType_VariantScalarNonNumericContent_ReturnsFalse()
     On Error GoTo TestFail
     
@@ -6256,7 +6256,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("IsNumericDataType")
 Public Sub IsNumericDataType_LongPtrArrayUnallocated_ReturnsTrue()
     On Error GoTo TestFail
     
@@ -6275,7 +6275,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("IsNumericDataType")
 Public Sub IsNumericDataType_LongPtrStaticArray_ReturnsTrue()
     On Error GoTo TestFail
     
@@ -6294,7 +6294,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("IsNumericDataType")
 Public Sub IsNumericDataType_CurrencyArray_ReturnsTrue()
     On Error GoTo TestFail
     
@@ -6313,7 +6313,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("IsNumericDataType")
 Public Sub IsNumericDataType_StringArray_ReturnsFalse()
     On Error GoTo TestFail
     
@@ -6332,7 +6332,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("IsNumericDataType")
 Public Sub IsNumericDataType_ObjectArray_ReturnsFalse()
     On Error GoTo TestFail
     
@@ -6351,7 +6351,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("IsNumericDataType")
 Public Sub IsNumericDataType_VariantArrayUnallocated_ReturnsFalse()
     On Error GoTo TestFail
     
@@ -6370,7 +6370,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("IsNumericDataType")
 Public Sub IsNumericDataType_StaticVariantArrayNumericContent_ReturnsTrue()
     On Error GoTo TestFail
     
@@ -6392,7 +6392,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("IsNumericDataType")
 Public Sub IsNumericDataType_StaticVariantArrayMixedContentNumericFirst_ReturnsFalse()
     On Error GoTo TestFail
     
@@ -6414,7 +6414,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("IsNumericDataType")
 Public Sub IsNumericDataType_StaticVariantArrayMixedContentNonNumericFirst_ReturnsFalse()
     On Error GoTo TestFail
     
@@ -6440,7 +6440,7 @@ End Sub
 'unit tests for 'IsVariantArrayConsistent'
 '==============================================================================
 
-'@TestMethod
+'@TestMethod("IsVariantArrayConsistent")
 Public Sub IsVariantArrayConsistent_NoArray_ReturnsFalse()
     On Error GoTo TestFail
     
@@ -6459,7 +6459,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("IsVariantArrayConsistent")
 Public Sub IsVariantArrayConsistent_UnallocatedArray_ReturnsFalse()
     On Error GoTo TestFail
     
@@ -6478,7 +6478,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("IsVariantArrayConsistent")
 Public Sub IsVariantArrayConsistent_AllocatedLongTypeArray_ReturnsTrue()
     On Error GoTo TestFail
     
@@ -6497,7 +6497,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("IsVariantArrayConsistent")
 Public Sub IsVariantArrayConsistent_AllocatedObjectTypeArray_ReturnsTrue()
     On Error GoTo TestFail
     
@@ -6516,7 +6516,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("IsVariantArrayConsistent")
 Public Sub IsVariantArrayConsistent_AllocatedVariantTypeArrayConsistentIntegers_ReturnsTrue()
     On Error GoTo TestFail
     
@@ -6538,7 +6538,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("IsVariantArrayConsistent")
 Public Sub IsVariantArrayConsistent_AllocatedVariantTypeArrayConsistentObjects_ReturnsTrue()
     On Error GoTo TestFail
     
@@ -6563,7 +6563,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("IsVariantArrayConsistent")
 Public Sub IsVariantArrayConsistent_AllocatedVariantTypeArrayInconsistentTypes_ReturnsFalse()
     On Error GoTo TestFail
     
@@ -6585,7 +6585,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("IsVariantArrayConsistent")
 Public Sub IsVariantArrayConsistent_2DAllocatedVariantTypeArrayConsistentIntegers_ReturnsTrue()
     On Error GoTo TestFail
     
@@ -6609,7 +6609,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("IsVariantArrayConsistent")
 Public Sub IsVariantArrayConsistent_2DAllocatedVariantTypeArrayConsistentObjects_ReturnsTrue()
     On Error GoTo TestFail
     
@@ -6635,7 +6635,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("IsVariantArrayConsistent")
 Public Sub IsVariantArrayConsistent_2DAllocatedVariantTypeArrayInconsistentTypes_ReturnsFalse()
     On Error GoTo TestFail
     
@@ -6663,7 +6663,7 @@ End Sub
 'unit tests for 'IsVectorSorted'
 '==============================================================================
 
-'@TestMethod
+'@TestMethod("IsVectorSorted")
 Public Sub IsVectorSorted_NoArray_ReturnsNull()
     On Error GoTo TestFail
     
@@ -6692,7 +6692,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("IsVectorSorted")
 Public Sub IsVectorSorted_UnallocatedArray_ReturnsNull()
     On Error GoTo TestFail
     
@@ -6721,7 +6721,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("IsVectorSorted")
 Public Sub IsVectorSorted_2DArray_ReturnsNull()
     On Error GoTo TestFail
     
@@ -6750,7 +6750,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("IsVectorSorted")
 Public Sub IsVectorSorted_ObjectArray_ReturnsNull()
     On Error GoTo TestFail
     
@@ -6779,7 +6779,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("IsVectorSorted")
 Public Sub IsVectorSorted_StringArrayDescendingFalse_ReturnsTrue()
     On Error GoTo TestFail
     
@@ -6811,7 +6811,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("IsVectorSorted")
 Public Sub IsVectorSorted_VariantArrayContainingObjectDescendingFalse_ReturnsFalse()
     On Error GoTo TestFail
     
@@ -6843,7 +6843,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("IsVectorSorted")
 Public Sub IsVectorSorted_VariantArraySmallNumericStringPlusLargerNumberDescendingFalse_ReturnsFalse()
     On Error GoTo TestFail
     
@@ -6875,7 +6875,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("IsVectorSorted")
 Public Sub IsVectorSorted_VariantArraySmallNumberPlusLargerNumericStringDescendingFalse_ReturnsTrue()
     On Error GoTo TestFail
     
@@ -6907,7 +6907,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("IsVectorSorted")
 Public Sub IsVectorSorted_VariantArrayLargeNumberPlusSmallNumericStringDescendingFalse_ReturnsTrue()
     On Error GoTo TestFail
     
@@ -6940,7 +6940,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("IsVectorSorted")
 Public Sub IsVectorSorted_VariantArrayNumberPlusStringDescendingFalse_ReturnsTrue()
     On Error GoTo TestFail
     
@@ -6972,7 +6972,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("IsVectorSorted")
 Public Sub IsVectorSorted_VariantArrayNumberPlusStringsDescendingFalse_ReturnsTrue()
     On Error GoTo TestFail
     
@@ -7007,7 +7007,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("IsVectorSorted")
 Public Sub IsVectorSorted_VariantArrayNumberPlusStrings2DescendingFalse_ReturnsFalse()
     On Error GoTo TestFail
     
@@ -7040,7 +7040,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("IsVectorSorted")
 Public Sub IsVectorSorted_StringArrayDescendingTrue_ReturnsTrue()
     On Error GoTo TestFail
     
@@ -7072,7 +7072,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("IsVectorSorted")
 Public Sub IsVectorSorted_VariantArrayContainingObjectDescendingTrue_ReturnsTrue()
     On Error GoTo TestFail
     
@@ -7104,7 +7104,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("IsVectorSorted")
 Public Sub IsVectorSorted_VariantArraySmallNumericStringPlusLargerNumberDescendingTrue_ReturnsTrue()
     On Error GoTo TestFail
     
@@ -7136,7 +7136,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("IsVectorSorted")
 Public Sub IsVectorSorted_VariantArraySmallNumberPlusLargerNumericStringDescendingTrue_ReturnsFalse()
     On Error GoTo TestFail
     
@@ -7168,7 +7168,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("IsVectorSorted")
 Public Sub IsVectorSorted_VariantArrayLargeNumberPlusSmallNumericStringDescendingTrue_ReturnsFalse()
     On Error GoTo TestFail
     
@@ -7201,7 +7201,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("IsVectorSorted")
 Public Sub IsVectorSorted_VariantArrayNumberPlusStringDescendingTrue_ReturnsFalse()
     On Error GoTo TestFail
     
@@ -7233,7 +7233,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("IsVectorSorted")
 Public Sub IsVectorSorted_VariantArrayNumberPlusStringsDescendingTrue_ReturnsFalse()
     On Error GoTo TestFail
     
@@ -7268,7 +7268,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("IsVectorSorted")
 Public Sub IsVectorSorted_VariantArrayNumberPlusStrings2DescendingTrue_ReturnsFalse()
     On Error GoTo TestFail
     
@@ -7305,7 +7305,7 @@ End Sub
 'unit tests for 'MoveEmptyStringsToEndOfVector'
 '==============================================================================
 
-'@TestMethod
+'@TestMethod("MoveEmptyStringsToEndOfVector")
 Public Sub MoveEmptyStringsToEndOfVector_NoArray_ReturnsFalse()
     On Error GoTo TestFail
     
@@ -7324,7 +7324,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("MoveEmptyStringsToEndOfVector")
 Public Sub MoveEmptyStringsToEndOfVector_UnallocatedArray_ReturnsFalse()
     On Error GoTo TestFail
     
@@ -7343,7 +7343,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("MoveEmptyStringsToEndOfVector")
 Public Sub MoveEmptyStringsToEndOfVector_2DArray_ReturnsFalse()
     On Error GoTo TestFail
     
@@ -7362,7 +7362,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("MoveEmptyStringsToEndOfVector")
 Public Sub MoveEmptyStringsToEndOfVector_vbNullStringArrayOnly_ReturnsTrue()
     On Error GoTo TestFail
     
@@ -7385,7 +7385,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("MoveEmptyStringsToEndOfVector")
 Public Sub MoveEmptyStringsToEndOfVector_NoneVbNullStringArrayOnly_ReturnsTrue()
     On Error GoTo TestFail
     
@@ -7408,7 +7408,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("MoveEmptyStringsToEndOfVector")
 Public Sub MoveEmptyStringsToEndOfVector_StringArray_ReturnsTrueAndModifiedArr()
     On Error GoTo TestFail
     
@@ -7445,7 +7445,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("MoveEmptyStringsToEndOfVector")
 Public Sub MoveEmptyStringsToEndOfVector_VariantArray_ReturnsTrueAndModifiedArr()
     On Error GoTo TestFail
     
@@ -7482,7 +7482,7 @@ TestFail:
 End Sub
 
 
-''@TestMethod
+''@TestMethod("MoveEmptyStringsToEndOfVector")
 'Public Sub MoveEmptyStringsToEndOfVector_StringArray2_ReturnsTrueAndModifiedArr()
 '    On Error GoTo TestFail
 '
@@ -7523,7 +7523,7 @@ End Sub
 'unit tests for 'NumberOfArrayDimensions'
 '==============================================================================
 
-'@TestMethod
+'@TestMethod("NumberOfArrayDimensions")
 Public Sub NumberOfArrayDimensions_UnallocatedLongArray_ReturnsZero()
     On Error GoTo TestFail
     
@@ -7549,7 +7549,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("NumberOfArrayDimensions")
 Public Sub NumberOfArrayDimensions_UnallocatedVariantArray_ReturnsZero()
     On Error GoTo TestFail
     
@@ -7575,7 +7575,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("NumberOfArrayDimensions")
 Public Sub NumberOfArrayDimensions_UnallocatedObjectArray_ReturnsZero()
     On Error GoTo TestFail
     
@@ -7601,7 +7601,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("NumberOfArrayDimensions")
 Public Sub NumberOfArrayDimensions_1DArray_ReturnsOne()
     On Error GoTo TestFail
     
@@ -7627,7 +7627,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("NumberOfArrayDimensions")
 Public Sub NumberOfArrayDimensions_3DArray_ReturnsThree()
     On Error GoTo TestFail
     
@@ -7657,7 +7657,7 @@ End Sub
 'unit tests for 'NumElements'
 '==============================================================================
 
-'@TestMethod
+'@TestMethod("NumElements")
 Public Sub NumElements_NoArray_ReturnsZero()
     On Error GoTo TestFail
     
@@ -7684,7 +7684,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("NumElements")
 Public Sub NumElements_UnallocatedArray_ReturnsZero()
     On Error GoTo TestFail
     
@@ -7711,7 +7711,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("NumElements")
 Public Sub NumElements_DimensionLowerOne_ReturnsZero()
     On Error GoTo TestFail
     
@@ -7738,7 +7738,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("NumElements")
 Public Sub NumElements_DimensionHigherNoOfArrDimensions_ReturnsZero()
     On Error GoTo TestFail
     
@@ -7765,7 +7765,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("NumElements")
 Public Sub NumElements_DimensionOne_ReturnsThree()
     On Error GoTo TestFail
     
@@ -7792,7 +7792,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("NumElements")
 Public Sub NumElements_DimensionTwo_ReturnsTwo()
     On Error GoTo TestFail
     
@@ -7819,7 +7819,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("NumElements")
 Public Sub NumElements_DimensionThree_ReturnsOne()
     On Error GoTo TestFail
     
@@ -7846,7 +7846,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("NumElements")
 Public Sub NumElements_DefaultDimension_ReturnsThree()
     On Error GoTo TestFail
     
@@ -7876,7 +7876,7 @@ End Sub
 'unit tests for 'ResetVariantArrayToDefaults'
 '==============================================================================
 
-'@TestMethod
+'@TestMethod("ResetVariantArrayToDefaults")
 Public Sub ResetVariantArrayToDefaults_NoArray_ReturnsFalse()
     On Error GoTo TestFail
     
@@ -7895,7 +7895,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("ResetVariantArrayToDefaults")
 Public Sub ResetVariantArrayToDefaults_UnallocatedArray_ReturnsFalse()
     On Error GoTo TestFail
     
@@ -7914,7 +7914,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("ResetVariantArrayToDefaults")
 Public Sub ResetVariantArrayToDefaults_4DArr_ReturnsFalse()
     On Error GoTo TestFail
     
@@ -7933,7 +7933,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("ResetVariantArrayToDefaults")
 Public Sub ResetVariantArrayToDefaults_AllSetVariableToDefaultElementsIn1DArr_ReturnsTrueAndResettedArr()
     On Error GoTo TestFail
     
@@ -7998,7 +7998,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("ResetVariantArrayToDefaults")
 Public Sub ResetVariantArrayToDefaults_AllSetVariableToDefaultElementsIn2DArr_ReturnsTrueAndResettedArr()
     On Error GoTo TestFail
     
@@ -8069,7 +8069,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("ResetVariantArrayToDefaults")
 Public Sub ResetVariantArrayToDefaults_AllSetVariableToDefaultElementsIn3DArr_ReturnsTrueAndResettedArr()
     On Error GoTo TestFail
     
@@ -8147,7 +8147,7 @@ End Sub
 'unit tests for 'ReverseVectorInPlace'
 '==============================================================================
 
-'@TestMethod
+'@TestMethod("ReverseVectorInPlace")
 Public Sub ReverseVectorInPlace_NoArray_ReturnsFalse()
     On Error GoTo TestFail
     
@@ -8166,7 +8166,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("ReverseVectorInPlace")
 Public Sub ReverseVectorInPlace_UnallocatedArray_ReturnsFalse()
     On Error GoTo TestFail
     
@@ -8185,7 +8185,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("ReverseVectorInPlace")
 Public Sub ReverseVectorInPlace_2DArr_ReturnsFalse()
     On Error GoTo TestFail
     
@@ -8204,7 +8204,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("ReverseVectorInPlace")
 Public Sub ReverseVectorInPlace_ValidEven1DArr_ReturnsTrueAndReversedArr()
     On Error GoTo TestFail
     
@@ -8239,7 +8239,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("ReverseVectorInPlace")
 Public Sub ReverseVectorInPlace_ValidEven1DVariantArr_ReturnsTrueAndReversedArr()
     On Error GoTo TestFail
     
@@ -8274,7 +8274,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("ReverseVectorInPlace")
 Public Sub ReverseVectorInPlace_1DVariantArrWithObject_ReturnsTrueAndReversedArr()
     On Error GoTo TestFail
     
@@ -8305,7 +8305,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("ReverseVectorInPlace")
 Public Sub ReverseVectorInPlace_ValidOdd1DArr_ReturnsTrueAndReversedArr()
     On Error GoTo TestFail
     
@@ -8346,7 +8346,7 @@ End Sub
 'unit tests for 'ReverseVectorOfObjectsInPlace'
 '==============================================================================
 
-'@TestMethod
+'@TestMethod("ReverseVectorOfObjectsInPlace")
 Public Sub ReverseVectorOfObjectsInPlace_NoArray_ReturnsFalse()
     On Error GoTo TestFail
     
@@ -8365,7 +8365,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("ReverseVectorOfObjectsInPlace")
 Public Sub ReverseVectorOfObjectsInPlace_UnallocatedObjectArray_ReturnsFalse()
     On Error GoTo TestFail
     
@@ -8384,7 +8384,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("ReverseVectorOfObjectsInPlace")
 Public Sub ReverseVectorOfObjectsInPlace_2DObjectArr_ReturnsFalse()
     On Error GoTo TestFail
     
@@ -8403,7 +8403,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("ReverseVectorOfObjectsInPlace")
 Public Sub ReverseVectorOfObjectsInPlace_ValidEven1DObjectArr_ReturnsTrueAndReversedArr()
     On Error GoTo TestFail
     
@@ -8449,7 +8449,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("ReverseVectorOfObjectsInPlace")
 Public Sub ReverseVectorOfObjectsInPlace_ValidEven1DVariantArr_ReturnsTrueAndReversedArr()
     On Error GoTo TestFail
     
@@ -8495,7 +8495,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("ReverseVectorOfObjectsInPlace")
 Public Sub ReverseVectorOfObjectsInPlace_1DVariantArrWithNonObject_ReturnsFalse()
     On Error GoTo TestFail
     
@@ -8517,7 +8517,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("ReverseVectorOfObjectsInPlace")
 Public Sub ReverseVectorOfObjectsInPlace_ValidOdd1DObjectArr_ReturnsTrueAndReversedArr()
     On Error GoTo TestFail
     
@@ -8569,7 +8569,7 @@ End Sub
 'unit tests for 'SetObjectArrayToNothing'
 '==============================================================================
 
-'@TestMethod
+'@TestMethod("SetObjectArrayToNothing")
 Public Sub SetObjectArrayToNothing_NoArray_ReturnsFalse()
     On Error GoTo TestFail
     
@@ -8588,7 +8588,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("SetObjectArrayToNothing")
 Public Sub SetObjectArrayToNothing_UnallocatedLongArray_ReturnsFalse()
     On Error GoTo TestFail
     
@@ -8607,7 +8607,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("SetObjectArrayToNothing")
 Public Sub SetObjectArrayToNothing_UnallocatedObjectArray_ReturnsFalse()
     On Error GoTo TestFail
     
@@ -8626,7 +8626,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("SetObjectArrayToNothing")
 Public Sub SetObjectArrayToNothing_UnallocatedVariantArray_ReturnsFalse()
     On Error GoTo TestFail
     
@@ -8645,7 +8645,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("SetObjectArrayToNothing")
 Public Sub SetObjectArrayToNothing_1DLongArr_ReturnsFalse()
     On Error GoTo TestFail
     
@@ -8664,7 +8664,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("SetObjectArrayToNothing")
 Public Sub SetObjectArrayToNothing_1DObjectArr_ReturnsTrueAndNothingArr()
     On Error GoTo TestFail
     
@@ -8695,7 +8695,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("SetObjectArrayToNothing")
 Public Sub SetObjectArrayToNothing_1DVariantArr_ReturnsTrueAndNothingArr()
     On Error GoTo TestFail
     
@@ -8726,7 +8726,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("SetObjectArrayToNothing")
 Public Sub SetObjectArrayToNothing_1DVariantArrWithEmptyElement_ReturnsFalse()
     On Error GoTo TestFail
     
@@ -8751,7 +8751,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("SetObjectArrayToNothing")
 Public Sub SetObjectArrayToNothing_2DObjectArr_ReturnsTrueAndNothingArr()
     On Error GoTo TestFail
     
@@ -8786,7 +8786,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("SetObjectArrayToNothing")
 Public Sub SetObjectArrayToNothing_3DObjectArr_ReturnsTrueAndNothingArr()
     On Error GoTo TestFail
     
@@ -8821,7 +8821,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("SetObjectArrayToNothing")
 Public Sub SetObjectArrayToNothing_4DObjectArr_ReturnsFalse()
     On Error GoTo TestFail
     
@@ -8851,7 +8851,7 @@ End Sub
 'unit tests for 'SwapArrayColumns'
 '==============================================================================
 
-'@TestMethod
+'@TestMethod("SwapArrayColumns")
 Public Sub SwapArrayColumns_NoArray_ReturnsNull()
     On Error GoTo TestFail
     
@@ -8882,7 +8882,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("SwapArrayColumns")
 Public Sub SwapArrayColumns_UnallocatedArr_ReturnsNull()
     On Error GoTo TestFail
     
@@ -8913,7 +8913,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("SwapArrayColumns")
 Public Sub SwapArrayColumns_1DArr_ReturnsNull()
     On Error GoTo TestFail
     
@@ -8944,7 +8944,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("SwapArrayColumns")
 Public Sub SwapArrayColumns_3DArr_ReturnsNull()
     On Error GoTo TestFail
     
@@ -8975,7 +8975,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("SwapArrayColumns")
 Public Sub SwapArrayColumns_TooSmallCol1_ReturnsNull()
     On Error GoTo TestFail
     
@@ -9006,7 +9006,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("SwapArrayColumns")
 Public Sub SwapArrayColumns_TooSmallCol2_ReturnsNull()
     On Error GoTo TestFail
     
@@ -9037,7 +9037,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("SwapArrayColumns")
 Public Sub SwapArrayColumns_TooLargeCol1_ReturnsNull()
     On Error GoTo TestFail
     
@@ -9068,7 +9068,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("SwapArrayColumns")
 Public Sub SwapArrayColumns_TooLargeCol2_ReturnsNull()
     On Error GoTo TestFail
     
@@ -9099,7 +9099,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("SwapArrayColumns")
 Public Sub SwapArrayColumns_EqualColNumbers_ReturnsResultArrEqualToArr()
     On Error GoTo TestFail
     
@@ -9141,7 +9141,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("SwapArrayColumns")
 Public Sub SwapArrayColumns_UnequalColNumbers_ReturnsResultArrWithSwappedColumns()
     On Error GoTo TestFail
     
@@ -9187,7 +9187,7 @@ End Sub
 'unit tests for 'SwapArrayRows'
 '==============================================================================
 
-'@TestMethod
+'@TestMethod("SwapArrayRows")
 Public Sub SwapArrayRows_NoArray_ReturnsNull()
     On Error GoTo TestFail
     
@@ -9218,7 +9218,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("SwapArrayRows")
 Public Sub SwapArrayRows_UnallocatedArr_ReturnsNull()
     On Error GoTo TestFail
     
@@ -9249,7 +9249,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("SwapArrayRows")
 Public Sub SwapArrayRows_1DArr_ReturnsNull()
     On Error GoTo TestFail
     
@@ -9280,7 +9280,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("SwapArrayRows")
 Public Sub SwapArrayRows_3DArr_ReturnsNull()
     On Error GoTo TestFail
     
@@ -9311,7 +9311,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("SwapArrayRows")
 Public Sub SwapArrayRows_TooSmallRow1_ReturnsNull()
     On Error GoTo TestFail
     
@@ -9342,7 +9342,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("SwapArrayRows")
 Public Sub SwapArrayRows_TooSmallRow2_ReturnsNull()
     On Error GoTo TestFail
     
@@ -9373,7 +9373,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("SwapArrayRows")
 Public Sub SwapArrayRows_TooLargeRow1_ReturnsNull()
     On Error GoTo TestFail
     
@@ -9404,7 +9404,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("SwapArrayRows")
 Public Sub SwapArrayRows_TooLargeRow2_ReturnsNull()
     On Error GoTo TestFail
     
@@ -9435,7 +9435,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("SwapArrayRows")
 Public Sub SwapArrayRows_EqualRowNumbers_ReturnsResultArrEqualToArr()
     On Error GoTo TestFail
     
@@ -9477,7 +9477,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("SwapArrayRows")
 Public Sub SwapArrayRows_UnequalRowNumbers_ReturnsResultArrWithSwappedRows()
     On Error GoTo TestFail
     
@@ -9523,7 +9523,7 @@ End Sub
 'unit tests for 'TransposeArray'
 '==============================================================================
 
-'@TestMethod
+'@TestMethod("TransposeArray")
 Public Sub TransposeArray_ScalarInput_ReturnsFalse()
     On Error GoTo TestFail
     
@@ -9543,7 +9543,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("TransposeArray")
 Public Sub TransposeArray_1DInputArr_ReturnsFalse()
     On Error GoTo TestFail
     
@@ -9563,7 +9563,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("TransposeArray")
 Public Sub TransposeArray_ScalarOutput_ReturnsFalse()
     On Error GoTo TestFail
     
@@ -9583,7 +9583,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("TransposeArray")
 Public Sub TransposeArray_StaticOutputArr_ReturnsFalse()
     On Error GoTo TestFail
     
@@ -9603,7 +9603,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("TransposeArray")
 Public Sub TransposeArray_Valid2DArr_ReturnsTrueAndTransposedArr()
     On Error GoTo TestFail
     
@@ -9650,7 +9650,7 @@ End Sub
 'unit tests for 'VectorsToArray'
 '==============================================================================
 
-'@TestMethod
+'@TestMethod("VectorsToArray")
 Public Sub VectorsToArray_NoArray_ReturnsFalse()
     On Error GoTo TestFail
     
@@ -9675,7 +9675,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("VectorsToArray")
 Public Sub VectorsToArray_StaticArr_ReturnsFalse()
     On Error GoTo TestFail
     
@@ -9700,7 +9700,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("VectorsToArray")
 Public Sub VectorsToArray_MissingVectors_ReturnsFalse()
     On Error GoTo TestFail
     
@@ -9721,7 +9721,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("VectorsToArray")
 Public Sub VectorsToArray_ScalarVector_ReturnsFalse()
     On Error GoTo TestFail
     
@@ -9746,7 +9746,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("VectorsToArray")
 Public Sub VectorsToArray_UninitializedVector_ReturnsFalse()
     On Error GoTo TestFail
     
@@ -9771,7 +9771,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("VectorsToArray")
 Public Sub VectorsToArray_2DVector_ReturnsFalse()
     On Error GoTo TestFail
     
@@ -9796,7 +9796,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("VectorsToArray")
 Public Sub VectorsToArray_ArrayInVector_ReturnsFalse()
     On Error GoTo TestFail
     
@@ -9823,7 +9823,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("VectorsToArray")
 Public Sub VectorsToArray_ObjectInVector_ReturnsFalse()
     On Error GoTo TestFail
     
@@ -9850,7 +9850,7 @@ TestFail:
 End Sub
 
 
-'@TestMethod
+'@TestMethod("VectorsToArray")
 Public Sub VectorsToArray_ValidLongVectors_ReturnsTrueAndResultArr()
     On Error GoTo TestFail
     
