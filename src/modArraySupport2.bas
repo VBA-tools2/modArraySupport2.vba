@@ -875,7 +875,7 @@ End Function
 'array and it is not large enough to copy all the elements, no elements are
 'copied and the function returns 'False'.
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-'2do: add type compatibility checking (as optional argument)?
+'TODO: add type compatibility checking (as optional argument)?
 Public Function CopyVectorSubSetToVector( _
     ByVal SourceVector As Variant, _
     ByRef ResultVector As Variant, _
@@ -1221,7 +1221,7 @@ End Function
 'This first adds three rows at the bottom of the array, and then adds four
 'columns on the right of the array.
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-'2do:
+'TODO:
 '- create a type for 'WhichDim' and also replace 'ROWs_' then?
 '- should this work for objects as well?
 Public Function ExpandArray( _
@@ -1453,7 +1453,7 @@ Public Function InsertElementIntoVector( _
     ReDim Preserve InputVector(LBound(InputVector) To UBound(InputVector) + 1)
     
 '---
-'2do:
+'TODO:
 'can't this be handled with the function 'AreDataTypesCompatible' of this module?
 '---
     'First, we set the newly created last element of 'InputVector' to 'Value'.
@@ -2145,7 +2145,7 @@ End Function
 ''Integer', 'Long'). It will not work on arrays of objects. Use
 ''ReverseVectorOfObjectsInPlace' to reverse an array of objects.
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-'2do:
+'TODO:
 '- combine with 'ReverseVectorOfObjectsInPlace'?
 Public Function ReverseVectorInPlace( _
     ByRef InputVector As Variant _
@@ -2331,7 +2331,7 @@ Public Sub SetVariableToDefault( _
                 Variable = CCur(0)
             Case vbDataObject
 '---
-'2do: how can this be set/tested?
+'TODO: how can this be set/tested?
                 Set Variable = Nothing
 '---
             Case vbDate
@@ -2352,7 +2352,7 @@ Public Sub SetVariableToDefault( _
                 Variable = Empty
             Case vbObject
 '---
-'2do: this was already checked above
+'TODO: this was already checked above
                 Set Variable = Nothing
 '---
             Case vbSingle
@@ -2632,7 +2632,7 @@ End Function
 
 '------------------------------------------------------------------------------
 
-'2do:
+'TODO:
 '- add to upper list
 '- add some parameter checking
 '- add unit tests

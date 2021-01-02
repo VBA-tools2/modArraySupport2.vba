@@ -202,7 +202,7 @@ TestFail:
 End Sub
 
 
-''2do: How to do this test?
+''TODO: How to do this test?
 ''     --> in 'ChangeBoundsOfVector_VariantArr_ReturnsTrueAndChangedArr' are
 ''         'Empty' entries added at the end of the vector
 ''@TestMethod("AreDataTypesCompatible")
@@ -514,7 +514,7 @@ TestFail:
 End Sub
 
 
-'2do: not sure if the test is done right
+'TODO: not sure if the test is done right
 '     --> is testing for 'Is(Not)Nothing sufficient?
 '@TestMethod("ChangeBoundsOfVector")
 Public Sub ChangeBoundsOfVector_RangeArr_ReturnsTrueAndChangedArr()
@@ -1515,7 +1515,7 @@ TestFail:
 End Sub
 
 
-''2do: add a test that involves objects
+''TODO: add a test that involves objects
 ''     (have a look at <https://stackoverflow.com/a/11254505>
 ''@TestMethod("ConcatenateArrays")
 'Public Sub ConcatenateArrays_LegalVariant_ResultsTrueAndResultArray()
@@ -1768,7 +1768,7 @@ TestFail:
 End Sub
 
 
-'2do: Add tests with Objects
+'TODO: Add tests with Objects
 
 
 '==============================================================================
@@ -3377,7 +3377,7 @@ TestFail:
 End Sub
 
 
-'2do: why does this test fail?
+'TODO: why does this test fail?
 ''@TestMethod("DeleteVectorElement")
 'Public Sub DeleteVectorElement_RemoveElementOfDynamicArrayDontResize2_ReturnsTrueAndModifiedInputArray()
 '    On Error GoTo TestFail
@@ -4884,7 +4884,7 @@ Public Sub InsertElementIntoVector_ValidTestWithStrings_ReturnsTrueAndChangedInp
     For i = LBound(InputArray) To UBound(InputArray)
         Assert.AreEqual aExpected(i), InputArray(i)
     Next
-'2do: why does the following line result in an error?
+'TODO: why does the following line result in an error?
 '    Assert.SequenceEquals aExpected, InputArray
     
 TestExit:
