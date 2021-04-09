@@ -81,13 +81,6 @@ Public Function AreDataTypesCompatible( _
     ByVal DestVar As Variant _
         ) As Boolean
     
-    Dim SVType As VbVarType
-    Dim DVType As VbVarType
-    
-    Dim LongLongType As Byte
-    LongLongType = DeclareLongLong
-    
-    
     'Set the default return value
     AreDataTypesCompatible = False
     
@@ -103,16 +96,21 @@ Public Function AreDataTypesCompatible( _
     '8195 = vbArray + vbLong,
     '8195 - vbArray = vbLong (= 3).
     If IsArray(SourceVar) Then
+        Dim SVType As VbVarType
         SVType = VarType(SourceVar) - vbArray
     Else
         SVType = VarType(SourceVar)
     End If
     'If 'DestVar' is an array, get the type of array
     If IsArray(DestVar) Then
+        Dim DVType As VbVarType
         DVType = VarType(DestVar) - vbArray
     Else
         DVType = VarType(DestVar)
     End If
+    
+    Dim LongLongType As Byte
+    LongLongType = DeclareLongLong
     
     'Test the data type of 'DestVar' and return a result if 'SourceVar' is
     'compatible with that type.
@@ -219,13 +217,6 @@ Public Function ChangeBoundsOfVector( _
     Optional ByVal NewUpperBound As Variant _
         ) As Boolean
     
-    Dim TempVector() As Variant
-    Dim InNdx As Long
-    Dim OutNdx As Long
-    Dim TempNdx As Long
-    Dim FirstIsObject As Boolean
-    
-    
     'Set the default return value
     ChangeBoundsOfVector = False
     
@@ -244,17 +235,24 @@ Public Function ChangeBoundsOfVector( _
     'We need to save the 'IsObject' status of the first element of 'InputVector'
     'to properly handle 'Empty' variables if we are making the vector larger
     'than it was before.
+    Dim FirstIsObject As Boolean
     FirstIsObject = IsObject(InputVector(LBound(InputVector)))
     
     
     'Resize 'TempVector' and save the values in 'InputVector' in 'TempVector'.
     ''TempVector' will have an 'LBound' of 1 and a 'UBound' of the size of
     '(NewUpperBound - NewLowerBound +1)
+    Dim TempVector() As Variant
     ReDim TempVector(1 To (NewUpperBound - NewLowerBound + 1))
+    
     'Load up 'TempVector'
+    Dim TempNdx As Long
     TempNdx = 0
+    
+    Dim InNdx As Long
     For InNdx = LBound(InputVector) To UBound(InputVector)
         TempNdx = TempNdx + 1
+        
         If TempNdx > UBound(TempVector) Then
             Exit For
         End If
@@ -274,7 +272,10 @@ Public Function ChangeBoundsOfVector( _
     'values from 'TempVector' to the new 'InputVector'
     Erase InputVector
     ReDim InputVector(NewLowerBound To NewUpperBound)
+    
+    Dim OutNdx As Long
     OutNdx = LBound(InputVector)
+    
     For TempNdx = LBound(TempVector) To UBound(TempVector)
         If OutNdx <= UBound(InputVector) Then
             If IsObject(TempVector(TempNdx)) Then
@@ -330,43 +331,6 @@ Public Function CombineTwoDArrays( _
     ByVal Arr2 As Variant _
         ) As Variant
     
-    'Upper and lower bounds of 'Arr1'
-    Dim LBoundRow1 As Long
-    Dim UBoundRow1 As Long
-    Dim LBoundCol1 As Long
-    Dim UBoundCol1 As Long
-    
-    'Upper and lower bounds of 'Arr2'
-    Dim LBoundRow2 As Long
-    Dim UBoundRow2 As Long
-    Dim LBoundCol2 As Long
-    Dim UBoundCol2 As Long
-    
-    'Upper and lower bounds of Result
-    Dim UBoundRowResult As Long
-    Dim LBoundColResult As Long
-    Dim UBoundColResult As Long
-    
-    'Index Variables
-    Dim RowNdx1 As Long
-    Dim ColNdx1 As Long
-    Dim RowNdx2 As Long
-    Dim ColNdx2 As Long
-    Dim RowNdxResult As Long
-    
-    'Array Sizes
-    Dim NumRows1 As Long
-    Dim NumCols1 As Long
-    
-    Dim NumRows2 As Long
-    Dim NumCols2 As Long
-    
-    Dim Done As Boolean
-    Dim Result() As Variant
-    
-    Dim V As Variant
-    
-    
     'Set the default return value
     CombineTwoDArrays = Null
     
@@ -376,22 +340,32 @@ Public Function CombineTwoDArrays( _
     If NumberOfArrayDimensions(Arr2) <> 2 Then Exit Function
     
     'Get the existing bounds
+    Dim LBoundRow1 As Long
     LBoundRow1 = LBound(Arr1, 1)
+    Dim UBoundRow1 As Long
     UBoundRow1 = UBound(Arr1, 1)
-    
+    Dim LBoundCol1 As Long
     LBoundCol1 = LBound(Arr1, 2)
+    Dim UBoundCol1 As Long
     UBoundCol1 = UBound(Arr1, 2)
     
+    Dim LBoundRow2 As Long
     LBoundRow2 = LBound(Arr2, 1)
+    Dim UBoundRow2 As Long
     UBoundRow2 = UBound(Arr2, 1)
-    
+    Dim LBoundCol2 As Long
     LBoundCol2 = LBound(Arr2, 2)
+    Dim UBoundCol2 As Long
     UBoundCol2 = UBound(Arr2, 2)
     
     'Get the total number of rows for the result array
+    Dim NumRows1 As Long
     NumRows1 = UBoundRow1 - LBoundRow1 + 1
+    Dim NumCols1 As Long
     NumCols1 = UBoundCol1 - LBoundCol1 + 1
+    Dim NumRows2 As Long
     NumRows2 = UBoundRow2 - LBoundRow2 + 1
+    Dim NumCols2 As Long
     NumCols2 = UBoundCol2 - LBoundCol2 + 1
     
     'Ensure the number of columns are equal
@@ -404,31 +378,45 @@ Public Function CombineTwoDArrays( _
                     Exit Function
     
     'Set the bounds of the columns of the result array
+    Dim LBoundColResult As Long
     LBoundColResult = LBoundRow1
+    Dim UBoundColResult As Long
     UBoundColResult = UBoundCol1
+    Dim UBoundRowResult As Long
     UBoundRowResult = LBoundRow1 + NumRows1 + NumRows2 - 1
     
     'ReDim the result array to have number of rows equal to
     ''number-of-rows(Arr1) + number-of-rows(Arr2)'
     'and number-of-columns equal to number-of-columns(Arr1)
+    Dim Result() As Variant
     ReDim Result(LBoundRow1 To UBoundRowResult, LBoundColResult To UBoundColResult)
     
+    Dim RowNdxResult As Long
     RowNdxResult = LBound(Result, 1) - 1
     
+    Dim Done As Boolean
     Done = False
+    
     Do
         'Copy elements of 'Arr1' to 'Result'
+        Dim RowNdx1 As Long
         For RowNdx1 = LBoundRow1 To UBoundRow1
             RowNdxResult = RowNdxResult + 1
+            
+            Dim ColNdx1 As Long
             For ColNdx1 = LBoundCol1 To UBoundCol1
+                Dim V As Variant
                 V = Arr1(RowNdx1, ColNdx1)
                 Result(RowNdxResult, ColNdx1) = V
             Next
         Next
         
         'Copy elements of 'Arr2' to 'Result'
+        Dim RowNdx2 As Long
         For RowNdx2 = LBoundRow2 To UBoundRow2
             RowNdxResult = RowNdxResult + 1
+            
+            Dim ColNdx2 As Long
             For ColNdx2 = LBoundCol2 To UBoundCol2
                 V = Arr2(RowNdx2, ColNdx2)
                 Result(RowNdxResult, ColNdx2) = V
@@ -478,19 +466,12 @@ Public Function CompareVectors( _
     Optional ByVal CompareMode As VbCompareMethod = vbTextCompare _
         ) As Boolean
     
-    Dim i As Long
-    Dim S1 As String
-    Dim S2 As String
-    Dim D1 As Double
-    Dim D2 As Double
-    Dim Compare As VbCompareMethod
-    
-    
     'Set the default return value
     CompareVectors = False
     
     'Ensure we have a compare mode value
     If CompareMode = vbBinaryCompare Then
+        Dim Compare As VbCompareMethod
         Compare = vbBinaryCompare
     Else
         Compare = vbTextCompare
@@ -511,6 +492,7 @@ Public Function CompareVectors( _
     
     'Scan each vector to see if it contains objects or User-Defined Types
     'If found, exit with 'False'
+    Dim i As Long
     For i = LBound(Vector1) To UBound(Vector1)
         If IsObject(Vector1(i)) Then Exit Function
         If VarType(Vector1(i)) >= vbArray Then Exit Function
@@ -526,8 +508,12 @@ Public Function CompareVectors( _
     'test each entry
     For i = LBound(Vector1) To UBound(Vector1)
         If IsNumeric(Vector1(i)) And IsNumeric(Vector2(i)) Then
+            Dim D1 As Double
             D1 = CDbl(Vector1(i))
+            
+            Dim D2 As Double
             D2 = CDbl(Vector2(i))
+            
             If D1 = D2 Then
                 ResultVector(i) = 0
             ElseIf D1 < D2 Then
@@ -536,8 +522,12 @@ Public Function CompareVectors( _
                 ResultVector(i) = 1
             End If
         Else
+            Dim S1 As String
             S1 = CStr(Vector1(i))
+            
+            Dim S2 As String
             S2 = CStr(Vector2(i))
+            
             ResultVector(i) = StrComp(S1, S2, Compare)
         End If
     Next
@@ -575,14 +565,6 @@ Public Function ConcatenateArrays( _
     Optional ByVal CompatibilityCheck As Boolean = True _
         ) As Boolean
     
-    Dim i As Long
-    Dim NumElementsToAdd As Long
-    Dim AppendNdx As Long
-    Dim ResultLB As Long
-    Dim ResultUB As Long
-    Dim ResultWasAllocated As Boolean
-    
-    
     'Set the default result
     ConcatenateArrays = False
     
@@ -610,6 +592,7 @@ Public Function ConcatenateArrays( _
         'objects (or 'Nothing')
         If VarType(ResultArray) - vbArray = vbObject Then
             If IsArrayAllocated(ArrayToAppend) Then
+                Dim i As Long
                 For i = LBound(ArrayToAppend) To UBound(ArrayToAppend)
                     If Not IsObject(ArrayToAppend(i)) Then Exit Function
                 Next
@@ -617,8 +600,8 @@ Public Function ConcatenateArrays( _
         End If
     End If
     
-    
     'Get the number of elements in 'ArrayToAppend'
+    Dim NumElementsToAdd As Long
     NumElementsToAdd = UBound(ArrayToAppend) - LBound(ArrayToAppend) + 1
     
     'Get the bounds for resizing the 'ResultArray'. If ResultArray is allocated
@@ -626,9 +609,14 @@ Public Function ConcatenateArrays( _
     'the 'LBound' of 'ArrayToAppend' for both the 'LBound' and 'UBound' of
     ''ResultArray'.
     If IsArrayAllocated(ResultArray) Then
+        Dim ResultLB As Long
         ResultLB = LBound(ResultArray)
+        Dim ResultUB As Long
         ResultUB = UBound(ResultArray)
+        
+        Dim ResultWasAllocated As Boolean
         ResultWasAllocated = True
+        
         ReDim Preserve ResultArray(ResultLB To ResultUB + NumElementsToAdd)
     Else
         ResultUB = UBound(ArrayToAppend)
@@ -640,7 +628,9 @@ Public Function ConcatenateArrays( _
     'If 'ResultArray' was allocated, we have to put the data from 'ArrayToAppend'
     'at the end of the 'ResultArray'.
     If ResultWasAllocated = True Then
+        Dim AppendNdx As Long
         AppendNdx = LBound(ArrayToAppend)
+        
         For i = ResultUB + 1 To UBound(ResultArray)
             If IsObject(ArrayToAppend(AppendNdx)) Then
                 Set ResultArray(i) = ArrayToAppend(AppendNdx)
@@ -712,10 +702,6 @@ Public Function CopyArray( _
     Optional ByVal CompatibilityCheck As Boolean = True _
         ) As Boolean
     
-    Dim SrcNdx As Long
-    Dim ResNdx As Long
-    
-    
     'Set the default return value
     CopyArray = False
     
@@ -744,6 +730,7 @@ Public Function CopyArray( _
         'objects (or 'Nothing')
         If VarType(ResultArray) - vbArray = vbObject Then
             If IsArrayAllocated(SourceArray) Then
+                Dim SrcNdx As Long
                 For SrcNdx = LBound(SourceArray) To UBound(SourceArray)
                     If Not IsObject(SourceArray(SrcNdx)) Then Exit Function
                 Next
@@ -756,7 +743,9 @@ Public Function CopyArray( _
     'of 'ResultArray' are left unchanged. If 'SourceArray' is larger than
     ''ResultArray', the right most elements of 'SourceArray' are not copied.
     If IsArrayAllocated(ResultArray) Then
+        Dim ResNdx As Long
         ResNdx = LBound(ResultArray)
+        
         On Error Resume Next
         For SrcNdx = LBound(SourceArray) To UBound(SourceArray)
             If IsObject(SourceArray(SrcNdx)) Then
@@ -813,10 +802,6 @@ Public Function CopyNonNothingObjectsToVector( _
     ByRef ResultVector As Variant _
         ) As Boolean
     
-    Dim SrcNdx As Long
-    Dim ResNdx As Long
-    
-    
     'Set the default return value
     CopyNonNothingObjectsToVector = False
     
@@ -837,7 +822,10 @@ Public Function CopyNonNothingObjectsToVector( _
     'element.
     ReDim ResultVector(LBound(SourceVector) To UBound(SourceVector))
     
+    Dim ResNdx As Long
     ResNdx = LBound(SourceVector)
+    
+    Dim SrcNdx  As Long
     For SrcNdx = LBound(SourceVector) To UBound(SourceVector)
         If Not SourceVector(SrcNdx) Is Nothing Then
             Set ResultVector(ResNdx) = SourceVector(SrcNdx)
@@ -884,15 +872,6 @@ Public Function CopyVectorSubSetToVector( _
     ByVal DestinationElement As Long _
         ) As Boolean
     
-    Dim SrcNdx As Long
-    Dim ResNdx As Long
-    Dim LBoundOrgResultVector As Long
-    Dim UBoundOrgResultVector As Long
-    Dim NumElementsToCopy As Long
-    Dim FinalIndexToCopyInResultVector As Long
-    Dim TempArray() As Variant
-    
-    
     'Set the default return value
     CopyVectorSubSetToVector = False
     
@@ -911,14 +890,18 @@ Public Function CopyVectorSubSetToVector( _
     'Store bounds of (original) 'ResultVector'
         'in case 'ResultVector' is unallocated and thus has no bounds
         On Error Resume Next
+    Dim LBoundOrgResultVector As Long
     LBoundOrgResultVector = LBound(ResultVector)
+    Dim UBoundOrgResultVector As Long
     UBoundOrgResultVector = UBound(ResultVector)
         On Error GoTo 0
     
     'Calculate the number of elements we'll copy from 'SourceVector' to 'ResultVector'
+    Dim NumElementsToCopy As Long
     NumElementsToCopy = LastElementToCopy - FirstElementToCopy + 1
     
     'Calculate the final element/index to copy in 'ResultVector'
+    Dim FinalIndexToCopyInResultVector As Long
     FinalIndexToCopyInResultVector = DestinationElement + NumElementsToCopy - 1
     
     If Not IsArrayDynamic(ResultVector) Then
@@ -962,10 +945,12 @@ Public Function CopyVectorSubSetToVector( _
                 'Thus, we have to restore the elements that are not overwritten.
                 
                 'before 'ReDim'ing 'ResultVector' make a dummy copy of it
+                Dim TempArray() As Variant
                 If Not CopyArray(ResultVector, TempArray) Then Exit Function
                 ReDim Preserve ResultVector(DestinationElement To UBoundOrgResultVector)
                 
                 'only copy the elements back that will not be overwritten
+                Dim ResNdx As Long
                 For ResNdx = FinalIndexToCopyInResultVector + 1 To UBoundOrgResultVector
                     ResultVector(ResNdx) = TempArray(ResNdx)
                 Next
@@ -978,6 +963,7 @@ Public Function CopyVectorSubSetToVector( _
     'Copy the elements from 'SourceVector' to 'ResultVector'.
     'Note that there is no type compatibility checking when copying the elements.
     ResNdx = DestinationElement
+    Dim SrcNdx As Long
     For SrcNdx = FirstElementToCopy To LastElementToCopy
         If IsObject(SourceVector(SrcNdx)) Then
             Set ResultVector(ResNdx) = SourceVector(SrcNdx)
@@ -1018,10 +1004,6 @@ Public Function DataTypeOfArray( _
     ByVal Arr As Variant _
         ) As VbVarType
     
-    Dim Element As Variant
-    Dim StoredElement As Variant
-    
-    
     If Not IsArray(Arr) Then
         DataTypeOfArray = -1
         Exit Function
@@ -1037,12 +1019,16 @@ Public Function DataTypeOfArray( _
     Else
         '(We use this for loop to get the first element of an array of arbitrary
         'dimensionality)
+        Dim Element As Variant
         For Each Element In Arr
             If IsObject(Element) Then
                 DataTypeOfArray = vbObject
                 Exit Function
             End If
+            
+            Dim StoredElement As Variant
             StoredElement = Element
+            
             Exit For
         Next
         
@@ -1084,13 +1070,6 @@ Public Function DeleteVectorElement( _
     Optional ByVal ResizeDynamic As Boolean = False _
         ) As Boolean
     
-    Dim i As Long
-    Dim VType As VbVarType
-    
-    Dim LongLongType As Byte
-    LongLongType = DeclareLongLong
-    
-    
     'Set the default return value
     DeleteVectorElement = False
     
@@ -1102,6 +1081,7 @@ Public Function DeleteVectorElement( _
     If ElementNumber > UBound(InputVector) Then Exit Function
     
     'Get the variable data type of the element we are deleting
+    Dim VType As VbVarType
     VType = VarType(InputVector(UBound(InputVector)))
     If IsObject(InputVector(UBound(InputVector))) Then
         VType = vbObject
@@ -1110,6 +1090,7 @@ Public Function DeleteVectorElement( _
     End If
     
     'Shift everything to the left
+    Dim i As Long
     For i = ElementNumber To UBound(InputVector) - 1
         If IsObject(InputVector(i)) Then
             Set InputVector(i) = InputVector(i + 1)
@@ -1125,6 +1106,9 @@ Public Function DeleteVectorElement( _
             Erase InputVector
         End If
     Else
+        Dim LongLongType As Byte
+        LongLongType = DeclareLongLong
+        
         'Set the last element of the 'InputVector' to the proper default value
         Select Case VType
             Case vbByte, vbInteger, vbLong, LongLongType, vbSingle, vbDouble, vbDate, vbCurrency, vbDecimal
@@ -1231,14 +1215,9 @@ Public Function ExpandArray( _
     ByVal FillValue As Variant _
         ) As Variant
     
-    Dim Result As Variant
-    Dim RowNdx As Long
-    Dim ColNdx As Long
-    
     '==========================================================================
     Const ROWS_ As Long = 1
     '==========================================================================
-    
     
     'Set the default return value
     ExpandArray = Null
@@ -1261,11 +1240,14 @@ Public Function ExpandArray( _
     
     If WhichDim = ROWS_ Then
         'ReDim 'Result'
+        Dim Result As Variant
         ReDim Result(LBound(Arr, 1) To UBound(Arr, 1) + AdditionalElements, _
                 LBound(Arr, 2) To UBound(Arr, 2))
         
         'Transfer 'Arr' array to 'Result'
+        Dim RowNdx As Long
         For RowNdx = LBound(Arr, 1) To UBound(Arr, 1)
+            Dim ColNdx As Long
             For ColNdx = LBound(Arr, 2) To UBound(Arr, 2)
                 Result(RowNdx, ColNdx) = Arr(RowNdx, ColNdx)
             Next
@@ -1313,15 +1295,13 @@ Public Function FirstNonEmptyStringIndexInVector( _
     ByVal InputVector As Variant _
         ) As Long
     
-    Dim i As Long
-    
-    
     'Set the default return value
     FirstNonEmptyStringIndexInVector = -1
     
     If Not IsArray(InputVector) Then Exit Function
     If NumberOfArrayDimensions(InputVector) <> 1 Then Exit Function
     
+    Dim i As Long
     For i = LBound(InputVector) To UBound(InputVector)
         If InputVector(i) <> vbNullString Then
             FirstNonEmptyStringIndexInVector = i
@@ -1347,9 +1327,6 @@ Public Function GetColumn( _
     ByVal ColumnNumber As Long _
         ) As Boolean
     
-    Dim RowNdx As Long
-    
-    
     'Set the default return value
     GetColumn = False
     
@@ -1363,6 +1340,8 @@ Public Function GetColumn( _
     
     Erase ResultArr
     ReDim ResultArr(LBound(Arr, 1) To UBound(Arr, 1))
+    
+    Dim RowNdx As Long
     For RowNdx = LBound(ResultArr) To UBound(ResultArr)
         If IsObject(Arr(RowNdx, ColumnNumber)) Then
             Set ResultArr(RowNdx) = Arr(RowNdx, ColumnNumber)
@@ -1388,9 +1367,6 @@ Public Function GetRow( _
     ByVal RowNumber As Long _
         ) As Boolean
     
-    Dim ColNdx As Long
-    
-    
     'Set the default return value
     GetRow = False
     
@@ -1404,6 +1380,8 @@ Public Function GetRow( _
     
     Erase ResultArr
     ReDim ResultArr(LBound(Arr, 2) To UBound(Arr, 2))
+    
+    Dim ColNdx As Long
     For ColNdx = LBound(ResultArr) To UBound(ResultArr)
         If IsObject(Arr(RowNumber, ColNdx)) Then
             Set ResultArr(ColNdx) = Arr(RowNumber, ColNdx)
@@ -1432,9 +1410,6 @@ Public Function InsertElementIntoVector( _
     ByVal Index As Long, _
     ByVal Value As Variant _
         ) As Boolean
-    
-    Dim i As Long
-    
     
     'Set the default return value
     InsertElementIntoVector = False
@@ -1477,6 +1452,7 @@ Public Function InsertElementIntoVector( _
 '---
     
     'Shift everything to the right
+    Dim i As Long
     For i = UBound(InputVector) To Index + 1 Step -1
         If IsObject(InputVector(i - 1)) Then
             Set InputVector(i) = InputVector(i - 1)
@@ -1511,10 +1487,6 @@ Public Function IsArrayAllDefault( _
     ByVal InputArray As Variant _
         ) As Boolean
     
-    Dim Element As Variant
-    Dim DefaultValue As Variant
-    
-    
     'Set the default return value
     IsArrayAllDefault = False
     
@@ -1530,6 +1502,7 @@ Public Function IsArrayAllDefault( _
     'Test the type of variable
     Select Case VarType(InputArray)
         Case vbArray + vbVariant
+            Dim DefaultValue As Variant
             DefaultValue = Empty
         Case vbArray + vbString
             DefaultValue = vbNullString
@@ -1538,6 +1511,7 @@ Public Function IsArrayAllDefault( _
             DefaultValue = 0
     End Select
     
+    Dim Element As Variant
     For Each Element In InputArray
         If IsObject(Element) Then
             If Not Element Is Nothing Then Exit Function
@@ -1571,14 +1545,13 @@ Public Function IsArrayAllNumeric( _
     Optional ByVal AllowArrayElements As Boolean = False _
         ) As Boolean
     
-    Dim Element As Variant
-    
     'Set the default return value
     IsArrayAllNumeric = False
     
     If Not IsArray(Arr) Then Exit Function
     If Not IsArrayAllocated(Arr) Then Exit Function
     
+    Dim Element As Variant
     For Each Element In Arr
         If IsObject(Element) Then
             Exit Function
@@ -1615,9 +1588,6 @@ Public Function IsArrayAllocated( _
     ByVal Arr As Variant _
         ) As Boolean
     
-    Dim DummyVariable As Long
-    
-    
     'Set the default return value
     IsArrayAllocated = False
     
@@ -1627,6 +1597,7 @@ Public Function IsArrayAllocated( _
     
     'Attempt to get the UBound of the array. If the array has not been allocated,
     'an error will occur. Test Err.Number to see if an error occurred.
+    Dim DummyVariable As Long
     DummyVariable = UBound(Arr, 1)
     If Err.Number = 0 Then
         'Under some circumstances, if an array is not allocated, Err.Number
@@ -1653,9 +1624,6 @@ Public Function IsArrayDynamic( _
     ByRef Arr As Variant _
         ) As Boolean
     
-    Dim ArrUBound As Long
-    
-    
     'Set the default return value
     IsArrayDynamic = False
     
@@ -1671,6 +1639,7 @@ Public Function IsArrayDynamic( _
     'This value will be used to restore the original UBound if Arr is a
     'single-dimensional dynamic array. Unused if Arr is multi-dimensional,
     'or if 'Arr' is a static array.
+    Dim ArrUBound As Long
     ArrUBound = UBound(Arr)
     
     On Error Resume Next
@@ -1717,14 +1686,12 @@ Public Function IsArrayObjects( _
     Optional ByVal AllowNothing As Boolean = True _
         ) As Boolean
     
-    Dim Element As Variant
-    
-    
     'Set the default return value
     IsArrayObjects = False
     
     If Not IsArray(InputArray) Then Exit Function
     
+    Dim Element As Variant
     For Each Element In InputArray
         If Not IsObject(Element) Then Exit Function
         If Element Is Nothing Then
@@ -1774,12 +1741,11 @@ Public Function IsNumericDataType( _
     ByVal TestVar As Variant _
         ) As Boolean
     
-    Dim LongLongType As Byte
-    LongLongType = DeclareLongLong
-    
-    
     'Set the default return value
     IsNumericDataType = False
+    
+    Dim LongLongType As Byte
+    LongLongType = DeclareLongLong
     
     If Not IsArray(TestVar) Then
         Select Case VarType(TestVar)
@@ -1826,10 +1792,6 @@ Public Function IsVariantArrayConsistent( _
     ByVal Arr As Variant _
         ) As Boolean
     
-    Dim FirstDataType As VbVarType
-    Dim Element As Variant
-    
-    
     'Set the default return value
     IsVariantArrayConsistent = False
     
@@ -1844,7 +1806,9 @@ Public Function IsVariantArrayConsistent( _
     End If
     
     'Get the data type of the first element
+    Dim Element As Variant
     For Each Element In Arr
+        Dim FirstDataType As VbVarType
         FirstDataType = VarType(Element)
         Exit For
     Next
@@ -1888,16 +1852,6 @@ Public Function IsVectorSorted( _
     Optional ByVal Descending As Boolean = False _
         ) As Variant
     
-    Dim StrCompResultFail As Long
-    Dim NumericResultFail As Boolean
-    Dim i As Long
-    Dim NumCompareResult As Boolean
-    Dim StrCompResult As Long
-    
-    Dim IsString As Boolean
-    Dim VType As VbVarType
-    
-    
     'Set the default return value
     IsVectorSorted = Null
     
@@ -1906,6 +1860,7 @@ Public Function IsVectorSorted( _
     
     'Determine whether we are going to do a string comparison or a numeric
     'comparison
+    Dim VType As VbVarType
     VType = VarType(InputVector(LBound(InputVector)))
     Select Case VType
         Case vbArray, vbDataObject, vbEmpty, vbError, vbNull, vbObject, vbUserDefinedType
@@ -1913,6 +1868,7 @@ Public Function IsVectorSorted( _
             Exit Function
         Case vbString, vbVariant
             'Compare as string
+            Dim IsString As Boolean
             IsString = True
         Case Else
             'Compare as numeric
@@ -1924,21 +1880,27 @@ Public Function IsVectorSorted( _
     '(for numerics) equal the value specified below, we know that the array is
     'unsorted.
     If Descending = True Then
+        Dim StrCompResultFail As Long
         StrCompResultFail = -1
+        
+        Dim NumericResultFail As Boolean
         NumericResultFail = False
     Else
         StrCompResultFail = 1
         NumericResultFail = True
     End If
     
+    Dim i As Long
     For i = LBound(InputVector) To UBound(InputVector) - 1
         If IsString Then
+            Dim StrCompResult As Long
             StrCompResult = StrComp(InputVector(i), InputVector(i + 1))
             If StrCompResult = StrCompResultFail Then
                 IsVectorSorted = False
                 Exit Function
             End If
         Else
+            Dim NumCompareResult As Boolean
             NumCompareResult = (InputVector(i) >= InputVector(i + 1))
             If NumCompareResult = NumericResultFail Then
                 IsVectorSorted = False
@@ -1967,23 +1929,18 @@ Public Function MoveEmptyStringsToEndOfVector( _
     ByRef InputVector As Variant _
         ) As Boolean
     
-    Dim Ndx As Long
-    Dim NonEmptyNdx As Long
-    Dim LBoundArr As Long
-    Dim UBoundArr As Long
-    Dim FirstNonEmptyNdx As Long
-    Dim LastNewNonEmptyNdx As Long
-    
-    
     'Set the default return value
     MoveEmptyStringsToEndOfVector = False
     
     If Not IsArray(InputVector) Then Exit Function
     If NumberOfArrayDimensions(InputVector) <> 1 Then Exit Function
     
+    Dim LBoundArr As Long
     LBoundArr = LBound(InputVector)
+    Dim UBoundArr As Long
     UBoundArr = UBound(InputVector)
     
+    Dim FirstNonEmptyNdx As Long
     FirstNonEmptyNdx = FirstNonEmptyStringIndexInVector(InputVector)
     If FirstNonEmptyNdx <= LBoundArr Then
         'No empty strings at the beginning of the array. Get out now.
@@ -1991,10 +1948,13 @@ Public Function MoveEmptyStringsToEndOfVector( _
         Exit Function
     End If
     
+    Dim LastNewNonEmptyNdx As Long
     LastNewNonEmptyNdx = UBoundArr + LBoundArr - FirstNonEmptyNdx
     
     'Loop through the array and move non-empty strings to the front
+    Dim NonEmptyNdx As Long
     NonEmptyNdx = FirstNonEmptyNdx
+    Dim Ndx As Long
     For Ndx = LBoundArr To LastNewNonEmptyNdx
         InputVector(Ndx) = InputVector(NonEmptyNdx)
         NonEmptyNdx = NonEmptyNdx + 1
@@ -2020,10 +1980,6 @@ Public Function NumberOfArrayDimensions( _
     ByVal Arr As Variant _
         ) As Long
     
-    Dim i As Long
-    Dim Res As Long
-    
-    
     'it seems that an unallocated 'Object' array returns 1, so it is needed a
     'special handler for this case
     If DataTypeOfArray(Arr) = vbObject Then
@@ -2038,7 +1994,10 @@ Public Function NumberOfArrayDimensions( _
     'An error will occur when 'i' exceeds the number of dimension in the array.
     'Return 'i' - 1.
     Do
+        Dim i As Long
         i = i + 1
+        
+        Dim Res As Long
         Res = UBound(Arr, i)
     Loop Until Err.Number <> 0
     On Error GoTo 0
@@ -2064,9 +2023,6 @@ Public Function NumElements( _
     Optional ByVal Dimension As Long = 1 _
         ) As Long
     
-    Dim NumDimensions As Long
-    
-    
     'Set the default return value
     NumElements = 0
     
@@ -2075,6 +2031,7 @@ Public Function NumElements( _
     If Dimension < 1 Then Exit Function
     
     'check if 'Dimension' is not larger than 'NumDimensions'
+    Dim NumDimensions As Long
     NumDimensions = NumberOfArrayDimensions(Arr)
     If NumDimensions < Dimension Then Exit Function
     
@@ -2099,11 +2056,6 @@ Public Function ResetVariantArrayToDefaults( _
     ByRef InputArray As Variant _
         ) As Boolean
     
-    Dim i As Long
-    Dim j As Long
-    Dim k As Long
-    
-    
     'Set the default return value
     ResetVariantArrayToDefaults = False
     
@@ -2111,11 +2063,13 @@ Public Function ResetVariantArrayToDefaults( _
     
     Select Case NumberOfArrayDimensions(InputArray)
         Case 1
+            Dim i As Long
             For i = LBound(InputArray) To UBound(InputArray)
                 SetVariableToDefault InputArray(i)
             Next
         Case 2
             For i = LBound(InputArray, 1) To UBound(InputArray, 1)
+                Dim j As Long
                 For j = LBound(InputArray, 2) To UBound(InputArray, 2)
                     SetVariableToDefault InputArray(i, j)
                 Next
@@ -2123,6 +2077,7 @@ Public Function ResetVariantArrayToDefaults( _
         Case 3
             For i = LBound(InputArray, 1) To UBound(InputArray, 1)
                 For j = LBound(InputArray, 2) To UBound(InputArray, 2)
+                    Dim k As Long
                     For k = LBound(InputArray, 3) To UBound(InputArray, 3)
                         SetVariableToDefault InputArray(i, j, k)
                     Next
@@ -2151,34 +2106,34 @@ Public Function ReverseVectorInPlace( _
     ByRef InputVector As Variant _
         ) As Boolean
     
-    Dim Temp As Variant
-    Dim Ndx As Long
-    Dim Ndx2 As Long
-    Dim LBoundArr As Long
-    Dim UBoundArr As Long
-    Dim NoOfElements As Long
-    Dim MidPoint As Long
-    
-    
     'Set the default return value
     ReverseVectorInPlace = False
     
     If Not IsArray(InputVector) Then Exit Function
     If NumberOfArrayDimensions(InputVector) <> 1 Then Exit Function
     
+    Dim LBoundArr As Long
     LBoundArr = LBound(InputVector)
+    Dim UBoundArr As Long
     UBoundArr = UBound(InputVector)
+    
+    Dim NoOfElements As Long
     NoOfElements = UBoundArr - LBoundArr + 1
     
     'calculate midpoint index of 'InputVector'
+    Dim MidPoint As Long
     MidPoint = LBoundArr + (NoOfElements \ 2) - 1
     
     'initialize 'Ndx2'
+    Dim Ndx2 As Long
     Ndx2 = UBoundArr
     
+    Dim Ndx As Long
     For Ndx = LBoundArr To MidPoint
         'swap the elements
+        Dim Temp As Variant
         Temp = InputVector(Ndx)
+        
         InputVector(Ndx) = InputVector(Ndx2)
         InputVector(Ndx2) = Temp
         'decrement the upper index
@@ -2202,15 +2157,6 @@ Public Function ReverseVectorOfObjectsInPlace( _
     ByRef InputVector As Variant _
         ) As Boolean
     
-    Dim Temp As Variant
-    Dim Ndx As Long
-    Dim Ndx2 As Long
-    Dim LBoundArr As Long
-    Dim UBoundArr As Long
-    Dim NoOfElements As Long
-    Dim MidPoint As Long
-    
-    
     'Set the default return value
     ReverseVectorOfObjectsInPlace = False
     
@@ -2218,17 +2164,25 @@ Public Function ReverseVectorOfObjectsInPlace( _
     If NumberOfArrayDimensions(InputVector) <> 1 Then Exit Function
     If Not IsArrayObjects(InputVector, True) Then Exit Function
     
+    Dim LBoundArr As Long
     LBoundArr = LBound(InputVector)
+    Dim UBoundArr As Long
     UBoundArr = UBound(InputVector)
+    
+    Dim NoOfElements As Long
     NoOfElements = UBoundArr - LBoundArr + 1
     
     'calculate midpoint index of 'InputVector'
+    Dim MidPoint As Long
     MidPoint = LBoundArr + (NoOfElements \ 2) - 1
     
+    Dim Ndx2 As Long
     Ndx2 = UBoundArr
     
+    Dim Ndx As Long
     For Ndx = LBoundArr To MidPoint
         'swap the elements
+        Dim Temp As Variant
         Set Temp = InputVector(Ndx)
         Set InputVector(Ndx) = InputVector(Ndx2)
         Set InputVector(Ndx2) = Temp
@@ -2253,17 +2207,12 @@ Public Function SetObjectArrayToNothing( _
     ByRef InputArray As Variant _
         ) As Boolean
     
-    Dim NoOfArrayDimensions As Long
-    Dim i As Long
-    Dim j As Long
-    Dim k As Long
-    
-    
     'Set the default return value
     SetObjectArrayToNothing = False
     
     If Not IsArray(InputArray) Then Exit Function
     
+    Dim NoOfArrayDimensions As Long
     NoOfArrayDimensions = NumberOfArrayDimensions(InputArray)
     
     If NoOfArrayDimensions < 1 Then Exit Function
@@ -2273,11 +2222,13 @@ Public Function SetObjectArrayToNothing( _
     'Set each element of 'InputArray' to 'Nothing'
     Select Case NoOfArrayDimensions
         Case 1
+            Dim i As Long
             For i = LBound(InputArray) To UBound(InputArray)
                 Set InputArray(i) = Nothing
             Next
         Case 2
             For i = LBound(InputArray, 1) To UBound(InputArray, 1)
+                Dim j As Long
                 For j = LBound(InputArray, 2) To UBound(InputArray, 2)
                     Set InputArray(i, j) = Nothing
                 Next
@@ -2285,6 +2236,7 @@ Public Function SetObjectArrayToNothing( _
         Case 3
             For i = LBound(InputArray, 1) To UBound(InputArray, 1)
                 For j = LBound(InputArray, 2) To UBound(InputArray, 2)
+                    Dim k As Long
                     For k = LBound(InputArray, 3) To UBound(InputArray, 3)
                         Set InputArray(i, j, k) = Nothing
                     Next
@@ -2385,11 +2337,6 @@ Public Function SwapArrayColumns( _
     ByVal Col2 As Long _
         ) As Variant
     
-    Dim Temp As Variant
-    Dim Result As Variant
-    Dim RowNdx As Long
-    
-    
     'Set the default return value
     SwapArrayColumns = Null
     
@@ -2409,10 +2356,14 @@ Public Function SwapArrayColumns( _
     End If
     
     'Set 'Result' to 'Arr'
+    Dim Result As Variant
     Result = Arr
     
     'ReDim 'Temp' to the number of columns
+    Dim Temp As Variant
     ReDim Temp(LBound(Arr, 1) To UBound(Arr, 1))
+    
+    Dim RowNdx As Long
     For RowNdx = LBound(Arr, 1) To UBound(Arr, 1)
         Temp(RowNdx) = Arr(RowNdx, Col1)
         Result(RowNdx, Col1) = Arr(RowNdx, Col2)
@@ -2435,11 +2386,6 @@ Public Function SwapArrayRows( _
     ByVal Row2 As Long _
         ) As Variant
     
-    Dim Temp As Variant
-    Dim Result As Variant
-    Dim ColNdx As Long
-    
-    
     'Set the default return value
     SwapArrayRows = Null
     
@@ -2459,10 +2405,14 @@ Public Function SwapArrayRows( _
     End If
     
     'Set 'Result' to 'Arr'
+    Dim Result As Variant
     Result = Arr
     
     'ReDim 'Temp' to the number of columns
+    Dim Temp As Variant
     ReDim Temp(LBound(Arr, 2) To UBound(Arr, 2))
+    
+    Dim ColNdx As Long
     For ColNdx = LBound(Arr, 2) To UBound(Arr, 2)
         Temp(ColNdx) = Arr(Row1, ColNdx)
         Result(Row1, ColNdx) = Arr(Row2, ColNdx)
@@ -2486,14 +2436,6 @@ Public Function TransposeArray( _
     ByRef ResultArr As Variant _
         ) As Boolean
     
-    Dim RowNdx As Long
-    Dim ColNdx As Long
-    Dim LB1 As Long
-    Dim LB2 As Long
-    Dim UB1 As Long
-    Dim UB2 As Long
-    
-    
     'Set the default return value
     TransposeArray = False
     
@@ -2502,18 +2444,25 @@ Public Function TransposeArray( _
     If Not IsArrayDynamic(ResultArr) Then Exit Function
     
     'Get the Lower and Upper bounds of 'SourceArr'
+    Dim LB1 As Long
     LB1 = LBound(SourceArr, 1)
+    Dim LB2 As Long
     LB2 = LBound(SourceArr, 2)
+    Dim UB1 As Long
     UB1 = UBound(SourceArr, 1)
+    Dim UB2 As Long
     UB2 = UBound(SourceArr, 2)
     
     'Erase and 'ReDim ResultArr'
     'Note the that the 'LBound' and 'UBound' values are preserved.
     Erase ResultArr
     ReDim ResultArr(LB2 To UB2, LB1 To UB1)
+    
     'Loop through the elements of 'SourceArr' and put each value in the proper
     'element of the transposed array
+    Dim RowNdx As Long
     For RowNdx = LB2 To UB2
+        Dim ColNdx As Long
         For ColNdx = LB1 To UB1
             ResultArr(RowNdx, ColNdx) = SourceArr(ColNdx, RowNdx)
         Next
@@ -2551,19 +2500,6 @@ Public Function VectorsToArray( _
     ParamArray Vectors() _
         ) As Boolean
     
-    Dim Vector As Variant
-    Dim NumRows As Long
-    Dim NumCols As Long
-    Dim NoOfElements As Long
-    Dim LBoundVector As Long
-    Dim RowNdx As Long
-    Dim ColNdx As Long
-    Dim VType As VbVarType
-    
-    Dim LongLongType As Byte
-    LongLongType = DeclareLongLong
-    
-    
     'Set the default return value
     VectorsToArray = False
     
@@ -2572,13 +2508,16 @@ Public Function VectorsToArray( _
     'Ensure that at least one vector was passed in 'Vectors'
     If IsMissing(Vectors) Then Exit Function
     
+    Dim NumRows As Long
     NumRows = 0
+    Dim NumCols As Long
     NumCols = 0
     
     'Loop through 'Vectors' to determine the size of the result array.
     '(We do this loop first to prevent having to do a 'ReDim Preserve'. This
     ' requires looping through 'Vectors' a second time, but this is still faster
     ' than doing 'ReDim Preserve's.)
+    Dim Vector As Variant
     For Each Vector In Vectors
         If Not IsArray(Vector) Then Exit Function
         If NumberOfArrayDimensions(Vector) <> 1 Then Exit Function
@@ -2586,10 +2525,12 @@ Public Function VectorsToArray( _
         'Increment the number of rows. Each 'Vector' is one row or the result array.
         NumCols = NumCols + 1
         
+        Dim LBoundVector As Long
         LBoundVector = LBound(Vector)
         
         'Store number of elements in 'Vector' and use the larger value for
         ''NumRows'.
+        Dim NoOfElements As Long
         NoOfElements = UBound(Vector) - LBoundVector + 1
         NumRows = Application.WorksheetFunction.Max(NumRows, NoOfElements)
     Next
@@ -2599,7 +2540,9 @@ Public Function VectorsToArray( _
     ''LBounds' of the 'Vectors'.
     ReDim Arr(0 To NumRows - 1, 0 To NumCols - 1)
     
+    Dim ColNdx As Long
     For ColNdx = 0 To NumCols - 1
+        Dim RowNdx As Long
         For RowNdx = 0 To NumRows - 1
             'Set 'Vector' (a Variant) to the 'Vectors(ColNdx)' array. We declare
             ''Vector' as a variant so it can take an array of any simple data type.
@@ -2607,6 +2550,10 @@ Public Function VectorsToArray( _
             
             LBoundVector = LBound(Vector)
             
+            Dim LongLongType As Byte
+            LongLongType = DeclareLongLong
+            
+            Dim VType As VbVarType
             VType = VarType(Vector(LBoundVector + RowNdx))
             'define allowed data types and exit function for all others
             Select Case VType
@@ -2642,10 +2589,9 @@ Public Function VectorTo1DArray( _
         ) As Variant
     
     Dim ResultArray() As Variant
-    Dim i As Long
-    
-    
     ReDim ResultArray(LBound(InputVector) To UBound(InputVector), LowerBoundOfSecondDimension To LowerBoundOfSecondDimension)
+    
+    Dim i As Long
     For i = LBound(InputVector) To UBound(InputVector)
         ResultArray(i, LowerBoundOfSecondDimension) = InputVector(i)
     Next
