@@ -67,7 +67,7 @@ Public Sub InitializeWorksheet4Tests( _
         .Cells(6, 1).Value = "ChangeBoundsOfVector"
         .Cells(7, 1).Value = "CombineTwoDArrays"
         .Cells(8, 1).Value = "CompareVectors"
-        .Cells(9, 1).Value = "ConcatenateArrays"
+        .Cells(9, 1).Value = "ConcatenateVectors"
         .Cells(10, 1).Value = "CopyArray"
         .Cells(11, 1).Value = "CopyNonNothingObjectsToVector"
         .Cells(12, 1).Value = "CopyVectorSubSetToVector"

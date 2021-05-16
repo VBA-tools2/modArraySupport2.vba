@@ -1231,11 +1231,11 @@ End Sub
 
 
 '==============================================================================
-'unit tests for 'ConcatenateArrays'
+'unit tests for 'ConcatenateVectors'
 '==============================================================================
 
-'@TestMethod("ConcatenateArrays")
-Public Sub ConcatenateArrays_StaticResultArray_ResultsFalse()
+'@TestMethod("ConcatenateVectors")
+Public Sub ConcatenateVectors_StaticResultArray_ResultsFalse()
     On Error GoTo TestFail
     
     Dim ResultArray(1) As Long
@@ -1252,7 +1252,7 @@ Public Sub ConcatenateArrays_StaticResultArray_ResultsFalse()
     
     'Act:
     'Assert:
-    Assert.IsFalse modArraySupport2.ConcatenateArrays( _
+    Assert.IsFalse modArraySupport2.ConcatenateVectors( _
             ResultArray, _
             ArrayToAppend, _
             CompatibilityCheck _
@@ -1265,8 +1265,8 @@ TestFail:
 End Sub
 
 
-'@TestMethod("ConcatenateArrays")
-Public Sub ConcatenateArrays_BothArraysUnallocated_ResultsTrueAndUnallocatedArray()
+'@TestMethod("ConcatenateVectors")
+Public Sub ConcatenateVectors_BothArraysUnallocated_ResultsTrueAndUnallocatedArray()
     On Error GoTo TestFail
     
     'Arrange:
@@ -1279,7 +1279,7 @@ Public Sub ConcatenateArrays_BothArraysUnallocated_ResultsTrueAndUnallocatedArra
     
     
     'Act:
-    If Not modArraySupport2.ConcatenateArrays( _
+    If Not modArraySupport2.ConcatenateVectors( _
             ResultArray, _
             ArrayToAppend, _
             CompatibilityCheck _
@@ -1296,8 +1296,8 @@ TestFail:
 End Sub
 
 
-'@TestMethod("ConcatenateArrays")
-Public Sub ConcatenateArrays_UnallocatedArrayToAppend_ResultsTrueAndUnchangedResultArray()
+'@TestMethod("ConcatenateVectors")
+Public Sub ConcatenateVectors_UnallocatedArrayToAppend_ResultsTrueAndUnchangedResultArray()
     On Error GoTo TestFail
     
     Dim ResultArray() As Long
@@ -1318,7 +1318,7 @@ Public Sub ConcatenateArrays_UnallocatedArrayToAppend_ResultsTrueAndUnchangedRes
     ResultArray(2) = 9
     
     'Act:
-    If Not modArraySupport2.ConcatenateArrays( _
+    If Not modArraySupport2.ConcatenateVectors( _
             ResultArray, _
             ArrayToAppend, _
             CompatibilityCheck _
@@ -1335,8 +1335,8 @@ TestFail:
 End Sub
 
 
-'@TestMethod("ConcatenateArrays")
-Public Sub ConcatenateArrays_IntegerArrayToAppendLongResultArray_ResultsTrueAndResultArray()
+'@TestMethod("ConcatenateVectors")
+Public Sub ConcatenateVectors_IntegerArrayToAppendLongResultArray_ResultsTrueAndResultArray()
     On Error GoTo TestFail
     
     Dim ResultArray() As Long
@@ -1366,7 +1366,7 @@ Public Sub ConcatenateArrays_IntegerArrayToAppendLongResultArray_ResultsTrueAndR
     ArrayToAppend(3) = 113
     
     'Act:
-    If Not modArraySupport2.ConcatenateArrays( _
+    If Not modArraySupport2.ConcatenateVectors( _
             ResultArray, _
             ArrayToAppend, _
             CompatibilityCheck _
@@ -1383,8 +1383,8 @@ TestFail:
 End Sub
 
 
-'@TestMethod("ConcatenateArrays")
-Public Sub ConcatenateArrays_LongArrayToAppendIntegerResultArray_ResultsFalse()
+'@TestMethod("ConcatenateVectors")
+Public Sub ConcatenateVectors_LongArrayToAppendIntegerResultArray_ResultsFalse()
     On Error GoTo TestFail
     
     Dim ResultArray() As Integer
@@ -1407,7 +1407,7 @@ Public Sub ConcatenateArrays_LongArrayToAppendIntegerResultArray_ResultsFalse()
     
     'Assert:
     'Act:
-    Assert.IsFalse modArraySupport2.ConcatenateArrays( _
+    Assert.IsFalse modArraySupport2.ConcatenateVectors( _
             ResultArray, _
             ArrayToAppend, _
             CompatibilityCheck _
@@ -1420,8 +1420,8 @@ TestFail:
 End Sub
 
 
-'@TestMethod("ConcatenateArrays")
-Public Sub ConcatenateArrays_LongArrayToAppendIntegerResultArrayFalseCompatibilityCheck_ResultsTrueAndResultArray()
+'@TestMethod("ConcatenateVectors")
+Public Sub ConcatenateVectors_LongArrayToAppendIntegerResultArrayFalseCompatibilityCheck_ResultsTrueAndResultArray()
     On Error GoTo TestFail
     
     Dim ResultArray() As Integer
@@ -1451,7 +1451,7 @@ Public Sub ConcatenateArrays_LongArrayToAppendIntegerResultArrayFalseCompatibili
     ArrayToAppend(3) = 113
     
     'Act:
-    If Not modArraySupport2.ConcatenateArrays( _
+    If Not modArraySupport2.ConcatenateVectors( _
             ResultArray, _
             ArrayToAppend, _
             CompatibilityCheck _
@@ -1468,8 +1468,8 @@ TestFail:
 End Sub
 
 
-'@TestMethod("ConcatenateArrays")
-Public Sub ConcatenateArrays_LongArrayToAppendWithLongNumberIntegerResultArrayFalseCompatibilityCheck_ResultsFalse()
+'@TestMethod("ConcatenateVectors")
+Public Sub ConcatenateVectors_LongArrayToAppendWithLongNumberIntegerResultArrayFalseCompatibilityCheck_ResultsFalse()
     On Error GoTo TestFail
     
     Dim ResultArray() As Integer
@@ -1494,7 +1494,7 @@ Public Sub ConcatenateArrays_LongArrayToAppendWithLongNumberIntegerResultArrayFa
     ArrayToAppend(3) = 113
     
     'Act:
-    Success = modArraySupport2.ConcatenateArrays( _
+    Success = modArraySupport2.ConcatenateVectors( _
             ResultArray, _
             ArrayToAppend, _
             CompatibilityCheck _
@@ -1517,8 +1517,8 @@ End Sub
 
 ''TODO: add a test that involves objects
 ''     (have a look at <https://stackoverflow.com/a/11254505>
-''@TestMethod("ConcatenateArrays")
-'Public Sub ConcatenateArrays_LegalVariant_ResultsTrueAndResultArray()
+''@TestMethod("ConcatenateVectors")
+'Public Sub ConcatenateVectors_LegalVariant_ResultsTrueAndResultArray()
 '    On Error GoTo TestFail
 '
 '    Dim ResultArray() As Range          'MUST be dynamic
@@ -1546,7 +1546,7 @@ End Sub
 '    End With
 '
 '    'Act:
-'    If Not modArraySupport2.ConcatenateArrays( _
+'    If Not modArraySupport2.ConcatenateVectors( _
 '            ResultArray, _
 '            ArrayToAppend, _
 '            CompatibilityCheck _
@@ -1572,7 +1572,7 @@ End Sub
 ''Debug.Print "Result Array Is Not Allocated."
 ''        End If
 ''    Else
-''Debug.Print "ConcatenateArrays returned False"
+''Debug.Print "ConcatenateVectors returned False"
 ''    End If
 '
 'TestExit:
