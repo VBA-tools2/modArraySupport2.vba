@@ -1,0 +1,22 @@
+// cSpell Settings
+{
+    // ignoreWords - list of words that should be ignored
+    "ignoreWords": [
+        "cpearson",
+        "defg",
+        "dont",
+        "ifdef",
+        "ing",
+        "Nonvb",
+        "qanda",
+        "sourcedir",
+        "Strikethrough",
+        "testdir"
+    ],
+    // words - list of words to be always considered correct
+    "words": [
+        "guillemets",
+        "resetted",
+        "rubberduck"
+    ]
+}

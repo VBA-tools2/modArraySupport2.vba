@@ -2,12 +2,22 @@
 = modArraySupport2.vba
 :experimental:
 :icons:         // not sure if this is needed
+:sourcedir: ../src
+:testdir: ../tests
 :uri-commit-messages: https://www.conventionalcommits.org
 :uri-cpearson-modArraySupport: http://www.cpearson.com/excel/vbaarrays.htm
 :uri-GitHub-FirstContribution: https://github.com/firstcontributions/first-contributions
 :uri-license: https://choosealicense.com/licenses/mit/
 :uri-rubberduck: https://rubberduckvba.com/
 :uri-UnitTests: https://en.wikipedia.org/wiki/Unit_testing
+// show the corresponding icons on GitHub, because otherwise "just" the text will be shown
+ifdef::env-github[]
+:caution-caption: :fire:
+:important-caption: :exclamation:
+:note-caption: :information_source:
+:tip-caption: :bulb:
+:warning-caption: :warning:
+endif::[]
 
 Excel VBA module with functions for (VBA) arrays.
 
@@ -22,19 +32,43 @@ This repository exists to bundle and publish all improvements made to the origin
 
 == Prerequisites / Dependencies
 
-None.
+Since this is an Excel VBA module you obviously need Microsoft Excel.
 
+[#how-to-install]
 == How to install / Getting started
 
-Add the modules in the link:../src[src] folder to your project.
-Yes, its that simple.
+Add the file(s) from the link:{sourcedir}[src] folder to your project.
+Yes, it's that simple.
+
+._If you need some more advice on how to do that, expand me._
+[%collapsible]
+====
+. Open Microsoft Excel.
+. Open the Visual Basic Editor (VBE) (kbd:[Alt+F11]).
+. Add the file(s) in the link:{sourcedir}[src] folder to your VBA project.
+** With {uri-rubberduck}[Rubberduck]:
+.. Right-click on the project to which you want to add the file(s) in the "`Code Explorer`" (to show it press kbd:[Ctrl+R]) and click on menu:Add[Existing Files...].
+.. Select all files in the link:{sourcedir}[src] folder and click on btn:[Open].
+** Without Rubberduck:
+.. Select all files in the link:{sourcedir}[src] folder in Windows File Explorer.
+.. Drag-and-drop them to the corresponding project in VBE's "`Project Explorer`". +
+   (To show it press kbd:[Ctrl+R].
+   Hit it twice if the Code Explorer shows up first.)
+// BUG: "project name" can't be put in normal angle brackets, because the closing bracket would be interpreted as menu delimiter. I couldn't find a way how to "escape" that (i.e. a backslash didn't work). Thus, single guillemets are used.
+. Check, if there are obvious errors by compiling the project (menu:Debug[Compile ‹project name›]).
+. Save the file/project.
+.. Be sure that the file/project you want to save is "`active`" in the VBE by checking, if its name is shown in VBE's title bar. +
+   (If it's not, open a (class) module of the corresponding project (and close it again).)
+.. Press the "`Save`" button (the disc symbol similar to 💾) in VBE's toolbar.
+.. Check that the file (really) was saved by having a look at the "`last modified date`" of the (project) file in the Windows File Explorer.
+====
 
 == Usage / Show it in action
 
 A typical use case to use the functions is when you write functions that need a _vector_ and should work with data from VBA and/or from a worksheet.
 In VBA you of course directly create the (1D) vector, but when reading vector data from a worksheet, you get a (2D) _array_/a matrix.
 Here is the code I usually use to get the vector, where 5 functions of this project are used.
-(This is used e.g. in `+modPolynomReg+`.)
+(This is used e.g. in `+modPolynomReg+` module (see <<used-by>> section for the source of that module).)
 
 [source,vba]
 ----
@@ -73,22 +107,49 @@ End Function
 Yes, {uri-UnitTests}[Unit Tests] in Excel _are_ possible.
 For that you need to have the awesome {uri-rubberduck}[Rubberduck] AddIn installed (and enabled).
 
-. Open the Visual Basic Editor (kbd:[Alt+F11])
-. Add test modules
-  * Code Explorer (of Rubberduck)
-    .. Show up the Code Explorer (kbd:[Ctrl+R])
-    .. Select the project (or an item of that) to which you want to add the test files
-    .. Right-click in the Code Explorer and click: menu:Add[Existing files...]
-    .. Select the file(s) in the link:../tests[tests] folder and click Open
-  * Project Explorer
-    .. Show up the Project Explorer (kbd:[Ctrl+R])
-       (Hit it twice if the Code Explorer shows up first)
-    .. Drag the files in the link:../tests[tests] folder (in an Explorer window) and drop them on the Project in the Project Explorer to which you want to add the tests
-. Check that the files from the link:../src[src] folder are present in that project as well.
-  Otherwise tests will/should fail.
-. Open Test Explorer (menu:Rubberduck[Unit Tests > Test Explorer])
-. Run the tests by clicking: menu:Run[All Tests]
+The procedure is very similar to the one given in the <<how-to-install>> section, but this time add the files from the link:{testdir}[tests] folder (instead of the files from the link:{sourcedir}[src] folder).
+When you are done with that, additionally perform the following steps.
 
+. Check that the files from the link:{sourcedir}[src] folder are present in the project as well or that you have a reference to project with the source files.footnote:[
+   See the collapsible in the next point on how to do that.
+   If you use the Rubberduck way, before adding the reference you first need to switch to the menu:Projects[] tab.
+] +
+  (Otherwise tests will/should fail.)
+. Add a reference to the "`Rubberduck AddIn`" to the project (with the test modules).
++
+._If you don't have a clue how to do that, expand me._
+[%collapsible]
+====
+* With {uri-rubberduck}[Rubberduck]:
+. Right-click somewhere on the project in the "`Code Explorer`" and click on menu:Add/Remove{sp}References...[].
+. Add the reference.
+.. Type (parts of) the library name in the search box until you see it in below (left) list or it is empty.
+** If the AddIn file name is in the lower left list box:
+... Select the library in the (left) list and
+... click on the btn:[➨] button to add it to the project references. +
+** If the the AddIn file name is _not_ in the list:
+... Click on the btn:[Browse...] button.
+... Browse to the folder where the AddIn is located.
+... Select the AddIn and
+... press the btn:[Open] button.
+. Click on the btn:[OK] button to close the window.
+* Without Rubberduck:
+. Open the Reference manager in the VBE (menu:Tools[References...]).
+** If the AddIn project name is in the list of available references:
+.. Add a checkmark to the corresponding library.
+** If it's _not_ in the list:
+.. Click on the btn:[Browse...] button.
+.. Browse to the folder where the AddIn is located.
+.. Select the AddIn and
+.. press the btn:[Open] button.
+. Click on the btn:[OK] button to close the window.
+. Save the file/project.
+====
++
+. Open the "`Test Explorer`" (menu:Rubberduck[Unit Tests > Test Explorer]).
+. Run the tests by clicking menu:Run[All Tests].
+
+[#used-by]
 == Used By
 
 This project is used by (at least) these projects:
@@ -101,6 +162,7 @@ If you know more, I'll be happy to add them here.
 
 None that I am aware of.
 
+[#contributing]
 == Contributing
 
 All contributions are highly welcome!!
@@ -112,8 +174,9 @@ I'll use them from now on too (and hopefully don't forget it in a hurry).
 
 == FAQ
 
-. What are the `+'@...+` comments good for in the code?
-  You should really have a look at the awesome {uri-rubberduck}[Rubberduck] project!
+[qanda]
+What are the `+'@...+` comments good for in the code?::
+You should really have a look at the awesome {uri-rubberduck}[Rubberduck] project!
 
 == License
 
