@@ -8016,11 +8016,11 @@ End Sub
 Public Sub ResetVariantArrayToDefaults_AllSetVariableToDefaultElementsIn1DArr_ReturnsTrueAndResettedArr()
     On Error GoTo TestFail
     
-    Dim Arr(1 To 15) As Variant
+    Dim Arr(1 To 17) As Variant
     Dim i As Long
     
     '==========================================================================
-    Dim aExpected(1 To 15) As Variant
+    Dim aExpected(1 To 17) As Variant
         Set aExpected(1) = Nothing
         aExpected(2) = Array()
             SetVariableToDefault aExpected(2)
@@ -8037,6 +8037,12 @@ Public Sub ResetVariantArrayToDefaults_AllSetVariableToDefaultElementsIn1DArr_Re
         aExpected(13) = Empty
         aExpected(14) = CSng(0)
         aExpected(15) = vbNullString
+        #If Win64 Then
+            aExpected(16) = CLngLng(0)
+        #Else
+            aExpected(16) = CLng(0)
+        #End If
+        aExpected(17) = CLngPtr(0)
     '==========================================================================
     
     
@@ -8056,6 +8062,13 @@ Public Sub ResetVariantArrayToDefaults_AllSetVariableToDefaultElementsIn1DArr_Re
     Arr(13) = Null
     Arr(14) = CSng(654.321)
     Arr(15) = "abc"
+    #If Win64 Then
+        Arr(16) = CLngLng(2147483648#)
+        Arr(17) = CLngPtr(-2147483648#)
+    #Else
+        Arr(16) = CLng(2147483647)
+        Arr(17) = CLngPtr(-2147483647)
+    #End If
     
     'Act:
     If Not modArraySupport2.ResetVariantArrayToDefaults(Arr) Then _
@@ -8081,12 +8094,12 @@ End Sub
 Public Sub ResetVariantArrayToDefaults_AllSetVariableToDefaultElementsIn2DArr_ReturnsTrueAndResettedArr()
     On Error GoTo TestFail
     
-    Dim Arr(1 To 8, 4 To 5) As Variant
+    Dim Arr(1 To 9, 4 To 5) As Variant
     Dim i As Long
     Dim j As Long
     
     '==========================================================================
-    Dim aExpected(1 To 8, 4 To 5) As Variant
+    Dim aExpected(1 To 9, 4 To 5) As Variant
         Set aExpected(1, 4) = Nothing
         aExpected(2, 4) = Array()
             SetVariableToDefault aExpected(2, 4)
@@ -8096,15 +8109,21 @@ Public Sub ResetVariantArrayToDefaults_AllSetVariableToDefaultElementsIn2DArr_Re
         aExpected(6, 4) = CDate(0)
         aExpected(7, 4) = CDec(0)
         aExpected(8, 4) = CDbl(0)
+        aExpected(9, 4) = Empty
         
         aExpected(1, 5) = Empty
-        aExpected(2, 5) = Empty
-        aExpected(3, 5) = CInt(0)
-        aExpected(4, 5) = CLng(0)
-        aExpected(5, 5) = Empty
-        aExpected(6, 5) = CSng(0)
-        aExpected(7, 5) = vbNullString
-        aExpected(8, 5) = Empty                  'non-initialized Variant entry
+        aExpected(2, 5) = CInt(0)
+        aExpected(3, 5) = CLng(0)
+        aExpected(4, 5) = Empty
+        aExpected(5, 5) = CSng(0)
+        aExpected(6, 5) = vbNullString
+        #If Win64 Then
+            aExpected(7, 5) = CLngLng(0)
+        #Else
+            aExpected(7, 5) = CLng(0)
+        #End If
+        aExpected(8, 5) = CLngPtr(0)
+        aExpected(9, 5) = Empty                  'non-initialized Variant entry
     '==========================================================================
     
     
@@ -8117,14 +8136,21 @@ Public Sub ResetVariantArrayToDefaults_AllSetVariableToDefaultElementsIn2DArr_Re
     Arr(6, 4) = #2/12/1969#
     Arr(7, 4) = CDec(10000000.0587)
     Arr(8, 4) = CDbl(-123.456)
+    Arr(9, 5) = Empty
     
-    Arr(1, 5) = Empty
-    Arr(2, 5) = CVErr(xlErrNA)
-    Arr(3, 5) = CInt(2345.5678)
-    Arr(4, 5) = CLng(123456789)
-    Arr(5, 5) = Null
-    Arr(6, 5) = CSng(654.321)
-    Arr(7, 5) = "abc"
+    Arr(1, 5) = CVErr(xlErrNA)
+    Arr(2, 5) = CInt(2345.5678)
+    Arr(3, 5) = CLng(123456789)
+    Arr(4, 5) = Null
+    Arr(5, 5) = CSng(654.321)
+    Arr(6, 5) = "abc"
+    #If Win64 Then
+        Arr(7, 5) = CLngLng(2147483648#)
+        Arr(8, 5) = CLngPtr(-2147483648#)
+    #Else
+        Arr(7, 5) = CLng(2147483647)
+        Arr(8, 5) = CLngPtr(-2147483647)
+    #End If
     
     'Act:
     If Not modArraySupport2.ResetVariantArrayToDefaults(Arr) Then _
@@ -8152,13 +8178,13 @@ End Sub
 Public Sub ResetVariantArrayToDefaults_AllSetVariableToDefaultElementsIn3DArr_ReturnsTrueAndResettedArr()
     On Error GoTo TestFail
     
-    Dim Arr(1 To 8, 4 To 5, 3 To 3) As Variant
+    Dim Arr(1 To 9, 4 To 5, 3 To 3) As Variant
     Dim i As Long
     Dim j As Long
     Dim k As Long
     
     '==========================================================================
-    Dim aExpected(1 To 8, 4 To 5, 3 To 3) As Variant
+    Dim aExpected(1 To 9, 4 To 5, 3 To 3) As Variant
         Set aExpected(1, 4, 3) = Nothing
         aExpected(2, 4, 3) = Array()
             SetVariableToDefault aExpected(2, 4, 3)
@@ -8168,15 +8194,21 @@ Public Sub ResetVariantArrayToDefaults_AllSetVariableToDefaultElementsIn3DArr_Re
         aExpected(6, 4, 3) = CDate(0)
         aExpected(7, 4, 3) = CDec(0)
         aExpected(8, 4, 3) = CDbl(0)
+        aExpected(9, 4, 3) = Empty
         
         aExpected(1, 5, 3) = Empty
-        aExpected(2, 5, 3) = Empty
-        aExpected(3, 5, 3) = CInt(0)
-        aExpected(4, 5, 3) = CLng(0)
-        aExpected(5, 5, 3) = Empty
-        aExpected(6, 5, 3) = CSng(0)
-        aExpected(7, 5, 3) = vbNullString
-        aExpected(8, 5, 3) = Empty               'non-initialized Variant entry
+        aExpected(2, 5, 3) = CInt(0)
+        aExpected(3, 5, 3) = CLng(0)
+        aExpected(4, 5, 3) = Empty
+        aExpected(5, 5, 3) = CSng(0)
+        aExpected(6, 5, 3) = vbNullString
+        #If Win64 Then
+            aExpected(7, 5, 3) = CLngLng(0)
+        #Else
+            aExpected(7, 5, 3) = CLng(0)
+        #End If
+        aExpected(8, 5, 3) = CLngPtr(0)
+        aExpected(9, 5, 3) = Empty               'non-initialized Variant entry
     '==========================================================================
     
     
@@ -8189,14 +8221,21 @@ Public Sub ResetVariantArrayToDefaults_AllSetVariableToDefaultElementsIn3DArr_Re
     Arr(6, 4, 3) = #2/12/1969#
     Arr(7, 4, 3) = CDec(10000000.0587)
     Arr(8, 4, 3) = CDbl(-123.456)
+    Arr(9, 5, 3) = Empty
     
-    Arr(1, 5, 3) = Empty
-    Arr(2, 5, 3) = CVErr(xlErrNA)
-    Arr(3, 5, 3) = CInt(2345.5678)
-    Arr(4, 5, 3) = CLng(123456789)
-    Arr(5, 5, 3) = Null
-    Arr(6, 5, 3) = CSng(654.321)
-    Arr(7, 5, 3) = "abc"
+    Arr(1, 5, 3) = CVErr(xlErrNA)
+    Arr(2, 5, 3) = CInt(2345.5678)
+    Arr(3, 5, 3) = CLng(123456789)
+    Arr(4, 5, 3) = Null
+    Arr(5, 5, 3) = CSng(654.321)
+    Arr(6, 5, 3) = "abc"
+    #If Win64 Then
+        Arr(7, 5, 3) = CLngLng(2147483648#)
+        Arr(8, 5, 3) = CLngPtr(-2147483648#)
+    #Else
+        Arr(7, 5, 3) = CLng(2147483647)
+        Arr(8, 5, 3) = CLngPtr(-2147483647)
+    #End If
     
     'Act:
     If Not modArraySupport2.ResetVariantArrayToDefaults(Arr) Then _
