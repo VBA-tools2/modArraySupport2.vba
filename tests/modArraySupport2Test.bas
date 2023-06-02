@@ -2971,23 +2971,29 @@ End Sub
 Public Sub DataTypeOfArray_UnallocatedLongLongArray_ReturnsVbLongLong()
     On Error GoTo TestFail
     
-    'Arrange:
-    Dim Arr() As LongLong
-    Dim aActual As VbVarType
-    
-    '==========================================================================
-    Dim LongLongType As Byte
-    LongLongType = DeclareLongLong
-    Dim aExpected As Long
-    aExpected = LongLongType
-    '==========================================================================
-    
-    
-    'Act:
-    aActual = modArraySupport.DataTypeOfArray(Arr)
-    
-    'Assert:
-    Assert.AreEqual aExpected, aActual
+    'test only compiles on 64-bit Excel installations ...
+    #If Win64 Then
+        'Arrange:
+        Dim Arr() As LongLong
+        Dim aActual As VbVarType
+        
+        '======================================================================
+        Dim LongLongType As Byte
+        LongLongType = DeclareLongLong
+        Dim aExpected As Long
+        aExpected = LongLongType
+        '======================================================================
+        
+        
+        'Act:
+        aActual = modArraySupport2.DataTypeOfArray(Arr)
+        
+        'Assert:
+        Assert.AreEqual aExpected, aActual
+    '... therefore just past this test on 32-bit Excel installations
+    #Else
+        Assert.Succeed
+    #End If
     
 TestExit:
     Exit Sub
