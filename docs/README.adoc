@@ -155,6 +155,7 @@ When you are done with that, additionally perform the following steps.
 This project is used by (at least) these projects:
 
 * https://github.com/VBA-tools2/PolynomReg.vba[]
+* http://unitoperations.de[]
 
 If you know more, I'll be happy to add them here.
 
